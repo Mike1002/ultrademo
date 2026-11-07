@@ -1,0 +1,24 @@
+{
+  "name": "Shatter transition",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Attention"
+  ],
+  "energy": "high",
+  "tier": 3,
+  "runtime": "webgl",
+  "tags": [
+    "fragment shatter",
+    "chaos collapse transition",
+    "scatter disintegration",
+    "scatter effect",
+    "fracture and shatter",
+    "transitions",
+    "fragments",
+    "polygon",
+    "clip-path",
+    "scatter"
+  ],
+  "one_line": "The invite scene breaks into 24 polygon fragments that fly outward, spin, drop and fade to reveal the stats scene behind; then six fragments of the new scene fly in and gather into its disc."
+}

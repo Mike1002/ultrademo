@@ -1,0 +1,21 @@
+{
+  "name": "Retreat and cover",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Sequence"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "gsap",
+  "tags": [
+    "retreat and cover",
+    "transitions",
+    "slide",
+    "cover",
+    "stack",
+    "depth",
+    "darken"
+  ],
+  "one_line": "An invite card shrinks and darkens as a stats card slides in from the right and covers it; then the stats card retreats the same way and a third card covers it, so the scenes stack like layers."
+}

@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-overlapping-action</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  .row { position: absolute; left: 40px; width: 1088px; height: 150px; }
+  .row.a { top: 110px; } .row.b { top: 345px; }
+  .row .lab { position: absolute; left: 0; top: -30px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  .row .track { position: absolute; left: 0; right: 0; bottom: 24px; height: 2px; background: #e3ded2; }
+  .obj { position: absolute; left: 0; bottom: 26px; height: 90px; width: 260px; will-change: transform; }
+  .p { position: absolute; bottom: 0; will-change: transform; }
+  .p.head { left: 190px; width: 70px; height: 70px; border-radius: 50%; background: #f2c200; border: 2px solid #1d1c1a; }
+  .p.body { left: 90px; width: 96px; height: 90px; background: #1d1c1a; border-radius: 10px; }
+  .p.t1 { left: 60px; width: 26px; height: 60px; background: #1d1c1a; border-radius: 6px; }
+  .p.t2 { left: 30px; width: 26px; height: 40px; background: #1d1c1a; border-radius: 6px; }
+  .p.t3 { left: 0; width: 26px; height: 22px; background: #1d1c1a; border-radius: 6px; }
+  .row.a .p { background: #a19d93; border-color: #a19d93; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div class="row a"><div class="lab">As one block</div><div class="track"></div>
+        <div class="obj" id="A"><div class="p t3"></div><div class="p t2"></div><div class="p t1"></div><div class="p body"></div><div class="p head"></div></div></div>
+      <div class="row b"><div class="lab">Overlapping: each part starts and stops a little later</div><div class="track"></div>
+        <div class="obj" id="B"><div class="p t3" id="b5"></div><div class="p t2" id="b4"></div><div class="p t1" id="b3"></div><div class="p body" id="b2"></div><div class="p head" id="b1"></div></div></div>
+    </div>
+    <div id="label"><span class="l-name">Overlapping action</span><span class="l-sep">·</span><span>Principles</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+  const X = 820, D = 1.1;
+  // Top row: one rigid block.
+  tl.fromTo("#A", { x: 0 }, { x: X, duration: D, ease: "power3.inOut" }, 0.25);
+  // Bottom row: the lead part leaves first; each following part starts 0.07 s later and stops 0.06 s later.
+  ["#b1", "#b2", "#b3", "#b4", "#b5"].forEach((s, i) => {
+    tl.fromTo(s, { x: 0 }, { x: X, duration: D + i * 0.06, ease: "power3.inOut" }, 0.25 + i * 0.07);
+  });
+  // Second beat: both come part of the way back so the clip never sits still.
+  tl.to("#A", { x: X - 220, duration: 0.8, ease: "power3.inOut" }, 2.05);
+  ["#b1", "#b2", "#b3", "#b4", "#b5"].forEach((s, i) => {
+    tl.to(s, { x: X - 220, duration: 0.8 + i * 0.05, ease: "power3.inOut" }, 2.05 + i * 0.06);
+  });
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

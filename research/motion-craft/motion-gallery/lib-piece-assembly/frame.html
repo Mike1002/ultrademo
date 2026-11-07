@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-piece-assembly</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  .kicker { position: absolute; left: 64px; top: 40px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  svg.canvas { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  .piece { will-change: transform; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div class="kicker">From parts to one mark</div>
+      <svg class="canvas" viewBox="0 0 1168 580">
+        <g id="pieces">
+          <rect class="piece" id="p1" x="414" y="128" width="108" height="108" fill="#1d1c1a"/>
+          <rect class="piece" id="p2" x="522" y="128" width="108" height="108" fill="#1d1c1a"/>
+          <rect class="piece" id="p3" x="630" y="128" width="108" height="108" fill="#f2c200"/>
+          <rect class="piece" id="p4" x="414" y="236" width="108" height="108" fill="#1d1c1a"/>
+          <rect class="piece" id="p5" x="522" y="236" width="108" height="108" fill="#1d1c1a"/>
+          <rect class="piece" id="p6" x="414" y="344" width="108" height="108" fill="#1d1c1a"/>
+        </g>
+      </svg>
+    </div>
+    <div id="label"><span class="l-name">Piece assembly</span><span class="l-sep">·</span><span>Shape &amp; Path</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+  // Six scattered, tilted squares travel and rotate into a gap-free mark; each starts 0.09 s after the last.
+  const offsets = [[-300, -90, -35], [25, -180, 40], [290, -70, 60], [-270, 100, 45], [240, 180, -50], [-100, 170, -30]];
+  offsets.forEach(([x, y, rotation], i) => {
+    tl.fromTo("#p" + (i + 1), { x, y, rotation, opacity: 0.3, transformOrigin: "50% 50%" }, { x: 0, y: 0, rotation: 0, opacity: 1, duration: 1.15, ease: "power3.out" }, 0.35 + i * 0.09);
+  });
+  // Lock: the finished mark gives one small squeeze and rests.
+  tl.fromTo("#pieces", { scale: 1, transformOrigin: "50% 50%" }, { scale: 1.04, duration: 0.3, ease: "sine.inOut", yoyo: true, repeat: 1 }, 2.2);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

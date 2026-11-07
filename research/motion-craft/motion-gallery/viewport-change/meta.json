@@ -1,0 +1,19 @@
+{
+  "name": "Viewport change",
+  "family": "Camera & Viewport",
+  "purpose": [
+    "camera",
+    "zoom",
+    "focus"
+  ],
+  "energy": "steady",
+  "tags": [
+    "viewport",
+    "camera",
+    "zoom",
+    "pan",
+    "focus-lock",
+    "virtual-camera"
+  ],
+  "one_line": "One smooth camera move zooms and pans the whole card so the yellow Continue button in its corner ends up large and centred, holds there, then the button presses once."
+}

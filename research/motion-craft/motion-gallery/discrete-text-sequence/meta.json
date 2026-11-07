@@ -1,0 +1,19 @@
+{
+  "name": "Discrete text sequence",
+  "family": "Text & Typography",
+  "purpose": [
+    "typing",
+    "sequence",
+    "terminal"
+  ],
+  "energy": "steady",
+  "tags": [
+    "text",
+    "typing",
+    "discrete",
+    "threshold",
+    "non-linear",
+    "sequence"
+  ],
+  "one_line": "A prompt types the line in bursts, pauses at a word, makes a typo, backspaces, then pastes the rest in one jump and ends with a check mark while a yellow block cursor blinks."
+}

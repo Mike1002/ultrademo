@@ -1,0 +1,22 @@
+{
+  "name": "Swipe action reveal",
+  "family": "UI Demo",
+  "purpose": [
+    "Feedback",
+    "Emphasis"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "gsap",
+  "tags": [
+    "swipe action reveal",
+    "ui",
+    "swipe",
+    "row",
+    "slide",
+    "hidden actions",
+    "gesture",
+    "list"
+  ],
+  "one_line": "A touch point drags a member row to the left, uncovering an Archive action and a yellow Remove action underneath; after a hold the row slides back over them with a small overshoot."
+}

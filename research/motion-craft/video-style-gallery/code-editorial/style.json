@@ -1,0 +1,122 @@
+{
+  "id": "code-editorial",
+  "name": "Code editorial",
+  "canvas": "light",
+  "mood": [
+    "warm",
+    "literate",
+    "technical"
+  ],
+  "suits": [
+    "developer tools",
+    "AI products",
+    "docs and changelog videos"
+  ],
+  "palette": {
+    "bg": "#FAF9F5",
+    "bg_alt": "#EFE9DE",
+    "surface": "#EFE9DE",
+    "surface_2": "#ECE3D4",
+    "ink": "#141413",
+    "muted": "#6f6a60",
+    "line": "rgba(20,20,19,0.18)",
+    "accent": "#CC785C",
+    "accent_2": "#CC785C",
+    "on_accent": "#FAF9F5",
+    "button_bg": "#141413",
+    "button_ink": "#FAF9F5",
+    "pill_bg": "#ECE3D4",
+    "pill_ink": "#141413",
+    "pill_dot": "#CC785C",
+    "term_bg": "#181715",
+    "term_ink": "#ece8df",
+    "term_muted": "#8f8a7f",
+    "term_line": "#252320",
+    "term_prompt": "#CC785C",
+    "term_ok": "#CC785C"
+  },
+  "type": {
+    "display": {
+      "family": "EB Garamond",
+      "weight": 400,
+      "hook_px": 96,
+      "stat_px": 260,
+      "mark_px": 140,
+      "transform": "none",
+      "tracking": "-0.018em",
+      "line_height": "1.02",
+      "style": "normal",
+      "generic": "serif",
+      "card_title_px": 32
+    },
+    "body": {
+      "family": "Inter",
+      "weight": 400,
+      "generic": "sans"
+    },
+    "mono": {
+      "family": "JetBrains Mono",
+      "weight": 400
+    },
+    "label": {
+      "family": "JetBrains Mono",
+      "weight": 500,
+      "transform": "uppercase",
+      "tracking": "0.16em",
+      "generic": "sans",
+      "px": 13
+    }
+  },
+  "easing": {
+    "entry": "power2.out",
+    "exit": "power1.in",
+    "ambient": "none",
+    "pop": "power2.out",
+    "counter": "power2.out",
+    "wipe": null
+  },
+  "rhythm": {
+    "energy": "steady",
+    "entrance": 0.65,
+    "stagger": 0.09
+  },
+  "transition": {
+    "kind": "crossfade",
+    "duration": 0.5,
+    "flash": false,
+    "band": false
+  },
+  "text_animation": "fade-up",
+  "accent_word": "colour",
+  "layout": "center",
+  "atmosphere": [],
+  "shape": {
+    "radius_card": 12,
+    "radius_button": 8,
+    "radius_pill": 999,
+    "border": "hairline",
+    "border_px": 1,
+    "shadow": "none",
+    "rule_px": 2
+  },
+  "stat_colour": "ink",
+  "direction_settings": {
+    "energy": "steady",
+    "density": "balanced",
+    "ground": "light",
+    "depth": "flat",
+    "camera": "locked",
+    "type": "editorial",
+    "texture": "clean",
+    "colour": "one-accent",
+    "product_presence": "illustrated",
+    "sound": "ambient",
+    "voice": "narrated"
+  },
+  "notes": "Warm cream paper, EB Garamond display, Inter body, JetBrains Mono on a warm-navy code surface, a single terracotta coral kept scarce.",
+  "transitions": {
+    "between_moments": "crossfade",
+    "duration_s": 0.5,
+    "text": "fade-up"
+  }
+}

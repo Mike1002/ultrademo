@@ -1,0 +1,24 @@
+{
+  "name": "Light leak transition",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Mood"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "webgl",
+  "tags": [
+    "light leak",
+    "burn",
+    "light leak bridge",
+    "transitions",
+    "leak",
+    "light",
+    "bloom",
+    "screen",
+    "blur",
+    "dark"
+  ],
+  "one_line": "A wide irregular patch of warm yellow light blooms in from the left over the invite card, the cut to the stats card hides under it while it holds, and it burns out to the right; a faint second leak breathes at the edge later."
+}

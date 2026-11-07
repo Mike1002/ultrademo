@@ -1,0 +1,20 @@
+{
+  "name": "Pan",
+  "family": "Camera",
+  "purpose": [
+    "Sequence",
+    "Explanation"
+  ],
+  "energy": "steady",
+  "tier": 2,
+  "runtime": "gsap",
+  "tags": [
+    "pan stations",
+    "horizontal gallery",
+    "camera pan",
+    "camera",
+    "strip",
+    "stop on subject"
+  ],
+  "one_line": "A three-station strip scans left at constant scale and stops on station 3, which lights up in yellow."
+}

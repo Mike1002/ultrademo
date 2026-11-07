@@ -1,0 +1,22 @@
+{
+  "name": "Arcs",
+  "family": "Principles",
+  "purpose": [
+    "Explanation",
+    "Comparison",
+    "Sequence"
+  ],
+  "energy": "steady",
+  "tier": 2,
+  "runtime": "gsap",
+  "tags": [
+    "arc layout transfer",
+    "projectile arc",
+    "directional acceleration",
+    "principles",
+    "parabola",
+    "trajectory",
+    "trail"
+  ],
+  "one_line": "A grey dot slides straight along the top track while a yellow ball covers the same distance in the same time on a parabola below, leaving a trail of dots behind it and settling with a small hop."
+}

@@ -1,0 +1,21 @@
+{
+  "name": "File upload stack",
+  "family": "UI Demo",
+  "purpose": [
+    "Feedback",
+    "Emphasis"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "css",
+  "tags": [
+    "ui",
+    "upload",
+    "files",
+    "stack",
+    "stagger",
+    "progress bar",
+    "check"
+  ],
+  "one_line": "Three file cards lift into place one after another; each shows a bar filling yellow at its own pace and a check that pops in when its upload completes."
+}

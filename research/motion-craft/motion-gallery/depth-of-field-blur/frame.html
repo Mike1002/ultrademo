@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>depth-of-field-blur</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; overflow: hidden; background: #f6f3ec; }
+  /* one wrapper so the push-in transforms everything together; DoF is independent of it */
+  .world { position: absolute; inset: 0; transform-origin: 50% 50%; will-change: transform; }
+  /* 3x2 grid of 360x220 cards, gap 24, origin (76,128) */
+  .layer { --dof: 0px; filter: blur(var(--dof)); will-change: filter; }
+  .card { position: absolute; width: 360px; height: 220px; background: #fffdf8; border: 2px solid #1d1c1a; border-radius: 22px; z-index: 1; }
+  .card .label { position: absolute; left: 28px; top: 28px; font-size: 18px; color: #6d6a63; }
+  .card .num { position: absolute; left: 28px; top: 60px; font-size: 72px; font-weight: 800; letter-spacing: -0.03em; line-height: 1; }
+  .card .foot { position: absolute; left: 28px; top: 156px; font-size: 18px; color: #6d6a63; }
+  .card.focal { z-index: 2; }
+  .card.focal .num { color: #1d1c1a; }
+  .card.focal .pill { position: absolute; left: 230px; top: 24px; width: 100px; height: 36px; border-radius: 18px; background: #f2c200;
+    font-size: 16px; font-weight: 700; display: grid; place-items: center; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div class="world" id="world">
+      <div class="card layer ctx" data-depth="2" style="left: 76px; top: 128px;"><div class="label">Views</div><div class="num">42k</div><div class="foot">last 30 days</div></div>
+      <div class="card layer focal" id="focal" style="left: 460px; top: 128px;"><div class="label">Every frame is code</div><div class="num">1,284</div><div class="foot">renders this week</div><div class="pill">+18%</div></div>
+      <div class="card layer ctx" data-depth="2" style="left: 844px; top: 128px;"><div class="label">Retention</div><div class="num">98%</div><div class="foot">in sync with the UI</div></div>
+      <div class="card layer ctx" data-depth="3" style="left: 76px; top: 372px;"><div class="label">Teams</div><div class="num">312</div><div class="foot">active</div></div>
+      <div class="card layer ctx" data-depth="1" style="left: 460px; top: 372px;"><div class="label">Per preview</div><div class="num">3 s</div><div class="foot">median</div></div>
+      <div class="card layer ctx" data-depth="3" style="left: 844px; top: 372px;"><div class="label">Shipped</div><div class="num">56</div><div class="foot">this quarter</div></div>
+    </div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true });
+  const BLUR_PER_DEPTH = 4, DIM_LEVEL = 0.55, FOCUS_START = 0.4, FOCUS_DUR = 0.9;
+  const REFOCUS_START = 2.2, REFOCUS_DUR = 0.7;
+  // Mechanic 1: focal pull. Blur scales with data-depth; the focal card (--dof 0, opacity 1) is untouched.
+  gsap.utils.toArray(".ctx").forEach((el) => {
+    const depth = Number(el.dataset.depth) || 1;
+    tl.fromTo(el, { "--dof": "0px", opacity: 1 }, { "--dof": `${BLUR_PER_DEPTH * depth}px`, opacity: DIM_LEVEL, duration: FOCUS_DUR, ease: "power2.inOut" }, FOCUS_START);
+    // Refocus / settle: everything returns to sharp in the tail so the frame hands off clean.
+    tl.to(el, { "--dof": "0px", opacity: 1, duration: REFOCUS_DUR, ease: "power2.inOut" }, REFOCUS_START);
+  });
+  // Blur the cluster while pushing in: the camera push shares the DoF window, so "world recedes" and "we push in" read as one move.
+  tl.fromTo("#world", { scale: 1, y: 0 }, { scale: 1.12, y: 14, duration: FOCUS_DUR, ease: "power2.inOut" }, FOCUS_START);
+  tl.to("#world", { scale: 1, y: 0, duration: REFOCUS_DUR, ease: "power2.inOut" }, REFOCUS_START);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

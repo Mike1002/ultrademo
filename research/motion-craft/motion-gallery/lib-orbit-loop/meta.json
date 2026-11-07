@@ -1,0 +1,20 @@
+{
+  "name": "Orbit loop",
+  "family": "Loop & Ambient",
+  "purpose": [
+    "Feedback",
+    "Sequence"
+  ],
+  "energy": "calm",
+  "tier": 2,
+  "runtime": "css",
+  "tags": [
+    "orbiting objects",
+    "orbiting opposed dots",
+    "loop",
+    "rotation",
+    "shared centre",
+    "constant speed"
+  ],
+  "one_line": "Six dots, one of them yellow, circle a central disc labelled Orbit on the same radius at a constant angular speed, 60 degrees apart."
+}

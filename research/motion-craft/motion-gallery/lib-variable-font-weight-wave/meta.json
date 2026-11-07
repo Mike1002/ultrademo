@@ -1,0 +1,22 @@
+{
+  "name": "Variable font weight wave",
+  "family": "Typography",
+  "purpose": [
+    "Mood",
+    "Attention",
+    "Branding"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "css",
+  "tags": [
+    "weight wave",
+    "type",
+    "variable font",
+    "wave",
+    "slant",
+    "idle",
+    "headline"
+  ],
+  "one_line": "A crest of heavy, slightly slanted letters travels through a light line of text twice, each glyph swelling to bold and relaxing as the wave passes; a yellow marker tracks the crest below."
+}

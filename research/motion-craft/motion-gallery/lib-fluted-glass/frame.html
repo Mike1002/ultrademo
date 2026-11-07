@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-fluted-glass</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; overflow: hidden; }
+  #cv { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage"><canvas id="cv" width="1168" height="580"></canvas></div>
+    <div id="label"><span class="l-name">Fluted glass drift</span><span class="l-sep">·</span><span>Texture &amp; Style</span><span class="l-sep">·</span><span>calm</span></div>
+  </section>
+</div>
+<script>
+  const cv = document.getElementById("cv"), ctx = cv.getContext("2d");
+  const W = 1168, H = 580, INK = "#1d1c1a", PAPER = "#f6f3ec", ACC = "#f2c200", RULE = "#e3ded2", MUTED = "#6d6a63";
+  const SANS = '-apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif';
+  const clamp = x => Math.max(0, Math.min(1, x));
+  const mix = (a, b, p) => a + (b - a) * p;
+  // The still scene is drawn once to an offscreen canvas; the glass panel re-samples it in 2 px strips.
+  const source = document.createElement("canvas"); source.width = W; source.height = H; const sc = source.getContext("2d");
+  sc.fillStyle = PAPER; sc.fillRect(0, 0, W, H);
+  sc.fillStyle = INK; sc.font = "700 108px " + SANS; sc.textAlign = "center"; sc.fillText("Launch day.", 584, 330);
+  sc.fillStyle = ACC; sc.beginPath(); sc.arc(898, 200, 39, 0, 7); sc.fill(); sc.lineWidth = 2; sc.strokeStyle = INK; sc.stroke();
+  for (let i = 0; i < 9; i++) { sc.fillStyle = i % 2 ? RULE : INK; sc.fillRect(230 + i * 80, 380, 36, 75); }
+  function renderAt(t) {
+    ctx.clearRect(0, 0, W, H); ctx.globalAlpha = 1;
+    ctx.drawImage(source, 0, 0);
+    // The panel glides left to right at a constant speed (ease none, as the source's drift) across the 3 s.
+    const width = 520, left = mix(-300, 950, t / 3);
+    ctx.save(); ctx.beginPath(); ctx.rect(left, 150, width, 330); ctx.clip();
+    for (let x = Math.max(0, Math.floor(left)); x < Math.min(W, left + width); x += 2) {
+      const phase = (x - left) / width * 18 * Math.PI * 2;
+      const sx = Math.max(0, Math.min(W - 3, x + Math.sin(phase) * 18));
+      ctx.drawImage(source, sx, 150, 2, 330, x, 150, 2, 330);
+      ctx.fillStyle = INK; ctx.globalAlpha = 0.03 + 0.13 * (1 + Math.cos(phase)) / 2; ctx.fillRect(x, 150, 2, 330); ctx.globalAlpha = 1;
+    }
+    ctx.restore();
+    ctx.strokeStyle = INK; ctx.lineWidth = 2; ctx.globalAlpha = 0.5; ctx.strokeRect(left, 150, width, 330); ctx.globalAlpha = 1;
+    ctx.fillStyle = INK; ctx.font = "24px " + SANS; ctx.textAlign = "left"; ctx.fillText("Words behind glass", 104, 95);
+    ctx.fillStyle = MUTED; ctx.font = "18px " + SANS; ctx.fillText("The backdrop folds along 18 vertical flutes", 104, 514);
+  }
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+  renderAt(0);
+  tl.to({ k: 0 }, { k: 1, duration: 3, ease: "none", onUpdate: () => renderAt(tl.time()) }, 0);
+  const baseRender = tl.render; tl.render = function () { const r = baseRender.apply(this, arguments); renderAt(this.time()); return r; };
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

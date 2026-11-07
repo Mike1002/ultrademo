@@ -1,0 +1,22 @@
+{
+  "name": "Kinetic type sweep",
+  "family": "Typography",
+  "purpose": [
+    "Attention",
+    "Emphasis",
+    "Branding"
+  ],
+  "energy": "high",
+  "tier": 2,
+  "runtime": "gsap",
+  "tags": [
+    "kinetic typography",
+    "marquee sweep",
+    "type slam",
+    "kinetic type curtain transition",
+    "type",
+    "sweep",
+    "slam"
+  ],
+  "one_line": "Three lines of 200 px type stream across the frame in opposite directions at different speeds; the middle line slams to a stop with 'Launch day' dead centre in yellow while the other two fade to ghosts."
+}

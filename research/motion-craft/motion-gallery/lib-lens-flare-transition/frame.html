@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-lens-flare-transition</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #171a21; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #171a21; color: #ece8df;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; overflow: hidden; }
+  .shot { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; will-change: transform, opacity, filter; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #a7adbb; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #ece8df; font-weight: 700; }
+  #label .l-sep { color: #6d7380; }
+  .card { position: absolute; left: 264px; top: 110px; width: 640px; height: 360px; background: #1f232c; border: 2px solid #ece8df; border-radius: 24px; will-change: transform, filter, opacity; }
+  .card .lab { position: absolute; left: 56px; top: 48px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #a7adbb; white-space: nowrap; }
+  .card h1 { position: absolute; left: 56px; top: 80px; font-size: 56px; font-weight: 700; line-height: 64px; white-space: nowrap; }
+  .card .sub { position: absolute; left: 56px; top: 160px; font-size: 22px; color: #a7adbb; white-space: nowrap; }
+  .card .btn { position: absolute; left: 56px; top: 240px; width: 200px; height: 60px; border-radius: 14px; background: #f2c200; border: 2px solid #1d1c1a; color: #1d1c1a;
+    font-size: 20px; font-weight: 700; line-height: 56px; text-align: center; will-change: transform; }
+  .card.b h1 { font-size: 96px; line-height: 104px; top: 74px; font-variant-numeric: tabular-nums; }
+  .card.b .sub { top: 190px; }
+  .card.b .bar { position: absolute; left: 56px; top: 250px; width: 300px; height: 14px; border-radius: 7px; background: #f2c200; border: 2px solid #ece8df; transform-origin: 0 50%; will-change: transform; }
+  .cursor { position: absolute; width: 28px; height: 38px; z-index: 10; pointer-events: none; transform-origin: 2px 2px; will-change: transform; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.25)); }
+  .cursor svg { width: 28px; height: 38px; display: block; }
+
+  .shot.a, .shot.b { background: #171a21; }
+  #B { opacity: 0; }
+  /* The flare is a group of discs and rings hung on one moving point, blended additively over the picture. */
+  #flare { position: absolute; left: 0; top: 0; width: 2px; height: 2px; opacity: 0; mix-blend-mode: screen; will-change: transform, opacity; }
+  #flare > div { position: absolute; border-radius: 50%; }
+  #core { left: -230px; top: -230px; width: 460px; height: 460px;
+    background: radial-gradient(circle, #ffffff 0, #fff6c8 9%, rgba(242,194,0,0.92) 22%, rgba(242,194,0,0.28) 46%, rgba(242,194,0,0) 70%); }
+  #streak { left: -900px; top: -5px; width: 1800px; height: 10px; border-radius: 5px; filter: blur(2px);
+    background: linear-gradient(90deg, rgba(255,246,200,0) 0%, rgba(255,246,200,0.95) 50%, rgba(255,246,200,0) 100%); }
+  .ring { border: 3px solid rgba(255,246,200,0.75); filter: blur(1.5px); }
+  #ring1 { left: -290px; top: -210px; width: 240px; height: 240px; opacity: 0.6; }
+  #ring2 { left: 60px; top: 40px; width: 150px; height: 150px; opacity: 0.55; border-color: rgba(242,194,0,0.85); }
+  #ring3 { left: 150px; top: 90px; width: 330px; height: 330px; opacity: 0.4; }
+  #wash { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; background: #fff6c8; opacity: 0; mix-blend-mode: screen; }
+  #glint { position: absolute; left: 540px; top: 287px; width: 160px; height: 160px; border-radius: 50%; opacity: 0; mix-blend-mode: screen; will-change: transform, opacity;
+    background: radial-gradient(circle, #ffffff 0, rgba(242,194,0,0.8) 18%, rgba(242,194,0,0) 60%); }
+
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+
+      <div data-layout-allow-overlap data-layout-allow-occlusion class="shot a" id="A"><div class="card a " id="a" data-layout-allow-overlap ><div data-layout-allow-overlap data-layout-allow-occlusion class="lab">Orbit</div><h1 data-layout-allow-overlap data-layout-allow-occlusion>Invite your team</h1><div data-layout-allow-overlap data-layout-allow-occlusion class="sub">3 seats left on this plan</div><div data-layout-allow-overlap data-layout-allow-occlusion class="btn">Continue</div></div></div>
+      <div data-layout-allow-overlap data-layout-allow-occlusion class="shot b" id="B"><div class="card b " id="b" data-layout-allow-overlap ><div data-layout-allow-overlap data-layout-allow-occlusion class="lab">This month</div><h1 data-layout-allow-overlap data-layout-allow-occlusion>12,480</h1><div data-layout-allow-overlap data-layout-allow-occlusion class="sub">invites sent</div><div data-layout-allow-overlap data-layout-allow-occlusion class="bar"></div></div></div>
+      <div data-layout-allow-overlap data-layout-allow-occlusion id="wash"></div>
+      <div data-layout-allow-overlap data-layout-allow-occlusion id="flare"><div data-layout-allow-overlap data-layout-allow-occlusion id="streak"></div><div data-layout-allow-overlap data-layout-allow-occlusion class="ring" id="ring1"></div><div data-layout-allow-overlap data-layout-allow-occlusion class="ring" id="ring2"></div><div data-layout-allow-overlap data-layout-allow-occlusion class="ring" id="ring3"></div><div data-layout-allow-overlap data-layout-allow-occlusion id="core"></div></div>
+      <div data-layout-allow-overlap data-layout-allow-occlusion id="glint"></div>
+
+    </div>
+    <div id="label"><span class="l-name">Lens flare transition</span><span class="l-sep">·</span><span>Transitions</span><span class="l-sep">·</span><span>high</span></div>
+  </section>
+</div>
+<script>
+
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "sine.inOut" } });
+  const T0 = 0.75, DUR = 0.8, CUT = T0 + DUR / 2;   // the point crosses the centre of the frame at the midpoint; that is where the cut hides
+  tl.fromTo("#A", { opacity: 1 }, { opacity: 1, duration: 0.01, ease: "none" }, 0);
+  tl.fromTo("#B", { opacity: 0 }, { opacity: 0, duration: 0.01, ease: "none" }, 0);
+  tl.fromTo("#b .bar", { scaleX: 0 }, { scaleX: 0, duration: 0.01, ease: "none" }, 0);
+  tl.fromTo("#wash", { opacity: 0 }, { opacity: 0, duration: 0.01, ease: "none" }, 0);
+  tl.fromTo("#glint", { opacity: 0, scale: 0.2 }, { opacity: 0, duration: 0.01, ease: "none" }, 0);
+  // The light point with its rings and streak crosses the frame on the diagonal, upper left to lower right.
+  tl.fromTo("#flare", { x: -300, y: -200 }, { x: 1450, y: 800, duration: DUR, ease: "sine.inOut" }, T0);
+  tl.fromTo("#flare", { opacity: 0 }, { opacity: 1, duration: DUR / 2, ease: "sine.in" }, T0);
+  tl.to("#flare", { opacity: 0, duration: DUR / 2, ease: "sine.out" }, CUT);
+  // A brief warm wash peaks with the point at the centre (well under 100 ms of near-white), and the scenes swap under it.
+  tl.to("#wash", { opacity: 0.8, duration: 0.07, ease: "power2.in" }, CUT - 0.07);
+  tl.to("#wash", { opacity: 0, duration: 0.12, ease: "power2.out" }, CUT);
+  tl.set("#A", { opacity: 0 }, CUT);
+  tl.set("#B", { opacity: 1 }, CUT);
+  // The new scene lives on: the bar fills, and a small glint catches its end.
+  tl.to("#b .bar", { scaleX: 1, duration: 0.6, ease: "power3.out" }, 1.75);
+  tl.to("#glint", { opacity: 1, scale: 1.1, duration: 0.22, ease: "sine.in" }, 2.3);
+  tl.to("#glint", { opacity: 0, scale: 1.6, duration: 0.4, ease: "sine.out" }, 2.52);
+
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

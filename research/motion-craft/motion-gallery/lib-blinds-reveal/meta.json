@@ -1,0 +1,21 @@
+{
+  "name": "Blinds reveal",
+  "family": "Entrance & Exit",
+  "purpose": [
+    "Attention",
+    "Transition"
+  ],
+  "energy": "steady",
+  "tier": 2,
+  "runtime": "gsap",
+  "tags": [
+    "stripe reveal",
+    "line-sweep-diagonal-stripes",
+    "blinds-stripe-reveal",
+    "entrance",
+    "strips",
+    "clip-path",
+    "wipe"
+  ],
+  "one_line": "Six vertical strips wipe open one after another from left to right, each uncovering its slice of the same headline and big number until the whole picture is assembled; then they close again in order."
+}

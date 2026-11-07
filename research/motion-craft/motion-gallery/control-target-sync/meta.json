@@ -1,0 +1,26 @@
+{
+  "name": "Control target sync",
+  "family": "Transition & Motion",
+  "purpose": [
+    "editing",
+    "causality",
+    "panel",
+    "proof"
+  ],
+  "energy": "steady",
+  "tags": [
+    "control",
+    "scrub",
+    "live-sync",
+    "mirror",
+    "panel",
+    "editor",
+    "couple",
+    "readout",
+    "ui"
+  ],
+  "one_line": "An inspector value scrubs from 0 to -10 degrees while the button tilts in the same frame, then a size field steps Medium, Large, Small, Large and the button snaps to each size as the text changes.",
+  "aliases": [
+    "awesome-ai-motion:control-target-sync"
+  ]
+}

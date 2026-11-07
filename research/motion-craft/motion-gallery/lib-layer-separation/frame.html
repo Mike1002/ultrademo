@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-layer-separation</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #171a21; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #171a21; color: #ece8df;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px;  }
+  .lab { font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #a7adbb; white-space: nowrap; }
+  .num { font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1; white-space: nowrap; }
+  .t-xl { font-size: 84px; font-weight: 700; line-height: 1.05; white-space: nowrap; }
+  .t-l { font-size: 56px; font-weight: 700; line-height: 1.1; white-space: nowrap; }
+  .t-m { font-size: 34px; font-weight: 700; line-height: 1.15; white-space: nowrap; }
+  .t-body { font-size: 22px; line-height: 1.4; }
+  .hair { height: 1px; background: #2a2f3a; }
+  .dot { border-radius: 50%; background: #ece8df; }
+  .dot.v { background: #f2c200; border: 2px solid #ece8df; }
+
+  .space { position: absolute; inset: 0; perspective: 1400px; }
+  .stack { position: absolute; left: 329px; top: 145px; width: 510px; height: 290px; transform-style: preserve-3d; will-change: transform; }
+  .layer { position: absolute; inset: 0; border: 2px solid #ece8df; border-radius: 20px; background: #1f232c; padding: 25px; will-change: transform; }
+  .layer .lab { position: absolute; left: 22px; top: 20px; }
+  .base .t-m { position: absolute; top: 48px; left: 25px; width: 460px; text-align: center; }
+  .outline { background: transparent; }
+  .outline .lab { left: 190px; }
+  .graph { position: absolute; bottom: 24px; left: 150px; display: flex; align-items: flex-end; gap: 14px; height: 105px; }
+  .graph i { display: block; width: 46px; background: #ece8df; border-radius: 6px; }
+  .focus { background: transparent; }
+  .focus .lab { left: 360px; }
+  .focus .dot { position: absolute; right: 35px; bottom: 35px; width: 72px; height: 72px; }
+  .hint { position: absolute; left: 0; width: 1168px; top: 500px; text-align: center; }
+
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #a7adbb; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #ece8df; font-weight: 700; }
+  #label .l-sep { color: #6d7380; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+
+      <div class="space"><div class="stack" data-layout-allow-overlap>
+        <div class="layer base" data-layout-allow-overlap><span class="lab">Base</span><div class="t-m" data-layout-allow-overlap data-layout-allow-occlusion>Invite your team</div></div>
+        <div class="layer outline" data-layout-allow-overlap data-layout-allow-occlusion><span class="lab">Seats</span><div class="graph"><i style="height:105px"></i><i style="height:70px"></i><i style="height:35px"></i></div></div>
+        <div class="layer focus" data-layout-allow-overlap data-layout-allow-occlusion><span class="lab">Pick</span><div class="dot v"></div></div>
+      </div></div>
+      <div class="lab hint">Base · Seats · Pick</div>
+
+    </div>
+    <div id="label"><span class="l-name">Layer separation</span><span class="l-sep">·</span><span>3D & Depth</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+
+  // Layer separation: the stack is viewed at an angle; the three layers lift to their own depth (z = i * 90) 60 ms apart, hold, fold back to z 0,
+  // and the stack rotates flat so they read as one card again.
+  gsap.set(".stack", { rotationX: 46, rotationY: -15, rotationZ: -12 });
+  const layers = [...document.querySelectorAll(".layer")];
+  layers.forEach((el, i) => {
+    tl.fromTo(el, { z: 0 }, { z: i * 90, duration: 0.8, ease: "power3.inOut" }, 0.2 + i * 0.06);
+    tl.to(el, { z: 0, duration: 0.8, ease: "power3.inOut" }, 1.7 + i * 0.06);
+  });
+  tl.fromTo(".stack", { rotationX: 46, rotationY: -15, rotationZ: -12 }, { rotationX: 0, rotationY: 0, rotationZ: 0, duration: 0.7, ease: "power3.inOut" }, 2.3);
+
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

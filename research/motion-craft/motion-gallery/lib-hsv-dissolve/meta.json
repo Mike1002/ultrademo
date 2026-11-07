@@ -1,0 +1,21 @@
+{
+  "name": "HSV dissolve",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Mood"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "canvas",
+  "tags": [
+    "hsv dissolve",
+    "transitions",
+    "hue",
+    "colour wheel",
+    "hue-rotate",
+    "crossfade",
+    "saturate"
+  ],
+  "one_line": "As the invite card fades its yellow button travels round the colour wheel through green to blue, the stats card arrives from the far side of the wheel with its own accents tinted, and both land on clean yellow; the same dissolve then carries it back."
+}

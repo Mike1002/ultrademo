@@ -1,0 +1,21 @@
+{
+  "name": "UI scroll",
+  "family": "UI Demo",
+  "purpose": [
+    "Explanation",
+    "Emphasis"
+  ],
+  "energy": "steady",
+  "tier": 2,
+  "runtime": "gsap",
+  "tags": [
+    "tilted page scroll",
+    "ui scroll",
+    "3d-page-scroll",
+    "horizontal scroll gallery",
+    "ui",
+    "time-driven scroll",
+    "reading position"
+  ],
+  "one_line": "A long help document glides 555 px upward inside its window with the rail thumb following, stops with the target section 30 px inside the frame, and a yellow vertical line stands up beside it."
+}

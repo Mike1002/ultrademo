@@ -1,0 +1,22 @@
+{
+  "name": "Word emphasis",
+  "family": "Typography",
+  "purpose": [
+    "Emphasis",
+    "Explanation"
+  ],
+  "energy": "calm",
+  "tier": 2,
+  "runtime": "gsap",
+  "tags": [
+    "keyword focus",
+    "word emphasis",
+    "selective-emphasis-pop",
+    "asr-keyword-glow",
+    "word stagger emphasis",
+    "type",
+    "color",
+    "scale"
+  ],
+  "one_line": "Inside a sentence that does not move, 'is code' turns yellow and grows to 1.06 while the surrounding words fade to a third of their ink; later the emphasis releases and the sentence evens out again."
+}

@@ -1,0 +1,19 @@
+{
+  "name": "Modal lift",
+  "family": "UI Demo",
+  "purpose": [
+    "Transition"
+  ],
+  "energy": "steady",
+  "tier": 2,
+  "runtime": "gsap",
+  "tags": [
+    "modal lift and backdrop",
+    "modal entrance",
+    "ui",
+    "dialog",
+    "backdrop dim",
+    "rise into focus"
+  ],
+  "one_line": "A pointer presses Save and a confirmation dialog rises 32 px into focus, settling from slightly smaller to full size, while the workspace behind it dims to 45% ink."
+}

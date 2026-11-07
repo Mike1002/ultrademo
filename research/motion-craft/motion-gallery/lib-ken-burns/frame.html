@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-ken-burns</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; overflow: hidden; }
+  .lab { font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; white-space: nowrap; }
+  .num { font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1; white-space: nowrap; }
+  .t-xl { font-size: 84px; font-weight: 700; line-height: 1.05; white-space: nowrap; }
+  .t-l { font-size: 56px; font-weight: 700; line-height: 1.1; white-space: nowrap; }
+  .t-m { font-size: 34px; font-weight: 700; line-height: 1.15; white-space: nowrap; }
+  .t-body { font-size: 22px; line-height: 1.4; }
+  .hair { height: 1px; background: #e3ded2; }
+  .dot { border-radius: 50%; background: #1d1c1a; }
+  .dot.v { background: #f2c200; border: 2px solid #1d1c1a; }
+
+  #plate { position: absolute; left: 154px; top: 75px; width: 860px; height: 430px; background: #fffdf8; border: 2px solid #1d1c1a; border-radius: 24px; will-change: transform; }
+  #plate .title { position: absolute; left: 40px; top: 34px; }
+  #plate .hero { position: absolute; left: 40px; top: 76px; font-size: 168px; }
+  #plate .sub { position: absolute; left: 44px; top: 262px; color: #6d6a63; }
+  #plate .team { position: absolute; left: 44px; top: 330px; display: flex; gap: 14px; }
+  .av { width: 60px; height: 60px; border-radius: 50%; background: #ece7da; border: 2px solid #1d1c1a; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 700; }
+  .av.v { background: #f2c200; }
+  #plate .btn { position: absolute; left: 616px; top: 326px; width: 200px; height: 60px; border-radius: 14px; background: #f2c200; border: 2px solid #1d1c1a; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 700; }
+  #plate .seats { position: absolute; left: 616px; top: 282px; }
+
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+
+      <div id="plate">
+        <div class="title lab">Orbit · Invite your team</div>
+        <div class="hero num">12,480</div>
+        <div class="sub t-m">invites sent</div>
+        <div class="team"><div class="av">JD</div><div class="av">SK</div><div class="av v">ML</div></div>
+        <div class="seats lab">3 seats left</div>
+        <div class="btn">Continue</div>
+      </div>
+
+    </div>
+    <div id="label"><span class="l-name">Ken Burns</span><span class="l-sep">·</span><span>Camera</span><span class="l-sep">·</span><span>calm</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+
+  // Ken Burns: one slow constant-speed zoom with a diagonal drift on the whole plate (the camera wrapper).
+  tl.fromTo("#plate", { scale: 1, x: 0, y: 0, transformOrigin: "50% 50%" }, { scale: 1.12, x: -28, y: -18, duration: 2.2, ease: "none" }, 0.3);
+
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

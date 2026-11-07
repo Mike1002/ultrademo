@@ -1,0 +1,2011 @@
+{
+ "basis": "P20-P80 (low-high) and median of professional product videos measured for pace, product share and sound; n < 4 is thin",
+ "n": 70,
+ "note": "Videos without a style tag count in by_template only (the pilot's 14 Launch films).",
+ "by_template": {
+  "Ad": {
+   "n": 14,
+   "thin": false,
+   "metrics": {
+    "scenes_per_min": {
+     "low": 15.18,
+     "median": 19.75,
+     "high": 22.72,
+     "min": 10.6,
+     "max": 25.6
+    },
+    "avg_shot_length_s": {
+     "low": 2.64,
+     "median": 3.04,
+     "high": 3.94,
+     "min": 2.35,
+     "max": 5.63
+    },
+    "product_ui_share": {
+     "low": 0.35,
+     "median": 0.51,
+     "high": 0.62,
+     "min": 0,
+     "max": 1
+    },
+    "words_per_second_on_screen": {
+     "low": 0.99,
+     "median": 1.35,
+     "high": 2.64,
+     "min": 0.2,
+     "max": 11.97
+    },
+    "music_switches": {
+     "low": 0,
+     "median": 1,
+     "high": 2,
+     "min": 0,
+     "max": 2
+    },
+    "duration_s": {
+     "low": 17.58,
+     "median": 26.77,
+     "high": 36.34,
+     "min": 15.19,
+     "max": 104.62
+    },
+    "longest_shot_s": {
+     "low": 5.04,
+     "median": 7.35,
+     "high": 10.58,
+     "min": 4.16,
+     "max": 15.12
+    }
+   },
+   "narration": {
+    "voice": 9,
+    "music-only": 3,
+    "hybrid": 2
+   }
+  },
+  "Explainer": {
+   "n": 12,
+   "thin": false,
+   "metrics": {
+    "scenes_per_min": {
+     "low": 14.12,
+     "median": 16.05,
+     "high": 22.8,
+     "min": 10.2,
+     "max": 27.8
+    },
+    "avg_shot_length_s": {
+     "low": 2.64,
+     "median": 3.74,
+     "high": 4.26,
+     "min": 2.16,
+     "max": 5.88
+    },
+    "product_ui_share": {
+     "low": 0.33,
+     "median": 0.55,
+     "high": 0.64,
+     "min": 0.03,
+     "max": 0.79
+    },
+    "words_per_second_on_screen": {
+     "low": 0.77,
+     "median": 1.58,
+     "high": 2.61,
+     "min": 0.63,
+     "max": 5.02
+    },
+    "music_switches": {
+     "low": 1,
+     "median": 2.5,
+     "high": 3.8,
+     "min": 1,
+     "max": 4
+    },
+    "duration_s": {
+     "low": 63.83,
+     "median": 77.59,
+     "high": 106.83,
+     "min": 43.19,
+     "max": 133.05
+    },
+    "longest_shot_s": {
+     "low": 8.4,
+     "median": 10.36,
+     "high": 16.82,
+     "min": 6.15,
+     "max": 21.7
+    }
+   },
+   "narration": {
+    "hybrid": 2,
+    "voice": 10
+   }
+  },
+  "Feature focus": {
+   "n": 7,
+   "thin": false,
+   "metrics": {
+    "scenes_per_min": {
+     "low": 6.08,
+     "median": 6.8,
+     "high": 13.84,
+     "min": 3.6,
+     "max": 15.8
+    },
+    "avg_shot_length_s": {
+     "low": 4.43,
+     "median": 8.82,
+     "high": 9.81,
+     "min": 3.79,
+     "max": 16.8
+    },
+    "product_ui_share": {
+     "low": 0.53,
+     "median": 0.63,
+     "high": 0.85,
+     "min": 0,
+     "max": 0.9
+    },
+    "words_per_second_on_screen": {
+     "low": 0.22,
+     "median": 0.75,
+     "high": 1.23,
+     "min": 0.15,
+     "max": 2.22
+    },
+    "music_switches": {
+     "low": 1.2,
+     "median": 2,
+     "high": 11.4,
+     "min": 1,
+     "max": 13
+    },
+    "duration_s": {
+     "low": 55.98,
+     "median": 117.59,
+     "high": 191.27,
+     "min": 46.83,
+     "max": 257.88
+    },
+    "longest_shot_s": {
+     "low": 17,
+     "median": 19,
+     "high": 44.68,
+     "min": 11.2,
+     "max": 49.6
+    }
+   },
+   "narration": {
+    "music-only": 3,
+    "voice": 3,
+    "hybrid": 1
+   }
+  },
+  "Feature showcase": {
+   "n": 2,
+   "thin": true,
+   "metrics": {
+    "scenes_per_min": {
+     "low": 14.08,
+     "median": 19.6,
+     "high": 25.12,
+     "min": 10.4,
+     "max": 28.8
+    },
+    "avg_shot_length_s": {
+     "low": 2.81,
+     "median": 3.91,
+     "high": 5.01,
+     "min": 2.08,
+     "max": 5.74
+    },
+    "product_ui_share": {
+     "low": 0.47,
+     "median": 0.55,
+     "high": 0.63,
+     "min": 0.42,
+     "max": 0.68
+    },
+    "words_per_second_on_screen": {
+     "low": 1.44,
+     "median": 1.7,
+     "high": 1.96,
+     "min": 1.27,
+     "max": 2.13
+    },
+    "music_switches": {
+     "low": 2.2,
+     "median": 4,
+     "high": 5.8,
+     "min": 1,
+     "max": 7
+    },
+    "duration_s": {
+     "low": 93.65,
+     "median": 112.37,
+     "high": 131.08,
+     "min": 81.18,
+     "max": 143.55
+    },
+    "longest_shot_s": {
+     "low": 9.72,
+     "median": 12.6,
+     "high": 15.48,
+     "min": 7.8,
+     "max": 17.4
+    }
+   },
+   "narration": {
+    "voice": 1,
+    "music-only": 1
+   }
+  },
+  "Kinetic type": {
+   "n": 2,
+   "thin": true,
+   "metrics": {
+    "scenes_per_min": {
+     "low": 8.24,
+     "median": 13.1,
+     "high": 17.96,
+     "min": 5,
+     "max": 21.2
+    },
+    "avg_shot_length_s": {
+     "low": 4.69,
+     "median": 7.46,
+     "high": 10.22,
+     "min": 2.84,
+     "max": 12.07
+    },
+    "product_ui_share": {
+     "low": 0.05,
+     "median": 0.14,
+     "high": 0.22,
+     "min": 0,
+     "max": 0.27
+    },
+    "words_per_second_on_screen": {
+     "low": 1.55,
+     "median": 1.67,
+     "high": 1.8,
+     "min": 1.46,
+     "max": 1.89
+    },
+    "music_switches": {
+     "low": 1.2,
+     "median": 1.5,
+     "high": 1.8,
+     "min": 1,
+     "max": 2
+    },
+    "duration_s": {
+     "low": 49.96,
+     "median": 52.5,
+     "high": 55.04,
+     "min": 48.27,
+     "max": 56.73
+    },
+    "longest_shot_s": {
+     "low": 10.11,
+     "median": 15.09,
+     "high": 20.06,
+     "min": 6.8,
+     "max": 23.37
+    }
+   },
+   "narration": {
+    "music-only": 1,
+    "hybrid": 1
+   }
+  },
+  "Launch": {
+   "n": 20,
+   "thin": false,
+   "metrics": {
+    "scenes_per_min": {
+     "low": 13.52,
+     "median": 18.75,
+     "high": 27.9,
+     "min": 4.8,
+     "max": 62
+    },
+    "avg_shot_length_s": {
+     "low": 2.15,
+     "median": 3.21,
+     "high": 4.43,
+     "min": 0.97,
+     "max": 12.61
+    },
+    "product_ui_share": {
+     "low": 0.21,
+     "median": 0.36,
+     "high": 0.52,
+     "min": 0,
+     "max": 0.69
+    },
+    "words_per_second_on_screen": {
+     "low": 0.7,
+     "median": 1.46,
+     "high": 2.31,
+     "min": 0.01,
+     "max": 7.68
+    },
+    "music_switches": {
+     "low": 1,
+     "median": 2,
+     "high": 2,
+     "min": 1,
+     "max": 3
+    },
+    "duration_s": {
+     "low": 28.1,
+     "median": 60.39,
+     "high": 86.51,
+     "min": 16.74,
+     "max": 104.16
+    },
+    "longest_shot_s": {
+     "low": 5.24,
+     "median": 10.09,
+     "high": 13.78,
+     "min": 2.9,
+     "max": 31.2
+    }
+   },
+   "narration": {
+    "music-only": 14,
+    "hybrid": 3,
+    "voice": 3
+   }
+  },
+  "Milestone / data story": {
+   "n": 2,
+   "thin": true,
+   "metrics": {
+    "scenes_per_min": {
+     "low": 13.48,
+     "median": 23.05,
+     "high": 32.62,
+     "min": 7.1,
+     "max": 39
+    },
+    "avg_shot_length_s": {
+     "low": 2.92,
+     "median": 5,
+     "high": 7.08,
+     "min": 1.54,
+     "max": 8.46
+    },
+    "product_ui_share": {
+     "low": 0.05,
+     "median": 0.13,
+     "high": 0.21,
+     "min": 0,
+     "max": 0.26
+    },
+    "words_per_second_on_screen": {
+     "low": 1.64,
+     "median": 1.92,
+     "high": 2.21,
+     "min": 1.45,
+     "max": 2.4
+    },
+    "music_switches": {
+     "low": 1.2,
+     "median": 1.5,
+     "high": 1.8,
+     "min": 1,
+     "max": 2
+    },
+    "duration_s": {
+     "low": 73.8,
+     "median": 96.88,
+     "high": 119.95,
+     "min": 58.42,
+     "max": 135.33
+    },
+    "longest_shot_s": {
+     "low": 14.28,
+     "median": 20.81,
+     "high": 27.34,
+     "min": 9.92,
+     "max": 31.7
+    }
+   },
+   "narration": {
+    "voice": 2
+   }
+  },
+  "Product tour": {
+   "n": 6,
+   "thin": false,
+   "metrics": {
+    "scenes_per_min": {
+     "low": 7.6,
+     "median": 12,
+     "high": 17.8,
+     "min": 6.3,
+     "max": 19.1
+    },
+    "avg_shot_length_s": {
+     "low": 3.38,
+     "median": 5.64,
+     "high": 7.87,
+     "min": 3.14,
+     "max": 9.6
+    },
+    "product_ui_share": {
+     "low": 0.31,
+     "median": 0.41,
+     "high": 0.46,
+     "min": 0.23,
+     "max": 0.94
+    },
+    "words_per_second_on_screen": {
+     "low": 1.09,
+     "median": 2.42,
+     "high": 2.86,
+     "min": 0.67,
+     "max": 4.81
+    },
+    "music_switches": {
+     "low": 2,
+     "median": 3,
+     "high": 4,
+     "min": 1,
+     "max": 6
+    },
+    "duration_s": {
+     "low": 97.98,
+     "median": 118.08,
+     "high": 124.78,
+     "min": 94.44,
+     "max": 166.5
+    },
+    "longest_shot_s": {
+     "low": 17.5,
+     "median": 21.05,
+     "high": 31.2,
+     "min": 10,
+     "max": 42.8
+    }
+   },
+   "narration": {
+    "music-only": 2,
+    "hybrid": 3,
+    "voice": 1
+   }
+  },
+  "Talking-head recut": {
+   "n": 5,
+   "thin": false,
+   "metrics": {
+    "scenes_per_min": {
+     "low": 13.46,
+     "median": 15.6,
+     "high": 21.96,
+     "min": 11.7,
+     "max": 24.6
+    },
+    "avg_shot_length_s": {
+     "low": 2.74,
+     "median": 3.86,
+     "high": 4.48,
+     "min": 2.44,
+     "max": 5.13
+    },
+    "product_ui_share": {
+     "low": 0.25,
+     "median": 0.34,
+     "high": 0.47,
+     "min": 0.18,
+     "max": 0.5
+    },
+    "words_per_second_on_screen": {
+     "low": 0.73,
+     "median": 2.16,
+     "high": 2.55,
+     "min": 0.43,
+     "max": 3.73
+    },
+    "music_switches": {
+     "low": 2.4,
+     "median": 3,
+     "high": 3.2,
+     "min": 0,
+     "max": 4
+    },
+    "duration_s": {
+     "low": 82.28,
+     "median": 94.95,
+     "high": 115.09,
+     "min": 42.19,
+     "max": 185.1
+    },
+    "longest_shot_s": {
+     "low": 10.36,
+     "median": 11.26,
+     "high": 15.38,
+     "min": 10.28,
+     "max": 24.16
+    }
+   },
+   "narration": {
+    "voice": 5
+   }
+  }
+ },
+ "by_style": {
+  "live-action-mix": {
+   "n": 13,
+   "thin": false,
+   "metrics": {
+    "scenes_per_min": {
+     "low": 10.36,
+     "median": 18.9,
+     "high": 22.46,
+     "min": 6,
+     "max": 28.8
+    },
+    "avg_shot_length_s": {
+     "low": 2.67,
+     "median": 3.18,
+     "high": 5.78,
+     "min": 2.08,
+     "max": 9.92
+    },
+    "product_ui_share": {
+     "low": 0.32,
+     "median": 0.45,
+     "high": 0.6,
+     "min": 0,
+     "max": 1
+    },
+    "words_per_second_on_screen": {
+     "low": 0.65,
+     "median": 1.1,
+     "high": 1.98,
+     "min": 0.2,
+     "max": 2.5
+    },
+    "music_switches": {
+     "low": 1,
+     "median": 1,
+     "high": 3.2,
+     "min": 0,
+     "max": 13
+    },
+    "duration_s": {
+     "low": 32.41,
+     "median": 45.95,
+     "high": 119.42,
+     "min": 16.9,
+     "max": 257.88
+    },
+    "longest_shot_s": {
+     "low": 7.26,
+     "median": 9.2,
+     "high": 19.07,
+     "min": 4.16,
+     "max": 48.2
+    }
+   },
+   "narration": {
+    "voice": 9,
+    "music-only": 2,
+    "hybrid": 2
+   }
+  },
+  "motion-graphics": {
+   "n": 21,
+   "thin": false,
+   "metrics": {
+    "scenes_per_min": {
+     "low": 15,
+     "median": 17.8,
+     "high": 23.9,
+     "min": 5,
+     "max": 39
+    },
+    "avg_shot_length_s": {
+     "low": 2.51,
+     "median": 3.38,
+     "high": 3.99,
+     "min": 1.54,
+     "max": 12.07
+    },
+    "product_ui_share": {
+     "low": 0.27,
+     "median": 0.46,
+     "high": 0.56,
+     "min": 0,
+     "max": 0.82
+    },
+    "words_per_second_on_screen": {
+     "low": 1.37,
+     "median": 1.89,
+     "high": 2.86,
+     "min": 0.2,
+     "max": 4.81
+    },
+    "music_switches": {
+     "low": 1,
+     "median": 1,
+     "high": 2,
+     "min": 0,
+     "max": 6
+    },
+    "duration_s": {
+     "low": 30.14,
+     "median": 63.55,
+     "high": 97.98,
+     "min": 15.19,
+     "max": 166.5
+    },
+    "longest_shot_s": {
+     "low": 6.8,
+     "median": 10,
+     "high": 13.7,
+     "min": 2.9,
+     "max": 31.7
+    }
+   },
+   "narration": {
+    "hybrid": 5,
+    "voice": 12,
+    "music-only": 4
+   }
+  },
+  "screen-led": {
+   "n": 16,
+   "thin": false,
+   "metrics": {
+    "scenes_per_min": {
+     "low": 7.6,
+     "median": 12.45,
+     "high": 19.4,
+     "min": 3.6,
+     "max": 22.6
+    },
+    "avg_shot_length_s": {
+     "low": 3.1,
+     "median": 4.9,
+     "high": 7.87,
+     "min": 2.65,
+     "max": 16.8
+    },
+    "product_ui_share": {
+     "low": 0.31,
+     "median": 0.59,
+     "high": 0.84,
+     "min": 0,
+     "max": 0.94
+    },
+    "words_per_second_on_screen": {
+     "low": 0.7,
+     "median": 1.1,
+     "high": 2.04,
+     "min": 0.15,
+     "max": 11.97
+    },
+    "music_switches": {
+     "low": 1,
+     "median": 2,
+     "high": 3,
+     "min": 0,
+     "max": 7
+    },
+    "duration_s": {
+     "low": 46.83,
+     "median": 90.77,
+     "high": 124.78,
+     "min": 15.93,
+     "max": 180.02
+    },
+    "longest_shot_s": {
+     "low": 7.6,
+     "median": 17.55,
+     "high": 21.7,
+     "min": 4.4,
+     "max": 49.6
+    }
+   },
+   "narration": {
+    "voice": 6,
+    "music-only": 8,
+    "hybrid": 2
+   }
+  },
+  "talking-head": {
+   "n": 5,
+   "thin": false,
+   "metrics": {
+    "scenes_per_min": {
+     "low": 13.46,
+     "median": 15.6,
+     "high": 21.96,
+     "min": 11.7,
+     "max": 24.6
+    },
+    "avg_shot_length_s": {
+     "low": 2.74,
+     "median": 3.86,
+     "high": 4.48,
+     "min": 2.44,
+     "max": 5.13
+    },
+    "product_ui_share": {
+     "low": 0.25,
+     "median": 0.34,
+     "high": 0.47,
+     "min": 0.18,
+     "max": 0.5
+    },
+    "words_per_second_on_screen": {
+     "low": 0.73,
+     "median": 2.16,
+     "high": 2.55,
+     "min": 0.43,
+     "max": 3.73
+    },
+    "music_switches": {
+     "low": 2.4,
+     "median": 3,
+     "high": 3.2,
+     "min": 0,
+     "max": 4
+    },
+    "duration_s": {
+     "low": 82.28,
+     "median": 94.95,
+     "high": 115.09,
+     "min": 42.19,
+     "max": 185.1
+    },
+    "longest_shot_s": {
+     "low": 10.36,
+     "median": 11.26,
+     "high": 15.38,
+     "min": 10.28,
+     "max": 24.16
+    }
+   },
+   "narration": {
+    "voice": 5
+   }
+  },
+  "unknown": {
+   "n": 1,
+   "thin": true,
+   "metrics": {
+    "scenes_per_min": {
+     "low": 27.8,
+     "median": 27.8,
+     "high": 27.8,
+     "min": 27.8,
+     "max": 27.8
+    },
+    "avg_shot_length_s": {
+     "low": 2.16,
+     "median": 2.16,
+     "high": 2.16,
+     "min": 2.16,
+     "max": 2.16
+    },
+    "product_ui_share": {
+     "low": 0.32,
+     "median": 0.32,
+     "high": 0.32,
+     "min": 0.32,
+     "max": 0.32
+    },
+    "words_per_second_on_screen": {
+     "low": 5.02,
+     "median": 5.02,
+     "high": 5.02,
+     "min": 5.02,
+     "max": 5.02
+    },
+    "music_switches": {
+     "low": 3,
+     "median": 3,
+     "high": 3,
+     "min": 3,
+     "max": 3
+    },
+    "duration_s": {
+     "low": 77.83,
+     "median": 77.83,
+     "high": 77.83,
+     "min": 77.83,
+     "max": 77.83
+    },
+    "longest_shot_s": {
+     "low": 7.37,
+     "median": 7.37,
+     "high": 7.37,
+     "min": 7.37,
+     "max": 7.37
+    }
+   },
+   "narration": {
+    "hybrid": 1
+   }
+  }
+ },
+ "by_template_and_style": {
+  "Ad / live-action-mix": {
+   "n": 7,
+   "thin": false,
+   "metrics": {
+    "scenes_per_min": {
+     "low": 15.6,
+     "median": 19.5,
+     "high": 21.62,
+     "min": 10.6,
+     "max": 22.9
+    },
+    "avg_shot_length_s": {
+     "low": 2.77,
+     "median": 3.08,
+     "high": 3.86,
+     "min": 2.62,
+     "max": 5.63
+    },
+    "product_ui_share": {
+     "low": 0.31,
+     "median": 0.45,
+     "high": 0.6,
+     "min": 0,
+     "max": 1
+    },
+    "words_per_second_on_screen": {
+     "low": 0.89,
+     "median": 1.1,
+     "high": 1.98,
+     "min": 0.24,
+     "max": 2.5
+    },
+    "music_switches": {
+     "low": 1,
+     "median": 1,
+     "high": 2,
+     "min": 0,
+     "max": 2
+    },
+    "duration_s": {
+     "low": 21.41,
+     "median": 35.9,
+     "high": 44.16,
+     "min": 16.9,
+     "max": 104.62
+    },
+    "longest_shot_s": {
+     "low": 6.26,
+     "median": 7.8,
+     "high": 11.37,
+     "min": 4.16,
+     "max": 15.12
+    }
+   },
+   "narration": {
+    "voice": 5,
+    "hybrid": 2
+   }
+  },
+  "Ad / motion-graphics": {
+   "n": 4,
+   "thin": false,
+   "metrics": {
+    "scenes_per_min": {
+     "low": 13.94,
+     "median": 19.6,
+     "high": 24.58,
+     "min": 11.9,
+     "max": 25.6
+    },
+    "avg_shot_length_s": {
+     "low": 2.45,
+     "median": 3.21,
+     "high": 4.37,
+     "min": 2.35,
+     "max": 5.06
+    },
+    "product_ui_share": {
+     "low": 0.51,
+     "median": 0.54,
+     "high": 0.66,
+     "min": 0.49,
+     "max": 0.82
+    },
+    "words_per_second_on_screen": {
+     "low": 0.79,
+     "median": 1.28,
+     "high": 1.96,
+     "min": 0.2,
+     "max": 2.85
+    },
+    "music_switches": {
+     "low": 0,
+     "median": 0.5,
+     "high": 1.4,
+     "min": 0,
+     "max": 2
+    },
+    "duration_s": {
+     "low": 20.15,
+     "median": 26.8,
+     "high": 30.59,
+     "min": 15.19,
+     "max": 31.27
+    },
+    "longest_shot_s": {
+     "low": 7.44,
+     "median": 9.25,
+     "high": 10.98,
+     "min": 5.4,
+     "max": 12.9
+    }
+   },
+   "narration": {
+    "voice": 3,
+    "music-only": 1
+   }
+  },
+  "Ad / screen-led": {
+   "n": 3,
+   "thin": true,
+   "metrics": {
+    "scenes_per_min": {
+     "low": 19.64,
+     "median": 20,
+     "high": 21.56,
+     "min": 19.4,
+     "max": 22.6
+    },
+    "avg_shot_length_s": {
+     "low": 2.79,
+     "median": 3.01,
+     "high": 3.06,
+     "min": 2.65,
+     "max": 3.1
+    },
+    "product_ui_share": {
+     "low": 0.35,
+     "median": 0.57,
+     "high": 0.6,
+     "min": 0.21,
+     "max": 0.62
+    },
+    "words_per_second_on_screen": {
+     "low": 3.16,
+     "median": 5.9,
+     "high": 9.54,
+     "min": 1.34,
+     "max": 11.97
+    },
+    "music_switches": {
+     "low": 0,
+     "median": 0,
+     "high": 0.6,
+     "min": 0,
+     "max": 1
+    },
+    "duration_s": {
+     "low": 16.77,
+     "median": 18.04,
+     "high": 20.23,
+     "min": 15.93,
+     "max": 21.69
+    },
+    "longest_shot_s": {
+     "low": 4.44,
+     "median": 4.5,
+     "high": 5.63,
+     "min": 4.4,
+     "max": 6.39
+    }
+   },
+   "narration": {
+    "voice": 1,
+    "music-only": 2
+   }
+  },
+  "Explainer / live-action-mix": {
+   "n": 2,
+   "thin": true,
+   "metrics": {
+    "scenes_per_min": {
+     "low": 12.88,
+     "median": 16.9,
+     "high": 20.92,
+     "min": 10.2,
+     "max": 23.6
+    },
+    "avg_shot_length_s": {
+     "low": 3.21,
+     "median": 4.21,
+     "high": 5.21,
+     "min": 2.54,
+     "max": 5.88
+    },
+    "product_ui_share": {
+     "low": 0.4,
+     "median": 0.46,
+     "high": 0.53,
+     "min": 0.36,
+     "max": 0.57
+    },
+    "words_per_second_on_screen": {
+     "low": 0.64,
+     "median": 0.66,
+     "high": 0.68,
+     "min": 0.63,
+     "max": 0.69
+    },
+    "music_switches": {
+     "low": 1.6,
+     "median": 2.5,
+     "high": 3.4,
+     "min": 1,
+     "max": 4
+    },
+    "duration_s": {
+     "low": 60.41,
+     "median": 86.24,
+     "high": 112.07,
+     "min": 43.19,
+     "max": 129.29
+    },
+    "longest_shot_s": {
+     "low": 11.38,
+     "median": 15.25,
+     "high": 19.12,
+     "min": 8.8,
+     "max": 21.7
+    }
+   },
+   "narration": {
+    "voice": 2
+   }
+  },
+  "Explainer / motion-graphics": {
+   "n": 7,
+   "thin": false,
+   "metrics": {
+    "scenes_per_min": {
+     "low": 15.1,
+     "median": 16.6,
+     "high": 19.14,
+     "min": 14.2,
+     "max": 24.1
+    },
+    "avg_shot_length_s": {
+     "low": 3.14,
+     "median": 3.61,
+     "high": 3.97,
+     "min": 2.49,
+     "max": 4.24
+    },
+    "product_ui_share": {
+     "low": 0.33,
+     "median": 0.53,
+     "high": 0.64,
+     "min": 0.03,
+     "max": 0.79
+    },
+    "words_per_second_on_screen": {
+     "low": 1.58,
+     "median": 1.73,
+     "high": 2.61,
+     "min": 0.95,
+     "max": 4.58
+    },
+    "music_switches": {
+     "low": 1,
+     "median": 2,
+     "high": 3.8,
+     "min": 1,
+     "max": 4
+    },
+    "duration_s": {
+     "low": 63.83,
+     "median": 73.4,
+     "high": 85.02,
+     "min": 49.88,
+     "max": 111.8
+    },
+    "longest_shot_s": {
+     "low": 8.4,
+     "median": 10.03,
+     "high": 12.14,
+     "min": 6.15,
+     "max": 13.3
+    }
+   },
+   "narration": {
+    "hybrid": 1,
+    "voice": 6
+   }
+  },
+  "Explainer / screen-led": {
+   "n": 2,
+   "thin": true,
+   "metrics": {
+    "scenes_per_min": {
+     "low": 11.46,
+     "median": 12.45,
+     "high": 13.44,
+     "min": 10.8,
+     "max": 14.1
+    },
+    "avg_shot_length_s": {
+     "low": 4.52,
+     "median": 4.9,
+     "high": 5.28,
+     "min": 4.26,
+     "max": 5.54
+    },
+    "product_ui_share": {
+     "low": 0.63,
+     "median": 0.66,
+     "high": 0.68,
+     "min": 0.62,
+     "max": 0.7
+    },
+    "words_per_second_on_screen": {
+     "low": 0.77,
+     "median": 0.82,
+     "high": 0.87,
+     "min": 0.74,
+     "max": 0.9
+    },
+    "music_switches": {
+     "low": 2.2,
+     "median": 2.5,
+     "high": 2.8,
+     "min": 2,
+     "max": 3
+    },
+    "duration_s": {
+     "low": 91.35,
+     "median": 106.99,
+     "high": 122.62,
+     "min": 80.92,
+     "max": 133.05
+    },
+    "longest_shot_s": {
+     "low": 17.8,
+     "median": 17.95,
+     "high": 18.1,
+     "min": 17.7,
+     "max": 18.2
+    }
+   },
+   "narration": {
+    "voice": 2
+   }
+  },
+  "Explainer / unknown": {
+   "n": 1,
+   "thin": true,
+   "metrics": {
+    "scenes_per_min": {
+     "low": 27.8,
+     "median": 27.8,
+     "high": 27.8,
+     "min": 27.8,
+     "max": 27.8
+    },
+    "avg_shot_length_s": {
+     "low": 2.16,
+     "median": 2.16,
+     "high": 2.16,
+     "min": 2.16,
+     "max": 2.16
+    },
+    "product_ui_share": {
+     "low": 0.32,
+     "median": 0.32,
+     "high": 0.32,
+     "min": 0.32,
+     "max": 0.32
+    },
+    "words_per_second_on_screen": {
+     "low": 5.02,
+     "median": 5.02,
+     "high": 5.02,
+     "min": 5.02,
+     "max": 5.02
+    },
+    "music_switches": {
+     "low": 3,
+     "median": 3,
+     "high": 3,
+     "min": 3,
+     "max": 3
+    },
+    "duration_s": {
+     "low": 77.83,
+     "median": 77.83,
+     "high": 77.83,
+     "min": 77.83,
+     "max": 77.83
+    },
+    "longest_shot_s": {
+     "low": 7.37,
+     "median": 7.37,
+     "high": 7.37,
+     "min": 7.37,
+     "max": 7.37
+    }
+   },
+   "narration": {
+    "hybrid": 1
+   }
+  },
+  "Feature focus / live-action-mix": {
+   "n": 2,
+   "thin": true,
+   "metrics": {
+    "scenes_per_min": {
+     "low": 6.16,
+     "median": 6.4,
+     "high": 6.64,
+     "min": 6,
+     "max": 6.8
+    },
+    "avg_shot_length_s": {
+     "low": 9.04,
+     "median": 9.37,
+     "high": 9.7,
+     "min": 8.82,
+     "max": 9.92
+    },
+    "product_ui_share": {
+     "low": 0.58,
+     "median": 0.6,
+     "high": 0.62,
+     "min": 0.57,
+     "max": 0.63
+    },
+    "words_per_second_on_screen": {
+     "low": 0.41,
+     "median": 0.73,
+     "high": 1.05,
+     "min": 0.2,
+     "max": 1.26
+    },
+    "music_switches": {
+     "low": 13,
+     "median": 13,
+     "high": 13,
+     "min": 13,
+     "max": 13
+    },
+    "duration_s": {
+     "low": 206.84,
+     "median": 225.98,
+     "high": 245.12,
+     "min": 194.08,
+     "max": 257.88
+    },
+    "longest_shot_s": {
+     "low": 34.12,
+     "median": 39.4,
+     "high": 44.68,
+     "min": 30.6,
+     "max": 48.2
+    }
+   },
+   "narration": {
+    "voice": 2
+   }
+  },
+  "Feature focus / motion-graphics": {
+   "n": 1,
+   "thin": true,
+   "metrics": {
+    "scenes_per_min": {
+     "low": 15.8,
+     "median": 15.8,
+     "high": 15.8,
+     "min": 15.8,
+     "max": 15.8
+    },
+    "avg_shot_length_s": {
+     "low": 3.79,
+     "median": 3.79,
+     "high": 3.79,
+     "min": 3.79,
+     "max": 3.79
+    },
+    "product_ui_share": {
+     "low": 0.53,
+     "median": 0.53,
+     "high": 0.53,
+     "min": 0.53,
+     "max": 0.53
+    },
+    "words_per_second_on_screen": {
+     "low": 2.22,
+     "median": 2.22,
+     "high": 2.22,
+     "min": 2.22,
+     "max": 2.22
+    },
+    "music_switches": {
+     "low": 2,
+     "median": 2,
+     "high": 2,
+     "min": 2,
+     "max": 2
+    },
+    "duration_s": {
+     "low": 72.01,
+     "median": 72.01,
+     "high": 72.01,
+     "min": 72.01,
+     "max": 72.01
+    },
+    "longest_shot_s": {
+     "low": 19,
+     "median": 19,
+     "high": 19,
+     "min": 19,
+     "max": 19
+    }
+   },
+   "narration": {
+    "hybrid": 1
+   }
+  },
+  "Feature focus / screen-led": {
+   "n": 4,
+   "thin": false,
+   "metrics": {
+    "scenes_per_min": {
+     "low": 5.28,
+     "median": 8.4,
+     "high": 12.12,
+     "min": 3.6,
+     "max": 14.7
+    },
+    "avg_shot_length_s": {
+     "low": 5.1,
+     "median": 7.57,
+     "high": 12.34,
+     "min": 4.09,
+     "max": 16.8
+    },
+    "product_ui_share": {
+     "low": 0.5,
+     "median": 0.84,
+     "high": 0.87,
+     "min": 0,
+     "max": 0.9
+    },
+    "words_per_second_on_screen": {
+     "low": 0.23,
+     "median": 0.52,
+     "high": 0.9,
+     "min": 0.15,
+     "max": 1.12
+    },
+    "music_switches": {
+     "low": 1,
+     "median": 1.5,
+     "high": 3.2,
+     "min": 1,
+     "max": 5
+    },
+    "duration_s": {
+     "low": 49.91,
+     "median": 84.78,
+     "high": 142.56,
+     "min": 46.83,
+     "max": 180.02
+    },
+    "longest_shot_s": {
+     "low": 14.5,
+     "median": 17.45,
+     "high": 30.76,
+     "min": 11.2,
+     "max": 49.6
+    }
+   },
+   "narration": {
+    "music-only": 3,
+    "voice": 1
+   }
+  },
+  "Feature showcase / live-action-mix": {
+   "n": 1,
+   "thin": true,
+   "metrics": {
+    "scenes_per_min": {
+     "low": 28.8,
+     "median": 28.8,
+     "high": 28.8,
+     "min": 28.8,
+     "max": 28.8
+    },
+    "avg_shot_length_s": {
+     "low": 2.08,
+     "median": 2.08,
+     "high": 2.08,
+     "min": 2.08,
+     "max": 2.08
+    },
+    "product_ui_share": {
+     "low": 0.42,
+     "median": 0.42,
+     "high": 0.42,
+     "min": 0.42,
+     "max": 0.42
+    },
+    "words_per_second_on_screen": {
+     "low": 2.13,
+     "median": 2.13,
+     "high": 2.13,
+     "min": 2.13,
+     "max": 2.13
+    },
+    "music_switches": {
+     "low": 1,
+     "median": 1,
+     "high": 1,
+     "min": 1,
+     "max": 1
+    },
+    "duration_s": {
+     "low": 81.18,
+     "median": 81.18,
+     "high": 81.18,
+     "min": 81.18,
+     "max": 81.18
+    },
+    "longest_shot_s": {
+     "low": 7.8,
+     "median": 7.8,
+     "high": 7.8,
+     "min": 7.8,
+     "max": 7.8
+    }
+   },
+   "narration": {
+    "music-only": 1
+   }
+  },
+  "Feature showcase / screen-led": {
+   "n": 1,
+   "thin": true,
+   "metrics": {
+    "scenes_per_min": {
+     "low": 10.4,
+     "median": 10.4,
+     "high": 10.4,
+     "min": 10.4,
+     "max": 10.4
+    },
+    "avg_shot_length_s": {
+     "low": 5.74,
+     "median": 5.74,
+     "high": 5.74,
+     "min": 5.74,
+     "max": 5.74
+    },
+    "product_ui_share": {
+     "low": 0.68,
+     "median": 0.68,
+     "high": 0.68,
+     "min": 0.68,
+     "max": 0.68
+    },
+    "words_per_second_on_screen": {
+     "low": 1.27,
+     "median": 1.27,
+     "high": 1.27,
+     "min": 1.27,
+     "max": 1.27
+    },
+    "music_switches": {
+     "low": 7,
+     "median": 7,
+     "high": 7,
+     "min": 7,
+     "max": 7
+    },
+    "duration_s": {
+     "low": 143.55,
+     "median": 143.55,
+     "high": 143.55,
+     "min": 143.55,
+     "max": 143.55
+    },
+    "longest_shot_s": {
+     "low": 17.4,
+     "median": 17.4,
+     "high": 17.4,
+     "min": 17.4,
+     "max": 17.4
+    }
+   },
+   "narration": {
+    "voice": 1
+   }
+  },
+  "Kinetic type / motion-graphics": {
+   "n": 2,
+   "thin": true,
+   "metrics": {
+    "scenes_per_min": {
+     "low": 8.24,
+     "median": 13.1,
+     "high": 17.96,
+     "min": 5,
+     "max": 21.2
+    },
+    "avg_shot_length_s": {
+     "low": 4.69,
+     "median": 7.46,
+     "high": 10.22,
+     "min": 2.84,
+     "max": 12.07
+    },
+    "product_ui_share": {
+     "low": 0.05,
+     "median": 0.14,
+     "high": 0.22,
+     "min": 0,
+     "max": 0.27
+    },
+    "words_per_second_on_screen": {
+     "low": 1.55,
+     "median": 1.67,
+     "high": 1.8,
+     "min": 1.46,
+     "max": 1.89
+    },
+    "music_switches": {
+     "low": 1.2,
+     "median": 1.5,
+     "high": 1.8,
+     "min": 1,
+     "max": 2
+    },
+    "duration_s": {
+     "low": 49.96,
+     "median": 52.5,
+     "high": 55.04,
+     "min": 48.27,
+     "max": 56.73
+    },
+    "longest_shot_s": {
+     "low": 10.11,
+     "median": 15.09,
+     "high": 20.06,
+     "min": 6.8,
+     "max": 23.37
+    }
+   },
+   "narration": {
+    "music-only": 1,
+    "hybrid": 1
+   }
+  },
+  "Launch / live-action-mix": {
+   "n": 1,
+   "thin": true,
+   "metrics": {
+    "scenes_per_min": {
+     "low": 18.9,
+     "median": 18.9,
+     "high": 18.9,
+     "min": 18.9,
+     "max": 18.9
+    },
+    "avg_shot_length_s": {
+     "low": 3.18,
+     "median": 3.18,
+     "high": 3.18,
+     "min": 3.18,
+     "max": 3.18
+    },
+    "product_ui_share": {
+     "low": 0.17,
+     "median": 0.17,
+     "high": 0.17,
+     "min": 0.17,
+     "max": 0.17
+    },
+    "words_per_second_on_screen": {
+     "low": 1.91,
+     "median": 1.91,
+     "high": 1.91,
+     "min": 1.91,
+     "max": 1.91
+    },
+    "music_switches": {
+     "low": 1,
+     "median": 1,
+     "high": 1,
+     "min": 1,
+     "max": 1
+    },
+    "duration_s": {
+     "low": 54.06,
+     "median": 54.06,
+     "high": 54.06,
+     "min": 54.06,
+     "max": 54.06
+    },
+    "longest_shot_s": {
+     "low": 10.2,
+     "median": 10.2,
+     "high": 10.2,
+     "min": 10.2,
+     "max": 10.2
+    }
+   },
+   "narration": {
+    "music-only": 1
+   }
+  },
+  "Launch / motion-graphics": {
+   "n": 3,
+   "thin": true,
+   "metrics": {
+    "scenes_per_min": {
+     "low": 19.54,
+     "median": 22,
+     "high": 26.68,
+     "min": 17.9,
+     "max": 29.8
+    },
+    "avg_shot_length_s": {
+     "low": 2.3,
+     "median": 2.73,
+     "high": 3.11,
+     "min": 2.01,
+     "max": 3.36
+    },
+    "product_ui_share": {
+     "low": 0.29,
+     "median": 0.32,
+     "high": 0.44,
+     "min": 0.27,
+     "max": 0.51
+    },
+    "words_per_second_on_screen": {
+     "low": 1.77,
+     "median": 2.93,
+     "high": 3.04,
+     "min": 0.99,
+     "max": 3.11
+    },
+    "music_switches": {
+     "low": 1,
+     "median": 1,
+     "high": 1,
+     "min": 1,
+     "max": 1
+    },
+    "duration_s": {
+     "low": 20.79,
+     "median": 21.82,
+     "high": 71.22,
+     "min": 20.11,
+     "max": 104.16
+    },
+    "longest_shot_s": {
+     "low": 3.74,
+     "median": 5,
+     "high": 10.22,
+     "min": 2.9,
+     "max": 13.7
+    }
+   },
+   "narration": {
+    "hybrid": 1,
+    "voice": 1,
+    "music-only": 1
+   }
+  },
+  "Launch / screen-led": {
+   "n": 2,
+   "thin": true,
+   "metrics": {
+    "scenes_per_min": {
+     "low": 17.64,
+     "median": 19.05,
+     "high": 20.46,
+     "min": 16.7,
+     "max": 21.4
+    },
+    "avg_shot_length_s": {
+     "low": 2.97,
+     "median": 3.21,
+     "high": 3.44,
+     "min": 2.81,
+     "max": 3.6
+    },
+    "product_ui_share": {
+     "low": 0.36,
+     "median": 0.37,
+     "high": 0.37,
+     "min": 0.36,
+     "max": 0.38
+    },
+    "words_per_second_on_screen": {
+     "low": 0.91,
+     "median": 1.22,
+     "high": 1.53,
+     "min": 0.7,
+     "max": 1.74
+    },
+    "music_switches": {
+     "low": 2,
+     "median": 2,
+     "high": 2,
+     "min": 2,
+     "max": 2
+    },
+    "duration_s": {
+     "low": 86.58,
+     "median": 86.78,
+     "high": 86.97,
+     "min": 86.45,
+     "max": 87.1
+    },
+    "longest_shot_s": {
+     "low": 7.9,
+     "median": 8.35,
+     "high": 8.8,
+     "min": 7.6,
+     "max": 9.1
+    }
+   },
+   "narration": {
+    "music-only": 2
+   }
+  },
+  "Milestone / data story / motion-graphics": {
+   "n": 2,
+   "thin": true,
+   "metrics": {
+    "scenes_per_min": {
+     "low": 13.48,
+     "median": 23.05,
+     "high": 32.62,
+     "min": 7.1,
+     "max": 39
+    },
+    "avg_shot_length_s": {
+     "low": 2.92,
+     "median": 5,
+     "high": 7.08,
+     "min": 1.54,
+     "max": 8.46
+    },
+    "product_ui_share": {
+     "low": 0.05,
+     "median": 0.13,
+     "high": 0.21,
+     "min": 0,
+     "max": 0.26
+    },
+    "words_per_second_on_screen": {
+     "low": 1.64,
+     "median": 1.92,
+     "high": 2.21,
+     "min": 1.45,
+     "max": 2.4
+    },
+    "music_switches": {
+     "low": 1.2,
+     "median": 1.5,
+     "high": 1.8,
+     "min": 1,
+     "max": 2
+    },
+    "duration_s": {
+     "low": 73.8,
+     "median": 96.88,
+     "high": 119.95,
+     "min": 58.42,
+     "max": 135.33
+    },
+    "longest_shot_s": {
+     "low": 14.28,
+     "median": 20.81,
+     "high": 27.34,
+     "min": 9.92,
+     "max": 31.7
+    }
+   },
+   "narration": {
+    "voice": 2
+   }
+  },
+  "Product tour / motion-graphics": {
+   "n": 2,
+   "thin": true,
+   "metrics": {
+    "scenes_per_min": {
+     "low": 18.06,
+     "median": 18.45,
+     "high": 18.84,
+     "min": 17.8,
+     "max": 19.1
+    },
+    "avg_shot_length_s": {
+     "low": 3.19,
+     "median": 3.26,
+     "high": 3.33,
+     "min": 3.14,
+     "max": 3.38
+    },
+    "product_ui_share": {
+     "low": 0.43,
+     "median": 0.44,
+     "high": 0.45,
+     "min": 0.42,
+     "max": 0.46
+    },
+    "words_per_second_on_screen": {
+     "low": 3.25,
+     "median": 3.83,
+     "high": 4.42,
+     "min": 2.86,
+     "max": 4.81
+    },
+    "music_switches": {
+     "low": 2.8,
+     "median": 4,
+     "high": 5.2,
+     "min": 2,
+     "max": 6
+    },
+    "duration_s": {
+     "low": 111.68,
+     "median": 132.24,
+     "high": 152.8,
+     "min": 97.98,
+     "max": 166.5
+    },
+    "longest_shot_s": {
+     "low": 11.5,
+     "median": 13.75,
+     "high": 16,
+     "min": 10,
+     "max": 17.5
+    }
+   },
+   "narration": {
+    "music-only": 1,
+    "hybrid": 1
+   }
+  },
+  "Product tour / screen-led": {
+   "n": 4,
+   "thin": false,
+   "metrics": {
+    "scenes_per_min": {
+     "low": 7.08,
+     "median": 7.75,
+     "high": 11.18,
+     "min": 6.3,
+     "max": 16.1
+    },
+    "avg_shot_length_s": {
+     "low": 6.02,
+     "median": 7.71,
+     "high": 8.56,
+     "min": 3.73,
+     "max": 9.6
+    },
+    "product_ui_share": {
+     "low": 0.28,
+     "median": 0.35,
+     "high": 0.62,
+     "min": 0.23,
+     "max": 0.94
+    },
+    "words_per_second_on_screen": {
+     "low": 0.92,
+     "median": 1.56,
+     "high": 2.35,
+     "min": 0.67,
+     "max": 2.81
+    },
+    "music_switches": {
+     "low": 2.2,
+     "median": 3,
+     "high": 3.4,
+     "min": 1,
+     "max": 4
+    },
+    "duration_s": {
+     "low": 105.71,
+     "median": 118.08,
+     "high": 123.67,
+     "min": 94.44,
+     "max": 124.78
+    },
+    "longest_shot_s": {
+     "low": 21.18,
+     "median": 26.45,
+     "high": 35.84,
+     "min": 20.4,
+     "max": 42.8
+    }
+   },
+   "narration": {
+    "hybrid": 2,
+    "music-only": 1,
+    "voice": 1
+   }
+  },
+  "Talking-head recut / talking-head": {
+   "n": 5,
+   "thin": false,
+   "metrics": {
+    "scenes_per_min": {
+     "low": 13.46,
+     "median": 15.6,
+     "high": 21.96,
+     "min": 11.7,
+     "max": 24.6
+    },
+    "avg_shot_length_s": {
+     "low": 2.74,
+     "median": 3.86,
+     "high": 4.48,
+     "min": 2.44,
+     "max": 5.13
+    },
+    "product_ui_share": {
+     "low": 0.25,
+     "median": 0.34,
+     "high": 0.47,
+     "min": 0.18,
+     "max": 0.5
+    },
+    "words_per_second_on_screen": {
+     "low": 0.73,
+     "median": 2.16,
+     "high": 2.55,
+     "min": 0.43,
+     "max": 3.73
+    },
+    "music_switches": {
+     "low": 2.4,
+     "median": 3,
+     "high": 3.2,
+     "min": 0,
+     "max": 4
+    },
+    "duration_s": {
+     "low": 82.28,
+     "median": 94.95,
+     "high": 115.09,
+     "min": 42.19,
+     "max": 185.1
+    },
+    "longest_shot_s": {
+     "low": 10.36,
+     "median": 11.26,
+     "high": 15.38,
+     "min": 10.28,
+     "max": 24.16
+    }
+   },
+   "narration": {
+    "voice": 5
+   }
+  }
+ }
+}

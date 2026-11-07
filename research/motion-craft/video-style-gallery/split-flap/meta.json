@@ -1,0 +1,45 @@
+{
+  "name": "Split Flap",
+  "fonts": {
+    "display": "Barlow Condensed",
+    "body": "Barlow Condensed",
+    "mono": "Barlow Condensed",
+    "label": "Barlow Condensed"
+  },
+  "font_families": [
+    "Barlow Condensed"
+  ],
+  "font_substitutions": {},
+  "canvas": "dark",
+  "mood": [
+    "mechanical",
+    "nostalgic",
+    "precise"
+  ],
+  "suits": [
+    "launch countdowns",
+    "schedule-like products",
+    "typographic reveals"
+  ],
+  "direction_settings": {
+    "energy": "steady",
+    "density": "dense",
+    "ground": "dark",
+    "depth": "layered",
+    "camera": "locked",
+    "type": "display",
+    "texture": "clean",
+    "colour": "two-accent",
+    "product_presence": "illustrated",
+    "sound": "ambient",
+    "voice": "caption"
+  },
+  "duration_s": 10,
+  "size": [
+    1280,
+    720
+  ],
+  "fps": 30,
+  "strip": "D-58 style strip: hook · project card · number · agent · close",
+  "one_line": ""
+}

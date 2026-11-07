@@ -1,0 +1,23 @@
+{
+  "name": "Oscilloscope trace",
+  "family": "Data",
+  "purpose": [
+    "Data evidence",
+    "Comparison"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "canvas",
+  "tags": [
+    "oscilloscope trace",
+    "data",
+    "waveform",
+    "sweep",
+    "phosphor decay",
+    "exponential fade",
+    "canvas",
+    "signal",
+    "dark"
+  ],
+  "one_line": "On a dark scope grid, a bright yellow sampling point sweeps left to right drawing a waveform whose trail fades exponentially behind it, then a second sweep retraces over the dimming first one."
+}

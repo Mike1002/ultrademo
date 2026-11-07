@@ -1,0 +1,21 @@
+{
+  "name": "Per-character rise",
+  "family": "Typography",
+  "purpose": [
+    "Attention",
+    "Sequence"
+  ],
+  "energy": "steady",
+  "tier": 2,
+  "runtime": "gsap",
+  "tags": [
+    "character stagger",
+    "text scale cascade",
+    "scale-jump-stairstep",
+    "word-pop",
+    "type",
+    "stagger",
+    "rise"
+  ],
+  "one_line": "The characters of 'Every frame is code.' rise 64 px from below and fade in one after another in reading order; a second smaller line follows the same way."
+}

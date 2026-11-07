@@ -1,0 +1,21 @@
+{
+  "name": "Beeswarm settling",
+  "family": "Data",
+  "purpose": [
+    "Explanation",
+    "Comparison"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "canvas",
+  "tags": [
+    "beeswarm settling",
+    "data",
+    "dots",
+    "distribution",
+    "collision",
+    "settle",
+    "svg"
+  ],
+  "one_line": "Forty dots stacked on a value axis lift off one after another into a non-overlapping swarm that keeps every dot's value position, the yellow top value settling last with its name."
+}

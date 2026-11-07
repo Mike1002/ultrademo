@@ -1,0 +1,19 @@
+{
+  "name": "Token split",
+  "family": "Explainer",
+  "purpose": [
+    "Explanation",
+    "Sequence"
+  ],
+  "energy": "steady",
+  "tier": 2,
+  "runtime": "gsap",
+  "tags": [
+    "tokenization",
+    "tokenization split",
+    "explainer",
+    "spread",
+    "index"
+  ],
+  "one_line": "The sentence \"Every frame is code.\" spreads apart from its centre into five spaced pieces, the third one marked yellow, with hairlines and index numbers appearing under each in order."
+}

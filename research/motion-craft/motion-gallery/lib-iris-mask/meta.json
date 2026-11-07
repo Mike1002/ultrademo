@@ -1,0 +1,20 @@
+{
+  "name": "Shape mask transition",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Sequence"
+  ],
+  "energy": "steady",
+  "tier": 2,
+  "runtime": "gsap",
+  "tags": [
+    "iris reveal",
+    "iris mask",
+    "circle iris",
+    "diamond iris",
+    "clip-path",
+    "transitions"
+  ],
+  "one_line": "A circular mask expands from a yellow dot at the centre of the card scene to reveal the number scene behind it."
+}

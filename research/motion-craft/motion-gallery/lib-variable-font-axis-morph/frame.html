@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-variable-font-axis-morph</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; overflow: hidden; }
+  #word { position: absolute; left: 0; top: 200px; width: 1168px; height: 140px; display: flex; justify-content: center; align-items: center;
+    font-size: 104px; line-height: 140px; white-space: nowrap; }
+  #word span { display: block; text-align: center; font-weight: 300; will-change: transform; }
+  #axes { position: absolute; left: 0; top: 380px; width: 1168px; height: 24px; display: flex; justify-content: center; gap: 40px;
+    font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; line-height: 24px; white-space: nowrap; }
+  #axes b { color: #1d1c1a; font-weight: 700; font-variant-numeric: tabular-nums; }
+  #bar { position: absolute; left: 384px; top: 420px; width: 400px; height: 4px; background: #e3ded2; border-radius: 2px; }
+  #fill { position: absolute; left: 384px; top: 420px; width: 400px; height: 4px; background: #f2c200; border-radius: 2px; will-change: transform; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div id="word"></div>
+      <div id="axes"><span>weight <b id="wv">300</b></span><span>width <b id="dv">85</b></span></div>
+      <div id="bar"></div><div id="fill" data-layout-allow-overlap></div>
+    </div>
+    <div id="label"><span class="l-name">Variable font axis morph</span><span class="l-sep">·</span><span>Typography</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  // The system font carries a continuous weight axis but no width axis: weight is tweened as a number,
+  // width is faked with scaleX on each glyph block. Slot widths are fixed to the heaviest glyph so the line never reflows.
+  const host = document.getElementById("word");
+  const glyphs = [];
+  for (const ch of "Every frame is code.") {
+    const s = document.createElement("span");
+    s.innerHTML = ch === " " ? "&nbsp;" : ch;
+    host.appendChild(s); glyphs.push(s);
+  }
+  glyphs.forEach(s => { s.style.fontWeight = "800"; });
+  glyphs.forEach(s => { s.style.width = Math.ceil(s.getBoundingClientRect().width * 1.08) + "px"; s.style.fontWeight = "300"; });
+  const N = glyphs.length;
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power2.inOut", duration: 0.7 } });
+  // Morph up: wght 300 -> 800 and faked wdth 85 -> 110 over 0.7 s, glyph starts 0.04 s apart.
+  glyphs.forEach((s, i) => {
+    tl.fromTo(s, { fontWeight: 300, scaleX: 0.85, transformOrigin: "50% 50%" }, { fontWeight: 800, scaleX: 1.1, duration: 0.7, ease: "power2.inOut" }, 0.15 + i * 0.04);
+  });
+  // Morph back: the whole word at once (glyph offset 0), so the second half keeps moving and ends light again.
+  glyphs.forEach((s) => {
+    tl.fromTo(s, { fontWeight: 800, scaleX: 1.1 }, { fontWeight: 300, scaleX: 0.85, duration: 0.7, ease: "power2.inOut", immediateRender: false }, 2.15);
+  });
+  // Readouts and the yellow axis bar follow the first glyph's progress.
+  const wv = document.getElementById("wv"), dv = document.getElementById("dv");
+  const ease = gsap.parseEase("power2.inOut");
+  const clamp = v => Math.max(0, Math.min(1, v));
+  function renderAt(t) {
+    const up = ease(clamp((t - 0.15) / 0.7)), down = ease(clamp((t - 2.15) / 0.7));
+    const k = up * (1 - down);
+    wv.textContent = String(Math.round(300 + 500 * k));
+    dv.textContent = String(Math.round(85 + 25 * k));
+    gsap.set("#fill", { scaleX: 0.02 + 0.98 * k, transformOrigin: "0% 50%" });
+  }
+  renderAt(0);
+  tl.to({ k: 0 }, { k: 1, duration: 3, ease: "none", onUpdate: () => renderAt(tl.time()) }, 0);
+  const baseRender = tl.render; tl.render = function () { const r = baseRender.apply(this, arguments); renderAt(this.time()); return r; };
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

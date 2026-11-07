@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-scale-pop</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  .lab { font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  .heading { position: absolute; left: 80px; top: 50px; }
+  .hint { position: absolute; left: 80px; top: 520px; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+  #seal { position: absolute; left: 445px; top: 110px; width: 278px; height: 278px; border: 2px solid #1d1c1a; border-radius: 50%; background: #fffdf8; display: flex; align-items: center; justify-content: center; flex-direction: column; will-change: transform; }
+  #seal .num { font-size: 112px; font-weight: 700; line-height: 1; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+  #seal .s { font-size: 26px; font-weight: 700; margin-top: 10px; color: #6d6a63; }
+  #badge { position: absolute; left: 668px; top: 128px; width: 40px; height: 40px; border-radius: 50%; background: #f2c200; border: 2px solid #1d1c1a; will-change: transform; }
+  .hint { top: 440px; left: 445px; width: 278px; text-align: center; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div class="lab heading">Grows from its own centre · 0 to 1 · ease out</div>
+      <div id="seal" data-layout-allow-overlap><div class="num">98%</div><div class="s">Invites sent</div></div>
+      <div id="badge" data-layout-allow-overlap></div>
+      <div class="lab hint">Scale in · hold · scale out</div>
+    </div>
+    <div id="label"><span class="l-name">Scale pop</span><span class="l-sep">·</span><span>Entrance &amp; Exit</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+  // The seal pops from nothing to full size around its centre; the badge follows with its own pop.
+  tl.fromTo("#seal", { scale: 0, transformOrigin: "50% 50%" }, { scale: 1, duration: 0.7, ease: "power3.out" }, 0.95);
+  tl.fromTo("#badge", { scale: 0, transformOrigin: "50% 50%" }, { scale: 1, duration: 0.4, ease: "power3.out" }, 1.75);
+  // Second beat: scale out, the same move in reverse.
+  tl.to("#badge", { scale: 0, duration: 0.3, ease: "power3.in" }, 2.4);
+  tl.to("#seal", { scale: 0, duration: 0.45, ease: "power3.in" }, 2.5);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

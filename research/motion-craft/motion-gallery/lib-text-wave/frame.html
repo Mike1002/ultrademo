@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-text-wave</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  #line { position: absolute; left: 0; top: 226px; width: 1168px; height: 96px; line-height: 96px; text-align: center; font-size: 80px; font-weight: 700; letter-spacing: -0.01em; white-space: nowrap; }
+  #line .ch { display: inline-block; height: 96px; line-height: 96px; will-change: transform; }
+  #line .sp { display: inline-block; width: 24px; height: 96px; }
+  #base { position: absolute; left: 184px; top: 334px; width: 800px; height: 2px; background: #e3ded2; }
+  #cap { position: absolute; left: 0; top: 372px; width: 1168px; text-align: center; font-size: 18px; color: #6d6a63; letter-spacing: .06em; text-transform: uppercase; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div id="line" data-layout-allow-overlap></div>
+      <div id="base"></div>
+      <div id="cap">a narrow wave lifts only the glyphs it touches</div>
+    </div>
+    <div id="label"><span class="l-name">Text wave</span><span class="l-sep">·</span><span>Typography</span><span class="l-sep">·</span><span>calm</span></div>
+  </section>
+</div>
+<script>
+  // Params: amplitude 28 px (plus a 1.08 scale), wave 3.5 glyphs wide, one sweep per 1.2 s, cosine profile.
+  // Instead of an onUpdate loop, each glyph gets a baked yoyo tween (sine.out up, mirrored down) at the moment the wave reaches it;
+  // the sweep is laid out twice on the timeline.
+  const TEXT = "Every frame is code.";
+  const N = TEXT.length, W = 3.5, SWEEP = 1.2, AMP = -28;
+  const line = document.getElementById("line");
+  let html = "";
+  for (let i = 0; i < N; i++) {
+    html += TEXT[i] === " " ? '<div class="sp"></div>' : '<div class="ch" id="c' + i + '" data-layout-allow-overlap>' + TEXT[i] + '</div>';
+  }
+  line.innerHTML = html;
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "sine.out", duration: 0.3 } });
+  const half = (W * SWEEP / (N + W)) / 2;
+  function sweep(t0, first) {
+    for (let i = 0; i < N; i++) {
+      if (TEXT[i] === " ") continue;
+      const at = t0 + i * SWEEP / (N + W);
+      tl.fromTo("#c" + i, { y: 0, scale: 1, transformOrigin: "50% 100%" },
+        { y: AMP, scale: 1.08, duration: half, ease: "sine.out", yoyo: true, repeat: 1, immediateRender: first }, at);
+    }
+  }
+  sweep(0.15, true);
+  sweep(1.65, false);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

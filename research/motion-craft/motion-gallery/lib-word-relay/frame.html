@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-word-relay</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; overflow: hidden; }
+  .w { position: absolute; left: 0; top: 150px; width: 1168px; height: 200px; text-align: center;
+    font-size: 160px; font-weight: 700; line-height: 200px; letter-spacing: -0.02em; white-space: nowrap; will-change: transform, opacity; }
+  .w.last { color: #f2c200; -webkit-text-stroke: 3px #1d1c1a; }
+  #dots { position: absolute; left: 0; top: 420px; width: 1168px; height: 24px; display: flex; justify-content: center; gap: 22px; }
+  .dot { width: 18px; height: 18px; border-radius: 50%; background: #e3ded2; border: 2px solid #1d1c1a; will-change: transform; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div class="w" id="w0" data-layout-allow-overlap data-layout-allow-overflow>Record</div>
+      <div class="w" id="w1" data-layout-allow-overlap data-layout-allow-overflow>Edit</div>
+      <div class="w last" id="w2" data-layout-allow-overlap data-layout-allow-overflow>Ship</div>
+      <div id="dots"><div class="dot" id="d0"></div><div class="dot" id="d1"></div><div class="dot" id="d2"></div></div>
+    </div>
+    <div id="label"><span class="l-name">Word relay</span><span class="l-sep">·</span><span>Typography</span><span class="l-sep">·</span><span>high</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.4 } });
+  // Three words stacked at the same spot. Each enters from +900 px in 0.4 s (power3.out), holds at centre 0.6 s,
+  // exits to -900 px in 0.3 s (power2.in) while the next one enters. The last word stays.
+  const words = ["#w0", "#w1", "#w2"], dots = ["#d0", "#d1", "#d2"];
+  const STEP = 0.95, T0 = 0.15;
+  words.forEach((w, i) => {
+    const t = T0 + i * STEP;
+    tl.fromTo(w, { x: 900, opacity: 0 }, { x: 0, opacity: 1, duration: 0.4, ease: "power3.out" }, t);
+    if (i < words.length - 1) tl.to(w, { x: -900, opacity: 0, duration: 0.3, ease: "power2.in" }, t + 1.0);
+    tl.fromTo(dots[i], { scale: 1, backgroundColor: "#e3ded2" }, { scale: 1.5, backgroundColor: "#f2c200", duration: 0.25, ease: "power2.out" }, t + 0.1);
+    if (i < words.length - 1) tl.to(dots[i], { scale: 1, backgroundColor: "#1d1c1a", duration: 0.25, ease: "power2.in" }, t + 1.0);
+  });
+  // The kept word settles with a small scale breath so the ending still moves.
+  tl.fromTo("#w2", { scale: 1 }, { scale: 1.04, duration: 0.3, ease: "sine.inOut", yoyo: true, repeat: 1, immediateRender: false }, 2.5);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

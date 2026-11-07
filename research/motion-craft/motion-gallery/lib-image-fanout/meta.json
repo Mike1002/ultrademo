@@ -1,0 +1,21 @@
+{
+  "name": "Image fan out",
+  "family": "UI Demo",
+  "purpose": [
+    "Feedback",
+    "Emphasis"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "gsap",
+  "tags": [
+    "ui",
+    "fan",
+    "spread",
+    "rotation",
+    "stack",
+    "pivot",
+    "stagger"
+  ],
+  "one_line": "Five overlapping product frames spread sideways into a fan, each rotating a little more about a pivot below the stack, hold open, then fold back into the pile."
+}

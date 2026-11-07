@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>chromatic-glitch</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  .stage { position: absolute; inset: 0; display: grid; place-items: center; }
+  /* Form A: ghosts behind, base on top; all copies share one grid cell so they are pixel-identical */
+  .glitch-stack { display: grid; will-change: transform; }
+  .glitch-base, .glitch-copy { grid-area: 1 / 1; font-size: 104px; font-weight: 900; letter-spacing: -0.03em; line-height: 1; white-space: nowrap; }
+  .glitch-base { z-index: 2; color: #1d1c1a; }
+  .glitch-copy { z-index: 1; opacity: 0; will-change: transform; mix-blend-mode: normal; }
+  .glitch-copy.warm { color: #f2c200; }
+  .glitch-copy.cool { color: #6d6a63; }
+  .sub { position: absolute; left: 0; top: 470px; width: 1280px; text-align: center; font-size: 22px; color: #6d6a63; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div class="stage">
+      <div class="glitch-stack" id="glitch-stack">
+        <span class="glitch-copy warm" aria-hidden="true" data-layout-allow-overlap>Every frame is code</span>
+        <span class="glitch-copy cool" aria-hidden="true" data-layout-allow-overlap>Every frame is code</span>
+        <span class="glitch-base" data-layout-allow-overlap>Every frame is code</span>
+      </div>
+    </div>
+    <div class="sub" id="sub">Break, then snap sharp.</div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true });
+  // RGB-split jitter: offsets are a pure function of (quantized time, layer) through a hash; an amplitude
+  // envelope (1 -> 0, power3.in) scales them and rests at exactly 0. Glitch-stretch entrance, then two short bursts.
+  const MAX_SPLIT = 14, JITTER_STEP = 1 / 12, SPLIT_OPACITY = 0.6;
+  const ENVELOPES = [
+    { start: 0.30, dur: 0.45 }, // entrance
+    { start: 1.15, dur: 0.16 }, // emphasis burst
+    { start: 2.20, dur: 0.16 }, // emphasis burst
+  ];
+  const glitchHash = (n) => { const x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
+  const decay = gsap.parseEase("power3.in");
+  const copies = gsap.utils.toArray("#glitch-stack .glitch-copy");
+  function ampAt(t) {
+    for (const e of ENVELOPES) {
+      if (t >= e.start && t < e.start + e.dur) return 1 - decay((t - e.start) / e.dur);
+    }
+    return 0;
+  }
+  function renderAt(t) {
+    const amp = ampAt(t);
+    const step = Math.floor(t / JITTER_STEP);
+    copies.forEach((el, layer) => {
+      const jx = amp === 0 ? 0 : (glitchHash(step * 13 + layer * 7) * 2 - 1) * MAX_SPLIT * amp;
+      const jy = amp === 0 ? 0 : (glitchHash(step * 29 + layer * 11) * 2 - 1) * MAX_SPLIT * 0.35 * amp;
+      el.style.transform = `translate(${jx.toFixed(2)}px, ${jy.toFixed(2)}px)`;
+      el.style.opacity = amp === 0 ? "0" : String(SPLIT_OPACITY);
+    });
+  }
+  renderAt(0);
+  tl.to({ k: 0 }, { k: 1, duration: 3, ease: "none", onUpdate: () => renderAt(tl.time()) }, 0);
+  // Glitch-stretch entrance on the whole stack: stretch, split and envelope die on the same frame.
+  tl.fromTo("#glitch-stack", { scaleX: 1.5, opacity: 0 }, { scaleX: 1, opacity: 1, duration: 0.45, ease: "power4.out" }, 0.30);
+  tl.fromTo("#sub", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power2.out" }, 0.9);
+  const baseRender = tl.render;
+  tl.render = function () { const r = baseRender.apply(this, arguments); renderAt(this.time()); return r; };
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

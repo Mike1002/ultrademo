@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-staged-chart-transition</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  #chart { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  #steps { position: absolute; left: 160px; top: 10px; height: 30px; display: flex; gap: 34px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; line-height: 30px; }
+  #steps span { width: 120px; }
+  #marker { position: absolute; left: 160px; top: 40px; width: 120px; height: 4px; background: #f2c200; border-radius: 2px; will-change: transform; }
+  text { font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .grid { stroke: #e3ded2; stroke-width: 2; }
+  .axis { stroke: #1d1c1a; stroke-width: 2; }
+  .tick { font-size: 18px; fill: #6d6a63; }
+  .bar { fill: #ece7da; stroke: #a19d93; stroke-width: 2; }
+  .dot { fill: #f2c200; stroke: #1d1c1a; stroke-width: 3; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div id="steps"><span>1 Axis</span><span>2 Position</span><span>3 Size</span></div>
+      <div id="marker"></div>
+      <svg id="chart" viewBox="0 0 1168 580" width="1168" height="580">
+        <g id="gridA">
+          <line class="grid" x1="160" y1="140" x2="1080" y2="140"/>
+          <line class="grid" x1="160" y1="240" x2="1080" y2="240"/>
+          <line class="grid" x1="160" y1="340" x2="1080" y2="340"/>
+          <line class="grid" x1="160" y1="440" x2="1080" y2="440"/>
+        </g>
+        <line class="axis" x1="160" y1="540" x2="1080" y2="540"/>
+        <line class="axis" x1="160" y1="100" x2="160" y2="540"/>
+        <g id="axisA">
+          <text class="tick" x="275" y="572" text-anchor="middle">Q1</text>
+          <text class="tick" x="505" y="572" text-anchor="middle">Q2</text>
+          <text class="tick" x="735" y="572" text-anchor="middle">Q3</text>
+          <text class="tick" x="965" y="572" text-anchor="middle">Q4</text>
+          <text class="tick" x="140" y="146" text-anchor="end">12k</text>
+          <text class="tick" x="140" y="346" text-anchor="end">6k</text>
+          <text class="tick" x="140" y="546" text-anchor="end">0</text>
+        </g>
+        <g id="axisB">
+          <line class="grid" x1="390" y1="100" x2="390" y2="540"/>
+          <line class="grid" x1="620" y1="100" x2="620" y2="540"/>
+          <line class="grid" x1="850" y1="100" x2="850" y2="540"/>
+          <text class="tick" x="160" y="572" text-anchor="middle">0</text>
+          <text class="tick" x="390" y="572" text-anchor="middle">25</text>
+          <text class="tick" x="620" y="572" text-anchor="middle">50</text>
+          <text class="tick" x="850" y="572" text-anchor="middle">75</text>
+          <text class="tick" x="1080" y="572" text-anchor="middle">100%</text>
+          <text class="tick" x="140" y="146" text-anchor="end">98%</text>
+          <text class="tick" x="140" y="346" text-anchor="end">50%</text>
+          <text class="tick" x="140" y="546" text-anchor="end">0</text>
+        </g>
+        <g id="bars">
+          <rect class="bar" x="215" y="190" width="120" height="350" rx="6"/>
+          <rect class="bar" x="445" y="300" width="120" height="240" rx="6"/>
+          <rect class="bar" x="675" y="430" width="120" height="110" rx="6"/>
+          <rect class="bar" x="905" y="250" width="120" height="290" rx="6"/>
+        </g>
+        <g id="dots">
+          <circle class="dot" id="d1" cx="275" cy="190" r="16" data-nx="640" data-ny="-40" data-nr="34"/>
+          <circle class="dot" id="d2" cx="505" cy="300" r="16" data-nx="-140" data-ny="-110" data-nr="26"/>
+          <circle class="dot" id="d3" cx="735" cy="430" r="16" data-nx="-460" data-ny="-60" data-nr="12"/>
+          <circle class="dot" id="d4" cx="965" cy="250" r="16" data-nx="-240" data-ny="190" data-nr="22"/>
+        </g>
+      </svg>
+    </div>
+    <div id="label"><span class="l-name">Staged chart transition</span><span class="l-sep">·</span><span>Data</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power2.inOut", duration: 0.4 } });
+  const T = 0.4, G = 0.12, S1 = 0.3, S2 = S1 + T + G, S3 = S1 + 2 * (T + G);
+  // Stage 1: the axis changes (quarter bars give way to a percentage scatter grid).
+  tl.fromTo("#axisA", { opacity: 1 }, { opacity: 0, duration: T }, S1);
+  tl.fromTo("#bars", { opacity: 1 }, { opacity: 0.18, duration: T }, S1);
+  tl.fromTo("#axisB", { opacity: 0 }, { opacity: 1, duration: T }, S1);
+  tl.fromTo("#marker", { x: 0 }, { x: 154, duration: T }, S1);
+  // Stage 2: the dots move to their new positions (precomputed in dataset attributes).
+  tl.fromTo(".dot", { x: 0, y: 0 }, { x: (i, el) => +el.dataset.nx, y: (i, el) => +el.dataset.ny, duration: T }, S2);
+  tl.fromTo("#marker", { x: 154 }, { x: 308, duration: T, immediateRender: false }, S2);
+  // Stage 3: the dots change size; then hold 0.6 s.
+  tl.fromTo(".dot", { attr: { r: 16 } }, { attr: { r: (i, el) => +el.dataset.nr }, duration: T }, S3);
+  // After the hold, the marker drifts back to rest so the frame is never still.
+  tl.fromTo("#marker", { x: 308 }, { x: 0, duration: 0.5, immediateRender: false }, S3 + T + 0.6);
+  tl.fromTo("#bars", { opacity: 0.18 }, { opacity: 0.08, duration: 0.5, immediateRender: false }, S3 + T + 0.6);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

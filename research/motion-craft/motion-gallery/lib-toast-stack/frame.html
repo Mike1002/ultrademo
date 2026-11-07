@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-toast-stack</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  .card { position: absolute; left: 40px; top: 40px; width: 560px; height: 496px; background: #fffdf8; border: 2px solid #1d1c1a; border-radius: 24px; }
+  .card .title { position: absolute; left: 44px; top: 44px; font-size: 40px; font-weight: 700; letter-spacing: -0.01em; }
+  .card .sub { position: absolute; left: 44px; top: 100px; font-size: 20px; color: #6d6a63; }
+  .card .num { position: absolute; left: 44px; top: 170px; font-size: 64px; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
+  .card .numlab { position: absolute; left: 44px; top: 250px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  .card .btn { position: absolute; left: 44px; top: 372px; width: 200px; height: 60px; border-radius: 14px; background: #1d1c1a; color: #fffdf8; font-size: 20px; font-weight: 600; line-height: 60px; text-align: center; }
+  .card .ghost { position: absolute; left: 264px; top: 372px; width: 140px; height: 60px; border-radius: 14px; border: 2px solid #1d1c1a; font-size: 20px; font-weight: 600; line-height: 56px; text-align: center; }
+  .toast { position: absolute; left: 720px; top: 440px; width: 400px; height: 96px; background: #fffdf8; border: 2px solid #1d1c1a; border-radius: 20px; will-change: transform, opacity; }
+  .toast .dot { position: absolute; left: 24px; top: 34px; width: 24px; height: 24px; border-radius: 50%; background: #f2c200; border: 2px solid #1d1c1a; }
+  .toast .t { position: absolute; left: 68px; top: 22px; font-size: 22px; font-weight: 700; white-space: nowrap; }
+  .toast .s { position: absolute; left: 68px; top: 54px; font-size: 16px; color: #6d6a63; white-space: nowrap; }
+  .toast .x { position: absolute; right: 22px; top: 32px; font-size: 22px; color: #a19d93; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div class="card">
+        <div class="title">Invite your team</div>
+        <div class="sub">Orbit · 3 seats left</div>
+        <div class="num">12,480</div>
+        <div class="numlab">Invites sent</div>
+        <div class="btn">Continue</div>
+        <div class="ghost">Settings</div>
+      </div>
+      <div class="toast" id="t1" data-layout-allow-overlap><div class="dot"></div><div class="t">Jamie Dalton joined</div><div class="s">Design · just now</div><div class="x">×</div></div>
+      <div class="toast" id="t2" data-layout-allow-overlap><div class="dot"></div><div class="t">Sam Kim invited</div><div class="s">Waiting for reply</div><div class="x">×</div></div>
+      <div class="toast" id="t3" data-layout-allow-overlap><div class="dot"></div><div class="t">Morgan Lee joined</div><div class="s">Engineering · just now</div><div class="x">×</div></div>
+      <div class="toast" id="t4" data-layout-allow-overlap><div class="dot"></div><div class="t">12,480 invites sent</div><div class="s">Milestone reached</div><div class="x">×</div></div>
+    </div>
+    <div id="label"><span class="l-name">Toast stack</span><span class="l-sep">·</span><span>UI Demo</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+  // Params: enter 350 ms from the right, exit 250 ms to the right, card 96 px + 12 px gap = 108 px per slot.
+  // Hold is compressed from 2.5 s to fit the 3 s clip; the stack is bottom-anchored (newest at the bottom).
+  const SLOT = 108;
+  gsap.set(".toast", { x: 400, opacity: 0, y: 0 });
+  function enter(id, at) { tl.fromTo(id, { x: 400, opacity: 0 }, { x: 0, opacity: 1, duration: 0.35, ease: "power3.out" }, at); }
+  function shift(id, from, to, at) { tl.fromTo(id, { y: from }, { y: to, duration: 0.35, ease: "power3.out" }, at); }
+  function exit(id, at) { tl.to(id, { x: 400, opacity: 0, duration: 0.25, ease: "power2.in" }, at); }
+
+  enter("#t1", 0.2);                                   // first toast
+  shift("#t1", 0, -SLOT, 0.7);      enter("#t2", 0.7); // second arrives, first moves up
+  shift("#t1", -SLOT, -2 * SLOT, 1.0); shift("#t2", 0, -SLOT, 1.0); enter("#t3", 1.0); // three stacked by 1.35 s
+  exit("#t2", 1.9);                                    // middle toast dismissed
+  shift("#t1", -2 * SLOT, -SLOT, 2.15);                // gap above closes
+  shift("#t1", -SLOT, -2 * SLOT, 2.55); shift("#t3", 0, -SLOT, 2.55); enter("#t4", 2.55); // fourth arrives
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

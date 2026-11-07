@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-state-transition-walk</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  .lab { position: absolute; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  .head { position: absolute; left: 48px; top: 48px; font-size: 34px; font-weight: 700; }
+  #diagram { position: absolute; left: 40px; top: 130px; width: 1088px; height: 300px; overflow: visible; }
+  #diagram text { fill: #1d1c1a; font-size: 26px; font-weight: 700; text-anchor: middle; }
+  .edge { fill: none; stroke: #a19d93; stroke-width: 2; }
+  .node circle { fill: #fffdf8; stroke: #1d1c1a; stroke-width: 2; }
+  #signal { fill: #f2c200; stroke: #1d1c1a; stroke-width: 2; }
+  .cap { position: absolute; left: 48px; top: 460px; width: 1072px; font-size: 25px; line-height: 34px; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div class="head">Exactly one current state</div>
+      <svg id="diagram" viewBox="0 0 1088 300" data-layout-allow-overlap>
+        <path class="edge" d="M237 150H843"/>
+        <g class="node" id="n0"><circle id="f0" cx="180" cy="150" r="57"/><text x="180" y="159">Draft</text></g>
+        <g class="node" id="n1"><circle id="f1" cx="540" cy="150" r="57"/><text x="540" y="159">Review</text></g>
+        <g class="node" id="n2"><circle id="f2" cx="900" cy="150" r="57"/><text x="900" y="159">Live</text></g>
+        <circle id="signal" cx="237" cy="150" r="10"/>
+      </svg>
+      <div class="cap" id="s0" data-layout-allow-overlap>Waiting for the invite to be written</div>
+      <div class="cap" id="s1" data-layout-allow-overlap>Sam Kim checks the seats and the message</div>
+      <div class="cap" id="s2" data-layout-allow-overlap>The invite is live and the team can join</div>
+    </div>
+    <div id="label"><span class="l-name">State transition walk</span><span class="l-sep">·</span><span>Explainer</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+  const Y = "#f2c200", P = "#fffdf8";
+  // Start: Draft is current (yellow); the signal sits on the edge just past it; captions stacked, only the first visible.
+  tl.set("#f0", { fill: Y }, 0);
+  tl.set(["#f1", "#f2"], { fill: P }, 0);
+  tl.set("#s0", { opacity: 1 }, 0);
+  tl.set(["#s1", "#s2"], { opacity: 0 }, 0);
+  tl.set("#signal", { opacity: 1 }, 0);
+  // Two transitions: the signal rides the edge 500 ms (linear), the node it reaches becomes current, the one it left goes idle.
+  [0, 1].forEach((i) => {
+    const t = 0.7 + i * 1.2;
+    tl.fromTo("#signal", { attr: { cx: 237 + i * 360 } }, { attr: { cx: 483 + i * 360 }, duration: 0.5, ease: "none", immediateRender: i === 0 }, t);
+    tl.to("#f" + i, { fill: P, duration: 0.25 }, t + 0.5);
+    tl.to("#f" + (i + 1), { fill: Y, duration: 0.25 }, t + 0.5);
+    tl.fromTo("#n" + (i + 1), { scale: 1, transformOrigin: "center center" }, { scale: 1.08, duration: 0.15 }, t + 0.5);
+    tl.to("#n" + (i + 1), { scale: 1, duration: 0.25 }, t + 0.65);
+    tl.to("#s" + i, { opacity: 0, duration: 0.15 }, t + 0.5);
+    tl.to("#s" + (i + 1), { opacity: 1, duration: 0.15 }, t + 0.65);
+  });
+  tl.to("#signal", { opacity: 0, duration: 0.2 }, 2.45);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

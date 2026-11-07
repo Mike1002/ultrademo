@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>3d-camera-flight</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #11152a; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #11152a; color: #ece8df;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  /* the void the flight exposes is the designed dark ground, on the scene */
+  .clip { position: absolute; inset: 0; overflow: hidden; background: #11152a; }
+  /* THE LENS: static perspective, never tweened */
+  .stage { position: absolute; inset: 0; perspective: 1100px; }
+  /* THE WORLD: preserve-3d, clean (no filter/opacity/overflow) */
+  .world { position: absolute; inset: 0; transform-style: preserve-3d; transform-origin: 50% 50%; will-change: transform; }
+  .surface { position: absolute; inset: -60%; transform-style: preserve-3d;
+    background-image: linear-gradient(rgba(236,232,223,0.10) 2px, transparent 2px), linear-gradient(90deg, rgba(236,232,223,0.10) 2px, transparent 2px);
+    background-size: 80px 80px; background-position: 40px 40px; }
+  .card { position: absolute; width: 420px; height: 260px; background: #1b2142; border: 2px solid #ece8df; border-radius: 22px; }
+  .card .line { position: absolute; left: 32px; top: 32px; font-size: 26px; font-weight: 700; letter-spacing: -0.01em; }
+  .card .num { position: absolute; left: 32px; top: 76px; font-size: 80px; font-weight: 800; letter-spacing: -0.03em; line-height: 1; }
+  .card .btn { position: absolute; left: 32px; top: 172px; width: 200px; height: 60px; border-radius: 14px; background: #f2c200; color: #1d1c1a;
+    font-size: 22px; font-weight: 700; display: grid; place-items: center; }
+  /* props float above the surface for parallax; static 3D pose, counter-tilted to face the dive */
+  .prop { position: absolute; font-size: 150px; font-weight: 800; letter-spacing: -0.04em; color: rgba(236,232,223,0.35); line-height: 1;
+    transform: translateZ(160px) rotateX(-18deg); }
+  .prop.small { font-size: 34px; font-weight: 700; color: #f2c200; transform: translateZ(110px) rotateX(-18deg); }
+  /* DoF channel on leaf elements only */
+  .layer { --dof: 0px; filter: blur(var(--dof)); will-change: filter; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div class="stage">
+      <div class="world" id="world" data-layout-allow-overflow>
+        <div class="surface">
+          <!-- surface inset is -60% of 1280x720 -> origin at (-768,-432) in world; card A at world (160,230), B at (700,230) -->
+          <div class="card layer" id="card-a" data-depth="0" style="left: 928px; top: 662px;">
+            <div class="line">Every frame is code</div>
+            <div class="num">1,284</div>
+            <div class="btn">Continue</div>
+          </div>
+          <div class="card layer" id="card-b" data-depth="0" style="left: 1468px; top: 662px;">
+            <div class="line">Every frame is code</div>
+            <div class="num">98%</div>
+            <div class="btn">Continue</div>
+          </div>
+        </div>
+        <div class="prop layer" id="prop-1" data-depth="2" style="left: 420px; top: 40px;">3 s</div>
+        <div class="prop small layer" id="prop-2" data-depth="1" style="left: 860px; top: 560px;">always current</div>
+      </div>
+    </div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true });
+  const world = document.getElementById("world");
+  // Camera state: the only source of truth. Fixed order: translate OUTSIDE the rotations.
+  const WIDE_Z = -260;
+  const cam = { x: 0, y: 0, z: WIDE_Z, rx: 0, ry: 0 };
+  function applyCamera() {
+    world.style.transform = `translate3d(${cam.x}px, ${cam.y}px, ${cam.z}px) rotateX(${cam.rx}deg) rotateY(${cam.ry}deg)`;
+  }
+  applyCamera(); // seed frame 0: the establishing pose
+  // Poses authored by eye and baked. Card A centre is 270 px left of world centre, card B 270 px right.
+  const DIVE_POSE = { x: 270, y: 20, z: 360, rx: 34, ry: 0 };
+  const LAND_POSE = { x: -270, y: 20, z: 360, rx: 26, ry: -10 };
+  const DIVE_AT = 0.15, DIVE_DUR = 0.85, LAND_AT = 1.6, LAND_DUR = 0.9;
+  const BLUR_PER_DEPTH = 5, MAX_BLUR = 12;
+  // LEG 1: dive in. power4.out = violent arrival, sharp settle. Non-focal planes defocus on the same window.
+  tl.fromTo(cam, { x: 0, y: 0, z: WIDE_Z, rx: 0, ry: 0 }, { ...DIVE_POSE, duration: DIVE_DUR, ease: "power4.out", onUpdate: applyCamera }, DIVE_AT);
+  tl.fromTo("#card-b", { "--dof": "0px" }, { "--dof": `${MAX_BLUR}px`, duration: DIVE_DUR, ease: "power4.out" }, DIVE_AT);
+  tl.fromTo("#prop-1", { "--dof": "0px" }, { "--dof": `${BLUR_PER_DEPTH * 2}px`, duration: DIVE_DUR, ease: "power4.out" }, DIVE_AT);
+  tl.fromTo("#prop-2", { "--dof": "0px" }, { "--dof": `${BLUR_PER_DEPTH * 1}px`, duration: DIVE_DUR, ease: "power4.out" }, DIVE_AT);
+  // Hold on card A (0.6 s), then LEG 2: continuous flight past the surface to card B, a reposition (power2.inOut),
+  // with a rack focus: A goes soft as B comes sharp on the same window.
+  tl.to(cam, { ...LAND_POSE, duration: LAND_DUR, ease: "power2.inOut", onUpdate: applyCamera }, LAND_AT);
+  tl.fromTo("#card-a", { "--dof": "0px" }, { "--dof": `${MAX_BLUR}px`, duration: LAND_DUR, ease: "power2.inOut", immediateRender: false }, LAND_AT);
+  tl.to("#card-b", { "--dof": "0px", duration: LAND_DUR, ease: "power2.inOut" }, LAND_AT);
+  // Seek safety: re-apply the pose after every render.
+  const baseRender = tl.render; tl.render = function () { const r = baseRender.apply(this, arguments); applyCamera(); return r; };
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

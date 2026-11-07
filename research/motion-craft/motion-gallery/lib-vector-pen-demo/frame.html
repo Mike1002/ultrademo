@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-vector-pen-demo</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  #card { position: absolute; left: 204px; top: 60px; width: 760px; height: 460px; background: #fffdf8; border: 2px solid #1d1c1a; border-radius: 24px; overflow: hidden; }
+  #tools { position: absolute; left: 0; top: 0; width: 64px; height: 456px; border-right: 2px solid #1d1c1a; background: #f6f3ec; }
+  .tool { position: absolute; left: 12px; width: 40px; height: 40px; border-radius: 10px; border: 2px solid #1d1c1a; background: #fffdf8; }
+  .tool.on { background: #f2c200; }
+  .tool svg { position: absolute; left: 0; top: 0; width: 36px; height: 36px; display: block; }
+  #tname { position: absolute; left: 88px; top: 20px; font-size: 15px; color: #6d6a63; letter-spacing: .06em; text-transform: uppercase; }
+  #draw { position: absolute; left: 64px; top: 0; width: 692px; height: 456px; display: block; }
+  #pen { position: absolute; left: 201px; top: 313px; width: 30px; height: 30px; z-index: 5; will-change: transform, opacity; }
+  #pen svg { width: 30px; height: 30px; display: block; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div id="card">
+        <div id="tools">
+          <div class="tool" style="top:16px"><svg viewBox="0 0 36 36"><path d="M11 8l14 10-6 2-3 7z" fill="none" stroke="#1d1c1a" stroke-width="2" stroke-linejoin="round"/></svg></div>
+          <div class="tool on" style="top:64px"><svg viewBox="0 0 36 36"><path d="M9 27l3-9 9-9 6 6-9 9-9 3zM19 12l5 5" fill="none" stroke="#1d1c1a" stroke-width="2" stroke-linejoin="round"/></svg></div>
+          <div class="tool" style="top:112px"><svg viewBox="0 0 36 36"><rect x="9" y="9" width="18" height="18" rx="2" fill="none" stroke="#1d1c1a" stroke-width="2"/></svg></div>
+          <div class="tool" style="top:160px"><svg viewBox="0 0 36 36"><path d="M12 10h12M18 10v16" fill="none" stroke="#1d1c1a" stroke-width="2" stroke-linecap="round"/></svg></div>
+        </div>
+        <div id="tname">Pen</div>
+        <svg id="draw" viewBox="0 0 692 456" data-layout-allow-overlap>
+          <path id="curve" d="M140 340 C 210 170 310 130 370 130 C 430 130 560 340 640 340" fill="none" stroke="#1d1c1a" stroke-width="3" stroke-linecap="round"/>
+          <g id="handles" stroke="#6d6a63" stroke-width="1.5" fill="#fffdf8">
+            <line x1="140" y1="340" x2="210" y2="170"/><rect x="206" y="166" width="8" height="8"/>
+            <line x1="310" y1="130" x2="430" y2="130"/><rect x="306" y="126" width="8" height="8"/><rect x="426" y="126" width="8" height="8"/>
+            <line x1="640" y1="340" x2="560" y2="340"/><rect x="556" y="336" width="8" height="8"/>
+          </g>
+          <g id="sel" fill="none" stroke="#1d1c1a" stroke-width="1.5">
+            <rect x="124" y="114" width="532" height="242" stroke-dasharray="6 5"/>
+            <rect x="120" y="110" width="8" height="8" fill="#fffdf8"/><rect x="652" y="110" width="8" height="8" fill="#fffdf8"/>
+            <rect x="120" y="352" width="8" height="8" fill="#fffdf8"/><rect x="652" y="352" width="8" height="8" fill="#fffdf8"/>
+          </g>
+          <circle id="a0" cx="140" cy="340" r="7" fill="#fffdf8" stroke="#1d1c1a" stroke-width="2.5"/>
+          <circle id="a1" cx="370" cy="130" r="7" fill="#fffdf8" stroke="#1d1c1a" stroke-width="2.5"/>
+          <circle id="a2" cx="640" cy="340" r="7" fill="#fffdf8" stroke="#1d1c1a" stroke-width="2.5"/>
+        </svg>
+        <div id="pen" data-layout-allow-overlap><svg viewBox="0 0 30 30"><path d="M3 27l3-9 11-11 6 6-11 11-9 3z" fill="#ffffff" stroke="#1d1c1a" stroke-width="2" stroke-linejoin="round"/><path d="M14 10l6 6" stroke="#1d1c1a" stroke-width="2"/></svg></div>
+      </div>
+    </div>
+    <div id="label"><span class="l-name">Vector pen demo</span><span class="l-sep">·</span><span>UI Demo</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "none", duration: 0.1 } });
+  // Params: anchors at 400 ms intervals, the curve draws over 700 ms, handles over 250 ms, selection frame over 200 ms (compressed from the 500 ms spacing).
+  const curve = document.getElementById("curve");
+  const L = curve.getTotalLength();
+  // Park the dash boundary mid-gap so no cap dot shows before the draw starts.
+  gsap.set(curve, { strokeDasharray: L + " " + (L + 20), strokeDashoffset: L + 10 });
+  // Pen tip (the nib's bottom-left point) lands on each anchor in turn; the pen box is 30 px, tip at its (3,27).
+  // Anchor positions in card coords: (64+140, 340) (64+370, 130) (64+640, 340); pen box left/top = tip - (3,27).
+  tl.fromTo("#pen", { x: 0, y: 0, opacity: 1 }, { x: 0, y: 0, duration: 0.01 }, 0);
+  tl.fromTo("#a0", { opacity: 0 }, { opacity: 1, duration: 0.1 }, 0.2);
+  tl.to("#pen", { x: 230, y: -210, duration: 0.35, ease: "power2.inOut" }, 0.25);
+  tl.fromTo("#a1", { opacity: 0 }, { opacity: 1, duration: 0.1 }, 0.6);
+  tl.to("#pen", { x: 500, y: 0, duration: 0.35, ease: "power2.inOut" }, 0.65);
+  tl.fromTo("#a2", { opacity: 0 }, { opacity: 1, duration: 0.1 }, 1.0);
+  tl.to("#pen", { x: 560, y: 60, opacity: 0, duration: 0.4, ease: "power2.in" }, 1.1);
+  // The curve draws from the first anchor to the last.
+  tl.to(curve, { strokeDashoffset: 10, duration: 0.7, ease: "none" }, 1.1);
+  // Handles reveal the control relationship, then the selection frame wraps the result.
+  tl.fromTo("#handles", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 1.85);
+  tl.fromTo("#sel", { opacity: 0 }, { opacity: 1, duration: 0.2 }, 2.15);
+  // Settle: the middle anchor is selected (fills yellow) and its handles nudge, so the clip keeps moving.
+  tl.fromTo("#a1", { fill: "#fffdf8" }, { fill: "#f2c200", duration: 0.2, immediateRender: false }, 2.45);
+  tl.fromTo("#a1", { scale: 1, transformOrigin: "50% 50%" }, { scale: 1.4, duration: 0.25, ease: "power2.out", yoyo: true, repeat: 1 }, 2.45);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

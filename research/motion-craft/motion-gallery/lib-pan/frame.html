@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-pan</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; overflow: hidden; }
+  .lab { font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; white-space: nowrap; }
+  .num { font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1; white-space: nowrap; }
+  .t-xl { font-size: 84px; font-weight: 700; line-height: 1.05; white-space: nowrap; }
+  .t-l { font-size: 56px; font-weight: 700; line-height: 1.1; white-space: nowrap; }
+  .t-m { font-size: 34px; font-weight: 700; line-height: 1.15; white-space: nowrap; }
+  .t-body { font-size: 22px; line-height: 1.4; }
+  .hair { height: 1px; background: #e3ded2; }
+  .dot { border-radius: 50%; background: #1d1c1a; }
+  .dot.v { background: #f2c200; border: 2px solid #1d1c1a; }
+
+  #strip { position: absolute; left: 0; top: 150px; width: 2100px; height: 300px; will-change: transform; }
+  .track { position: absolute; top: 118px; height: 2px; background: #1d1c1a; }
+  .station { position: absolute; top: 0; width: 320px; height: 280px; }
+  .station .num { position: absolute; left: 0; top: 15px; font-size: 150px; }
+  .station .t-m { position: absolute; left: 110px; top: 75px; }
+  .station .lab { position: absolute; left: 0; top: 215px; }
+  .station .ul { position: absolute; left: 0; top: 248px; width: 300px; height: 6px; background: #f2c200; border-radius: 3px; }
+  .arrow { position: absolute; top: 72px; font-size: 55px; color: #a19d93; }
+  .head { position: absolute; left: 70px; top: 60px; }
+
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+
+      <div class="head lab">Invite → Accept → Join</div>
+      <div id="strip" data-layout-allow-overflow>
+        <div class="track" style="left:540px;width:260px"></div>
+        <div class="track" style="left:1090px;width:260px"></div>
+        <div class="station" style="left:250px"><div class="num">1</div><div class="t-m">Invite</div><div class="lab">Send 3 invites</div></div>
+        <span class="arrow" style="left:640px">→</span>
+        <div class="station" style="left:800px"><div class="num">2</div><div class="t-m">Accept</div><div class="lab">Teammates join</div></div>
+        <span class="arrow" style="left:1190px">→</span>
+        <div class="station" id="s3" style="left:1350px"><div class="num">3</div><div class="t-m">Join</div><div class="lab">12,480 invites sent</div><div class="ul" id="ul3"></div></div>
+      </div>
+
+    </div>
+    <div id="label"><span class="l-name">Pan</span><span class="l-sep">·</span><span>Camera</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+
+  // Pan: the strip travels left at constant scale and stops on station 3, which then takes the accent.
+  tl.fromTo("#strip", { x: 0 }, { x: -1100, duration: 2.0, ease: "power1.inOut" }, 0.3);
+  tl.fromTo("#s3 .num, #s3 .t-m", { color: "#1d1c1a" }, { color: "#f2c200", duration: 0.15 }, 2.3);
+  tl.fromTo("#ul3", { scaleX: 0, transformOrigin: "0% 50%" }, { scaleX: 1, duration: 0.5, ease: "power3.out" }, 2.3);
+
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+{
+  "name": "Static band wipe",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Sequence"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "webgl",
+  "tags": [
+    "static band wipe",
+    "transitions",
+    "noise",
+    "static",
+    "scan",
+    "band",
+    "wipe",
+    "canvas",
+    "clip-path"
+  ],
+  "one_line": "An 80 px band of grey static sweeps from the top of the stage to the bottom, and everything above its lower edge has already become the stats scene; its rows then settle in."
+}

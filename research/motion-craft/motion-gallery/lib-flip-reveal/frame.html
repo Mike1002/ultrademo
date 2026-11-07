@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-flip-reveal</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  .lab { font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  .heading { position: absolute; left: 80px; top: 50px; }
+  .hint { position: absolute; left: 80px; top: 520px; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+  .perspective { position: absolute; left: 80px; top: 125px; width: 1008px; height: 300px; perspective: 800px; }
+  .card { position: absolute; left: 0; top: 0; width: 1008px; height: 300px; background: #fffdf8; border: 2px solid #1d1c1a; border-radius: 24px; padding: 44px 48px; backface-visibility: hidden; transform-style: preserve-3d; will-change: transform; }
+  .card .t { font-size: 56px; font-weight: 700; line-height: 1.05; letter-spacing: -0.01em; }
+  .card .s { font-size: 22px; color: #6d6a63; margin-top: 14px; }
+  .card .btn { position: absolute; left: 48px; bottom: 40px; width: 200px; height: 60px; border-radius: 14px; background: #f2c200; border: 2px solid #1d1c1a; font-size: 20px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+  .card .num { position: absolute; right: 48px; top: 36px; font-size: 150px; font-weight: 700; line-height: 1; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+  .card .names { position: absolute; left: 48px; bottom: 44px; font-size: 22px; color: #6d6a63; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div class="lab heading">Edge-on, then turned to face you · vertical axis · 800 px perspective</div>
+      <div class="perspective">
+        <div class="card" id="cardA" data-layout-allow-overlap><div class="t">Invite your team</div><div class="s">3 seats left on Orbit</div><div class="btn">Continue</div></div>
+        <div class="card" id="cardB" data-layout-allow-overlap><div class="t">Invites sent</div><div class="num">12,480</div><div class="names">Jamie Dalton · Sam Kim · Morgan Lee</div></div>
+      </div>
+      <div class="lab hint">Front card flips in, flips out, and the next one flips in behind it</div>
+    </div>
+    <div id="label"><span class="l-name">Flip reveal</span><span class="l-sep">·</span><span>Entrance &amp; Exit</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+  // Card A turns from 90 deg (edge-on) to face the viewer while fading in.
+  tl.fromTo("#cardA", { rotationY: 90, opacity: 0, transformOrigin: "50% 50%" }, { rotationY: 0, opacity: 1, duration: 0.9, ease: "power3.out" }, 0.95);
+  // Second beat: it turns away the other way and card B flips in to replace it.
+  tl.to("#cardA", { rotationY: -90, opacity: 0, duration: 0.45, ease: "power2.in" }, 2.15);
+  tl.fromTo("#cardB", { rotationY: 90, opacity: 0, transformOrigin: "50% 50%" }, { rotationY: 0, opacity: 1, duration: 0.45, ease: "power3.out" }, 2.55);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

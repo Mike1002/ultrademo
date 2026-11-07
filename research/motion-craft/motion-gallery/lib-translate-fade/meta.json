@@ -1,0 +1,23 @@
+{
+  "name": "Translate fade",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Sequence"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "gsap",
+  "tags": [
+    "translate fade boundary",
+    "fade transform",
+    "fadetransform",
+    "fadetransformpieces",
+    "transitions",
+    "slide",
+    "fade",
+    "blur",
+    "swap"
+  ],
+  "one_line": "In a list of three people, each row's old status slides off to the left while fading and blurring, and the new status slides into the same zone from the right and sharpens, one row after another; then the rows advance once more."
+}

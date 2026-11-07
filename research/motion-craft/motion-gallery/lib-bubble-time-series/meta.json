@@ -1,0 +1,23 @@
+{
+  "name": "Animated bubble time series",
+  "family": "Data",
+  "purpose": [
+    "Explanation",
+    "Comparison"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "svg",
+  "tags": [
+    "animated bubble time series",
+    "rosling bubble chart",
+    "gapminder chart",
+    "data",
+    "bubbles",
+    "scatter",
+    "year",
+    "area",
+    "svg"
+  ],
+  "one_line": "Five team bubbles drift across an invites-versus-accepted chart and grow in area at the same time while a big year label steps from 2023 to 2026."
+}

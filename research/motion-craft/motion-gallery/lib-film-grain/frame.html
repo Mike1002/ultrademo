@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-film-grain</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; overflow: hidden; }
+  #cv { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage"><canvas id="cv" width="1168" height="580"></canvas></div>
+    <div id="label"><span class="l-name">Film grain</span><span class="l-sep">·</span><span>Texture &amp; Style</span><span class="l-sep">·</span><span>calm</span></div>
+  </section>
+</div>
+<script>
+  function rand(seed){ let a = seed >>> 0 || 1; return function(){ a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+  const cv = document.getElementById("cv"), ctx = cv.getContext("2d");
+  const W = 1168, H = 580, INK = "#1d1c1a", PAPER = "#f6f3ec", ACC = "#f2c200", MUTED = "#6d6a63";
+  const SANS = '-apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif';
+  // Eight seeded grain tiles, precomputed at load; the tile index is a pure function of time (12 fps).
+  const grains = Array.from({ length: 8 }, (_, f) => { const r = rand(446 + f); return Array.from({ length: 36000 }, () => [r() * W, r() * H, r()]); });
+  const clamp = x => Math.max(0, Math.min(1, x));
+  const out = x => 1 - Math.pow(1 - clamp(x), 3);
+  function renderAt(t) {
+    ctx.clearRect(0, 0, W, H); ctx.globalAlpha = 1;
+    // Left half: clean. Right half: the same scene under grain. The divider slides in so the second half keeps moving.
+    ctx.fillStyle = INK; ctx.font = "700 108px " + SANS; ctx.textAlign = "center";
+    ctx.fillText("Launch day.", 584, 330);
+    ctx.textAlign = "left"; ctx.font = "24px " + SANS; ctx.fillText("Same scene, different texture", 104, 95);
+    ctx.fillStyle = ACC; ctx.beginPath(); ctx.arc(898, 200, 39, 0, Math.PI * 2); ctx.fill();
+    ctx.lineWidth = 2; ctx.strokeStyle = INK; ctx.stroke();
+    ctx.fillStyle = MUTED; ctx.font = "18px " + SANS; ctx.fillText("Clean", 104, 514);
+    ctx.textAlign = "right"; ctx.fillText("Film grain", 1064, 514); ctx.textAlign = "left";
+    // Grain region grows from the right edge over the first 1.0 s, then breathes slightly so the split keeps moving.
+    const p = out(t / 1.0);
+    const breathe = 0.5 + 0.5 * Math.sin(t * 2.2);
+    const left = W - p * (W * 0.52 + 60 * breathe);
+    const frame = Math.floor(t * 12) % 8;
+    ctx.save(); ctx.beginPath(); ctx.rect(left, 0, W - left, H); ctx.clip();
+    for (const [x, y, a] of grains[frame]) {
+      ctx.globalAlpha = 0.16 + a * 0.24; ctx.fillStyle = a > 0.5 ? PAPER : INK;
+      const s = 1.8 + a * 0.8; ctx.fillRect(x, y, s, s);
+    }
+    ctx.restore(); ctx.globalAlpha = 1;
+    ctx.fillStyle = INK; ctx.fillRect(left - 1, 0, 2, H);
+  }
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+  renderAt(0);
+  tl.to({ k: 0 }, { k: 1, duration: 3, ease: "none", onUpdate: () => renderAt(tl.time()) }, 0);
+  const baseRender = tl.render; tl.render = function () { const r = baseRender.apply(this, arguments); renderAt(this.time()); return r; };
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

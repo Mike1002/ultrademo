@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-idle-cursor-hide</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  #pal { position: absolute; left: 244px; top: 80px; width: 680px; height: 420px; background: #fffdf8; border: 2px solid #1d1c1a; border-radius: 24px; }
+  #field { position: absolute; left: 32px; top: 32px; width: 612px; height: 72px; border-radius: 16px; border: 2px solid #1d1c1a; background: #fffdf8; }
+  #field .lens { position: absolute; left: 24px; top: 22px; width: 22px; height: 22px; border-radius: 50%; border: 3px solid #1d1c1a; }
+  #field .stem { position: absolute; left: 42px; top: 42px; width: 12px; height: 4px; border-radius: 2px; background: #1d1c1a; transform: rotate(45deg); }
+  #field .ph { position: absolute; left: 68px; top: 0; line-height: 68px; font-size: 24px; color: #a19d93; white-space: nowrap; }
+  #field .kbd { position: absolute; right: 20px; top: 20px; height: 28px; line-height: 24px; padding: 0 10px; border-radius: 8px; border: 2px solid #e3ded2; font-size: 14px; color: #6d6a63; }
+  .cmd { position: absolute; left: 32px; width: 612px; height: 72px; }
+  .cmd .hl { position: absolute; left: 0; top: 0; width: 612px; height: 72px; border-radius: 14px; background: #fbf3cf; opacity: 0; }
+  .cmd .ic { position: absolute; left: 22px; top: 20px; width: 32px; height: 32px; border-radius: 10px; border: 2px solid #1d1c1a; background: #ece7da; }
+  .cmd .t { position: absolute; left: 72px; top: 14px; font-size: 20px; font-weight: 600; white-space: nowrap; }
+  .cmd .h { position: absolute; left: 72px; top: 42px; font-size: 14px; color: #6d6a63; white-space: nowrap; }
+  #ring { position: absolute; left: -22px; top: -22px; width: 44px; height: 44px; border-radius: 50%; border: 3px solid #f2c200; opacity: 0; will-change: transform, opacity; pointer-events: none; }
+  .cursor { position: absolute; left: 0; top: 0; width: 28px; height: 38px; z-index: 10; pointer-events: none;
+    transform-origin: 2px 2px; will-change: transform, opacity; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.25)); }
+  .cursor svg { width: 28px; height: 38px; display: block; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div id="pal">
+        <div id="field"><div class="lens"></div><div class="stem"></div><div class="ph" data-layout-allow-occlusion>Type a command</div><div class="kbd">Esc</div></div>
+        <div class="cmd" style="top:136px"><div class="hl" id="hl1" data-layout-allow-overlap></div><div class="ic"></div><div class="t" data-layout-allow-occlusion>Invite a teammate</div><div class="h" data-layout-allow-occlusion>3 seats left</div></div>
+        <div class="cmd" style="top:216px"><div class="hl"></div><div class="ic"></div><div class="t" data-layout-allow-occlusion>Export members</div><div class="h" data-layout-allow-occlusion>Jamie Dalton, Sam Kim, Morgan Lee</div></div>
+        <div class="cmd" style="top:296px"><div class="hl"></div><div class="ic"></div><div class="t" data-layout-allow-occlusion>Open settings</div><div class="h" data-layout-allow-occlusion>Invites, notifications, approval</div></div>
+      </div>
+      <div id="ring" data-layout-allow-overlap></div>
+      <div class="cursor" id="cur" data-layout-allow-overlap>
+        <svg viewBox="0 0 28 38"><path d="M2.5 2.5 L2.5 29.5 L9.6 23 L14.4 33.6 L19 31.6 L14.3 21.4 L23.8 21.4 Z" fill="#ffffff" stroke="#1d1c1a" stroke-width="2" stroke-linejoin="round"/></svg>
+      </div>
+    </div>
+    <div id="label"><span class="l-name">Idle cursor hide</span><span class="l-sep">·</span><span>UI Demo</span><span class="l-sep">·</span><span>calm</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power2.out", duration: 0.25 } });
+  // Params: idle threshold 700 ms (a yellow ring shrinks around the tip while the timer runs), hide in 250 ms
+  // (fade to 0, scale to 0.8), power2.out; the next move brings the cursor back at full size in 150 ms.
+  const IDLE = 0.7, HIDE = 0.25;
+  const P0 = [160, 120], P1 = [600, 150], P2 = [620, 254];
+  tl.fromTo("#cur", { x: P0[0], y: P0[1], opacity: 1, scale: 1 }, { x: P0[0], y: P0[1], duration: 0.01, ease: "none" }, 0);
+  tl.fromTo("#ring", { x: P0[0], y: P0[1], opacity: 0, scale: 1 }, { x: P0[0], y: P0[1], duration: 0.01, ease: "none" }, 0);
+  function idleThenHide(t) {
+    tl.to("#ring", { opacity: 0.9, duration: 0.1, ease: "none" }, t);
+    tl.to("#ring", { scale: 0.15, duration: IDLE, ease: "none" }, t);
+    tl.to("#ring", { opacity: 0, duration: 0.1, ease: "none" }, t + IDLE - 0.1);
+    tl.to("#cur", { opacity: 0, scale: 0.8, duration: HIDE, ease: "power2.out" }, t + IDLE);
+  }
+  // Move 1: to the command field, stop; the idle timer runs out and the cursor fades away.
+  tl.to(["#cur", "#ring"], { x: P1[0], y: P1[1], duration: 0.35, ease: "power2.out" }, 0.05);
+  tl.to("#ring", { scale: 1, duration: 0.01, ease: "none" }, 0.38);
+  idleThenHide(0.4);              // hides from 1.1 to 1.35 s; half gone at 1.2 s (poster)
+  // Move 2: movement resumes, the cursor reappears at full size and travels to the first command.
+  tl.to("#cur", { opacity: 1, scale: 1, duration: 0.15, ease: "power2.out" }, 1.9);
+  tl.to(["#cur", "#ring"], { x: P2[0], y: P2[1], duration: 0.4, ease: "power2.out" }, 1.9);
+  tl.fromTo("#hl1", { opacity: 0 }, { opacity: 1, duration: 0.2, ease: "none", immediateRender: false }, 2.2);
+  // Idle again: the ring starts its countdown and the cursor begins to fade at the very end.
+  tl.to("#ring", { scale: 1, duration: 0.01, ease: "none" }, 2.3);
+  tl.to("#ring", { opacity: 0.9, duration: 0.1, ease: "none" }, 2.32);
+  tl.to("#ring", { scale: 0.15, duration: IDLE, ease: "none" }, 2.32);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

@@ -1,0 +1,535 @@
+{
+ "updated": "2026-10-31",
+ "note": "Pick by situation; a scene lists its cues in production/scenes/<id>.cues.json as [{ \"sfx\": id, \"at\": seconds into the scene, \"gain\": 1, \"dur\"?: seconds to play }].",
+ "sounds": [
+  {
+   "id": "key-1",
+   "file": "key-1.wav",
+   "situations": [
+    "typing",
+    "text typed into a field",
+    "a character appears"
+   ],
+   "tags": [
+    "ui",
+    "typing",
+    "soft"
+   ],
+   "length_s": 0.05,
+   "source": "in-house, synthesised by scripts/sfx-make.mjs",
+   "licence": "ours (CC0-equivalent)",
+   "recipe": {
+    "expr": "(random(1)*2-1)*exp(-t*160)",
+    "filters": "highpass=f=1800,lowpass=f=7000,volume=0.55"
+   }
+  },
+  {
+   "id": "key-2",
+   "file": "key-2.wav",
+   "situations": [
+    "typing (variation)"
+   ],
+   "tags": [
+    "ui",
+    "typing",
+    "soft"
+   ],
+   "length_s": 0.05,
+   "source": "in-house, synthesised by scripts/sfx-make.mjs",
+   "licence": "ours (CC0-equivalent)",
+   "recipe": {
+    "expr": "(random(2)*2-1)*exp(-t*190)",
+    "filters": "highpass=f=2300,lowpass=f=8000,volume=0.5"
+   }
+  },
+  {
+   "id": "key-3",
+   "file": "key-3.wav",
+   "situations": [
+    "typing (variation)"
+   ],
+   "tags": [
+    "ui",
+    "typing",
+    "soft"
+   ],
+   "length_s": 0.05,
+   "source": "in-house, synthesised by scripts/sfx-make.mjs",
+   "licence": "ours (CC0-equivalent)",
+   "recipe": {
+    "expr": "(random(3)*2-1)*exp(-t*140)",
+    "filters": "highpass=f=1500,lowpass=f=6000,volume=0.55"
+   }
+  },
+  {
+   "id": "click",
+   "file": "click.wav",
+   "situations": [
+    "a cursor clicks",
+    "a toggle or tab is selected"
+   ],
+   "tags": [
+    "ui",
+    "click",
+    "crisp"
+   ],
+   "length_s": 0.06,
+   "source": "in-house, synthesised by scripts/sfx-make.mjs",
+   "licence": "ours (CC0-equivalent)",
+   "recipe": {
+    "expr": "((random(4)*2-1)*0.6+sin(2*PI*2400*t)*0.5)*exp(-t*120)",
+    "filters": "highpass=f=900,volume=0.7"
+   }
+  },
+  {
+   "id": "press",
+   "file": "press.wav",
+   "situations": [
+    "a button is pressed",
+    "a call to action is pressed"
+   ],
+   "tags": [
+    "ui",
+    "press",
+    "thud"
+   ],
+   "length_s": 0.14,
+   "source": "in-house, synthesised by scripts/sfx-make.mjs",
+   "licence": "ours (CC0-equivalent)",
+   "recipe": {
+    "expr": "sin(2*PI*(140+120*exp(-t*40))*t)*exp(-t*28)*0.9+(random(5)*2-1)*exp(-t*150)*0.35",
+    "filters": "lowpass=f=6000,volume=0.8"
+   }
+  },
+  {
+   "id": "pop",
+   "file": "pop.wav",
+   "situations": [
+    "a card, row or chip appears",
+    "a new page pops up",
+    "pop pop pop for a sequence"
+   ],
+   "tags": [
+    "ui",
+    "pop",
+    "bright"
+   ],
+   "length_s": 0.12,
+   "source": "in-house, synthesised by scripts/sfx-make.mjs",
+   "licence": "ours (CC0-equivalent)",
+   "recipe": {
+    "expr": "sin(2*PI*(320+700*exp(-t*45))*t)*exp(-t*32)",
+    "filters": "volume=0.7"
+   }
+  },
+  {
+   "id": "pop-high",
+   "file": "pop-high.wav",
+   "situations": [
+    "a small item appears",
+    "a check or badge pops"
+   ],
+   "tags": [
+    "ui",
+    "pop",
+    "high"
+   ],
+   "length_s": 0.1,
+   "source": "in-house, synthesised by scripts/sfx-make.mjs",
+   "licence": "ours (CC0-equivalent)",
+   "recipe": {
+    "expr": "sin(2*PI*(520+1100*exp(-t*55))*t)*exp(-t*40)",
+    "filters": "volume=0.6"
+   }
+  },
+  {
+   "id": "whoosh",
+   "file": "whoosh.wav",
+   "situations": [
+    "a part lifts out of the screen",
+    "a card slides in fast",
+    "a camera move"
+   ],
+   "tags": [
+    "transition",
+    "air"
+   ],
+   "length_s": 0.42,
+   "source": "in-house, synthesised by scripts/sfx-make.mjs",
+   "licence": "ours (CC0-equivalent)",
+   "recipe": {
+    "expr": "(random(6)*2-1)*sin(PI*t/0.42)",
+    "filters": "highpass=f=350,lowpass=f=3200,volume=0.45"
+   }
+  },
+  {
+   "id": "chime",
+   "file": "chime.wav",
+   "situations": [
+    "success",
+    "a check lands",
+    "published"
+   ],
+   "tags": [
+    "ui",
+    "success",
+    "bright"
+   ],
+   "length_s": 0.45,
+   "source": "in-house, synthesised by scripts/sfx-make.mjs",
+   "licence": "ours (CC0-equivalent)",
+   "recipe": {
+    "expr": "(sin(2*PI*1318.5*t)*exp(-t*9)*0.6+sin(2*PI*1975.5*(t-0.07))*exp(-(t-0.07)*9)*0.5*gte(t,0.07))",
+    "filters": "volume=0.55"
+   }
+  },
+  {
+   "id": "warn",
+   "file": "warn.wav",
+   "situations": [
+    "a warning or error appears",
+    "your brand is missing",
+    "something goes wrong"
+   ],
+   "tags": [
+    "ui",
+    "error",
+    "low"
+   ],
+   "length_s": 0.32,
+   "source": "in-house, synthesised by scripts/sfx-make.mjs",
+   "licence": "ours (CC0-equivalent)",
+   "recipe": {
+    "expr": "(sin(2*PI*196*t)+0.4*sin(2*PI*392*t))*(lt(t,0.11)+gte(t,0.17)*lt(t,0.28))*exp(-t*3)",
+    "filters": "lowpass=f=2500,volume=0.55"
+   }
+  },
+  {
+   "id": "notice",
+   "file": "notice.wav",
+   "situations": [
+    "a notification or toast lands",
+    "a message arrives"
+   ],
+   "tags": [
+    "ui",
+    "notify",
+    "soft"
+   ],
+   "length_s": 0.38,
+   "source": "in-house, synthesised by scripts/sfx-make.mjs",
+   "licence": "ours (CC0-equivalent)",
+   "recipe": {
+    "expr": "(sin(2*PI*880*t)*0.7+sin(2*PI*1760*t)*0.25)*exp(-t*10)",
+    "filters": "volume=0.5"
+   }
+  },
+  {
+   "id": "tick",
+   "file": "tick.wav",
+   "situations": [
+    "a counter steps",
+    "a small marker moves"
+   ],
+   "tags": [
+    "ui",
+    "tick",
+    "tiny"
+   ],
+   "length_s": 0.03,
+   "source": "in-house, synthesised by scripts/sfx-make.mjs",
+   "licence": "ours (CC0-equivalent)",
+   "recipe": {
+    "expr": "sin(2*PI*3200*t)*exp(-t*260)",
+    "filters": "volume=0.45"
+   }
+  },
+  {
+   "id": "blip",
+   "file": "blip.wav",
+   "situations": [
+    "something travels along a line",
+    "data passes from one place to another"
+   ],
+   "tags": [
+    "ui",
+    "transfer",
+    "bright"
+   ],
+   "length_s": 0.4,
+   "source": "in-house, synthesised by scripts/sfx-make.mjs",
+   "licence": "ours (CC0-equivalent)",
+   "recipe": {
+    "expr": "(sin(2*PI*988*t)*lt(t,0.09)*exp(-t*14)+sin(2*PI*1319*t)*gte(t,0.12)*lt(t,0.21)*exp(-(t-0.12)*14)+sin(2*PI*1760*t)*gte(t,0.24)*exp(-(t-0.24)*11))*0.8",
+    "filters": "volume=0.75"
+   }
+  },
+  {
+   "id": "gasp-crowd",
+   "file": "gasp-crowd.wav",
+   "situations": [
+    "a surprising number or reveal"
+   ],
+   "tags": [
+    "reaction",
+    "crowd",
+    "surprise"
+   ],
+   "length_s": 1.2,
+   "source": "ElevenLabs sound generation, 2026-10-30, prompt: \"A small audience gasping in surprise together, short, no music\"",
+   "licence": "ElevenLabs output: commercial use on paid plans"
+  },
+  {
+   "id": "cheer-small",
+   "file": "cheer-small.wav",
+   "situations": [
+    "a goal reached",
+    "a win lands",
+    "the brand gets chosen"
+   ],
+   "tags": [
+    "reaction",
+    "crowd",
+    "celebration"
+   ],
+   "length_s": 2.2,
+   "source": "ElevenLabs sound generation, 2026-10-30, prompt: \"A small group cheering and clapping briefly in celebration, upbeat, no music\"",
+   "licence": "ElevenLabs output: commercial use on paid plans"
+  },
+  {
+   "id": "confetti",
+   "file": "confetti.wav",
+   "situations": [
+    "confetti on screen",
+    "a milestone"
+   ],
+   "tags": [
+    "celebration",
+    "burst"
+   ],
+   "length_s": 1.2,
+   "source": "ElevenLabs sound generation, 2026-10-30, prompt: \"A party popper bursting with confetti, celebratory, short and clean\"",
+   "licence": "ElevenLabs output: commercial use on paid plans"
+  },
+  {
+   "id": "level-up",
+   "file": "level-up.wav",
+   "situations": [
+    "a goal reached",
+    "the tagline lands",
+    "a metric hits its target"
+   ],
+   "tags": [
+    "success",
+    "bright",
+    "rising"
+   ],
+   "length_s": 1.2,
+   "source": "ElevenLabs sound generation, 2026-10-30, prompt: \"A short bright rising success chime, like reaching a goal in an app, clean\"",
+   "licence": "ElevenLabs output: commercial use on paid plans"
+  },
+  {
+   "id": "mouse-click",
+   "file": "mouse-click.wav",
+   "situations": [
+    "a cursor clicks a button, tab or chip"
+   ],
+   "tags": [
+    "ui",
+    "click",
+    "real"
+   ],
+   "length_s": 0.5,
+   "source": "ElevenLabs sound generation, 2026-10-30, prompt: \"A single crisp computer mouse click, close up, clean, no room noise\"",
+   "licence": "ElevenLabs output: commercial use on paid plans"
+  },
+  {
+   "id": "typing",
+   "file": "typing.wav",
+   "situations": [
+    "text typed into a field (cut to the typing with dur)"
+   ],
+   "tags": [
+    "ui",
+    "typing",
+    "real"
+   ],
+   "length_s": 3,
+   "source": "ElevenLabs sound generation, 2026-10-30, prompt: \"Fast typing on a modern laptop keyboard, close up, clean, steady rhythm, no room noise\"",
+   "licence": "ElevenLabs output: commercial use on paid plans"
+  },
+  {
+   "id": "aww-crowd",
+   "file": "aww-crowd.wav",
+   "situations": [
+    "a let-down: the brand is missing, traffic drops, a number falls"
+   ],
+   "tags": [
+    "reaction",
+    "crowd",
+    "sad"
+   ],
+   "length_s": 2,
+   "source": "ElevenLabs sound generation, 2026-10-30, prompt: \"Audience aww sound effect, a crowd of people saying awww in disappointment\"",
+   "licence": "ElevenLabs output: commercial use on paid plans"
+  },
+  {
+   "id": "sparkle",
+   "file": "sparkle.wav",
+   "situations": [
+    "sparkles on screen",
+    "a badge or result shines",
+    "something is generated"
+   ],
+   "tags": [
+    "celebration",
+    "magic",
+    "bright"
+   ],
+   "length_s": 1.5,
+   "source": "ElevenLabs sound generation, 2026-10-30, prompt: \"Magic sparkle twinkle sound effect, shimmering glitter chimes\"",
+   "licence": "ElevenLabs output: commercial use on paid plans"
+  },
+  {
+   "id": "phone-call",
+   "file": "phone-call.wav",
+   "situations": [
+    "a call feature: a sample call playing under the scene, in the background (\"Hi, am I speaking to John?\" \u2026 \"Yes?\" \u2026 \"Okay, great. This call is about your de\u2026\", fading out). Plays quieter and further back by default; never the main sound."
+   ],
+   "tags": [
+    "voice",
+    "call",
+    "dialogue"
+   ],
+   "length_s": 4.65,
+   "source": "ElevenLabs text to speech, 2026-10-31, voices Kristen (caller) and Jesse (John), 1.25x, phone-line filter by scripts/sfx-call.mjs",
+   "licence": "ElevenLabs output: commercial use on paid plans",
+   "background": true,
+   "gain": 0.4
+  },
+  {
+   "id": "ka-ching",
+   "file": "ka-ching.wav",
+   "situations": [
+    "a bonus or payout is paid",
+    "money arrives",
+    "a sale lands"
+   ],
+   "tags": [
+    "money",
+    "reward",
+    "bright"
+   ],
+   "length_s": 1.6,
+   "source": "ElevenLabs sound generation, 2026-10-31, prompt: \"Old mechanical cash register opening: the cha-ching bell rings as the cash drawer slides open with coins jingling, short, no music\"",
+   "licence": "ElevenLabs output: commercial use on paid plans"
+  },
+  {
+   "id": "lock-click",
+   "file": "lock-click.wav",
+   "situations": [
+    "security",
+    "something is locked or protected"
+   ],
+   "tags": [
+    "security",
+    "click"
+   ],
+   "length_s": 1.2,
+   "source": "ElevenLabs sound generation, 2026-10-31, prompt: \"A key turning in a door lock and the deadbolt sliding shut with a solid mechanical clunk, close up, no music\"",
+   "licence": "ElevenLabs output: commercial use on paid plans"
+  },
+  {
+   "id": "rise",
+   "file": "rise.wav",
+   "situations": [
+    "a number goes up",
+    "growth"
+   ],
+   "tags": [
+    "growth",
+    "positive",
+    "tone"
+   ],
+   "length_s": 1.2,
+   "source": "ElevenLabs sound generation, 2026-10-31, prompt: \"A short bright rising synth tone sweeping upward, positive and clean, interface sound, no music\"",
+   "licence": "ElevenLabs output: commercial use on paid plans"
+  },
+  {
+   "id": "check-done",
+   "file": "check-done.wav",
+   "situations": [
+    "a task is done",
+    "a check lands"
+   ],
+   "tags": [
+    "success",
+    "ui"
+   ],
+   "length_s": 0.9,
+   "source": "ElevenLabs sound generation, 2026-10-31, prompt: \"Satisfying app success sound: a soft click followed by a bright two-note confirmation chime, clean, no music\"",
+   "licence": "ElevenLabs output: commercial use on paid plans"
+  },
+  {
+   "id": "clock-ticks",
+   "file": "clock-ticks.wav",
+   "situations": [
+    "time saved",
+    "scheduling"
+   ],
+   "tags": [
+    "time",
+    "tick"
+   ],
+   "length_s": 1.4,
+   "source": "ElevenLabs sound generation, 2026-10-31, prompt: \"A clock ticking quickly four times then a soft bell ding, clean, close up, no music\"",
+   "licence": "ElevenLabs output: commercial use on paid plans"
+  },
+  {
+   "id": "notify",
+   "file": "notify.wav",
+   "situations": [
+    "a notification arrives",
+    "someone is notified"
+   ],
+   "tags": [
+    "notify",
+    "ui"
+   ],
+   "length_s": 1,
+   "source": "ElevenLabs sound generation, 2026-10-31, prompt: \"Pleasant mobile phone notification sound, a warm two-tone ding, clean, no music\"",
+   "licence": "ElevenLabs output: commercial use on paid plans"
+  },
+  {
+   "id": "reaction-pop",
+   "file": "reaction-pop.wav",
+   "situations": [
+    "a reaction appears",
+    "thumbs up, smiley, hearts"
+   ],
+   "tags": [
+    "reaction",
+    "pop",
+    "playful"
+   ],
+   "length_s": 0.7,
+   "source": "ElevenLabs sound generation, 2026-10-31, prompt: \"A bright bubbly pop with a playful little upward boing, cartoon reaction sound, short, no music\"",
+   "licence": "ElevenLabs output: commercial use on paid plans"
+  },
+  {
+   "id": "high-five",
+   "file": "high-five.wav",
+   "situations": [
+    "a high five",
+    "a win between people"
+   ],
+   "tags": [
+    "reaction",
+    "slap"
+   ],
+   "length_s": 0.8,
+   "source": "ElevenLabs sound generation, 2026-10-31, prompt: \"Two hands slapping together in a high five, one crisp loud palm slap, close up, no music\"",
+   "licence": "ElevenLabs output: commercial use on paid plans"
+  }
+ ]
+}

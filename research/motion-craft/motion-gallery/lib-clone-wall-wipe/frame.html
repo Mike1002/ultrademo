@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-clone-wall-wipe</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; overflow: hidden; }
+  .card { position: absolute; left: 264px; top: 110px; width: 640px; height: 360px; background: #fffdf8; border: 2px solid #1d1c1a; border-radius: 24px; will-change: transform, opacity; }
+  .card .lab { position: absolute; left: 56px; top: 48px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  .card .h1 { position: absolute; left: 56px; top: 80px; font-size: 56px; font-weight: 700; line-height: 64px; white-space: nowrap; }
+  .card .sub { position: absolute; left: 56px; top: 160px; font-size: 22px; color: #6d6a63; }
+  .card .btn { position: absolute; left: 56px; top: 240px; width: 200px; height: 60px; border-radius: 14px; background: #f2c200; border: 2px solid #1d1c1a;
+    font-size: 20px; font-weight: 700; line-height: 56px; text-align: center; }
+  .card.b .h1 { font-size: 96px; line-height: 104px; top: 74px; font-variant-numeric: tabular-nums; }
+  .card.b .sub { top: 190px; }
+  /* the wall: 6 x 4 tiles, each 194.67 x 145, each repeating the word. Two faces per tile: yellow on ink, then ink on yellow. */
+  .tile { position: absolute; width: 195px; height: 145px; will-change: transform, opacity; }
+  .face { position: absolute; left: 0; top: 0; width: 195px; height: 145px; border: 1px solid #1d1c1a; font-size: 40px; font-weight: 700; line-height: 143px; text-align: center; letter-spacing: -.01em; }
+  .face.f1 { background: #1d1c1a; color: #f2c200; }
+  .face.f2 { background: #f2c200; color: #1d1c1a; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div class="card" id="a" data-layout-allow-overlap>
+        <div class="lab" data-layout-allow-overlap data-layout-allow-occlusion>Orbit</div>
+        <div class="h1" data-layout-allow-overlap data-layout-allow-occlusion>Invite your team</div>
+        <div class="sub" data-layout-allow-overlap data-layout-allow-occlusion>3 seats left on this plan</div>
+        <div class="btn" data-layout-allow-overlap data-layout-allow-occlusion>Continue</div>
+      </div>
+      <div class="card b" id="b" data-layout-allow-overlap>
+        <div class="lab" data-layout-allow-overlap data-layout-allow-occlusion>This month</div>
+        <div class="h1" data-layout-allow-overlap data-layout-allow-occlusion>12,480</div>
+        <div class="sub" data-layout-allow-overlap data-layout-allow-occlusion>invites sent</div>
+      </div>
+      <div id="wall"></div>
+    </div>
+    <div id="label"><span class="l-name">Clone wall wipe</span><span class="l-sep">·</span><span>Transitions</span><span class="l-sep">·</span><span>high</span></div>
+  </section>
+</div>
+<script>
+  const COLS = 6, ROWS = 4, TW = 1168 / COLS, TH = 580 / ROWS;
+  const AT = ' data-layout-allow-overlap data-layout-allow-occlusion';
+  let html = '';
+  for (let r = 0; r < ROWS; r++) for (let c = 0; c < COLS; c++) {
+    const i = r * COLS + c;
+    html += '<div class="tile" id="t' + i + '"' + AT + ' style="left:' + (c * TW).toFixed(2) + 'px;top:' + (r * TH).toFixed(2) + 'px">'
+      + '<div class="face f1" id="f1_' + i + '"' + AT + '>Orbit</div><div class="face f2" id="f2_' + i + '"' + AT + '>Orbit</div></div>';
+  }
+  document.getElementById("wall").innerHTML = html;
+  const N = COLS * ROWS;
+
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power2.out", duration: 0.6 } });
+  // Rest: A on top, B hidden.
+  tl.fromTo("#a", { opacity: 1 }, { opacity: 1, duration: 0.01 }, 0);
+  tl.fromTo("#b", { opacity: 0, scale: 0.97 }, { opacity: 0, duration: 0.01 }, 0);
+  const FILL = 0.45, EACH = 0.02, INV = 1.3, CLEAR = 1.7;
+  for (let i = 0; i < N; i++) {
+    // fill: row by row from the top left, each tile pops in over 0.2 s
+    tl.fromTo("#t" + i, { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.2, ease: "power2.out" }, FILL + i * EACH);
+    // invert: the yellow face snaps on, in the same order, 10 ms apart
+    tl.fromTo("#f2_" + i, { opacity: 0 }, { opacity: 1, duration: 0.034, ease: "none" }, INV + i * 0.01);
+    // clear: tiles fall away in the same order and reveal B
+    tl.to("#t" + i, { opacity: 0, scale: 0.8, duration: 0.2, ease: "power2.in" }, CLEAR + i * EACH);
+  }
+  // The swap underneath happens while the wall is solid.
+  tl.to("#a", { opacity: 0, duration: 0.034, ease: "none" }, INV);
+  tl.to("#b", { opacity: 1, duration: 0.034, ease: "none" }, INV);
+  // B settles up to size as the wall clears, so the frame keeps moving to the end.
+  tl.to("#b", { scale: 1, duration: 1.2, ease: "power2.out" }, CLEAR + 0.2);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

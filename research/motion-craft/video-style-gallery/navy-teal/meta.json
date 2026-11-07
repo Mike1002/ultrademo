@@ -1,0 +1,45 @@
+{
+  "name": "Navy Teal",
+  "fonts": {
+    "display": "Space Grotesk",
+    "body": "Space Grotesk",
+    "mono": "Space Grotesk",
+    "label": "Space Grotesk"
+  },
+  "font_families": [
+    "Space Grotesk"
+  ],
+  "font_substitutions": {},
+  "canvas": "dark",
+  "mood": [
+    "clear",
+    "trustworthy",
+    "analytical"
+  ],
+  "suits": [
+    "metrics",
+    "reports",
+    "data explainers"
+  ],
+  "direction_settings": {
+    "energy": "steady",
+    "density": "balanced",
+    "ground": "dark",
+    "depth": "flat",
+    "camera": "locked",
+    "type": "display",
+    "texture": "clean",
+    "colour": "one-accent",
+    "product_presence": "illustrated",
+    "sound": "scored",
+    "voice": "narrated"
+  },
+  "duration_s": 10,
+  "size": [
+    1280,
+    720
+  ],
+  "fps": 30,
+  "strip": "D-58 style strip: hook · project card · number · agent · close",
+  "one_line": ""
+}

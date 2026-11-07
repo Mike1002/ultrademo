@@ -1,0 +1,19 @@
+{
+  "name": "Fluted glass drift",
+  "family": "Texture & Style",
+  "purpose": [
+    "Mood",
+    "Branding"
+  ],
+  "energy": "calm",
+  "tier": 2,
+  "runtime": "webgl",
+  "tags": [
+    "texture",
+    "refraction",
+    "vertical flutes",
+    "glass panel",
+    "strip resample"
+  ],
+  "one_line": "A panel of 18 vertical glass flutes glides across a headline, a yellow disc and a row of bars, stretching and folding whatever sits behind it as it passes."
+}

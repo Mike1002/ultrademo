@@ -1,0 +1,20 @@
+{
+  "name": "Inline image expand",
+  "family": "Typography",
+  "purpose": [
+    "Emphasis",
+    "Transition"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "gsap",
+  "tags": [
+    "inline image typography expansion",
+    "type",
+    "inline",
+    "grow",
+    "push aside",
+    "text to picture"
+  ],
+  "one_line": "A small yellow picture sitting between the words of a headline grows into a card as the words slide apart to make room, holds, then shrinks back and the line closes."
+}

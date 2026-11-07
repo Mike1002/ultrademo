@@ -1,0 +1,21 @@
+{
+  "name": "Fly-to",
+  "family": "Camera",
+  "purpose": [
+    "Explanation",
+    "Sequence"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "svg",
+  "tags": [
+    "geographic fly-to",
+    "camera",
+    "map",
+    "zoom out",
+    "travel",
+    "zoom in",
+    "pin"
+  ],
+  "one_line": "On a dotted map the view pulls back from one member's pin, glides across the wider map while a route line draws, and dives in on the second member's pin, which fills yellow and pulses on arrival."
+}

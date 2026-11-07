@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-linear-log-transition</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  #chart { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  text { font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .cap { font-size: 13px; letter-spacing: .06em; text-transform: uppercase; fill: #6d6a63; }
+  .ttl { font-size: 34px; font-weight: 700; fill: #1d1c1a; }
+  .tick line { stroke: #e3ded2; stroke-width: 2; }
+  .tick text { font-size: 18px; fill: #6d6a63; }
+  .xl { font-size: 16px; fill: #6d6a63; }
+  .axis { stroke: #1d1c1a; stroke-width: 2; }
+  .pt { fill: #f2c200; stroke: #1d1c1a; stroke-width: 3; }
+  #trend { fill: none; stroke: #1d1c1a; stroke-width: 3; opacity: 0.7; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <svg id="chart" viewBox="0 0 1168 580" width="1168" height="580">
+        <text class="cap" x="160" y="36">Invites sent · 12 workspaces</text>
+        <g id="tLin"><text class="ttl" x="1080" y="44" text-anchor="end">Linear scale</text></g>
+        <g id="tLog"><text class="ttl" x="1080" y="44" text-anchor="end">Log scale</text></g>
+        <g id="ticksLin"></g>
+        <g id="ticksLog"></g>
+        <line class="axis" x1="160" y1="60" x2="160" y2="500"/>
+        <line class="axis" x1="160" y1="500" x2="1080" y2="500"/>
+        <polyline id="trend" points=""/>
+        <g id="pts"></g>
+        <g id="xl"></g>
+      </svg>
+    </div>
+    <div id="label"><span class="l-name">Linear to log transition</span><span class="l-sep">·</span><span>Data</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const NS = "http://www.w3.org/2000/svg";
+  const mk = (tag, attrs, parent) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); parent.appendChild(e); return e; };
+  // Twelve workspaces, invites sent from 3 to 12,480: on a linear axis they pile up at the bottom; on a base-10 log axis they spread evenly.
+  const vals = [3, 7, 12, 25, 48, 90, 160, 340, 700, 1500, 3200, 12480];
+  const Y0 = 500, H = 420;
+  const yLin = v => Y0 - v / 13000 * H;
+  const yLog = v => Y0 - (Math.log10(v) - Math.log10(1)) / (Math.log10(20000) - Math.log10(1)) * H;
+  const xs = i => 200 + i * 80;
+  const ptsG = document.getElementById("pts"), xl = document.getElementById("xl");
+  const dots = vals.map((v, i) => { const t = mk("text", { class: "xl", x: xs(i), y: 532, "text-anchor": "middle" }, xl); t.textContent = "W" + (i + 1); return mk("circle", { class: "pt", cx: xs(i), cy: yLin(v), r: 13 }, ptsG); });
+  // Tick groups are drawn at y = 0 and positioned with a transform, so a tick can slide between the two coordinate systems.
+  const tick = (label, parent) => { const g = mk("g", { class: "tick" }, parent); mk("line", { x1: 160, y1: 0, x2: 1080, y2: 0 }, g); const t = mk("text", { x: 140, y: 6, "text-anchor": "end" }, g); t.textContent = label; return g; };
+  const linTicks = [[0, "0"], [4000, "4k"], [8000, "8k"], [12000, "12k"]].map(([v, l]) => ({ g: tick(l, document.getElementById("ticksLin")), v: Math.max(v, 1) }));
+  const logTicks = [[1, "1"], [10, "10"], [100, "100"], [1000, "1k"], [10000, "10k"]].map(([v, l]) => ({ g: tick(l, document.getElementById("ticksLog")), v }));
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power2.inOut", duration: 1.1 } });
+  const T0 = 0.4;
+  // Rest: linear ticks at their linear rows, log ticks waiting invisible at the rows those values would have on the linear axis.
+  linTicks.forEach(k => tl.fromTo(k.g, { y: yLin(k.v === 1 ? 0 : k.v), opacity: 1 }, { y: yLin(k.v === 1 ? 0 : k.v), duration: 0.01 }, 0));
+  logTicks.forEach(k => tl.fromTo(k.g, { y: yLin(k.v), opacity: 0 }, { y: yLin(k.v), duration: 0.01 }, 0));
+  tl.fromTo("#tLog", { opacity: 0 }, { opacity: 0, duration: 0.01 }, 0);
+  tl.fromTo("#trend", { opacity: 0 }, { opacity: 0, duration: 0.01 }, 0);
+  // The transition: every mark moves from its linear row to its log row over 1.1 s; the linear ticks ride to where their values land on the log axis and fade,
+  // the log ticks ride in from their linear rows and appear; the axis title crosses over in 300 ms.
+  dots.forEach((d, i) => tl.fromTo(d, { attr: { cy: yLin(vals[i]) } }, { attr: { cy: yLog(vals[i]) }, immediateRender: false }, T0));
+  linTicks.forEach(k => { tl.to(k.g, { y: yLog(k.v) }, T0); tl.to(k.g, { opacity: 0, duration: 0.5, ease: "none" }, T0 + 0.2); });
+  logTicks.forEach(k => { tl.to(k.g, { y: yLog(k.v) }, T0); tl.to(k.g, { opacity: 1, duration: 0.5, ease: "none" }, T0 + 0.4); });
+  tl.to("#tLin", { opacity: 0, duration: 0.3, ease: "none" }, T0 + 0.4);
+  tl.to("#tLog", { opacity: 1, duration: 0.3, ease: "none" }, T0 + 0.4);
+  // Second beat: on the log axis the growth reads as a straight line, so a thin trend line draws through the marks.
+  const trend = document.getElementById("trend");
+  trend.setAttribute("points", vals.map((v, i) => xs(i) + "," + yLog(v)).join(" "));
+  const L = trend.getTotalLength();
+  tl.fromTo(trend, { strokeDasharray: L + " " + (L + 20), strokeDashoffset: L + 10, opacity: 1 }, { strokeDashoffset: 0, duration: 0.7, ease: "power2.out", immediateRender: false }, 2.0);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

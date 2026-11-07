@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-phosphor-dissolve</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #171a21; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #171a21; color: #ece8df;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; overflow: hidden; }
+  .panel { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  .art { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  .art.a { background: #1f232c; }
+  .art.b { background: #171a21; }
+  .card { position: absolute; left: 204px; top: 100px; width: 760px; height: 380px; background: #262c38;
+    border: 2px solid #3a404d; border-radius: 24px; }
+  .card .eyebrow { position: absolute; left: 56px; top: 44px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #a7adbb; }
+  .card .h1 { position: absolute; left: 56px; top: 84px; font-size: 56px; font-weight: 700; line-height: 1.1; white-space: nowrap; }
+  .card .sub { position: absolute; left: 56px; top: 164px; font-size: 22px; color: #a7adbb; }
+  .card .btn { position: absolute; left: 56px; top: 254px; width: 200px; height: 60px; background: #f2c200; border: 2px solid #1d1c1a;
+    border-radius: 14px; font-size: 20px; font-weight: 700; line-height: 56px; text-align: center; color: #1d1c1a; }
+  .card .av { position: absolute; top: 44px; width: 64px; height: 64px; border-radius: 50%; border: 2px solid #a7adbb; background: #2a2f3a;
+    font-size: 20px; font-weight: 700; line-height: 60px; text-align: center; }
+  .card .av.v1 { left: 540px; } .card .av.v2 { left: 592px; } .card .av.v3 { left: 644px; }
+  .art.b .num { position: absolute; left: 92px; top: 86px; font-size: 136px; font-weight: 700; line-height: 1; letter-spacing: -.02em;
+    font-variant-numeric: tabular-nums; }
+  .art.b .cap { position: absolute; left: 100px; top: 236px; font-size: 22px; color: #a7adbb; }
+  .art.b .row { position: absolute; left: 96px; width: 520px; height: 60px; border-top: 2px solid #2a2f3a; font-size: 22px; line-height: 58px;
+    padding-left: 30px; will-change: transform; }
+  .art.b .row .dot { position: absolute; left: 0; top: 24px; width: 12px; height: 12px; border-radius: 50%; background: #f2c200; }
+  .art.b .row.r1 { top: 320px; } .art.b .row.r2 { top: 384px; } .art.b .row.r3 { top: 448px; }
+  .art.b .disc { will-change: transform; position: absolute; left: 780px; top: 150px; width: 280px; height: 280px; border-radius: 50%; background: #f2c200;
+    border: 2px solid #1d1c1a; text-align: center; color: #1d1c1a; }
+  .art.b .disc .pct { position: absolute; left: 0; width: 276px; top: 86px; font-size: 72px; font-weight: 700; line-height: 1; }
+  .art.b .disc .pl { position: absolute; left: 0; width: 276px; top: 166px; font-size: 18px; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #a7adbb; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #ece8df; font-weight: 700; }
+  #label .l-sep { color: #6d7380; }
+
+  /* Trail layers: only the bright parts of the invite scene (headline, button, avatar rings), recoloured to the phosphor yellow, blurred. */
+  .trail .art, .trail .card { background: transparent; border-color: transparent; }
+  .trail .eyebrow, .trail .sub { display: none; }
+  .trail .h1 { color: #f2c200; }
+  .trail .btn { background: #f2c200; border-color: #f2c200; color: #f2c200; }
+  .trail .av { background: transparent; border-color: #f2c200; color: #f2c200; }
+  #trail1 { filter: blur(3px); will-change: transform, opacity; }
+  #trail2 { filter: blur(18px); mix-blend-mode: screen; will-change: transform, opacity; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div class="panel" id="A"><div class="art a" data-layout-allow-overlap data-layout-allow-occlusion data-layout-allow-overflow><div class="card"><div class="eyebrow" data-layout-allow-overlap data-layout-allow-occlusion>Orbit</div><div class="h1" data-layout-allow-overlap data-layout-allow-occlusion>Invite your team</div><div class="sub" data-layout-allow-overlap data-layout-allow-occlusion>3 seats left</div><div class="btn" data-layout-allow-overlap data-layout-allow-occlusion>Continue</div><div class="av v1" data-layout-allow-overlap data-layout-allow-occlusion>JD</div><div class="av v2" data-layout-allow-overlap data-layout-allow-occlusion>SK</div><div class="av v3" data-layout-allow-overlap data-layout-allow-occlusion>ML</div></div></div></div>
+      <div class="panel" id="B" data-layout-allow-overlap><div class="art b" data-layout-allow-overlap data-layout-allow-occlusion data-layout-allow-overflow><div class="num" data-layout-allow-overlap data-layout-allow-occlusion>12,480</div><div class="cap" data-layout-allow-overlap data-layout-allow-occlusion>invites sent</div><div class="row r1" data-layout-allow-overlap data-layout-allow-occlusion><span class="dot"></span>Jamie Dalton</div><div class="row r2" data-layout-allow-overlap data-layout-allow-occlusion><span class="dot"></span>Sam Kim</div><div class="row r3" data-layout-allow-overlap data-layout-allow-occlusion><span class="dot"></span>Morgan Lee</div><div class="disc" data-layout-allow-overlap data-layout-allow-occlusion><div class="pct" data-layout-allow-overlap data-layout-allow-occlusion>98%</div><div class="pl" data-layout-allow-overlap data-layout-allow-occlusion>accepted</div></div></div></div>
+      <div class="panel trail" id="trail2" data-layout-allow-overlap><div class="art a" data-layout-allow-overlap data-layout-allow-occlusion data-layout-allow-overflow><div class="card"><div class="eyebrow" data-layout-allow-overlap data-layout-allow-occlusion>Orbit</div><div class="h1" data-layout-allow-overlap data-layout-allow-occlusion>Invite your team</div><div class="sub" data-layout-allow-overlap data-layout-allow-occlusion>3 seats left</div><div class="btn" data-layout-allow-overlap data-layout-allow-occlusion>Continue</div><div class="av v1" data-layout-allow-overlap data-layout-allow-occlusion>JD</div><div class="av v2" data-layout-allow-overlap data-layout-allow-occlusion>SK</div><div class="av v3" data-layout-allow-overlap data-layout-allow-occlusion>ML</div></div></div></div>
+      <div class="panel trail" id="trail1" data-layout-allow-overlap><div class="art a" data-layout-allow-overlap data-layout-allow-occlusion data-layout-allow-overflow><div class="card"><div class="eyebrow" data-layout-allow-overlap data-layout-allow-occlusion>Orbit</div><div class="h1" data-layout-allow-overlap data-layout-allow-occlusion>Invite your team</div><div class="sub" data-layout-allow-overlap data-layout-allow-occlusion>3 seats left</div><div class="btn" data-layout-allow-overlap data-layout-allow-occlusion>Continue</div><div class="av v1" data-layout-allow-overlap data-layout-allow-occlusion>JD</div><div class="av v2" data-layout-allow-overlap data-layout-allow-occlusion>SK</div><div class="av v3" data-layout-allow-overlap data-layout-allow-occlusion>ML</div></div></div></div>
+    </div>
+    <div id="label"><span class="l-name">Phosphor trail dissolve</span><span class="l-sep">·</span><span>Transitions</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "none", duration: 0.6 } });
+  // Phosphor decay: opacity falls by 0.85 per frame at 24 fps over 0.85 s, written as an ease so any seek lands on the same value.
+  const decay = p => 1 - Math.pow(0.85, 24 * 0.85 * p);
+  const CUT = 0.9, DEC = 0.85;
+  // Before the cut the bright elements charge up: the wide glow builds under them.
+  tl.fromTo("#trail2", { opacity: 0, y: 0, scale: 1 }, { opacity: 0.7, duration: 0.4, ease: "power2.in" }, CUT - 0.4);
+  tl.fromTo("#trail1", { opacity: 0, y: 0, scale: 1 }, { opacity: 0, duration: 0.01 }, 0);
+  // The cut: the invite scene goes, the stats scene arrives in one frame; the trails stay and decay, drifting down a little as they fade.
+  tl.fromTo("#A", { opacity: 1 }, { opacity: 0, duration: 0.02 }, CUT - 0.03);
+  tl.fromTo("#B", { opacity: 0 }, { opacity: 1, duration: 0.02 }, CUT - 0.03);
+  tl.fromTo("#trail1", { opacity: 1 }, { opacity: 0, duration: DEC, ease: decay, immediateRender: false }, CUT);
+  tl.fromTo("#trail2", { opacity: 1 }, { opacity: 0, duration: DEC, ease: decay, immediateRender: false }, CUT);
+  tl.to("#trail1", { y: 14, scale: 1.015, duration: DEC, ease: "power1.out" }, CUT);
+  tl.to("#trail2", { y: 22, scale: 1.03, duration: DEC, ease: "power1.out" }, CUT);
+  tl.to("#trail1", { opacity: 0, duration: 0.2 }, CUT + DEC);
+  tl.to("#trail2", { opacity: 0, duration: 0.2 }, CUT + DEC);
+  const ROWS_AT = 1.95;
+  // Second beat: the three rows of the new scene settle in so the clip keeps moving.
+  tl.fromTo(".art.b .row.r1", { opacity: 0, x: 28 }, { opacity: 1, x: 0, duration: 0.5, ease: "power3.out" }, ROWS_AT);
+  tl.fromTo(".art.b .row.r2", { opacity: 0, x: 28 }, { opacity: 1, x: 0, duration: 0.5, ease: "power3.out" }, ROWS_AT + 0.1);
+  tl.fromTo(".art.b .row.r3", { opacity: 0, x: 28 }, { opacity: 1, x: 0, duration: 0.5, ease: "power3.out" }, ROWS_AT + 0.2);
+  tl.fromTo(".art.b .disc", { scale: 0.6, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.7, ease: "back.out(1.5)" }, ROWS_AT + 0.05);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-hold-to-confirm</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  .card { position: absolute; left: 184px; top: 60px; width: 800px; height: 460px; background: #fffdf8; border: 2px solid #1d1c1a; border-radius: 24px; }
+  .card .title { position: absolute; left: 48px; top: 44px; font-size: 40px; font-weight: 700; letter-spacing: -0.01em; }
+  .card .sub { position: absolute; left: 48px; top: 100px; font-size: 20px; color: #6d6a63; }
+  .who { position: absolute; left: 48px; top: 150px; width: 700px; height: 120px; }
+  .person { position: absolute; top: 0; width: 220px; height: 56px; will-change: transform, opacity; }
+  .person .av { position: absolute; left: 0; top: 0; width: 56px; height: 56px; border-radius: 50%; background: #ece7da; border: 2px solid #1d1c1a; font-size: 18px; font-weight: 700; line-height: 52px; text-align: center; }
+  .person .nm { position: absolute; left: 70px; top: 6px; font-size: 20px; font-weight: 600; white-space: nowrap; }
+  .person .rl { position: absolute; left: 70px; top: 32px; font-size: 15px; color: #6d6a63; white-space: nowrap; }
+  #btn { position: absolute; left: 48px; top: 300px; width: 320px; height: 72px; border: 2px solid #1d1c1a; border-radius: 16px; background: #fffdf8; overflow: hidden; will-change: transform; }
+  #fill { position: absolute; left: 0; top: 0; width: 316px; height: 68px; background: #f2c200; will-change: transform; }
+  .lab { position: absolute; left: 0; top: 0; width: 316px; height: 68px; font-size: 22px; font-weight: 700; line-height: 68px; text-align: center; will-change: transform, opacity; }
+  #lab2 svg { position: absolute; left: 84px; top: 20px; }
+  #lab2 span { position: absolute; left: 124px; top: 0; }
+  #hint { position: absolute; left: 48px; top: 388px; font-size: 16px; color: #6d6a63; }
+  #cur { position: absolute; left: 290px; top: 336px; width: 28px; height: 36px; will-change: transform; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div class="card">
+        <div class="title">Invite your team</div>
+        <div class="sub">Orbit · 3 seats left</div>
+        <div class="who">
+          <div class="person" id="p1" style="left:0"><div class="av">JD</div><div class="nm">Jamie Dalton</div><div class="rl">Design</div></div>
+          <div class="person" id="p2" style="left:240px"><div class="av">SK</div><div class="nm">Sam Kim</div><div class="rl">Engineering</div></div>
+          <div class="person" id="p3" style="left:480px"><div class="av">ML</div><div class="nm">Morgan Lee</div><div class="rl">Product</div></div>
+        </div>
+        <div id="btn" data-layout-allow-overlap>
+          <div id="fill"></div>
+          <div class="lab" id="lab1" data-layout-allow-overlap>Continue</div>
+          <div class="lab" id="lab2" data-layout-allow-overlap>
+            <svg width="28" height="28" viewBox="0 0 28 28"><circle cx="14" cy="14" r="12" fill="#1d1c1a"/><path d="M8 14.5 L12.2 18.5 L20 9.5" fill="none" stroke="#f2c200" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span>Confirmed</span>
+          </div>
+        </div>
+        <div id="hint">Hold to confirm · sends 3 invites</div>
+        <svg id="cur" viewBox="0 0 28 36" data-layout-allow-overlap><path d="M2 2 L2 28 L9 21.5 L14 33 L19 31 L14 19.5 L23 19.5 Z" fill="#1d1c1a" stroke="#fffdf8" stroke-width="2" stroke-linejoin="round"/></svg>
+      </div>
+    </div>
+    <div id="label"><span class="l-name">Hold to confirm</span><span class="l-sep">·</span><span>UI Demo</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+  // Params: hold 1.2 s (progress eased "none"), completion pop 200 ms power2.out.
+  gsap.set("#fill", { scaleX: 0, transformOrigin: "left center" });
+  gsap.set("#lab2", { opacity: 0, scale: 0.8 });
+  gsap.set(["#p1", "#p2", "#p3"], { opacity: 0.35 });
+  // Cursor arrives and presses.
+  tl.fromTo("#cur", { x: 180, y: 110 }, { x: 0, y: 0, duration: 0.35, ease: "power3.out" }, 0);
+  tl.fromTo("#btn", { scale: 1 }, { scale: 0.97, duration: 0.12, ease: "power2.out" }, 0.38);
+  // The hold: the fill grows linearly across the button for 1.2 s (75% at the 1.2 s poster).
+  tl.fromTo("#fill", { scaleX: 0 }, { scaleX: 1, duration: 1.2, ease: "none" }, 0.4);
+  // Completion: label swaps to the mark with a 200 ms pop; button releases.
+  tl.to("#lab1", { opacity: 0, duration: 0.15, ease: "none" }, 1.6);
+  tl.fromTo("#lab2", { scale: 0.8, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.2, ease: "power2.out" }, 1.6);
+  tl.to("#btn", { scale: 1, duration: 0.2, ease: "power2.out" }, 1.62);
+  tl.to("#cur", { x: 170, y: 120, duration: 0.5, ease: "power3.inOut" }, 1.85);
+  // Settle beat: the three invitees light up one after another.
+  ["#p1", "#p2", "#p3"].forEach((s, i) => {
+    tl.fromTo(s, { opacity: 0.35, y: 0 }, { opacity: 1, y: -6, duration: 0.3, ease: "power2.out" }, 2.1 + i * 0.22);
+    tl.to(s, { y: 0, duration: 0.25, ease: "power2.inOut" }, 2.4 + i * 0.22);
+  });
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

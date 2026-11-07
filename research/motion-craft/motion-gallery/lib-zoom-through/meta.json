@@ -1,0 +1,19 @@
+{
+  "name": "Zoom through",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Sequence"
+  ],
+  "energy": "high",
+  "tier": 2,
+  "runtime": "gsap",
+  "tags": [
+    "zoom transition",
+    "zoom through",
+    "portal",
+    "cross zoom",
+    "transitions"
+  ],
+  "one_line": "The opening of a big letter O enlarges past the frame and carries the viewer through to the number scene inside it."
+}

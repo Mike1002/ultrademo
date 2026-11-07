@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-bar-chart-race</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  #chart { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  #chart text { font-size: 22px; fill: #1d1c1a; font-variant-numeric: tabular-nums; }
+  #chart .small { font-size: 13px; fill: #6d6a63; letter-spacing: .06em; }
+  #chart .big { font-size: 84px; font-weight: 700; fill: #1d1c1a; }
+  #chart .name { font-weight: 600; }
+  #chart .grid { stroke: #e3ded2; stroke-width: 2; }
+  .heading { position: absolute; left: 32px; top: 26px; font-size: 34px; font-weight: 700; }
+  .sub { position: absolute; left: 34px; top: 72px; font-size: 16px; color: #6d6a63; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div class="heading">Ranks change as use changes</div>
+      <div class="sub">Weekly active users by feature, thousands</div>
+      <svg id="chart" viewBox="0 0 1168 580" xmlns="http://www.w3.org/2000/svg">
+        <text id="year" class="big" x="1040" y="175" text-anchor="end">2024</text>
+        <text class="small" x="180" y="175">USERS · MAX 100K</text>
+        <line class="grid" x1="180" y1="200" x2="180" y2="520"/><text class="small" x="180" y="548">0</text>
+        <line class="grid" x1="360" y1="200" x2="360" y2="520"/><text class="small" x="360" y="548">25</text>
+        <line class="grid" x1="540" y1="200" x2="540" y2="520"/><text class="small" x="540" y="548">50</text>
+        <line class="grid" x1="720" y1="200" x2="720" y2="520"/><text class="small" x="720" y="548">75</text>
+        <line class="grid" x1="900" y1="200" x2="900" y2="520"/><text class="small" x="900" y="548">100</text>
+        <g id="row0"><text class="name" x="60" y="32">Search</text><rect id="bar0" x="180" y="0" width="0" height="42" rx="6" fill="#1d1c1a"/><text id="val0" y="31">0</text></g>
+        <g id="row1"><text class="name" x="60" y="32">Docs</text><rect id="bar1" x="180" y="0" width="0" height="42" rx="6" fill="#1d1c1a"/><text id="val1" y="31">0</text></g>
+        <g id="row2"><text class="name" x="60" y="32">Invite</text><rect id="bar2" x="180" y="0" width="0" height="42" rx="6" fill="#1d1c1a"/><text id="val2" y="31">0</text></g>
+        <g id="row3"><text class="name" x="60" y="32">Export</text><rect id="bar3" x="180" y="0" width="0" height="42" rx="6" fill="#1d1c1a"/><text id="val3" y="31">0</text></g>
+        <g id="row4"><text class="name" x="60" y="32">Voice</text><rect id="bar4" x="180" y="0" width="0" height="42" rx="6" fill="#1d1c1a"/><text id="val4" y="31">0</text></g>
+      </svg>
+    </div>
+    <div id="label"><span class="l-name">Bar chart race</span><span class="l-sep">·</span><span>Data</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+  // Three yearly snapshots; bar lengths and vertical ranks interpolate between them.
+  const frames = [[74, 58, 42, 30, 22], [80, 63, 88, 44, 32], [86, 78, 94, 62, 51]];
+  const rows = frames[0].map((_, i) => ({
+    row: document.querySelector("#row" + i), bar: document.querySelector("#bar" + i), value: document.querySelector("#val" + i)
+  }));
+  const yearEl = document.querySelector("#year");
+  const smooth = v => { const t = Math.max(0, Math.min(1, v)); return t * t * (3 - 2 * t); };
+  const inOut = p => p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
+  // phase(t): 0 -> 1 over 0.3..1.4 s, hold, 1 -> 2 over 1.7..2.8 s (power2.inOut), hold.
+  function phaseAt(t) {
+    const seg = (t0, d) => inOut(Math.max(0, Math.min(1, (t - t0) / d)));
+    return seg(0.3, 1.1) + seg(1.7, 1.1);
+  }
+  function renderAt(t) {
+    const phase = phaseAt(t);
+    const k = Math.min(1, Math.floor(phase)), p = phase - k;
+    const values = frames[k].map((v, i) => v + (frames[k + 1][i] - v) * p);
+    // Adjacent ranks exchange only near their value crossing.
+    const positions = values.map((v, i) => 220 + 60 * values.reduce((rank, other, j) => rank + (i === j ? 0 : smooth((other - v + 3) / 6)), 0));
+    const leader = values.indexOf(Math.max(...values));
+    rows.forEach(({ row, bar, value }, i) => {
+      const distance = Math.min(...positions.filter((_, j) => j !== i).map(y => Math.abs(y - positions[i])));
+      const scale = Math.min(1, distance / 44);
+      row.setAttribute("transform", `translate(0 ${positions[i] + 21}) scale(1 ${scale}) translate(0 -21)`);
+      const width = values[i] * 7.2;
+      bar.setAttribute("width", width);
+      bar.setAttribute("fill", i === leader ? "#f2c200" : "#1d1c1a");
+      bar.setAttribute("stroke", i === leader ? "#1d1c1a" : "none");
+      bar.setAttribute("stroke-width", i === leader ? 2 : 0);
+      value.setAttribute("x", 180 + width + 14);
+      value.textContent = Math.round(values[i]) + "k";
+    });
+    yearEl.textContent = 2024 + Math.min(2, Math.floor(phase + 0.001));
+  }
+  renderAt(0);
+  tl.to({ k: 0 }, { k: 1, duration: 3, ease: "none", onUpdate: () => renderAt(tl.time()) }, 0);
+  const baseRender = tl.render; tl.render = function () { const r = baseRender.apply(this, arguments); renderAt(this.time()); return r; };
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

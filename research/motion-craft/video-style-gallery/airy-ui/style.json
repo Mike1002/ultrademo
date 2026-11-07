@@ -1,0 +1,120 @@
+{
+  "id": "airy-ui",
+  "name": "Airy UI",
+  "canvas": "light",
+  "mood": [
+    "calm",
+    "helpful",
+    "trustworthy"
+  ],
+  "suits": [
+    "AI agents",
+    "product demos",
+    "chat products"
+  ],
+  "palette": {
+    "bg": "#f6f6f4",
+    "bg_alt": "#f6f6f4",
+    "surface": "#ffffff",
+    "surface_2": "#ebebe8",
+    "ink": "#1f1f1f",
+    "muted": "#6f6f6f",
+    "line": "#e3e3df",
+    "accent": "#3d6bff",
+    "accent_2": "#19a974",
+    "on_accent": "#ffffff",
+    "pill_bg": "#ebebe8",
+    "pill_ink": "#1f1f1f",
+    "pill_dot": "#19a974",
+    "term_bg": "#ffffff",
+    "term_ink": "#1f1f1f",
+    "term_muted": "#a5a5a5",
+    "term_line": "#e3e3df",
+    "term_prompt": "#3d6bff",
+    "term_ok": "#19a974"
+  },
+  "type": {
+    "display": {
+      "family": "Inter",
+      "weight": 600,
+      "hook_px": 84,
+      "stat_px": 220,
+      "mark_px": 128,
+      "transform": "none",
+      "tracking": "-0.04em",
+      "line_height": "1.05",
+      "style": "normal",
+      "generic": "sans",
+      "card_title_px": 28
+    },
+    "body": {
+      "family": "Inter",
+      "weight": 400,
+      "generic": "sans"
+    },
+    "mono": {
+      "family": "Inter",
+      "weight": 500
+    },
+    "label": {
+      "family": "Inter",
+      "weight": 500,
+      "transform": "none",
+      "tracking": "0",
+      "generic": "sans",
+      "px": 15
+    }
+  },
+  "easing": {
+    "entry": "expo.out",
+    "exit": "power2.in",
+    "ambient": "none",
+    "pop": "power3.out",
+    "counter": "power2.out",
+    "wipe": "expo.out"
+  },
+  "rhythm": {
+    "energy": "steady",
+    "entrance": 0.6,
+    "stagger": 0.08
+  },
+  "transition": {
+    "kind": "push",
+    "duration": 0.5,
+    "flash": false,
+    "band": false
+  },
+  "text_animation": "fade-up",
+  "accent_word": "none",
+  "layout": "center",
+  "atmosphere": [],
+  "shape": {
+    "radius_card": 18,
+    "radius_button": 12,
+    "radius_pill": 999,
+    "border": "none",
+    "border_px": 0,
+    "shadow": "soft",
+    "rule_px": 3
+  },
+  "stat_colour": "accent",
+  "direction_settings": {
+    "energy": "steady",
+    "density": "sparse",
+    "ground": "light",
+    "depth": "layered",
+    "camera": "locked",
+    "type": "quiet",
+    "texture": "clean",
+    "colour": "one-accent",
+    "product_presence": "illustrated",
+    "sound": "ambient",
+    "voice": "narrated"
+  },
+  "notes": "Off-white canvas, white surfaces with very soft shadows, Inter only, one blue accent and green only for success; cards slide in from the right.",
+  "transitions": {
+    "between_moments": "push",
+    "duration_s": 0.5,
+    "text": "fade-up"
+  }
+}

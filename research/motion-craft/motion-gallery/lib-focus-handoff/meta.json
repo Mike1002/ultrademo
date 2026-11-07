@@ -1,0 +1,22 @@
+{
+  "name": "Focus handoff",
+  "family": "Emphasis",
+  "purpose": [
+    "Emphasis",
+    "Sequence"
+  ],
+  "energy": "steady",
+  "tier": 2,
+  "runtime": "gsap",
+  "tags": [
+    "accent walk",
+    "gradient-text-sweep",
+    "narration-synchronized signaling",
+    "focus handoff",
+    "code range focus",
+    "emphasis",
+    "sequence",
+    "highlight"
+  ],
+  "one_line": "Four steps sit in a row; one at a time lights up with a yellow dot and full ink while the others stay faint, and the highlight hands off to the next step."
+}

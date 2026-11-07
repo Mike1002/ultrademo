@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-hotspot-pulse</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  .card { position: absolute; left: 184px; top: 60px; width: 800px; height: 460px; background: #fffdf8; border: 2px solid #1d1c1a; border-radius: 24px; }
+  .card .title { position: absolute; left: 48px; top: 44px; font-size: 40px; font-weight: 700; letter-spacing: -0.01em; }
+  .card .sub { position: absolute; left: 48px; top: 100px; font-size: 20px; color: #6d6a63; }
+  .flab { position: absolute; left: 48px; top: 160px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  .field { position: absolute; left: 48px; top: 188px; width: 480px; height: 64px; border: 2px solid #1d1c1a; border-radius: 14px; background: #fffdf8; font-size: 22px; line-height: 60px; padding-left: 20px; color: #6d6a63; }
+  .add { position: absolute; left: 456px; top: 204px; width: 56px; height: 32px; border-radius: 8px; background: #ece7da; font-size: 14px; font-weight: 700; line-height: 32px; text-align: center; }
+  .btn { position: absolute; left: 48px; top: 292px; width: 200px; height: 60px; border-radius: 14px; background: #1d1c1a; color: #fffdf8; font-size: 20px; font-weight: 600; line-height: 60px; text-align: center; }
+  .ghost { position: absolute; left: 268px; top: 292px; width: 140px; height: 60px; border-radius: 14px; border: 2px solid #1d1c1a; font-size: 20px; font-weight: 600; line-height: 56px; text-align: center; }
+  .list { position: absolute; left: 48px; top: 384px; font-size: 18px; color: #6d6a63; }
+  .list b { color: #1d1c1a; font-weight: 600; }
+  #hs { position: absolute; left: 0; top: 0; width: 80px; height: 80px; will-change: transform; }
+  #hs .dot { position: absolute; left: 28px; top: 28px; width: 24px; height: 24px; border-radius: 50%; background: #f2c200; border: 2px solid #1d1c1a; }
+  #hs .ring { position: absolute; left: 26px; top: 26px; width: 28px; height: 28px; border-radius: 50%; border: 4px solid #f2c200; background: rgba(242, 194, 0, 0.45); will-change: transform, opacity; }
+  #step { position: absolute; left: 48px; top: 36px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div class="card">
+        <div class="title">Invite your team</div>
+        <div class="sub">Orbit · 3 seats left</div>
+        <div class="flab">Email</div>
+        <div class="field">sam.kim@orbit.com</div>
+        <div class="add">Add</div>
+        <div class="btn">Continue</div>
+        <div class="ghost">Settings</div>
+        <div class="list">Invited so far: <b>Jamie Dalton</b> · <b>Morgan Lee</b> · 12,480 invites sent</div>
+        <div id="hs" data-layout-allow-overlap>
+          <div class="ring" id="r1" data-layout-allow-overlap></div>
+          <div class="ring" id="r2" data-layout-allow-overlap></div>
+          <div class="dot" data-layout-allow-overlap></div>
+        </div>
+      </div>
+    </div>
+    <div id="label"><span class="l-name">Hotspot pulse</span><span class="l-sep">·</span><span>UI Demo</span><span class="l-sep">·</span><span>calm</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power2.out", duration: 0.6 } });
+  // Params: one pulse 1.2 s power2.out, ring radius 10 -> 24 px (scale 2.4). Two rings staggered 0.6 s so a ring is always visible.
+  // Hotspot centres (card coordinates, minus the 40 px half-size of #hs): the Add chip, then the Continue button.
+  const P1 = { x: 512 - 40, y: 204 - 40 }, P2 = { x: 248 - 40, y: 292 - 40 };
+  gsap.set("#hs", { x: P1.x, y: P1.y });
+  gsap.set([".ring"], { transformOrigin: "50% 50%", scale: 1, opacity: 1 });
+  function pulse(id, at) { tl.fromTo(id, { scale: 1, opacity: 1 }, { scale: 3.2, opacity: 0, duration: 1.2, ease: "power2.out", immediateRender: false }, at); }
+  // Step 1: pulse at the Add chip.
+  pulse("#r1", 0); pulse("#r2", 0.6);
+  // Move to step 2 (the Continue button) and pulse there.
+  tl.to("#hs", { x: P2.x, y: P2.y, duration: 0.45, ease: "power2.inOut" }, 1.45);
+  tl.set("#r1", { scale: 1, opacity: 0 }, 1.45);
+  pulse("#r1", 1.9); pulse("#r2", 2.5);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

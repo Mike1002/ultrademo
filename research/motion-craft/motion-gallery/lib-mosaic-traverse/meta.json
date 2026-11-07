@@ -1,0 +1,22 @@
+{
+  "name": "Mosaic traversal",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Sequence"
+  ],
+  "energy": "high",
+  "tier": 3,
+  "runtime": "webgl",
+  "tags": [
+    "zoom mosaic traversal",
+    "transitions",
+    "mosaic",
+    "tiles",
+    "zoom out",
+    "travel",
+    "zoom in",
+    "camera"
+  ],
+  "one_line": "The invite card zooms out into a 5 by 3 mosaic of cloned tiles, the camera slides two tiles right and one up, and zooms back in on the one tile that holds the stats scene, whose rows then settle in."
+}

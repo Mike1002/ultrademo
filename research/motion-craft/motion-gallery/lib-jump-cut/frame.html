@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-jump-cut</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; overflow: hidden; }
+  .shot { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; will-change: transform, opacity, filter; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+  .card { position: absolute; left: 264px; top: 110px; width: 640px; height: 360px; background: #fffdf8; border: 2px solid #1d1c1a; border-radius: 24px; will-change: transform, filter, opacity; }
+  .card .lab { position: absolute; left: 56px; top: 48px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; white-space: nowrap; }
+  .card h1 { position: absolute; left: 56px; top: 80px; font-size: 56px; font-weight: 700; line-height: 64px; white-space: nowrap; }
+  .card .sub { position: absolute; left: 56px; top: 160px; font-size: 22px; color: #6d6a63; white-space: nowrap; }
+  .card .btn { position: absolute; left: 56px; top: 240px; width: 200px; height: 60px; border-radius: 14px; background: #f2c200; border: 2px solid #1d1c1a; color: #1d1c1a;
+    font-size: 20px; font-weight: 700; line-height: 56px; text-align: center; will-change: transform; }
+  .card.b h1 { font-size: 96px; line-height: 104px; top: 74px; font-variant-numeric: tabular-nums; }
+  .card.b .sub { top: 190px; }
+  .card.b .bar { position: absolute; left: 56px; top: 250px; width: 300px; height: 14px; border-radius: 7px; background: #f2c200; border: 2px solid #1d1c1a; transform-origin: 0 50%; will-change: transform; }
+  .cursor { position: absolute; width: 28px; height: 38px; z-index: 10; pointer-events: none; transform-origin: 2px 2px; will-change: transform; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.25)); }
+  .cursor svg { width: 28px; height: 38px; display: block; }
+
+  #shot { transform-origin: 50% 50%; }
+  .row { position: absolute; left: 56px; width: 528px; height: 44px; border-top: 2px solid #e3ded2; }
+  .row .av { position: absolute; left: 0; top: 6px; width: 32px; height: 32px; border-radius: 50%; background: #ece7da; border: 2px solid #1d1c1a;
+    font-size: 12px; font-weight: 700; line-height: 28px; text-align: center; }
+  .row .nm { position: absolute; left: 46px; top: 8px; font-size: 20px; font-weight: 700; line-height: 28px; white-space: nowrap; }
+  .row .st { position: absolute; right: 0; top: 10px; font-size: 15px; color: #6d6a63; letter-spacing: .04em; text-transform: uppercase; }
+  #r1 { top: 164px; } #r2 { top: 216px; opacity: 0; } #r3 { top: 268px; opacity: 0; }
+  .tag { position: absolute; left: 434px; top: 44px; width: 150px; height: 36px; border-radius: 999px; background: #f2c200; border: 2px solid #1d1c1a;
+    font-size: 14px; font-weight: 700; line-height: 32px; text-align: center; color: #1d1c1a; }
+  .tag.off { background: #1d1c1a; color: #f6f3ec; opacity: 0; }
+
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+
+      <div data-layout-allow-overlap data-layout-allow-occlusion class="shot" id="shot">
+        <div data-layout-allow-overlap data-layout-allow-occlusion class="card a" id="a">
+          <div data-layout-allow-overlap data-layout-allow-occlusion class="lab">Orbit</div><h1 data-layout-allow-overlap data-layout-allow-occlusion>Invite your team</h1>
+          <div data-layout-allow-overlap data-layout-allow-occlusion class="tag" id="tagOn">3 seats left</div><div data-layout-allow-overlap data-layout-allow-occlusion class="tag off" id="tagOff">0 seats left</div>
+          <div data-layout-allow-overlap data-layout-allow-occlusion class="row" id="r1"><div data-layout-allow-overlap data-layout-allow-occlusion class="av">JD</div><div data-layout-allow-overlap data-layout-allow-occlusion class="nm">Jamie Dalton</div><div data-layout-allow-overlap data-layout-allow-occlusion class="st">Invited</div></div><div data-layout-allow-overlap data-layout-allow-occlusion class="row" id="r2"><div data-layout-allow-overlap data-layout-allow-occlusion class="av">SK</div><div data-layout-allow-overlap data-layout-allow-occlusion class="nm">Sam Kim</div><div data-layout-allow-overlap data-layout-allow-occlusion class="st">Invited</div></div><div data-layout-allow-overlap data-layout-allow-occlusion class="row" id="r3"><div data-layout-allow-overlap data-layout-allow-occlusion class="av">ML</div><div data-layout-allow-overlap data-layout-allow-occlusion class="nm">Morgan Lee</div><div data-layout-allow-overlap data-layout-allow-occlusion class="st">Invited</div></div>
+        </div>
+        <div class="cursor" id="cur" style="left:0px;top:0px" data-layout-allow-overlap ><svg viewBox="0 0 28 38"><path d="M2.5 2.5 L2.5 29.5 L9.6 23 L14.4 33.6 L19 31.6 L14.3 21.4 L23.8 21.4 Z" fill="#ffffff" stroke="#1d1c1a" stroke-width="2" stroke-linejoin="round"/></svg></div>
+      </div>
+
+    </div>
+    <div id="label"><span class="l-name">Jump cut</span><span class="l-sep">·</span><span>Transitions</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "none" } });
+  // Rest state: one member row, three seats left, cursor beside the first row.
+  tl.fromTo("#shot", { scale: 1, x: 0 }, { scale: 1, duration: 0.01 }, 0);
+  tl.fromTo("#r2", { opacity: 0 }, { opacity: 0, duration: 0.01 }, 0);
+  tl.fromTo("#r3", { opacity: 0 }, { opacity: 0, duration: 0.01 }, 0);
+  tl.fromTo("#tagOff", { opacity: 0 }, { opacity: 0, duration: 0.01 }, 0);
+  tl.fromTo("#cur", { x: 620, y: 294 }, { x: 620, duration: 0.01 }, 0);
+  // Jump cuts every 0.6 s: the state changes in one frame inside the same framing, with the micro-reframe (scale 1 / 1.04, x 0 / -16) that gives a jump cut away.
+  const cuts = [0.6, 1.2, 1.8, 2.4];
+  cuts.forEach((t, i) => tl.set("#shot", { scale: i % 2 ? 1 : 1.04, x: i % 2 ? 0 : -16 }, t));
+  tl.set("#r2", { opacity: 1 }, cuts[0]);     tl.set("#cur", { x: 620, y: 344 }, cuts[0]);
+  tl.set("#r3", { opacity: 1 }, cuts[1]);     tl.set("#cur", { x: 620, y: 394 }, cuts[1]);
+  tl.set("#tagOff", { opacity: 1 }, cuts[2]); tl.set("#cur", { x: 779, y: 176 }, cuts[2]);
+  tl.set("#cur", { x: 930, y: 480 }, cuts[3]);
+
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

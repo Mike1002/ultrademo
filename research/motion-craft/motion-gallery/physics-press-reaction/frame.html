@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>physics-press-reaction</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  /* card 640x360 centred: left 320, top 180 */
+  .card { position: absolute; left: 320px; top: 180px; width: 640px; height: 360px; background: #fffdf8;
+    border: 2px solid #1d1c1a; border-radius: 24px; }
+  .line { position: absolute; left: 48px; top: 56px; font-size: 40px; font-weight: 700; letter-spacing: -0.01em; }
+  .sub { position: absolute; left: 48px; top: 116px; font-size: 20px; color: #6d6a63; }
+  /* button 280x80 inside the card at (48, 220) -> stage centre (320+48+140, 180+220+40) = (508, 440) */
+  .btn { position: absolute; left: 48px; top: 220px; width: 280px; height: 80px; border-radius: 18px; background: #f2c200;
+    border: 2px solid #1d1c1a; color: #1d1c1a; font-size: 26px; font-weight: 700; display: grid; place-items: center;
+    transform-origin: 50% 50%; will-change: transform; box-shadow: 0 14px 26px rgba(29,28,26,0.20); }
+  /* cursor: tip at the box origin; transform-origin 0 0 so scaling keeps the tip on the click point.
+     Rest position = tip on the button centre (508,440). GSAP x/y move it from the far corner. */
+  .cursor { position: absolute; left: 508px; top: 440px; width: 56px; height: 76px; z-index: 10; pointer-events: none;
+    transform-origin: 0 0; will-change: transform; filter: drop-shadow(0 6px 8px rgba(0,0,0,0.25)); }
+  .cursor svg { width: 56px; height: 76px; display: block; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div class="card">
+      <div class="line">Every frame is code</div>
+      <div class="sub">Cursor and button compress together, then spring back</div>
+      <div class="btn" id="btn">Continue</div>
+    </div>
+    <div class="cursor" id="cursor">
+      <svg viewBox="0 0 28 38"><path d="M2.5 2.5 L2.5 29.5 L9.6 23 L14.4 33.6 L19 31.6 L14.3 21.4 L23.8 21.4 Z" fill="#ffffff" stroke="#1d1c1a" stroke-width="2" stroke-linejoin="round"/></svg>
+    </div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true });
+  // Rule values: approach 0.9 s power2.inOut; PRESS_INTENSITY 0.10 on BOTH via one targets array;
+  // press-down 0.15 s power1.in; short hold; release 0.55 s back.out(2.0); cursor exits after settle; dwell >= 1 s.
+  const APPROACH_START = 0.1, APPROACH_DUR = 0.9, PRESS_DOWN_AT = APPROACH_START + APPROACH_DUR;
+  const PRESS_DOWN_DUR = 0.15, HOLD = 0.1, RELEASE_AT = PRESS_DOWN_AT + PRESS_DOWN_DUR + HOLD, RELEASE_DUR = 0.55;
+  const PRESS_INTENSITY = 0.10, BOUNCE_FACTOR = 2.0;
+  const REST_SHADOW = "0px 14px 26px rgba(29,28,26,0.20)";
+  const PRESSED_SHADOW = "0px 2px 4px rgba(29,28,26,0.25), inset 0px 0px 24px rgba(29,28,26,0.28)";
+
+  // Phase 1: approach from the far lower-right corner (motion-in, not a teleport)
+  tl.fromTo("#cursor", { x: 640, y: 300, scale: 1 }, { x: 0, y: 0, duration: APPROACH_DUR, ease: "power2.inOut" }, APPROACH_START);
+  tl.set("#btn", { scale: 1, boxShadow: REST_SHADOW }, 0);
+  // Phase 2: coordinated press down, ONE targets array, same scale
+  tl.to(["#btn", "#cursor"], { scale: 1 - PRESS_INTENSITY, duration: PRESS_DOWN_DUR, ease: "power1.in" }, PRESS_DOWN_AT);
+  // Phase 3: release, both spring back together
+  tl.to(["#btn", "#cursor"], { scale: 1, duration: RELEASE_DUR, ease: `back.out(${BOUNCE_FACTOR})` }, RELEASE_AT);
+  // Phase 4: inner glow during press (energy concentrated), resting shadow on release
+  tl.to("#btn", { boxShadow: PRESSED_SHADOW, duration: PRESS_DOWN_DUR, ease: "power1.in" }, PRESS_DOWN_AT);
+  tl.to("#btn", { boxShadow: REST_SHADOW, duration: RELEASE_DUR, ease: "power2.out" }, RELEASE_AT);
+  // Cursor drifts off after the press settles (exit >= RELEASE_AT + RELEASE_DUR)
+  tl.to("#cursor", { x: 150, y: 70, duration: 0.7, ease: "power2.out" }, RELEASE_AT + RELEASE_DUR + 0.15);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

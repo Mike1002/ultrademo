@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-motion-trails</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  #chart { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  #chart text { font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .grid { stroke: #e3ded2; stroke-width: 2; }
+  .axis { stroke: #1d1c1a; stroke-width: 2; }
+  .tick { font-size: 16px; fill: #6d6a63; }
+  .trail { fill: none; stroke: #1d1c1a; stroke-width: 3; stroke-linejoin: round; stroke-linecap: round; }
+  .tdot { fill: #1d1c1a; }
+  .head { fill: #f2c200; stroke: #1d1c1a; stroke-width: 3; }
+  .heading { position: absolute; left: 32px; top: 20px; font-size: 34px; font-weight: 700; }
+  .sub { position: absolute; left: 34px; top: 68px; font-size: 18px; color: #6d6a63; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div class="heading">Invite path</div>
+      <div class="sub">Where the invite went, and where it is now</div>
+      <svg id="chart" viewBox="0 0 1168 580" xmlns="http://www.w3.org/2000/svg">
+        <line class="grid" x1="160" y1="220" x2="1100" y2="220"/>
+        <line class="grid" x1="160" y1="330" x2="1100" y2="330"/>
+        <line class="grid" x1="160" y1="440" x2="1100" y2="440"/>
+        <line class="grid" x1="395" y1="110" x2="395" y2="550"/>
+        <line class="grid" x1="630" y1="110" x2="630" y2="550"/>
+        <line class="grid" x1="865" y1="110" x2="865" y2="550"/>
+        <line class="axis" x1="160" y1="550" x2="1100" y2="550"/>
+        <line class="axis" x1="160" y1="110" x2="160" y2="550"/>
+        <text class="tick" x="160" y="575" text-anchor="middle">Sent</text>
+        <text class="tick" x="630" y="575" text-anchor="middle">Opened</text>
+        <text class="tick" x="1100" y="575" text-anchor="middle">Joined</text>
+        <text class="tick" x="140" y="116" text-anchor="end">Fast</text>
+        <text class="tick" x="140" y="555" text-anchor="end">Slow</text>
+        <polyline id="trail" class="trail" points=""/>
+        <g id="tdots"></g>
+        <circle id="head" class="head" cx="0" cy="0" r="12"/>
+      </svg>
+    </div>
+    <div id="label"><span class="l-name">Motion trails</span><span class="l-sep">·</span><span>Data</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const NS = "http://www.w3.org/2000/svg";
+  const SAMPLES = 20, STEP = 0.1, TAIL_OPACITY = 0.55, LINE_OPACITY = 0.35;
+  // The point's path is a smooth closed-form curve of time, so every frame is a pure function of t.
+  function pointAt(u) {
+    const s = Math.max(0, u) * 1.15;
+    return [630 + 440 * Math.sin(s * 1.05 - 1.6), 330 + 170 * Math.sin(s * 2.1 + 0.4)];
+  }
+  const g = document.getElementById("tdots"), dots = [];
+  for (let i = 0; i < SAMPLES; i++) {
+    const c = document.createElementNS(NS, "circle"); c.id = "td" + i; c.setAttribute("class", "tdot");
+    c.setAttribute("cx", 0); c.setAttribute("cy", 0); c.setAttribute("r", 4); c.setAttribute("opacity", 0); g.appendChild(c); dots.push(c);
+  }
+  const trail = document.getElementById("trail"), head = document.getElementById("head");
+  function renderAt(t) {
+    const pts = [];
+    for (let i = 0; i < SAMPLES; i++) {
+      const u = t - i * STEP;              // older samples sit further back along the path
+      const age = i / SAMPLES;
+      const [x, y] = pointAt(u);
+      const vis = u >= 0 ? 1 : 0;
+      dots[i].setAttribute("cx", x.toFixed(1)); dots[i].setAttribute("cy", y.toFixed(1));
+      dots[i].setAttribute("opacity", (vis * TAIL_OPACITY * (1 - age)).toFixed(3));
+      dots[i].setAttribute("r", (7 - 5 * age).toFixed(2));
+      if (vis) pts.push(x.toFixed(1) + "," + y.toFixed(1));
+    }
+    trail.setAttribute("points", pts.join(" "));
+    trail.setAttribute("opacity", LINE_OPACITY);
+    const [hx, hy] = pointAt(t);
+    head.setAttribute("cx", hx.toFixed(1)); head.setAttribute("cy", hy.toFixed(1));
+  }
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "none", duration: 0.6 } });
+  renderAt(0);
+  tl.to({ k: 0 }, { k: 1, duration: 3, ease: "none", onUpdate: () => renderAt(tl.time()) }, 0);
+  const baseRender = tl.render; tl.render = function () { const r = baseRender.apply(this, arguments); renderAt(this.time()); return r; };
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-tv-tracking-transition</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; overflow: hidden; }
+  #cv { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <canvas id="cv" width="1168" height="580"></canvas>
+    </div>
+    <div id="label"><span class="l-name">TV tracking transition</span><span class="l-sep">·</span><span>Transitions</span><span class="l-sep">·</span><span>high</span></div>
+  </section>
+</div>
+<script>
+  const W = 1168, H = 580, FONT = '-apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif';
+  // Both scenes are drawn once as pixels: A (invite card) and B (stats card), the same card pair as the other transitions.
+  function scene(kind) {
+    const c = document.createElement("canvas"); c.width = W; c.height = H;
+    const x = c.getContext("2d");
+    x.fillStyle = "#f6f3ec"; x.fillRect(0, 0, W, H);
+    x.fillStyle = "#fffdf8"; x.strokeStyle = "#1d1c1a"; x.lineWidth = 2;
+    x.beginPath(); x.roundRect(265, 111, 638, 358, 24); x.fill(); x.stroke();
+    x.textBaseline = "alphabetic"; x.fillStyle = "#6d6a63"; x.font = "13px " + FONT;
+    x.fillText(kind === "a" ? "O R B I T" : "T H I S  M O N T H", 320, 169);
+    if (kind === "a") {
+      x.fillStyle = "#1d1c1a"; x.font = "700 56px " + FONT; x.fillText("Invite your team", 320, 240);
+      x.fillStyle = "#6d6a63"; x.font = "22px " + FONT; x.fillText("3 seats left on this plan", 320, 288);
+      x.fillStyle = "#f2c200"; x.beginPath(); x.roundRect(321, 351, 198, 58, 14); x.fill(); x.stroke();
+      x.fillStyle = "#1d1c1a"; x.font = "700 20px " + FONT; x.textAlign = "center"; x.fillText("Continue", 420, 387); x.textAlign = "left";
+    } else {
+      x.fillStyle = "#1d1c1a"; x.font = "700 96px " + FONT; x.fillText("12,480", 318, 262);
+      x.fillStyle = "#6d6a63"; x.font = "22px " + FONT; x.fillText("invites sent", 320, 318);
+    }
+    return c;
+  }
+  const A = scene("a"), B = scene("b");
+  const cv = document.getElementById("cv"), ctx = cv.getContext("2d");
+  const LINES = 120, LH = H / LINES, AMP = 60;
+  // Tracking windows: [start, duration, from, to]; the card's own 700 ms first, a shorter slip back later.
+  const WIN = [[0.85, 0.7, A, B], [2.2, 0.55, B, A]];
+  let last = null;
+  function renderAt(t) {
+    let p = -1, src = A, dst = B, w = null;
+    for (const win of WIN) { if (t >= win[0] && t < win[0] + win[1]) { p = (t - win[0]) / win[1]; src = win[2]; dst = win[3]; w = win; } }
+    if (p < 0) { src = t < WIN[0][0] ? A : (t < WIN[1][0] ? B : A); }
+    const key = p < 0 ? (src === A ? -1 : -2) : Math.round(p * 1000);
+    if (key === last) return; last = key;
+    const k = p < 0 ? 0 : Math.sin(Math.PI * p);
+    const img = p >= 0.5 ? dst : src;
+    ctx.clearRect(0, 0, W, H);
+    for (let i = 0; i < LINES; i++) {
+      const on = (i * 7) % 20 < 7;   // about 35% of the lines slip
+      const dx = on ? Math.sin(i + p * 12) * AMP * k : 0;
+      const y = i * LH;
+      ctx.drawImage(img, 0, y, W, LH, dx, y, W, LH);
+      if (on && dx !== 0) { // the ground shows where a line slipped away
+        ctx.fillStyle = "#f6f3ec";
+        if (dx > 0) ctx.fillRect(0, y, dx, LH); else ctx.fillRect(W + dx, y, -dx, LH);
+      }
+    }
+    if (p >= 0) {
+      // one dark scan bar runs down the frame during the slip, 0.35 opacity
+      ctx.fillStyle = "rgba(29,28,26,0.35)";
+      ctx.fillRect(0, -90 + p * (H + 180), W, 90);
+      // the picture dims a touch at the worst of the slip
+      ctx.fillStyle = "rgba(29,28,26," + (0.12 * k).toFixed(3) + ")";
+      ctx.fillRect(0, 0, W, H);
+    }
+  }
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "none", duration: 0.6 } });
+  renderAt(0);
+  tl.to({ k: 0 }, { k: 1, duration: 3, ease: "none", onUpdate: () => renderAt(tl.time()) }, 0);
+  const baseRender = tl.render; tl.render = function () { const r = baseRender.apply(this, arguments); renderAt(this.time()); return r; };
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

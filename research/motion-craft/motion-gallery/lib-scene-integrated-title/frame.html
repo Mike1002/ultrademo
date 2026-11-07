@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-scene-integrated-title</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; overflow: hidden; }
+  #floor { position: absolute; left: 0; top: 410px; width: 1168px; height: 2px; background: #e3ded2; }
+  #cap { position: absolute; left: 0; top: 440px; width: 1168px; text-align: center; font-size: 18px; color: #6d6a63; letter-spacing: .06em; text-transform: uppercase; }
+  #title { position: absolute; left: 0; top: 130px; width: 1168px; height: 260px; line-height: 260px; text-align: center; font-size: 230px; font-weight: 700; letter-spacing: -0.03em; white-space: nowrap; will-change: clip-path; }
+  #line { position: absolute; left: -1px; top: 0; width: 2px; height: 580px; background: #1d1c1a; will-change: transform; }
+  #line .head { position: absolute; left: -8px; top: 252px; width: 18px; height: 18px; border-radius: 50%; background: #f2c200; border: 2px solid #1d1c1a; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div id="floor"></div>
+      <div id="title" data-layout-allow-overlap>Orbit</div>
+      <div id="cap">the line in the scene reveals the title</div>
+      <div id="line" data-layout-allow-overlap><div class="head"></div></div>
+    </div>
+    <div id="label"><span class="l-name">Scene-integrated title</span><span class="l-sep">·</span><span>Typography</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  // Params: the travelling line and the title's clip edge share one tween value (x 0 -> 1168 over 1.3 s, power1.inOut),
+  // so the title is revealed exactly where the line passes; the line's return pass hides it the same way.
+  const W = 1168;
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power1.inOut", duration: 1.3 } });
+  tl.fromTo("#line", { x: 0 }, { x: W, duration: 1.3, ease: "power1.inOut" }, 0.2);
+  tl.fromTo("#title", { clipPath: "inset(0px " + W + "px 0px 0px)" }, { clipPath: "inset(0px 0px 0px 0px)", duration: 1.3, ease: "power1.inOut" }, 0.2);
+  // hold, then the line passes back and takes the title with it
+  tl.to("#line", { x: 0, duration: 1.0, ease: "power1.inOut" }, 1.95);
+  tl.to("#title", { clipPath: "inset(0px " + W + "px 0px 0px)", duration: 1.0, ease: "power1.inOut" }, 1.95);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-oscilloscope-trace</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #171a21; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #171a21; color: #ece8df;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  #cv { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  .heading { position: absolute; left: 32px; top: 16px; font-size: 34px; font-weight: 700; color: #ece8df; }
+  .sub { position: absolute; left: 34px; top: 62px; font-size: 16px; color: #a7adbb; }
+  .read { position: absolute; top: 540px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #a7adbb; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #a7adbb; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #ece8df; font-weight: 700; }
+  #label .l-sep { color: #6d7380; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <canvas id="cv" width="1168" height="580"></canvas>
+      <div class="heading">Signal</div>
+      <div class="sub">Invites per minute, live</div>
+      <div class="read" style="left: 84px;">10 × 8 divisions</div>
+      <div class="read" style="left: 480px;">Sweep 1.8 s</div>
+      <div class="read" style="left: 900px;">Persistence 0.4 s</div>
+    </div>
+    <div id="label"><span class="l-name">Oscilloscope trace</span><span class="l-sep">·</span><span>Data</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const cv = document.getElementById("cv"), ctx = cv.getContext("2d");
+  const W = 1168, H = 580, GX = 84, GY = 96, GW = 1000, GH = 400, MID = GY + GH / 2;
+  const ACC = "#f2c200", RULE = "#2a2f3a", INK = "#ece8df";
+  const N = 400, SWEEP = 1.8, TAU = 0.4, SWEEPS = [0.1, 1.95]; // two left-to-right sweeps: the second retraces over the fading first
+  // Baked waveform: a 3-cycle fundamental with a 7-cycle harmonic under a gentle envelope (no randomness).
+  const samples = [];
+  for (let i = 0; i < N; i++) {
+    const u = i / (N - 1);
+    const env = 0.75 + 0.25 * Math.sin(u * Math.PI * 2 * 0.5 + 0.6);
+    samples.push(env * (0.55 * Math.sin(u * Math.PI * 2 * 3) + 0.22 * Math.sin(u * Math.PI * 2 * 7 + 1.0)));
+  }
+  const sx = i => GX + (i / (N - 1)) * GW;
+  const sy = i => MID - samples[i] * (GH * 0.42);
+  function alphaAt(i, t) {
+    let a = 0;
+    for (const s0 of SWEEPS) {
+      const age = t - (s0 + (i / (N - 1)) * SWEEP);
+      if (age >= 0) a = Math.max(a, Math.exp(-age / TAU));
+    }
+    return a;
+  }
+  function renderAt(t) {
+    ctx.clearRect(0, 0, W, H); ctx.globalAlpha = 1;
+    // Scope grid, 10 by 8 divisions, with a brighter centre cross.
+    ctx.strokeStyle = RULE; ctx.lineWidth = 1;
+    for (let c = 0; c <= 10; c++) { const x = GX + c * (GW / 10); ctx.beginPath(); ctx.moveTo(x, GY); ctx.lineTo(x, GY + GH); ctx.stroke(); }
+    for (let r = 0; r <= 8; r++) { const y = GY + r * (GH / 8); ctx.beginPath(); ctx.moveTo(GX, y); ctx.lineTo(GX + GW, y); ctx.stroke(); }
+    ctx.strokeStyle = "#3a404d"; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(GX, MID); ctx.lineTo(GX + GW, MID); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(GX + GW / 2, GY); ctx.lineTo(GX + GW / 2, GY + GH); ctx.stroke();
+    // Trace: each segment's opacity decays exponentially with the age of its sample (0.4 s constant).
+    ctx.lineCap = "round"; ctx.lineJoin = "round";
+    for (const [w, k] of [[10, 0.18], [3.5, 1]]) {
+      ctx.lineWidth = w; ctx.strokeStyle = ACC;
+      for (let i = 1; i < N; i++) {
+        const a = alphaAt(i, t); if (a < 0.01) continue;
+        ctx.globalAlpha = a * k;
+        ctx.beginPath(); ctx.moveTo(sx(i - 1), sy(i - 1)); ctx.lineTo(sx(i), sy(i)); ctx.stroke();
+      }
+    }
+    // The bright sampling point of whichever sweep is live.
+    ctx.globalAlpha = 1;
+    for (const s0 of SWEEPS) {
+      const u = (t - s0) / SWEEP;
+      if (u < 0 || u > 1) continue;
+      const i = Math.min(N - 1, Math.round(u * (N - 1)));
+      ctx.fillStyle = ACC; ctx.globalAlpha = 0.35; ctx.beginPath(); ctx.arc(sx(i), sy(i), 14, 0, Math.PI * 2); ctx.fill();
+      ctx.globalAlpha = 1; ctx.beginPath(); ctx.arc(sx(i), sy(i), 6, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = INK; ctx.beginPath(); ctx.arc(sx(i), sy(i), 2.5, 0, Math.PI * 2); ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+  }
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "none", duration: 0.6 } });
+  renderAt(0);
+  tl.to({ k: 0 }, { k: 1, duration: 3, ease: "none", onUpdate: () => renderAt(tl.time()) }, 0);
+  const baseRender = tl.render; tl.render = function () { const r = baseRender.apply(this, arguments); renderAt(this.time()); return r; };
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

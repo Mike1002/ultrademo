@@ -1,0 +1,23 @@
+{
+  "name": "Marquee",
+  "family": "Loop & Ambient",
+  "purpose": [
+    "Feedback",
+    "Mood"
+  ],
+  "energy": "calm",
+  "tier": 2,
+  "runtime": "gsap",
+  "tags": [
+    "infinite ticker wrap",
+    "seamless carousel",
+    "infinite conveyor",
+    "infinite marquee",
+    "ticker loop",
+    "infinite slider",
+    "loop",
+    "constant speed",
+    "duplicated strip"
+  ],
+  "one_line": "A belt of big words, Record · Edit · Ship with a yellow dot, duplicated three times, slides left at a constant speed between two rules like an endless ticker."
+}

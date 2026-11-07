@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-title-card-rhythm</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; overflow: hidden; }
+  .card { position: absolute; left: 204px; top: 90px; width: 760px; height: 380px; background: #fffdf8; border: 2px solid #1d1c1a; border-radius: 24px; will-change: transform, opacity; }
+  .card .lab { position: absolute; left: 0; width: 756px; top: 96px; text-align: center; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  .card .nm { position: absolute; left: 0; width: 756px; top: 136px; text-align: center; font-size: 64px; font-weight: 700; line-height: 72px; letter-spacing: -0.01em; white-space: nowrap; }
+  .card .role { position: absolute; left: 0; width: 756px; top: 222px; text-align: center; font-size: 22px; color: #6d6a63; white-space: nowrap; }
+  .card .ul { position: absolute; left: 298px; top: 270px; width: 160px; height: 8px; border-radius: 4px; background: #f2c200; transform-origin: 50% 50%; will-change: transform; }
+  .card.key .nm { font-size: 72px; }
+  #ticks { position: absolute; left: 0; width: 1168px; top: 510px; height: 12px; display: flex; justify-content: center; gap: 14px; }
+  #ticks div { width: 48px; height: 10px; border-radius: 5px; background: #e3ded2; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div id="cards"></div>
+      <div id="ticks"><div id="k0"></div><div id="k1"></div><div id="k2"></div><div id="k3"></div></div>
+    </div>
+    <div id="label"><span class="l-name">Title card rhythm</span><span class="l-sep">·</span><span>Transitions</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  // Four cards on a 0.6 s beat: three names with a role line, then the key title, which holds longest and takes the underline.
+  const CARDS = [["Founder", "Jamie Dalton", "Orbit"], ["Design", "Sam Kim", "Orbit"], ["Engineering", "Morgan Lee", "Orbit"], ["Orbit", "Invite your team", "3 seats left on this plan"]];
+  let h = "";
+  CARDS.forEach((c, i) => {
+    h += '<div class="card' + (i === 3 ? ' key' : '') + '" id="c' + i + '" data-layout-allow-overlap>' +
+         '<div class="lab" data-layout-allow-overlap data-layout-allow-occlusion>' + c[0] + '</div>' +
+         '<div class="nm" data-layout-allow-overlap data-layout-allow-occlusion>' + c[1] + '</div>' +
+         '<div class="role" data-layout-allow-overlap data-layout-allow-occlusion>' + c[2] + '</div>' +
+         (i === 3 ? '<div class="ul" id="ul"></div>' : '') + '</div>';
+  });
+  document.getElementById("cards").innerHTML = h;
+  const BEAT = 0.6, T0 = 0.15, DUR = [BEAT, BEAT, BEAT, 3.0];   // start times accumulate: 0.15, 0.75, 1.35, 1.95; the key card holds to the end
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "none", duration: 0.2 } });
+  let t = T0;
+  CARDS.forEach((c, i) => {
+    // each card cuts in on the beat with a small pop (scale 0.94 to 1 over 0.2 s) and is cut out instantly when the next one lands
+    tl.fromTo("#c" + i, { opacity: 0 }, { opacity: 1, duration: 0.067, ease: "none" }, t);
+    tl.fromTo("#c" + i, { scale: 0.94 }, { scale: 1, duration: 0.2, ease: "power2.out" }, t);
+    if (i < 3) tl.to("#c" + i, { opacity: 0, duration: 0.034, ease: "none" }, t + DUR[i] - 0.034);
+    tl.fromTo("#k" + i, { backgroundColor: "#e3ded2" }, { backgroundColor: "#f2c200", duration: 0.034, ease: "none" }, t);
+    t += DUR[i];
+  });
+  // The key title holds: the yellow underline draws in, then the card breathes so the clip keeps moving.
+  tl.fromTo("#ul", { scaleX: 0 }, { scaleX: 1, duration: 0.4, ease: "power3.out" }, 2.15);
+  tl.to("#c3", { scale: 1.02, duration: 0.5, ease: "sine.inOut" }, 2.5);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

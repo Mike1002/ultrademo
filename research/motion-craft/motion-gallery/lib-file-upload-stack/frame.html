@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-file-upload-stack</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  #panel { position: absolute; left: 244px; top: 30px; width: 680px; height: 520px; background: #fffdf8; border: 2px solid #1d1c1a; border-radius: 24px; }
+  #panel .lab { position: absolute; left: 48px; top: 40px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  #panel h1 { position: absolute; left: 48px; top: 64px; font-size: 32px; font-weight: 700; line-height: 40px; white-space: nowrap; }
+  #panel .sub { position: absolute; left: 48px; top: 112px; font-size: 18px; color: #6d6a63; white-space: nowrap; }
+  .file { position: absolute; left: 48px; width: 584px; height: 96px; background: #fffdf8; border: 2px solid #1d1c1a; border-radius: 16px; will-change: transform, opacity; opacity: 0;
+    box-shadow: 0 8px 20px rgba(29,28,26,0.10); }
+  .file .ico { position: absolute; left: 22px; top: 22px; width: 40px; height: 50px; border: 2px solid #1d1c1a; border-radius: 6px 12px 6px 6px; background: #ece7da; }
+  .file .ico.y { background: #f2c200; }
+  .file .nm { position: absolute; left: 84px; top: 18px; font-size: 20px; font-weight: 600; white-space: nowrap; }
+  .file .sz { position: absolute; left: 84px; top: 46px; font-size: 14px; color: #6d6a63; white-space: nowrap; }
+  .file .track { position: absolute; left: 84px; top: 72px; width: 420px; height: 8px; border-radius: 4px; background: #e3ded2; }
+  .file .fill { position: absolute; left: 84px; top: 72px; width: 420px; height: 8px; border-radius: 4px; background: #f2c200; transform-origin: 0 50%; will-change: transform; }
+  .file .chk { position: absolute; right: 22px; top: 30px; width: 36px; height: 36px; border-radius: 50%; background: #f2c200; border: 2px solid #1d1c1a; will-change: transform, opacity; opacity: 0; }
+  .file .chk svg { position: absolute; left: 7px; top: 8px; width: 18px; height: 14px; display: block; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div id="panel">
+        <div class="lab">Orbit · Invite your team</div>
+        <h1>Uploading 3 files</h1>
+        <div class="sub">Shared with Jamie Dalton, Sam Kim and Morgan Lee</div>
+        <div class="file" id="f0" style="top:160px"><div class="ico y"></div><div class="nm">invites.csv</div><div class="sz">12,480 rows · 1.2 MB</div>
+          <div class="track"></div><div class="fill" id="p0"></div>
+          <div class="chk" id="c0"><svg viewBox="0 0 18 14"><path d="M2 7 L7 12 L16 2" fill="none" stroke="#1d1c1a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+        <div class="file" id="f1" style="top:272px"><div class="ico"></div><div class="nm">logo.png</div><div class="sz">1024 × 1024 · 340 KB</div>
+          <div class="track"></div><div class="fill" id="p1"></div>
+          <div class="chk" id="c1"><svg viewBox="0 0 18 14"><path d="M2 7 L7 12 L16 2" fill="none" stroke="#1d1c1a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+        <div class="file" id="f2" style="top:384px"><div class="ico"></div><div class="nm">deck.pdf</div><div class="sz">24 pages · 8.6 MB</div>
+          <div class="track"></div><div class="fill" id="p2"></div>
+          <div class="chk" id="c2"><svg viewBox="0 0 18 14"><path d="M2 7 L7 12 L16 2" fill="none" stroke="#1d1c1a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+      </div>
+    </div>
+    <div id="label"><span class="l-name">File upload stack</span><span class="l-sep">·</span><span>UI Demo</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power2.out", duration: 0.5 } });
+  // Params: each card enters over 500 ms (y 24 -> 0, scale 0.96 -> 1, fade in) with an 80 ms stagger, power2.out.
+  // Then each bar fills at its own pace and a check pops in when it completes.
+  const files = ["#f0", "#f1", "#f2"], fills = ["#p0", "#p1", "#p2"], checks = ["#c0", "#c1", "#c2"];
+  const fillAt = [0.7, 0.85, 1.0], fillDur = [0.9, 1.3, 1.7];
+  files.forEach((f, i) => {
+    tl.fromTo(f, { y: 24, scale: 0.96, opacity: 0 }, { y: 0, scale: 1, opacity: 1, duration: 0.5, ease: "power2.out" }, 0.2 + i * 0.08);
+    tl.fromTo(fills[i], { scaleX: 0 }, { scaleX: 1, duration: fillDur[i], ease: "power1.inOut" }, fillAt[i]);
+    tl.fromTo(checks[i], { scale: 0.4, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.35, ease: "back.out(2)", immediateRender: false }, fillAt[i] + fillDur[i] - 0.05);
+  });
+  // a soft lift on the panel's last card once everything is done, so the end still settles
+  tl.to("#f2", { y: -2, duration: 0.15, ease: "power2.out", yoyo: true, repeat: 1 }, 2.72);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

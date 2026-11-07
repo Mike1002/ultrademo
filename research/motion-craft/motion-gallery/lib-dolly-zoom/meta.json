@@ -1,0 +1,22 @@
+{
+  "name": "Dolly zoom",
+  "family": "Camera",
+  "purpose": [
+    "Attention",
+    "Mood"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "webgl",
+  "tags": [
+    "dolly zoom",
+    "dolly-zoom-vertigo",
+    "dolly zoom / vertigo effect",
+    "camera",
+    "3d",
+    "vertigo",
+    "perspective",
+    "background compression"
+  ],
+  "one_line": "An invite card holds exactly its size while the field of faint cards behind it swells and flattens as the camera pulls back and narrows its view, then the space relaxes again."
+}

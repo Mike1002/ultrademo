@@ -1,0 +1,21 @@
+{
+  "name": "Stagger",
+  "family": "Principles",
+  "purpose": [
+    "Sequence",
+    "Explanation"
+  ],
+  "energy": "steady",
+  "tier": 2,
+  "runtime": "gsap",
+  "tags": [
+    "grid card assembly",
+    "spatial stagger wave",
+    "grid ripple",
+    "principles",
+    "sequence",
+    "grid",
+    "offset"
+  ],
+  "one_line": "Twelve blocks in a 4 by 3 grid rise and fade in one after another in reading order, 0.06 s apart, the last one yellow; a small ripple then runs through the grid in the same order."
+}

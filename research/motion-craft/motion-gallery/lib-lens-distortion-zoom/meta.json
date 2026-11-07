@@ -1,0 +1,21 @@
+{
+  "name": "Lens distortion zoom",
+  "family": "Camera",
+  "purpose": [
+    "Attention",
+    "Mood"
+  ],
+  "energy": "high",
+  "tier": 3,
+  "runtime": "webgl",
+  "tags": [
+    "optics compensation",
+    "camera",
+    "canvas",
+    "barrel distortion",
+    "wide angle",
+    "zoom",
+    "lens"
+  ],
+  "one_line": "The view rushes toward an invite card on a dotted grid; as it closes in, the grid lines bow outward like a wide lens and straighten again at the end of the push, then the view eases back out the same way."
+}

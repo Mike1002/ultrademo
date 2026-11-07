@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>multi-cursor-choreography</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; overflow: hidden; }
+  /* canvas group: the whole shared canvas; GSAP pans it slowly (element translate, not a camera) */
+  .canvas-group { position: absolute; left: 0; top: 0; width: 1280px; height: 720px; will-change: transform; }
+  .mockup { position: absolute; background: #fffdf8; border: 2px solid #1d1c1a; border-radius: 24px; }
+  #mockup-a { left: 120px; top: 120px; width: 500px; height: 330px; }
+  #mockup-b { left: 700px; top: 120px; width: 460px; height: 330px; }
+  .line { position: absolute; left: 36px; top: 40px; font-size: 36px; font-weight: 700; letter-spacing: -0.01em; }
+  .sub { position: absolute; left: 36px; top: 94px; font-size: 18px; color: #6d6a63; }
+  .num { position: absolute; left: 36px; top: 84px; font-size: 84px; font-weight: 800; letter-spacing: -0.03em; line-height: 1; }
+  .bar { position: absolute; left: 36px; height: 18px; border-radius: 9px; background: #e3ded2; }
+  .hl { position: absolute; left: 24px; top: 30px; width: 400px; height: 60px; border-radius: 12px; background: #f2c200; opacity: 0; z-index: 0; }
+  /* chip in the tray row; z above mockups */
+  .chip { position: absolute; left: 160px; top: 520px; width: 200px; height: 60px; border-radius: 14px; background: #fffdf8;
+    border: 2px solid #1d1c1a; font-size: 20px; font-weight: 700; display: grid; place-items: center; will-change: transform; z-index: 2; }
+  .slot { position: absolute; left: 36px; top: 230px; width: 200px; height: 60px; border-radius: 14px; border: 2px dashed #e3ded2; }
+  /* actors: wrapper = arrow + tag, one element; GSAP owns x/y; tip at the wrapper's (0,0) */
+  .actor { position: absolute; left: 0; top: 0; width: 160px; height: 80px; z-index: 10; pointer-events: none;
+    transform-origin: 2px 2px; will-change: transform; }
+  .actor svg { position: absolute; left: 0; top: 0; width: 30px; height: 41px; display: block; filter: drop-shadow(0 3px 5px rgba(0,0,0,0.22)); }
+  .tag { position: absolute; left: 24px; top: 30px; height: 30px; padding: 0 12px; border-radius: 15px; font-size: 16px; font-weight: 700;
+    display: flex; align-items: center; white-space: nowrap; border: 2px solid #1d1c1a; }
+  #actor-1 .tag { background: #f2c200; color: #1d1c1a; }
+  #actor-2 .tag { background: #1d1c1a; color: #ece8df; }
+  #actor-3 .tag { background: #fffdf8; color: #1d1c1a; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div class="canvas-group" id="canvas-group">
+      <div class="mockup" id="mockup-a">
+        <div class="hl" id="hl"></div>
+        <div class="line">Every frame is code</div>
+        <div class="sub">Shared canvas, three people working</div>
+        <div class="bar" style="top: 170px; width: 300px;"></div>
+        <div class="bar" style="top: 206px; width: 220px;"></div>
+        <div class="bar" style="top: 242px; width: 260px;"></div>
+      </div>
+      <div class="mockup" id="mockup-b">
+        <div class="sub" style="top: 40px;">Active members</div>
+        <div class="num">1,284</div>
+        <div class="slot"></div>
+      </div>
+      <div class="chip" id="chip-1" data-layout-allow-overlap>Continue</div>
+    </div>
+    <div class="actor" id="actor-1" data-layout-allow-overlap>
+      <svg viewBox="0 0 28 38"><path d="M2.5 2.5 L2.5 29.5 L9.6 23 L14.4 33.6 L19 31.6 L14.3 21.4 L23.8 21.4 Z" fill="#f2c200" stroke="#1d1c1a" stroke-width="2" stroke-linejoin="round"/></svg>
+      <span class="tag" data-layout-allow-overlap>Jamie</span>
+    </div>
+    <div class="actor" id="actor-2" data-layout-allow-overlap>
+      <svg viewBox="0 0 28 38"><path d="M2.5 2.5 L2.5 29.5 L9.6 23 L14.4 33.6 L19 31.6 L14.3 21.4 L23.8 21.4 Z" fill="#1d1c1a" stroke="#1d1c1a" stroke-width="2" stroke-linejoin="round"/></svg>
+      <span class="tag" data-layout-allow-overlap>Sam</span>
+    </div>
+    <div class="actor" id="actor-3" data-layout-allow-overlap>
+      <svg viewBox="0 0 28 38"><path d="M2.5 2.5 L2.5 29.5 L9.6 23 L14.4 33.6 L19 31.6 L14.3 21.4 L23.8 21.4 Z" fill="#ffffff" stroke="#1d1c1a" stroke-width="2" stroke-linejoin="round"/></svg>
+      <span class="tag" data-layout-allow-overlap>Morgan</span>
+    </div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true });
+  // The choreography IS this table. Zones: Jamie = left mockup, Sam = chip row -> right slot, Morgan = right mockup.
+  // Action beats (compressed for a 3 s specimen): hover 0.9 (Jamie), grab 1.45 (Sam), drop 2.45 (Sam). Never two at once.
+  const ACTORS = [
+    { id: "#actor-1", legs: [
+      { from: { x: 60, y: 300 }, to: { x: 200, y: 180 }, at: 0.15, dur: 0.75 },
+      { to: { x: 330, y: 330 }, at: 2.0, dur: 0.7 } ] },                 // rest 1.1 s, then a second glide inside its zone
+    { id: "#actor-2", legs: [
+      { from: { x: 1340, y: 640 }, to: { x: 280, y: 552 }, at: 0.35, dur: 1.05 }, // enters off-frame right, lands on the chip at 1.4
+      { to: { x: 856, y: 382 }, at: 1.65, dur: 0.8 } ] },                // carries the chip to the slot, lands at 2.45
+    { id: "#actor-3", legs: [
+      { from: { x: 1000, y: 220 }, to: { x: 1080, y: 270 }, at: 1.0, dur: 0.8 } ] }, // mid-canvas at t=0, one considered glide
+  ];
+  ACTORS.forEach((actor) => {
+    let prev = actor.legs[0].from;
+    tl.set(actor.id, { x: prev.x, y: prev.y, scale: 1 }, 0);
+    actor.legs.forEach((leg) => {
+      tl.fromTo(actor.id, { x: prev.x, y: prev.y },
+        { x: leg.to.x, y: leg.to.y, duration: leg.dur, ease: "power2.inOut", immediateRender: false }, leg.at);
+      prev = leg.to;
+    });
+  });
+  // Jamie hovers the headline: highlight fades in under the tip, once, then holds.
+  tl.fromTo("#hl", { opacity: 0 }, { opacity: 0.55, duration: 0.3, ease: "power2.out" }, 0.9);
+  // Sam grabs the chip (chorus-intensity dip), the chip rides leg 2 in lockstep (same position, duration, ease).
+  tl.to("#actor-2", { scale: 0.88, duration: 0.07, ease: "power2.in", yoyo: true, repeat: 1 }, 1.45);
+  tl.fromTo("#chip-1", { x: 0, y: 0 }, { x: 736 - 160, y: 350 - 520, duration: 0.8, ease: "power2.inOut", immediateRender: false }, 1.65);
+  // Drop: identity swap + tiny settle, quieter than a solo cursor's snap.
+  tl.set("#chip-1", { backgroundColor: "#f2c200" }, 2.45);
+  tl.fromTo("#chip-1", { scale: 1.06 }, { scale: 1, duration: 0.2, ease: "power3.out", immediateRender: false }, 2.45);
+  // Ambient canvas pan (element translate, not a camera).
+  tl.fromTo("#canvas-group", { x: 0 }, { x: -40, duration: 3, ease: "none" }, 0);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

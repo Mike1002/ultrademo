@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-orbit-loop</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  .heading { position: absolute; left: 80px; top: 50px; font-size: 18px; color: #6d6a63; }
+  .copy { position: absolute; left: 650px; top: 160px; }
+  .copy .t-xl { font-size: 72px; font-weight: 700; line-height: 1.1; letter-spacing: -0.02em; white-space: nowrap; }
+  .copy p { font-size: 22px; color: #6d6a63; margin-top: 18px; white-space: nowrap; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+  .system { position: absolute; left: 80px; top: 50px; width: 480px; height: 480px; }
+  .orbit-rule { position: absolute; left: 80px; top: 80px; width: 320px; height: 320px; border: 1px solid #e3ded2; border-radius: 50%; }
+  .core { position: absolute; left: 164px; top: 164px; width: 152px; height: 152px; background: #fffdf8; border: 2px solid #1d1c1a; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 36px; font-weight: 700; }
+  .orbit { position: absolute; left: 0; top: 0; width: 480px; height: 480px; will-change: transform; }
+  .satellite { position: absolute; left: 222px; top: 62px; width: 36px; height: 36px; border-radius: 50%; background: #1d1c1a; }
+  .satellite.v { background: #f2c200; border: 2px solid #1d1c1a; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div class="system">
+        <div class="orbit-rule"></div>
+        <div class="core">Orbit</div>
+        <div class="orbit" id="o1"><div class="satellite v"></div></div>
+        <div class="orbit" id="o2"><div class="satellite"></div></div>
+        <div class="orbit" id="o3"><div class="satellite"></div></div>
+        <div class="orbit" id="o4"><div class="satellite"></div></div>
+        <div class="orbit" id="o5"><div class="satellite"></div></div>
+        <div class="orbit" id="o6"><div class="satellite"></div></div>
+      </div>
+      <div class="copy"><div class="t-xl">One centre,</div><div class="t-xl">six connections</div><p>Same radius · constant angular speed</p></div>
+    </div>
+    <div id="label"><span class="l-name">Orbit loop</span><span class="l-sep">·</span><span>Loop &amp; Ambient</span><span class="l-sep">·</span><span>calm</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+  // Six carriers rotate about the shared centre, 60 degrees apart, at the source's 72 degrees per second (one turn in 5 s).
+  ["#o1", "#o2", "#o3", "#o4", "#o5", "#o6"].forEach((o, i) => {
+    tl.fromTo(o, { rotation: i * 60 }, { rotation: i * 60 + 216, duration: 3, ease: "none" }, 0);
+  });
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

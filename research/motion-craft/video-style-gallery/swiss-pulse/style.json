@@ -1,0 +1,118 @@
+{
+  "id": "swiss-pulse",
+  "name": "Swiss Pulse",
+  "canvas": "light",
+  "mood": [
+    "clinical",
+    "precise"
+  ],
+  "suits": [
+    "SaaS dashboards",
+    "developer tools",
+    "APIs",
+    "metrics"
+  ],
+  "palette": {
+    "bg": "#ffffff",
+    "bg_alt": "#f2f2f2",
+    "surface": "#ffffff",
+    "surface_2": "#f0f0f0",
+    "ink": "#1a1a1a",
+    "muted": "#6b6b6b",
+    "line": "#d8d8d8",
+    "accent": "#0066FF",
+    "accent_2": "#0066FF",
+    "on_accent": "#ffffff",
+    "term_bg": "#1a1a1a",
+    "term_ink": "#ffffff",
+    "term_muted": "#9a9a9a",
+    "term_line": "#333333"
+  },
+  "type": {
+    "display": {
+      "family": "Helvetica Neue",
+      "weight": 700,
+      "hook_px": 92,
+      "stat_px": 240,
+      "mark_px": 130,
+      "transform": "none",
+      "tracking": "-0.03em",
+      "line_height": "0.98",
+      "style": "normal",
+      "generic": "sans",
+      "card_title_px": 30
+    },
+    "body": {
+      "family": "Inter",
+      "weight": 400,
+      "generic": "sans"
+    },
+    "mono": {
+      "family": "Inter",
+      "weight": 500
+    },
+    "label": {
+      "family": "Inter",
+      "weight": 400,
+      "transform": "uppercase",
+      "tracking": "0.1em",
+      "generic": "sans",
+      "px": 15
+    }
+  },
+  "easing": {
+    "entry": "expo.out",
+    "exit": "power4.in",
+    "ambient": "none",
+    "pop": "expo.out",
+    "counter": "power3.out",
+    "wipe": null
+  },
+  "rhythm": {
+    "energy": "high",
+    "entrance": 0.4,
+    "stagger": 0.05
+  },
+  "transition": {
+    "kind": "zoom",
+    "duration": 0.4,
+    "flash": false,
+    "band": false
+  },
+  "text_animation": "rise-mask",
+  "accent_word": "none",
+  "layout": "left",
+  "atmosphere": [
+    "grid:64",
+    "registration"
+  ],
+  "shape": {
+    "radius_card": 0,
+    "radius_button": 0,
+    "radius_pill": 2,
+    "border": "hairline",
+    "border_px": 1,
+    "shadow": "none",
+    "rule_px": 6
+  },
+  "stat_colour": "accent",
+  "direction_settings": {
+    "energy": "high",
+    "density": "sparse",
+    "ground": "light",
+    "depth": "flat",
+    "camera": "locked",
+    "type": "display",
+    "texture": "clean",
+    "colour": "one-accent",
+    "product_presence": "illustrated",
+    "sound": "beat-driven",
+    "voice": "spoken-headline"
+  },
+  "notes": "Grid-locked, numbers dominate, hard entrances. Helvetica Neue is not an open font; Inter stands in.",
+  "transitions": {
+    "between_moments": "zoom",
+    "duration_s": 0.4,
+    "text": "rise-mask"
+  }
+}

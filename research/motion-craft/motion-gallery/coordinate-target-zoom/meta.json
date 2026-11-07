@@ -1,0 +1,23 @@
+{
+  "name": "Coordinate target zoom",
+  "family": "Camera & Viewport",
+  "purpose": [
+    "camera",
+    "focus",
+    "emphasis"
+  ],
+  "energy": "steady",
+  "tags": [
+    "camera",
+    "zoom",
+    "scale",
+    "translate",
+    "target",
+    "off-center",
+    "focus"
+  ],
+  "one_line": "Three cards sit scattered across the frame; the camera zooms into the one at the top right so it lands dead centre, then a yellow ring confirms it while the view holds.",
+  "aliases": [
+    "awesome-ai-motion:zoom-to-detail"
+  ]
+}

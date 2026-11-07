@@ -1,0 +1,23 @@
+{
+  "name": "Cursor follow",
+  "family": "UI Demo",
+  "purpose": [
+    "Feedback",
+    "Emphasis"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "gsap",
+  "tags": [
+    "spring cursor follow",
+    "spring trail follow",
+    "smooth pointer follow",
+    "ui",
+    "cursor",
+    "follower",
+    "lag",
+    "overshoot",
+    "name tag"
+  ],
+  "one_line": "A pointer moves along a bent path over an invite card; a yellow ring with a name tag trails it with a short lag, overshooting at each turn before catching up."
+}

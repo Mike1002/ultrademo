@@ -1,0 +1,21 @@
+{
+  "name": "Tree expand and collapse",
+  "family": "Data",
+  "purpose": [
+    "Data evidence",
+    "Comparison"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "svg",
+  "tags": [
+    "collapsible tree expansion",
+    "data",
+    "tree",
+    "hierarchy",
+    "unfold",
+    "collapse",
+    "svg"
+  ],
+  "one_line": "An org tree unfolds from the root: three team nodes and their links grow out of it, then nine member initials grow out of the teams, and finally the members fold back into their teams."
+}

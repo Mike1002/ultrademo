@@ -1,0 +1,22 @@
+{
+  "name": "Donut ring staging",
+  "family": "Data",
+  "purpose": [
+    "Explanation",
+    "Comparison"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "svg",
+  "tags": [
+    "donut multi-ring staging",
+    "data",
+    "chart",
+    "donut",
+    "rings",
+    "stages",
+    "share",
+    "svg"
+  ],
+  "one_line": "A three-slice seats donut splits into three concentric rings, the rings turn so each starts at the top, their shares change as used seats go from 3 to 6 of 12, and then they pack back into one donut."
+}

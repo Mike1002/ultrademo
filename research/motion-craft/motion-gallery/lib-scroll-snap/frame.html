@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-scroll-snap</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  #view { position: absolute; left: 234px; top: 70px; width: 700px; height: 440px; background: #fffdf8; border: 2px solid #1d1c1a; border-radius: 24px; overflow: hidden; }
+  #track { position: absolute; left: 0; top: 0; width: 696px; height: 1320px; will-change: transform; }
+  .ch { position: absolute; left: 0; width: 696px; height: 440px; border-bottom: 2px solid #e3ded2; }
+  .ch .lab { position: absolute; left: 56px; top: 110px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  .ch h1 { position: absolute; left: 56px; top: 140px; font-size: 52px; font-weight: 700; line-height: 60px; white-space: nowrap; letter-spacing: -0.01em; }
+  .ch .sub { position: absolute; left: 56px; top: 216px; font-size: 20px; color: #6d6a63; }
+  .ch .num { font-variant-numeric: tabular-nums; }
+  .ch .btn { position: absolute; left: 56px; top: 276px; width: 200px; height: 60px; border-radius: 14px; background: #f2c200; border: 2px solid #1d1c1a;
+    font-size: 20px; font-weight: 700; line-height: 56px; text-align: center; }
+  #rail { position: absolute; left: 972px; top: 250px; width: 20px; height: 80px; }
+  #rail .d { position: absolute; left: 4px; width: 12px; height: 12px; border-radius: 50%; background: #e3ded2; border: 2px solid #a19d93; }
+  #mark { position: absolute; left: 0; top: -4px; width: 20px; height: 20px; border-radius: 50%; background: #f2c200; border: 2px solid #1d1c1a; will-change: transform; }
+  #title { position: absolute; left: 234px; top: 528px; width: 700px; text-align: center; font-size: 20px; color: #6d6a63; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div id="view">
+        <div id="track">
+          <div class="ch" style="top:0"><div class="lab">Chapter 1</div><h1>Invite your team</h1><div class="sub">Orbit · Jamie Dalton, Sam Kim, Morgan Lee</div><div class="btn">Continue</div></div>
+          <div class="ch" style="top:440px"><div class="lab">Chapter 2</div><h1>3 seats left</h1><div class="sub">Add members before the plan fills up</div><div class="btn">Continue</div></div>
+          <div class="ch" style="top:880px;border-bottom:0"><div class="lab">Chapter 3</div><h1 class="num">12,480 invites sent</h1><div class="sub">This month, across every workspace</div><div class="btn">Continue</div></div>
+        </div>
+      </div>
+      <div id="rail">
+        <div class="d" style="top:0"></div><div class="d" style="top:28px"></div><div class="d" style="top:56px"></div>
+        <div id="mark" data-layout-allow-overlap></div>
+      </div>
+      <div id="title">Chapter 1 · 2 · 3</div>
+    </div>
+    <div id="label"><span class="l-name">Scroll snap</span><span class="l-sep">·</span><span>UI Demo</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power2.out", duration: 0.45 } });
+  // Params: snap settle 0.45 s power2.out, chapter spacing 440 px here (one viewport). Each scroll is a wheel move that stops
+  // between chapters, then the snap carries the page to the nearest boundary; the rail marker follows the snap.
+  const H = 440;
+  // Scroll 1: wheel to 64% of a chapter, snap to chapter 2.
+  tl.fromTo("#track", { y: 0 }, { y: -0.64 * H, duration: 0.5, ease: "power2.out" }, 0.25);
+  tl.to("#track", { y: -H, duration: 0.45, ease: "power2.out" }, 0.8);
+  tl.fromTo("#mark", { y: 0 }, { y: 28, duration: 0.45, ease: "power2.out" }, 0.8);
+  // Scroll 2: wheel to 58% past chapter 2, so the nearest stop is chapter 3; snap forward.
+  tl.to("#track", { y: -1.58 * H, duration: 0.5, ease: "power2.out" }, 1.7);
+  tl.to("#track", { y: -2 * H, duration: 0.45, ease: "power2.out" }, 2.25);
+  tl.to("#mark", { y: 56, duration: 0.45, ease: "power2.out" }, 2.25);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

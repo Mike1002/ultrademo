@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-treemap-resize</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  #chart { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  text { font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .tile { stroke: #1d1c1a; stroke-width: 2.5; }
+  .nm { font-size: 20px; font-weight: 700; fill: #1d1c1a; }
+  .val { font-size: 18px; fill: #6d6a63; font-variant-numeric: tabular-nums; }
+  .title { font-size: 34px; font-weight: 700; fill: #1d1c1a; }
+  .lab { font-size: 13px; letter-spacing: .06em; fill: #6d6a63; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <svg id="chart" viewBox="0 0 1168 580" width="1168" height="580">
+        <text class="title" x="60" y="56">Invites by team</text>
+        <text class="lab" x="60" y="84">SHARE OF 12,480 INVITES</text>
+        <text class="lab" id="pa" x="1108" y="84" text-anchor="end">LAST MONTH</text>
+        <text class="lab" id="pb" x="1108" y="84" text-anchor="end">THIS MONTH</text>
+        <g id="tiles"></g>
+      </svg>
+    </div>
+    <div id="label"><span class="l-name">Treemap resizing</span><span class="l-sep">·</span><span>Data</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const SVGNS = "http://www.w3.org/2000/svg";
+  const el = (tag, attrs, cls) => { const e = document.createElementNS(SVGNS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (cls) e.setAttribute("class", cls); return e; };
+  const names = ["Design", "Sales", "Support", "Growth", "Ops", "Research"];
+  const A = [4200, 3100, 2200, 1500, 900, 580], B = [2600, 4300, 1700, 2300, 1000, 580];   // both sum to 12,480
+  const X = 60, Y = 110, W = 1048, H = 420, GUT = 1;
+  // Same deterministic layout for both value sets: first items fill a left column until half the area, the rest stack in a right column.
+  function layout(v) {
+    const total = v.reduce((a, b) => a + b, 0); let k = 0, acc = 0; while (acc < total / 2) acc += v[k++];
+    const w1 = W * acc / total, out = [];
+    let y = Y; for (let i = 0; i < k; i++) { const h = H * v[i] / acc; out.push({ x: X, y, w: w1, h }); y += h; }
+    y = Y; const rest = total - acc; for (let i = k; i < v.length; i++) { const h = H * v[i] / rest; out.push({ x: X + w1, y, w: W - w1, h }); y += h; }
+    return out.map(r => ({ x: r.x + GUT, y: r.y + GUT, w: r.w - 2 * GUT, h: r.h - 2 * GUT }));
+  }
+  const LA = layout(A), LB = layout(B);
+  const g = document.getElementById("tiles");
+  const topA = A.indexOf(Math.max(...A)), topB = B.indexOf(Math.max(...B));
+  const tiles = names.map((n, i) => { const r = LA[i];
+    const rect = el("rect", { x: r.x, y: r.y, width: r.w, height: r.h, rx: 6 }, "tile"); rect.style.fill = i === topA ? "#f2c200" : "#ece7da";
+    const nm = el("text", { x: r.x + 18, y: r.y + 34 }, "nm"); nm.textContent = n;
+    const va = el("text", { x: r.x + r.w - 18, y: r.y + 34, "text-anchor": "end" }, "val"); va.textContent = A[i].toLocaleString("en-US");
+    const vb = el("text", { x: r.x + r.w - 18, y: r.y + 34, "text-anchor": "end" }, "val"); vb.textContent = B[i].toLocaleString("en-US");
+    [rect, nm, va, vb].forEach(e => g.appendChild(e)); return { rect, nm, va, vb }; });
+
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power2.inOut", duration: 1 } });
+  tl.fromTo("#pb", { opacity: 0 }, { opacity: 0, duration: 0.01 }, 0);
+  tiles.forEach(t => tl.fromTo(t.vb, { opacity: 0 }, { opacity: 0, duration: 0.01 }, 0));
+  // Resize to this month's values at 0.4 s: every rectangle keeps its neighbours and tweens its geometry over 1 s; labels ride along.
+  function go(L, V, top, at, dur, vOld, vNew, pOld, pNew) {
+    tiles.forEach((t, i) => { const r = L[i];
+      tl.to(t.rect, { attr: { x: r.x, y: r.y, width: r.w, height: r.h }, duration: dur }, at);
+      tl.to(t.rect, { fill: i === top ? "#f2c200" : "#ece7da", duration: 0.4, ease: "none" }, at + dur * 0.3);
+      tl.to(t.nm, { attr: { x: r.x + 18, y: r.y + 34 }, duration: dur }, at);
+      tl.to(t[vOld], { attr: { x: r.x + r.w - 18, y: r.y + 34 }, duration: dur }, at);
+      tl.to(t[vNew], { attr: { x: r.x + r.w - 18, y: r.y + 34 }, duration: dur }, at);
+      tl.to(t[vOld], { opacity: 0, duration: 0.25, ease: "none" }, at + dur * 0.4);
+      tl.to(t[vNew], { opacity: 1, duration: 0.25, ease: "none" }, at + dur * 0.4); });
+    tl.to(pOld, { opacity: 0, duration: 0.25, ease: "none" }, at + dur * 0.4);
+    tl.to(pNew, { opacity: 1, duration: 0.25, ease: "none" }, at + dur * 0.4);
+  }
+  go(LB, B, topB, 0.4, 1.0, "va", "vb", "#pa", "#pb");
+  // Second beat at 2.2 s: back to last month so the pair reads both ways.
+  go(LA, A, topA, 2.2, 0.8, "vb", "va", "#pb", "#pa");
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

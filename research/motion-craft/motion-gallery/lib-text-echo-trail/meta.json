@@ -1,0 +1,20 @@
+{
+  "name": "Text echo trail",
+  "family": "Texture & Style",
+  "purpose": [
+    "Attention",
+    "Emphasis"
+  ],
+  "energy": "high",
+  "tier": 2,
+  "runtime": "gsap",
+  "tags": [
+    "text clone motion trail",
+    "framebuffer text feedback",
+    "texture",
+    "delayed copies",
+    "speed",
+    "slide in"
+  ],
+  "one_line": "A headline slides in fast with six delayed, fading copies trailing behind it and merging into one as it settles; a sub-line then crosses from the right with the same trail."
+}

@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-freeze-frame-dressing</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; overflow: hidden; }
+  .shot { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; will-change: transform, opacity, filter; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+  .card { position: absolute; left: 264px; top: 110px; width: 640px; height: 360px; background: #fffdf8; border: 2px solid #1d1c1a; border-radius: 24px; will-change: transform, filter, opacity; }
+  .card .lab { position: absolute; left: 56px; top: 48px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; white-space: nowrap; }
+  .card h1 { position: absolute; left: 56px; top: 80px; font-size: 56px; font-weight: 700; line-height: 64px; white-space: nowrap; }
+  .card .sub { position: absolute; left: 56px; top: 160px; font-size: 22px; color: #6d6a63; white-space: nowrap; }
+  .card .btn { position: absolute; left: 56px; top: 240px; width: 200px; height: 60px; border-radius: 14px; background: #f2c200; border: 2px solid #1d1c1a; color: #1d1c1a;
+    font-size: 20px; font-weight: 700; line-height: 56px; text-align: center; will-change: transform; }
+  .card.b h1 { font-size: 96px; line-height: 104px; top: 74px; font-variant-numeric: tabular-nums; }
+  .card.b .sub { top: 190px; }
+  .card.b .bar { position: absolute; left: 56px; top: 250px; width: 300px; height: 14px; border-radius: 7px; background: #f2c200; border: 2px solid #1d1c1a; transform-origin: 0 50%; will-change: transform; }
+  .cursor { position: absolute; width: 28px; height: 38px; z-index: 10; pointer-events: none; transform-origin: 2px 2px; will-change: transform; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.25)); }
+  .cursor svg { width: 28px; height: 38px; display: block; }
+
+  #still { transform-origin: 50% 50%; }
+  #pic { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; will-change: filter; }
+  .av { position: absolute; left: 56px; top: 196px; width: 48px; height: 48px; border-radius: 50%; background: #ece7da; border: 2px solid #1d1c1a;
+    font-size: 16px; font-weight: 700; line-height: 44px; text-align: center; }
+  .nm { position: absolute; left: 120px; top: 196px; font-size: 22px; font-weight: 700; line-height: 48px; white-space: nowrap; }
+  .inv { position: absolute; left: 440px; top: 196px; width: 144px; height: 48px; border-radius: 12px; background: #f2c200; border: 2px solid #1d1c1a; color: #1d1c1a;
+    font-size: 18px; font-weight: 700; line-height: 44px; text-align: center; will-change: transform; }
+  .inv.done { background: #1d1c1a; color: #f6f3ec; opacity: 0; }
+  .deco { position: absolute; opacity: 0; transform-origin: 50% 50%; will-change: transform; }
+  .tape { height: 34px; background: rgba(242,194,0,0.62); background-image: repeating-linear-gradient(90deg, rgba(255,255,255,0) 0 14px, rgba(255,255,255,0.28) 14px 18px); }
+  #tape1 { left: 226px; top: 96px; width: 210px; }
+  #tape2 { left: 300px; top: 446px; width: 170px; height: 30px; }
+  #paper { left: 630px; top: 418px; width: 276px; height: 60px; background: #fffdf8; border: 2px solid #1d1c1a; box-shadow: 0 6px 14px rgba(29,28,26,0.18);
+    font-size: 22px; font-weight: 700; line-height: 56px; text-align: center; white-space: nowrap; }
+  #stick { left: 812px; top: 52px; width: 120px; height: 120px; border-radius: 50%; background: #f2c200; border: 2px solid #1d1c1a;
+    font-size: 18px; font-weight: 700; line-height: 116px; text-align: center; box-shadow: 0 6px 14px rgba(29,28,26,0.18); }
+
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+
+      <div data-layout-allow-overlap data-layout-allow-occlusion id="still">
+        <div data-layout-allow-overlap data-layout-allow-occlusion id="pic">
+          <div data-layout-allow-overlap data-layout-allow-occlusion class="card a" id="a">
+            <div data-layout-allow-overlap data-layout-allow-occlusion class="lab">Orbit</div><h1 data-layout-allow-overlap data-layout-allow-occlusion>Invite your team</h1>
+            <div data-layout-allow-overlap data-layout-allow-occlusion class="av">JD</div><div data-layout-allow-overlap data-layout-allow-occlusion class="nm">Jamie Dalton</div>
+            <div data-layout-allow-overlap data-layout-allow-occlusion class="inv" id="inv">Invite</div><div data-layout-allow-overlap data-layout-allow-occlusion class="inv done" id="invd">Invited</div>
+          </div>
+          <div class="cursor" id="cur" style="left:776px;top:330px" data-layout-allow-overlap ><svg viewBox="0 0 28 38"><path d="M2.5 2.5 L2.5 29.5 L9.6 23 L14.4 33.6 L19 31.6 L14.3 21.4 L23.8 21.4 Z" fill="#ffffff" stroke="#1d1c1a" stroke-width="2" stroke-linejoin="round"/></svg></div>
+        </div>
+        <div data-layout-allow-overlap data-layout-allow-occlusion class="deco tape" id="tape1"></div>
+        <div data-layout-allow-overlap data-layout-allow-occlusion class="deco" id="paper">Jamie Dalton</div>
+        <div data-layout-allow-overlap data-layout-allow-occlusion class="deco" id="stick">invited</div>
+        <div data-layout-allow-overlap data-layout-allow-occlusion class="deco tape" id="tape2"></div>
+      </div>
+
+    </div>
+    <div id="label"><span class="l-name">Freeze frame dressing</span><span class="l-sep">·</span><span>Transitions</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "back.out(1.6)", duration: 0.25 } });
+  tl.fromTo("#still", { scale: 1 }, { scale: 1, duration: 0.01, ease: "none" }, 0);
+  tl.fromTo("#pic", { filter: "saturate(1) contrast(1)" }, { filter: "saturate(1) contrast(1)", duration: 0.01, ease: "none" }, 0);
+  tl.fromTo("#invd", { opacity: 0 }, { opacity: 0, duration: 0.01, ease: "none" }, 0);
+  // The action: the cursor comes in, presses Invite, the button flips to Invited, and the cursor starts lifting away...
+  tl.fromTo("#cur", { x: 300, y: 150 }, { x: 0, y: 0, duration: 0.5, ease: "power2.out" }, 0.05);
+  tl.to("#cur", { scale: 0.85, duration: 0.07, ease: "power2.in", yoyo: true, repeat: 1 }, 0.58);
+  tl.fromTo("#inv", { scale: 1 }, { scale: 0.94, duration: 0.07, ease: "power2.in", yoyo: true, repeat: 1, immediateRender: false }, 0.58);
+  tl.set("#invd", { opacity: 1 }, 0.7);
+  tl.to("#cur", { x: 70, y: 46, duration: 0.15, ease: "none" }, 0.72);
+  // ...and freezes on the beat at 0.87 s: the picture goes slightly flat and starts a slow creep to 1.03.
+  tl.to("#pic", { filter: "saturate(0.72) contrast(1.05)", duration: 0.06, ease: "none" }, 0.87);
+  tl.to("#still", { scale: 1.03, duration: 2.1, ease: "none" }, 0.87);
+  // Dressing sticks on in order, 80 ms apart: tape, paper label, yellow sticker. Each: scale 0.6 to 1, rotation -6 deg to rest, y -24 to 0, back.out(1.6).
+  tl.fromTo("#tape1", { scale: 0.6, rotation: -10, y: -24, opacity: 0 }, { scale: 1, rotation: -4, y: 0, opacity: 1 }, 0.95);
+  tl.fromTo("#paper", { scale: 0.6, rotation: -4, y: -24, opacity: 0 }, { scale: 1, rotation: 2, y: 0, opacity: 1 }, 1.03);
+  tl.fromTo("#stick", { scale: 0.6, rotation: -14, y: -24, opacity: 0 }, { scale: 1, rotation: -8, y: 0, opacity: 1 }, 1.11);
+  // Hold about a second, then one late piece of tape so the frame is still being dressed.
+  tl.fromTo("#tape2", { scale: 0.6, rotation: -3, y: -24, opacity: 0 }, { scale: 1, rotation: 3, y: 0, opacity: 1 }, 2.35);
+  tl.to("#stick", { rotation: -5, duration: 0.4, ease: "sine.inOut" }, 2.5);
+
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-zoom-through</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; overflow: hidden; }
+  .shot { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; will-change: transform; }
+  .shot.a { background: #f6f3ec; }
+  .shot.b { background: #ece7da; }
+  .card { position: absolute; left: 324px; top: 120px; width: 520px; height: 330px; background: #fffdf8;
+    border: 2px solid #1d1c1a; border-radius: 22px; }
+  .card .h { position: absolute; left: 44px; top: 46px; font-size: 44px; font-weight: 700; letter-spacing: -0.01em; white-space: nowrap; }
+  .card .s { position: absolute; left: 44px; top: 112px; font-size: 20px; color: #6d6a63; white-space: nowrap; }
+  .card .btn { position: absolute; left: 44px; top: 204px; width: 200px; height: 60px; background: #f2c200;
+    border: 2px solid #1d1c1a; border-radius: 14px; font-size: 20px; font-weight: 700; line-height: 56px; text-align: center; }
+  .big { position: absolute; left: 0; width: 1168px; top: 150px; text-align: center; font-size: 132px; font-weight: 700;
+    font-variant-numeric: tabular-nums; letter-spacing: -0.02em; line-height: 1; will-change: transform; }
+  .big-l { position: absolute; left: 0; width: 1168px; top: 300px; text-align: center; font-size: 22px; color: #6d6a63; }
+  .names { position: absolute; left: 0; width: 1168px; top: 372px; height: 56px; display: flex; justify-content: center; gap: 24px; }
+  .name { width: 190px; height: 50px; line-height: 46px; text-align: center; border: 2px solid #1d1c1a; border-radius: 999px;
+    font-size: 20px; background: #fffdf8; will-change: transform; }
+  .lab { position: absolute; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; white-space: nowrap; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+  .name { opacity: 0; }
+  #Bz { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; background: #ece7da; }
+  #content { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; transform-origin: 584px 290px; opacity: 0; will-change: transform; }
+  #Az { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; transform-origin: 584px 290px; will-change: transform; }
+  #Az svg { width: 1168px; height: 580px; display: block; }
+  #alab { left: 64px; top: 48px; }
+  #aword { position: absolute; left: 0; width: 1168px; top: 500px; text-align: center; font-size: 22px; color: #6d6a63; white-space: nowrap; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div id="Bz"><div id="content" data-layout-allow-overlap><div class="big" id="big" data-layout-allow-overlap>12,480</div><div class="big-l" data-layout-allow-overlap>invites sent</div>
+        <div class="names"><div class="name" id="n1" data-layout-allow-overlap>Jamie Dalton</div><div class="name" id="n2" data-layout-allow-overlap>Sam Kim</div><div class="name" id="n3" data-layout-allow-overlap>Morgan Lee</div></div></div></div>
+      <div id="Az" data-layout-allow-overlap><svg viewBox="0 0 1168 580" aria-hidden="true"><path fill="#f6f3ec" fill-rule="evenodd" d="M0 0H1168V580H0Z M679 290a95 140 0 1 0 -190 0a95 140 0 1 0 190 0Z"/><path fill="#1d1c1a" fill-rule="evenodd" d="M739 290a155 215 0 1 0 -310 0a155 215 0 1 0 310 0Z M679 290a95 140 0 1 0 -190 0a95 140 0 1 0 190 0Z"/></svg>
+        <div class="lab" id="alab">Invite your team</div><div id="aword">Through the O of Orbit</div></div>
+    </div>
+    <div id="label"><span class="l-name">Zoom through</span><span class="l-sep">·</span><span>Transitions</span><span class="l-sep">·</span><span>high</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+  // The letter O scales 1 to 8 about its own centre (slow start, fast end) while the scene inside the opening grows from 0.18 to 1.
+  tl.fromTo("#Az", { scale: 1 }, { scale: 8, duration: 1.35, ease: "power3.in" }, 0.4);
+  tl.fromTo("#alab, #aword", { opacity: 1 }, { opacity: 0, duration: 0.3 }, 0.4);
+  tl.fromTo("#content", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 0.7);
+  tl.fromTo("#content", { scale: 0.18 }, { scale: 1, duration: 1.15, ease: "power2.out" }, 0.7);
+  tl.set("#Az", { opacity: 0 }, 1.75);
+  // Quieter second move: the three name rows settle in one after the other.
+  tl.fromTo(".name", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.5, stagger: 0.12 }, 1.95);
+  // Settle: the arrival keeps a slow push-in.
+  tl.to("#content", { scale: 1.03, duration: 0.9, ease: "sine.inOut" }, 2.1);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

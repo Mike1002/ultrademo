@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-path-highlight</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  .kicker { position: absolute; left: 64px; top: 40px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  svg.canvas { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  .node { position: absolute; top: 300px; font-size: 34px; font-weight: 700; }
+  .n1 { left: 100px; } .n2 { left: 520px; } .n3 { left: 948px; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div class="kicker">A signal passing along the connection</div>
+      <svg class="canvas" data-layout-allow-overlap viewBox="0 0 1168 580">
+        <defs><clipPath id="flow-clip"><rect x="150" y="100" width="868" height="280"/></clipPath></defs>
+        <path d="M150 260 C300 260 290 140 430 140 S660 360 780 260 S900 180 1018 260" fill="none" stroke="#e3ded2" stroke-width="5"/>
+        <g clip-path="url(#flow-clip)"><path id="flow" d="M150 260 C300 260 290 140 430 140 S660 360 780 260 S900 180 1018 260" fill="none" stroke="#f2c200" stroke-width="7" stroke-linecap="round"/></g>
+        <g fill="#1d1c1a"><circle cx="150" cy="260" r="12"/><circle cx="584" cy="239" r="12"/><circle cx="1018" cy="260" r="12"/></g>
+      </svg>
+      <div class="node n1">Invite</div><div class="node n2">Review</div><div class="node n3">Sent</div>
+    </div>
+    <div id="label"><span class="l-name">Path highlight</span><span class="l-sep">·</span><span>Shape &amp; Path</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+  // A bright stretch 15% of the path long travels the full line at constant speed; the line itself stays. Two passes.
+  const flow = document.getElementById("flow");
+  const length = flow.getTotalLength();
+  const segment = length * 0.15;
+  const cap = 7;
+  const startOffset = segment + cap;
+  const endOffset = -length - cap;
+  flow.setAttribute("stroke-dasharray", segment + " " + (length + segment + cap * 2));
+  flow.setAttribute("stroke-dashoffset", String(startOffset));
+  tl.fromTo(flow, { attr: { "stroke-dashoffset": startOffset } }, { attr: { "stroke-dashoffset": endOffset }, duration: 1.2, ease: "none" }, 0.3);
+  tl.fromTo(flow, { attr: { "stroke-dashoffset": startOffset } }, { attr: { "stroke-dashoffset": endOffset }, duration: 1.2, ease: "none", immediateRender: false }, 1.7);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

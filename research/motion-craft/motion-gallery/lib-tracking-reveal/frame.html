@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-tracking-reveal</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; overflow: hidden; }
+  #title { position: absolute; left: 0; top: 190px; width: 1168px; height: 150px; display: flex; justify-content: center; align-items: center;
+    font-size: 132px; font-weight: 700; line-height: 150px; letter-spacing: 0; white-space: nowrap; }
+  #title span { display: inline-block; will-change: transform, opacity; }
+  #title span.sp { width: 44px; }
+  #rule { position: absolute; left: 434px; top: 362px; width: 300px; height: 3px; background: #1d1c1a; will-change: transform; }
+  #sub { position: absolute; left: 0; top: 392px; width: 1168px; height: 40px; display: flex; justify-content: center; align-items: center;
+    font-size: 22px; font-weight: 600; color: #6d6a63; letter-spacing: 0; white-space: nowrap; text-transform: uppercase; }
+  #sub span { display: inline-block; will-change: transform, opacity; }
+  #sub span.sp { width: 12px; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div id="title" data-layout-allow-overflow></div>
+      <div id="rule"></div>
+      <div id="sub" data-layout-allow-overflow></div>
+    </div>
+    <div id="label"><span class="l-name">Tracking reveal</span><span class="l-sep">·</span><span>Typography</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  // Per-glyph x offsets instead of letter-spacing, so nothing reflows. Each glyph starts 0.6 em from its neighbour and tightens to 0.
+  function split(el, text) {
+    el.innerHTML = "";
+    const spans = [];
+    for (const ch of text) {
+      const s = document.createElement("span");
+      if (ch === " ") { s.className = "sp"; s.innerHTML = "&nbsp;"; } else { s.textContent = ch; }
+      el.appendChild(s); spans.push(s);
+    }
+    return spans;
+  }
+  const T = split(document.getElementById("title"), "LAUNCH DAY");
+  const U = split(document.getElementById("sub"), "Orbit · Invite your team");
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power2.out", duration: 0.8 } });
+  // Title: 0.6 em of 132 px = 79 px per step around the centre; opacity rises over the first 60 % of the move.
+  const NT = T.length;
+  T.forEach((s, i) => {
+    const off = (i - (NT - 1) / 2) * 0.6 * 132;
+    tl.fromTo(s, { x: off, opacity: 0 }, { x: 0, duration: 0.8, ease: "power2.out" }, 0.2);
+    tl.fromTo(s, { opacity: 0 }, { opacity: 1, duration: 0.48, ease: "power1.out" }, 0.2);
+  });
+  // Second settle: a hairline draws under the title, then the subtitle tightens in the same way from 0.3 em.
+  tl.fromTo("#rule", { scaleX: 0, transformOrigin: "50% 50%" }, { scaleX: 1, duration: 0.5, ease: "power2.out" }, 1.15);
+  const NU = U.length;
+  U.forEach((s, i) => {
+    const off = (i - (NU - 1) / 2) * 0.3 * 22;
+    tl.fromTo(s, { x: off * 4, opacity: 0 }, { x: 0, duration: 0.8, ease: "power2.out" }, 1.6);
+    tl.fromTo(s, { opacity: 0 }, { opacity: 1, duration: 0.48, ease: "power1.out" }, 1.6);
+  });
+  // Final breath: the title relaxes a hair wider and back so the clip keeps living to the last frame.
+  T.forEach((s, i) => {
+    const off = (i - (NT - 1) / 2) * 0.012 * 132;
+    tl.fromTo(s, { x: 0 }, { x: off, duration: 0.35, ease: "sine.inOut", yoyo: true, repeat: 1, immediateRender: false }, 2.25);
+  });
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

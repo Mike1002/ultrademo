@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-wave-dissolve</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; overflow: hidden; }
+  #cv { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <canvas id="cv" width="1168" height="580"></canvas>
+    </div>
+    <div id="label"><span class="l-name">Wave dissolve</span><span class="l-sep">·</span><span>Transitions</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const W = 1168, H = 580, FONT = '-apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif';
+  // Both scenes are drawn once as pixels: A (invite card) and B (stats card), the same card pair as the other transitions.
+  function scene(kind) {
+    const c = document.createElement("canvas"); c.width = W; c.height = H;
+    const x = c.getContext("2d");
+    x.fillStyle = "#f6f3ec"; x.fillRect(0, 0, W, H);
+    x.fillStyle = "#fffdf8"; x.strokeStyle = "#1d1c1a"; x.lineWidth = 2;
+    x.beginPath(); x.roundRect(265, 111, 638, 358, 24); x.fill(); x.stroke();
+    x.fillStyle = "#6d6a63"; x.font = "13px " + FONT;
+    x.fillText(kind === "a" ? "O R B I T" : "T H I S  M O N T H", 320, 169);
+    if (kind === "a") {
+      x.fillStyle = "#1d1c1a"; x.font = "700 56px " + FONT; x.fillText("Invite your team", 320, 240);
+      x.fillStyle = "#6d6a63"; x.font = "22px " + FONT; x.fillText("3 seats left on this plan", 320, 288);
+      x.fillStyle = "#f2c200"; x.beginPath(); x.roundRect(321, 351, 198, 58, 14); x.fill(); x.stroke();
+      x.fillStyle = "#1d1c1a"; x.font = "700 20px " + FONT; x.textAlign = "center"; x.fillText("Continue", 420, 387); x.textAlign = "left";
+    } else {
+      x.fillStyle = "#1d1c1a"; x.font = "700 96px " + FONT; x.fillText("12,480", 318, 262);
+      x.fillStyle = "#6d6a63"; x.font = "22px " + FONT; x.fillText("invites sent", 320, 318);
+    }
+    return c;
+  }
+  const A = scene("a"), B = scene("b");
+  const cv = document.getElementById("cv"), ctx = cv.getContext("2d");
+  const STRIPS = 58, SH = H / STRIPS, WAVES = 3, AMP = 0.03 * W;
+  // Wave windows: [start, duration, outgoing, incoming]; p runs sine.inOut; amplitude 3% of width times sin(pi*p), phase 4*pi*p, three waves down the frame.
+  const WIN = [[0.7, 1.0, A, B], [2.15, 0.8, B, A]];
+  const easeP = gsap.parseEase("sine.inOut");
+  function strips(img, alpha, amp, phase) {
+    ctx.globalAlpha = alpha;
+    for (let i = 0; i < STRIPS; i++) {
+      const y = i * SH, ang = phase + WAVES * 2 * Math.PI * (y / H);
+      const dx = amp * Math.sin(ang), dy = amp * 0.25 * Math.cos(ang);
+      ctx.drawImage(img, 0, y, W, SH, dx, y + dy, W, SH);
+    }
+    ctx.globalAlpha = 1;
+  }
+  let last = null;
+  function renderAt(t) {
+    let w = null, p = 0;
+    for (const win of WIN) if (t >= win[0] && t < win[0] + win[1]) { w = win; p = easeP((t - win[0]) / win[1]); }
+    const key = w ? w[0] + ":" + Math.round(p * 1000) : (t < WIN[0][0] ? "a" : t < WIN[1][0] ? "b" : "a2");
+    if (key === last) return; last = key;
+    ctx.filter = "none";
+    ctx.fillStyle = "#f6f3ec"; ctx.fillRect(0, 0, W, H);
+    if (!w) { ctx.drawImage(key === "b" ? B : A, 0, 0); return; }
+    const s = Math.sin(Math.PI * p), amp = AMP * s, phase = 4 * Math.PI * p;
+    ctx.filter = "blur(" + (2.5 * s).toFixed(2) + "px)";   // a touch of water blur at the height of the wave
+    strips(w[2], 1 - p, amp, phase);
+    strips(w[3], p, amp, phase + Math.PI);
+    ctx.filter = "none";
+  }
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "sine.inOut", duration: 1 } });
+  renderAt(0);
+  tl.to({ k: 0 }, { k: 1, duration: 3, ease: "none", onUpdate: () => renderAt(tl.time()) }, 0);
+  const baseRender = tl.render; tl.render = function () { const r = baseRender.apply(this, arguments); renderAt(this.time()); return r; };
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

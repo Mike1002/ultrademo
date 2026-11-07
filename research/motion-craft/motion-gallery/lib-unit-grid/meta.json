@@ -1,0 +1,22 @@
+{
+  "name": "Unit grid fill",
+  "family": "Data",
+  "purpose": [
+    "Explanation",
+    "Data evidence"
+  ],
+  "energy": "steady",
+  "tier": 2,
+  "runtime": "gsap",
+  "tags": [
+    "waffle chart fill",
+    "hex tile map",
+    "sequential unit population",
+    "unit share recoloring",
+    "data",
+    "scaley",
+    "stagger",
+    "waffle"
+  ],
+  "one_line": "A grid of thirty cells fills eighteen of them with yellow in sequence from left to right, each fill rising from the cell's bottom edge, and the count reads out below."
+}

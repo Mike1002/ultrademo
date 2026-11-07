@@ -1,0 +1,20 @@
+{
+  "name": "Physics press reaction",
+  "family": "Transition & Motion",
+  "purpose": [
+    "click",
+    "cursor",
+    "call to action"
+  ],
+  "energy": "steady",
+  "tags": [
+    "spring",
+    "click",
+    "physics",
+    "cursor",
+    "subtractive",
+    "interaction",
+    "synchronized"
+  ],
+  "one_line": "A cursor glides onto the button, cursor and button shrink together as one press, then both spring back with an overshoot before the cursor drifts away."
+}

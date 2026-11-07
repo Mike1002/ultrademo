@@ -1,0 +1,21 @@
+{
+  "name": "Orbit 3D entry",
+  "family": "Layout & Network",
+  "purpose": [
+    "entrance",
+    "idle",
+    "ornament"
+  ],
+  "energy": "steady",
+  "tags": [
+    "orbit",
+    "3d",
+    "flip",
+    "ellipse",
+    "circular",
+    "icon",
+    "entry",
+    "continuous"
+  ],
+  "one_line": "Six shape badges flip up out of depth onto a tilted ring, a yellow label pops in at the centre, and the ring keeps circling it, passing in front and behind."
+}

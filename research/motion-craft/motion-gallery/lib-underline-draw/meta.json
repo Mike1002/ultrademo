@@ -1,0 +1,21 @@
+{
+  "name": "Underline draw",
+  "family": "Typography",
+  "purpose": [
+    "Emphasis",
+    "Explanation"
+  ],
+  "energy": "steady",
+  "tier": 2,
+  "runtime": "svg",
+  "tags": [
+    "stroke reveal",
+    "underline stroke draw",
+    "animated underline draw",
+    "underline draw",
+    "underline-emphasis-sweep",
+    "type",
+    "path draw"
+  ],
+  "one_line": "A slightly curved yellow stroke draws itself from left to right beneath 'is code' in one continuous hand-drawn motion, then a second shorter stroke follows under it."
+}

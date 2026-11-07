@@ -1,0 +1,125 @@
+{
+  "id": "cobalt-grid",
+  "name": "Cobalt Grid",
+  "canvas": "light",
+  "mood": [
+    "technical",
+    "editorial",
+    "electric"
+  ],
+  "suits": [
+    "developer tools",
+    "data products",
+    "technical explainers"
+  ],
+  "palette": {
+    "bg": "#F0EBDE",
+    "bg_alt": "#E6E0CE",
+    "surface": "#F0EBDE",
+    "surface_2": "#E6E0CE",
+    "ink": "#1F2BE0",
+    "muted": "#5560E5",
+    "line": "rgba(31,43,224,0.22)",
+    "accent": "#1F2BE0",
+    "accent_2": "#5560E5",
+    "on_accent": "#F0EBDE",
+    "pill_bg": "#E6E0CE",
+    "pill_ink": "#1F2BE0",
+    "pill_dot": "#1F2BE0",
+    "thumb": "rgba(31,43,224,0.14)",
+    "term_bg": "#1F2BE0",
+    "term_ink": "#F0EBDE",
+    "term_muted": "#a9b0f5",
+    "term_line": "#1F2BE0",
+    "term_prompt": "#F0EBDE",
+    "term_ok": "#F0EBDE"
+  },
+  "type": {
+    "display": {
+      "family": "Newsreader",
+      "weight": 400,
+      "hook_px": 96,
+      "stat_px": 260,
+      "mark_px": 140,
+      "transform": "none",
+      "tracking": "-0.008em",
+      "line_height": "0.98",
+      "style": "normal",
+      "generic": "serif",
+      "card_title_px": 30
+    },
+    "body": {
+      "family": "Hanken Grotesk",
+      "weight": 400,
+      "generic": "sans"
+    },
+    "mono": {
+      "family": "DM Mono",
+      "weight": 400
+    },
+    "label": {
+      "family": "Hanken Grotesk",
+      "weight": 600,
+      "transform": "uppercase",
+      "tracking": "0.16em",
+      "generic": "sans",
+      "px": 13
+    }
+  },
+  "easing": {
+    "entry": "power3.out",
+    "exit": "power2.in",
+    "ambient": "none",
+    "pop": "power3.out",
+    "counter": "steps(12)",
+    "wipe": null
+  },
+  "rhythm": {
+    "energy": "steady",
+    "entrance": 0.55,
+    "stagger": 0.08
+  },
+  "transition": {
+    "kind": "glitch",
+    "duration": 0.25,
+    "flash": true,
+    "band": false,
+    "flash_colour": "#1F2BE0"
+  },
+  "text_animation": "rise-mask",
+  "accent_word": "none",
+  "layout": "center",
+  "atmosphere": [
+    "grid-accent:40",
+    "rules"
+  ],
+  "shape": {
+    "radius_card": 2,
+    "radius_button": 2,
+    "radius_pill": 999,
+    "border": "hairline",
+    "border_px": 1,
+    "shadow": "none",
+    "rule_px": 2
+  },
+  "stat_colour": "ink",
+  "direction_settings": {
+    "energy": "steady",
+    "density": "balanced",
+    "ground": "light",
+    "depth": "flat",
+    "camera": "locked",
+    "type": "editorial",
+    "texture": "textured",
+    "colour": "mono",
+    "product_presence": "illustrated",
+    "sound": "scored",
+    "voice": "narrated"
+  },
+  "notes": "Cream paper with cobalt as the only ink over permanent graph paper, Newsreader against Hanken Grotesk and DM Mono; pixel-glitch cuts.",
+  "transitions": {
+    "between_moments": "glitch",
+    "duration_s": 0.25,
+    "text": "rise-mask"
+  }
+}

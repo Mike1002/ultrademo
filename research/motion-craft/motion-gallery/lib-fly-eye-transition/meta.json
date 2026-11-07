@@ -1,0 +1,22 @@
+{
+  "name": "Fly eye transition",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Attention"
+  ],
+  "energy": "high",
+  "tier": 3,
+  "runtime": "webgl",
+  "tags": [
+    "fly eye mosaic",
+    "transitions",
+    "lenses",
+    "compound eye",
+    "refraction",
+    "magnify",
+    "colour fringe",
+    "dark"
+  ],
+  "one_line": "A grid of 24 round lenses swells over an invite scene on a dark ground, each magnifying its patch with a warm and a cool colour fringe, while the stats scene crosses in underneath; the lenses relax flat as it lands."
+}

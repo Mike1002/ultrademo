@@ -1,0 +1,21 @@
+{
+  "name": "Karaoke caption",
+  "family": "Captions",
+  "purpose": [
+    "Feedback",
+    "Sequence"
+  ],
+  "energy": "steady",
+  "tier": 2,
+  "runtime": "css",
+  "tags": [
+    "karaoke caption",
+    "karaoke pill",
+    "karaoke continuous color wipe",
+    "karaoke active word step",
+    "karaoke emphasis / word tracking",
+    "caption",
+    "word tracking"
+  ],
+  "one_line": "The caption line never moves; a yellow pill lights up behind each spoken word in turn, word by word from left to right, so the reading position tracks the speech."
+}

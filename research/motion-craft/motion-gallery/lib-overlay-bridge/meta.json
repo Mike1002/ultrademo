@@ -1,0 +1,21 @@
+{
+  "name": "Overlay bridge",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Branding"
+  ],
+  "energy": "high",
+  "tier": 3,
+  "runtime": "gsap",
+  "tags": [
+    "overlay bridge",
+    "transitions",
+    "overlay",
+    "sweep",
+    "brand shape",
+    "hidden cut",
+    "disc"
+  ],
+  "one_line": "A big yellow disc carrying a ring mark sweeps across the stage and hides the cut: the invite scene is behind it until its centre passes the middle, the stats scene after; the rows settle and the disc sweeps back the other way."
+}

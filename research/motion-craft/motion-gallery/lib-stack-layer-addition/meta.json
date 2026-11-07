@@ -1,0 +1,21 @@
+{
+  "name": "Stack layer addition",
+  "family": "Data",
+  "purpose": [
+    "Comparison",
+    "Data evidence"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "svg",
+  "tags": [
+    "stack layer addition",
+    "data",
+    "stacked area",
+    "insert layer",
+    "new category",
+    "shift up",
+    "time-driven"
+  ],
+  "one_line": "A stacked area chart of invites by team gains a new yellow layer at its base: the layer thickens from nothing while the three layers above ride up on it without a gap, then it grows once more."
+}

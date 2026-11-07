@@ -1,0 +1,21 @@
+{
+  "name": "Carousel slide",
+  "family": "UI Demo",
+  "purpose": [
+    "Sequence"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "gsap",
+  "tags": [
+    "card rail throw",
+    "carousel slide",
+    "animated carousel",
+    "ui",
+    "rail",
+    "decelerate",
+    "overshoot",
+    "centred selection"
+  ],
+  "one_line": "A rail of five step cards is thrown left and decelerates into the next centred card with a small overshoot; the centred card grows slightly and the dot indicator glides along, then the rail throws once more."
+}

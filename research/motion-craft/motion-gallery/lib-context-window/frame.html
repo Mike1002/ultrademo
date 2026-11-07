@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-context-window</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  .lab { position: absolute; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  #count { right: 104px; top: 150px; font-variant-numeric: tabular-nums; color: #1d1c1a; }
+  #window { position: absolute; left: 104px; top: 236px; width: 960px; height: 104px; border-top: 2px solid #1d1c1a; border-bottom: 2px solid #1d1c1a; }
+  #window i { position: absolute; top: 0; width: 1px; height: 100px; background: #e3ded2; }
+  .tok { position: absolute; left: 104px; top: 246px; width: 60px; height: 84px; text-align: center; border-radius: 10px; will-change: transform; }
+  .tok b { display: block; font-size: 36px; line-height: 50px; font-weight: 700; }
+  .tok small { display: block; font-size: 11px; line-height: 14px; color: #a19d93; font-variant-numeric: tabular-nums; }
+  #hint { left: 104px; top: 420px; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div class="lab" style="left:104px;top:150px">Fixed window · the last 16 tokens</div>
+      <div class="lab" id="count">12 / 16</div>
+      <div id="window"><i style="left:0"></i><i style="left:60px"></i><i style="left:120px"></i><i style="left:180px"></i><i style="left:240px"></i><i style="left:300px"></i><i style="left:360px"></i><i style="left:420px"></i><i style="left:480px"></i><i style="left:540px"></i><i style="left:600px"></i><i style="left:660px"></i><i style="left:720px"></i><i style="left:780px"></i><i style="left:840px"></i><i style="left:900px"></i></div>
+      <div id="toks"></div>
+      <div class="lab" id="hint">Oldest token leaves first</div>
+    </div>
+    <div id="label"><span class="l-name">Context window</span><span class="l-sep">·</span><span>Explainer</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const letters = "INVITEYOURTEAMEVERYFRAME".split("");   // 24 tokens: 12 in the window, 12 arriving
+  const host = document.getElementById("toks");
+  letters.forEach((ch, i) => {
+    const d = document.createElement("div"); d.className = "tok"; d.id = "t" + i;
+    d.innerHTML = "<b>" + ch + "</b><small>" + String(i + 1).padStart(2, "0") + "</small>";
+    host.appendChild(d);
+  });
+  const toks = letters.map((_, i) => "#t" + i);
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+  const Y0 = "rgba(242,194,0,0)", Y1 = "rgba(242,194,0,1)";
+  // Start state: 12 tokens in slots, the rest parked above the right edge, hidden.
+  toks.forEach((s, i) => tl.set(s, { x: i < 12 ? i * 60 : 900, y: i < 12 ? 0 : -65, opacity: i < 12 ? 1 : 0, backgroundColor: Y0 }, 0));
+  const N = 16, STEP = 0.19, T0 = 0.3;
+  for (let j = 12; j < 24; j++) {
+    const at = T0 + (j - 12) * STEP;
+    // New token drops into the rightmost free slot, highlighted.
+    tl.to(toks[j], { x: Math.min(j, N - 1) * 60, y: 0, opacity: 1, backgroundColor: Y1, duration: 0.17, ease: "power2.out" }, at);
+    tl.to(toks[j - 1], { backgroundColor: Y0, duration: 0.1 }, at);
+    if (j >= N) {
+      // Window is full: everything shifts one slot left and the oldest token falls out bottom-left.
+      for (let k = j - N + 1; k < j; k++) tl.to(toks[k], { x: (k - j + N - 1) * 60, duration: 0.17, ease: "power2.inOut" }, at);
+      tl.to(toks[j - N], { x: -80, y: 125, opacity: 0, duration: 0.24, ease: "power2.out" }, at);
+    }
+  }
+  tl.fromTo("#hint", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 1.1);
+  // Counter is a pure function of time (seek-safe), also written on every render.
+  const countEl = document.getElementById("count");
+  function renderAt(t) {
+    let n = 12; for (let j = 12; j < 24; j++) if (t >= T0 + (j - 12) * STEP + 0.08) n++;
+    countEl.textContent = Math.min(n, N) + " / " + N;
+  }
+  renderAt(0);
+  tl.to({ k: 0 }, { k: 1, duration: 3, ease: "none", onUpdate: () => renderAt(tl.time()) }, 0);
+  const baseRender = tl.render; tl.render = function () { const r = baseRender.apply(this, arguments); renderAt(this.time()); return r; };
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

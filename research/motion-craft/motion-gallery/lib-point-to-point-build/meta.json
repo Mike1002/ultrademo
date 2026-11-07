@@ -1,0 +1,21 @@
+{
+  "name": "Point-to-point construction",
+  "family": "Data",
+  "purpose": [
+    "Explanation",
+    "Sequence"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "svg",
+  "tags": [
+    "progressive point-to-point construction",
+    "data",
+    "line chart",
+    "build",
+    "sequence",
+    "segment by segment",
+    "time-driven"
+  ],
+  "one_line": "A weekly line chart builds itself one observation at a time: a yellow point sets off from the last landed point and travels to the next week's value, extending the line segment by segment until the twelfth week is called out."
+}

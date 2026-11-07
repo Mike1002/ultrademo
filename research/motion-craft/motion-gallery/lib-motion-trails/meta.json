@@ -1,0 +1,22 @@
+{
+  "name": "Motion trails",
+  "family": "Data",
+  "purpose": [
+    "Explanation",
+    "Comparison"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "svg",
+  "tags": [
+    "persistent motion trails",
+    "timestamped trip tails",
+    "data",
+    "trail",
+    "fading dots",
+    "path",
+    "moving point",
+    "time-driven"
+  ],
+  "one_line": "A yellow point glides along a curving path across a chart and leaves a tail of twenty shrinking, fading dots joined by a faint line, so its direction and recent positions stay readable next to where it is now."
+}

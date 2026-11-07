@@ -1,0 +1,124 @@
+{
+  "id": "cartesian",
+  "name": "Cartesian",
+  "canvas": "light",
+  "mood": [
+    "quiet",
+    "drafted",
+    "warm-stone"
+  ],
+  "suits": [
+    "architecture and design tools",
+    "premium services",
+    "thoughtful explainers"
+  ],
+  "palette": {
+    "bg": "#EDE8E0",
+    "bg_alt": "#E2DBD1",
+    "surface": "#EDE8E0",
+    "surface_2": "#E2DBD1",
+    "ink": "#1A1A1A",
+    "muted": "#5A5A5A",
+    "line": "#B8B0A4",
+    "accent": "#8A8178",
+    "accent_2": "#8A8178",
+    "on_accent": "#EDE8E0",
+    "button_bg": "#1A1A1A",
+    "button_ink": "#EDE8E0",
+    "pill_bg": "#EDE8E0",
+    "pill_ink": "#1A1A1A",
+    "pill_dot": "#8A8178",
+    "term_bg": "#1A1A1A",
+    "term_ink": "#EDE8E0",
+    "term_muted": "#8A8178",
+    "term_line": "#1A1A1A",
+    "term_prompt": "#B8B0A4",
+    "term_ok": "#B8B0A4"
+  },
+  "type": {
+    "display": {
+      "family": "Playfair Display",
+      "weight": 400,
+      "hook_px": 92,
+      "stat_px": 240,
+      "mark_px": 130,
+      "transform": "none",
+      "tracking": "-0.005em",
+      "line_height": "1.06",
+      "style": "normal",
+      "generic": "serif",
+      "card_title_px": 30
+    },
+    "body": {
+      "family": "Inter",
+      "weight": 400,
+      "generic": "sans"
+    },
+    "mono": {
+      "family": "Inter",
+      "weight": 400
+    },
+    "label": {
+      "family": "Inter",
+      "weight": 500,
+      "transform": "uppercase",
+      "tracking": "0.2em",
+      "generic": "sans",
+      "px": 13
+    }
+  },
+  "easing": {
+    "entry": "power2.out",
+    "exit": "power1.in",
+    "ambient": "none",
+    "pop": "power2.out",
+    "counter": "power2.inOut",
+    "wipe": null
+  },
+  "rhythm": {
+    "energy": "calm",
+    "entrance": 0.8,
+    "stagger": 0.12
+  },
+  "transition": {
+    "kind": "crossfade",
+    "duration": 0.7,
+    "flash": false,
+    "band": false
+  },
+  "text_animation": "fade-up",
+  "accent_word": "none",
+  "layout": "center",
+  "atmosphere": [
+    "rings"
+  ],
+  "shape": {
+    "radius_card": 0,
+    "radius_button": 0,
+    "radius_pill": 999,
+    "border": "hairline",
+    "border_px": 1,
+    "shadow": "none",
+    "rule_px": 1
+  },
+  "stat_colour": "ink",
+  "direction_settings": {
+    "energy": "calm",
+    "density": "sparse",
+    "ground": "light",
+    "depth": "flat",
+    "camera": "locked",
+    "type": "editorial",
+    "texture": "clean",
+    "colour": "mono",
+    "product_presence": "illustrated",
+    "sound": "ambient",
+    "voice": "narrated"
+  },
+  "notes": "Warm stone palette, Playfair 400 against Inter, a single taupe hairline as the only structure, compass rings; slow crossfades.",
+  "transitions": {
+    "between_moments": "crossfade",
+    "duration_s": 0.7,
+    "text": "fade-up"
+  }
+}

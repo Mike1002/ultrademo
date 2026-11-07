@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-dock-magnification</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  #hint { position: absolute; left: 0; top: 150px; width: 1168px; text-align: center; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  #dock { position: absolute; left: 204px; top: 300px; width: 760px; height: 128px; background: #fffdf8; border: 2px solid #1d1c1a; border-radius: 28px; }
+  .ic { position: absolute; top: 332px; width: 56px; height: 56px; border-radius: 16px; background: #fffdf8; border: 2px solid #1d1c1a; will-change: transform; }
+  .ic.y { background: #f2c200; }
+  .g { position: absolute; background: #1d1c1a; }
+  .g.dot { left: 18px; top: 18px; width: 16px; height: 16px; border-radius: 50%; }
+  .g.ring { left: 14px; top: 14px; width: 24px; height: 24px; border-radius: 50%; background: transparent; border: 3px solid #1d1c1a; }
+  .g.bar1 { left: 12px; top: 16px; width: 28px; height: 5px; border-radius: 3px; }
+  .g.bar2 { left: 12px; top: 28px; width: 20px; height: 5px; border-radius: 3px; }
+  .g.sq { left: 16px; top: 16px; width: 20px; height: 20px; border-radius: 4px; }
+  .g.dia { left: 16px; top: 16px; width: 20px; height: 20px; border-radius: 4px; transform: rotate(45deg); }
+  .g.d1 { left: 10px; top: 23px; width: 7px; height: 7px; border-radius: 50%; }
+  .g.d2 { left: 22px; top: 23px; width: 7px; height: 7px; border-radius: 50%; }
+  .g.d3 { left: 34px; top: 23px; width: 7px; height: 7px; border-radius: 50%; }
+  .g.lens { left: 13px; top: 13px; width: 20px; height: 20px; border-radius: 50%; background: transparent; border: 3px solid #1d1c1a; }
+  .g.stem { left: 31px; top: 31px; width: 10px; height: 4px; border-radius: 2px; transform: rotate(45deg); }
+  .g.up { left: 23px; top: 12px; width: 5px; height: 22px; border-radius: 3px; }
+  .g.base { left: 12px; top: 36px; width: 28px; height: 5px; border-radius: 3px; }
+  .lb { position: absolute; top: 400px; width: 100px; text-align: center; font-size: 13px; color: #6d6a63; }
+  .cursor { position: absolute; left: 0; top: 0; width: 28px; height: 38px; z-index: 10; pointer-events: none;
+    transform-origin: 2px 2px; will-change: transform; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.25)); }
+  .cursor svg { width: 28px; height: 38px; display: block; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div id="hint">Orbit · Invite your team</div>
+      <div id="dock"></div>
+      <div class="ic" id="i0" style="left:256px" data-layout-allow-overlap><div class="g up"></div><div class="g base"></div></div>
+      <div class="ic" id="i1" style="left:356px" data-layout-allow-overlap><div class="g bar1"></div><div class="g bar2"></div></div>
+      <div class="ic" id="i2" style="left:456px" data-layout-allow-overlap><div class="g ring"></div></div>
+      <div class="ic y" id="i3" style="left:556px" data-layout-allow-overlap><div class="g lens"></div><div class="g stem"></div></div>
+      <div class="ic" id="i4" style="left:656px" data-layout-allow-overlap><div class="g dia"></div></div>
+      <div class="ic" id="i5" style="left:756px" data-layout-allow-overlap><div class="g dot"></div></div>
+      <div class="ic" id="i6" style="left:856px" data-layout-allow-overlap><div class="g d1"></div><div class="g d2"></div><div class="g d3"></div></div>
+      <div class="lb" style="left:234px">Save</div><div class="lb" style="left:334px">Export</div><div class="lb" style="left:434px">Settings</div>
+      <div class="lb" style="left:534px">Search</div><div class="lb" style="left:634px">Share</div><div class="lb" style="left:734px">Help</div><div class="lb" style="left:834px">More</div>
+      <div class="cursor" id="cur" data-layout-allow-overlap>
+        <svg viewBox="0 0 28 38"><path d="M2.5 2.5 L2.5 29.5 L9.6 23 L14.4 33.6 L19 31.6 L14.3 21.4 L23.8 21.4 Z" fill="#ffffff" stroke="#1d1c1a" stroke-width="2" stroke-linejoin="round"/></svg>
+      </div>
+    </div>
+    <div id="label"><span class="l-name">Dock magnification</span><span class="l-sep">·</span><span>UI Demo</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "none", duration: 0.2 } });
+  // Params: influence radius 140 px, growth up to 1.6 at the pointer, falling linearly to 1 at the radius.
+  // The pointer moves at constant speed, so each icon's scale is a piecewise-linear function of time: it is
+  // written as straight tweens between the moments the pointer crosses cx-140, cx and cx+140.
+  const R = 140, GAIN = 0.6, CY = 384;
+  const CX = [284, 384, 484, 584, 684, 784, 884];
+  const icons = CX.map((_, i) => "#i" + i);
+  const f = x => c => 1 + GAIN * Math.max(0, 1 - Math.abs(x - c) / R);
+  icons.forEach(s => { tl.fromTo(s, { scale: 1, transformOrigin: "50% 100%" }, { scale: 1, duration: 0.01, ease: "none" }, 0); });
+  function pass(x0, x1, t0, t1) {
+    const xAt = t => x0 + (x1 - x0) * (t - t0) / (t1 - t0);
+    const tAt = x => t0 + (t1 - t0) * (x - x0) / (x1 - x0);
+    CX.forEach((c, i) => {
+      const ts = [t0, t1];
+      [c - R, c, c + R].forEach(x => { const t = tAt(x); if (t > t0 && t < t1) ts.push(t); });
+      ts.sort((a, b) => a - b);
+      for (let k = 1; k < ts.length; k++) {
+        const d = ts[k] - ts[k - 1]; if (d < 0.002) continue;
+        tl.to(icons[i], { scale: f(xAt(ts[k]))(c), duration: d, ease: "none" }, ts[k - 1]);
+      }
+    });
+    tl.to("#cur", { x: x1, duration: t1 - t0, ease: "none" }, t0);
+  }
+  tl.fromTo("#cur", { x: 150, y: CY }, { x: 150, y: CY, duration: 0.01, ease: "none" }, 0);
+  pass(150, 1040, 0.3, 1.75);   // left to right across all seven icons
+  pass(1040, 584, 2.0, 2.7);    // back to Search, which stays magnified
+  tl.to("#cur", { scale: 0.85, duration: 0.1, ease: "power2.in", yoyo: true, repeat: 1 }, 2.8);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

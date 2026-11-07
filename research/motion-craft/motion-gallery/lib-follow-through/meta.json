@@ -1,0 +1,22 @@
+{
+  "name": "Follow-through",
+  "family": "Principles",
+  "purpose": [
+    "Explanation",
+    "Emphasis",
+    "Mood"
+  ],
+  "energy": "steady",
+  "tier": 2,
+  "runtime": "gsap",
+  "tags": [
+    "follow through",
+    "follow through settle",
+    "follow through and overlapping action",
+    "principles",
+    "inertia",
+    "damping",
+    "flag"
+  ],
+  "one_line": "A post slides right and stops dead; the yellow flag on top trails behind during the move, swings past the stop through inertia, and rocks back and forth in smaller swings until it settles."
+}

@@ -1,0 +1,26 @@
+{
+  "name": "Multi cursor choreography",
+  "family": "Transition & Motion",
+  "purpose": [
+    "collaboration",
+    "ambient",
+    "cursor",
+    "teamwork"
+  ],
+  "energy": "steady",
+  "tags": [
+    "cursor",
+    "multi-cursor",
+    "collaboration",
+    "ensemble",
+    "canvas",
+    "name-tag",
+    "choreography",
+    "ambient",
+    "teamwork"
+  ],
+  "one_line": "Three named cursors (Jamie, Sam, Morgan) work one canvas at once: one highlights a headline, one carries a chip into a slot, one glides and rests, while the canvas drifts slowly.",
+  "aliases": [
+    "awesome-ai-motion:collaborative-cursors"
+  ]
+}

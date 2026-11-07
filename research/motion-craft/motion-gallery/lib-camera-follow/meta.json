@@ -1,0 +1,23 @@
+{
+  "name": "Camera follow",
+  "family": "Camera",
+  "purpose": [
+    "Explanation",
+    "Sequence"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "gsap",
+  "tags": [
+    "camera follow",
+    "camera caret track",
+    "camera-cursor-tracking",
+    "moving time-window zoom",
+    "aspect-aware demo reframing",
+    "camera",
+    "pan",
+    "viewport",
+    "tracking"
+  ],
+  "one_line": "A yellow subject marker hops along a row of four step cards; once it would pass 65% of the framed viewport, the whole world slides left a beat later to park it at the 60% anchor line, twice in a row."
+}

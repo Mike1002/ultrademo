@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-spotlight</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  .context { position: absolute; inset: 0; }
+  .heading { position: absolute; left: 100px; top: 54px; font-size: 56px; font-weight: 700; }
+  .question { position: absolute; left: 100px; top: 150px; font-size: 26px; color: #6d6a63; }
+  .lab { position: absolute; left: 150px; top: 232px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  .row { position: absolute; left: 150px; width: 860px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #e3ded2; }
+  .focus { top: 278px; height: 74px; }
+  .focus .word { font-size: 46px; font-weight: 700; }
+  .focus .value { font-size: 66px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .other { height: 60px; font-size: 28px; color: #1d1c1a; }
+  .other span:last-child { font-variant-numeric: tabular-nums; }
+  .b { top: 370px; } .c { top: 448px; }
+  .brackets { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  .brackets path { fill: none; stroke: #f2c200; stroke-width: 3; stroke-dasharray: 1; stroke-dashoffset: 1; stroke-linecap: round; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div class="context" id="context">
+        <div class="heading">Invite your team</div>
+        <div class="question">Who has joined so far?</div>
+        <div class="lab">Team · accepted</div>
+        <div class="row other b"><span>Sam Kim</span><span>21%</span></div>
+        <div class="row other c"><span>Morgan Lee</span><span>9%</span></div>
+      </div>
+      <div class="row focus"><span class="word">Jamie Dalton</span><span class="value">98%</span></div>
+      <svg class="brackets" data-layout-allow-overlap viewBox="0 0 1168 580"><path id="bl" d="M145 268 H124 V357 H145" pathLength="1"/><path id="br" d="M1015 268 H1036 V357 H1015" pathLength="1"/></svg>
+    </div>
+    <div id="label"><span class="l-name">Spotlight</span><span class="l-sep">·</span><span>UI Demo</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+  // Everything but the focus row dims to 0.25 over 0.65 s; the row keeps opacity 1.
+  tl.fromTo("#context", { opacity: 1 }, { opacity: 0.25, duration: 0.65, ease: "power3.out" }, 0.35);
+  // Yellow 3 px brackets draw around the row over 0.45 s.
+  tl.fromTo("#bl", { strokeDashoffset: 1 }, { strokeDashoffset: 0, autoRound: false, duration: 0.45, ease: "power2.out" }, 0.7);
+  tl.fromTo("#br", { strokeDashoffset: 1 }, { strokeDashoffset: 0, autoRound: false, duration: 0.45, ease: "power2.out" }, 0.7);
+  // Second beat: the brackets squeeze in a little and relax, so the hold still breathes.
+  tl.fromTo("#bl", { x: 0 }, { x: 10, duration: 0.45, ease: "power2.inOut", yoyo: true, repeat: 1, immediateRender: false }, 1.9);
+  tl.fromTo("#br", { x: 0 }, { x: -10, duration: 0.45, ease: "power2.inOut", yoyo: true, repeat: 1, immediateRender: false }, 1.9);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

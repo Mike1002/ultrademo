@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-lens-distortion-zoom</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; overflow: hidden; }
+  #cv { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage"><canvas id="cv" width="1168" height="580"></canvas></div>
+    <div id="label"><span class="l-name">Lens distortion zoom</span><span class="l-sep">·</span><span>Camera</span><span class="l-sep">·</span><span>high</span></div>
+  </section>
+</div>
+<script>
+  const cv = document.getElementById("cv"), ctx = cv.getContext("2d");
+  const W = 1168, H = 580, CX = 584, CY = 290, INK = "#1d1c1a", PAPER = "#f6f3ec", CARD = "#fffdf8", ACC = "#f2c200", RULE = "#e3ded2", MUTED = "#6d6a63";
+  const SANS = '-apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif';
+  const clamp = x => Math.max(0, Math.min(1, x));
+  function rr(c, x, y, w, h, r) { c.beginPath(); c.moveTo(x + r, y); c.arcTo(x + w, y, x + w, y + h, r); c.arcTo(x + w, y + h, x, y + h, r); c.arcTo(x, y + h, x, y, r); c.arcTo(x, y, x + w, y, r); c.closePath(); }
+  // The still scene (a grid and the invite card) is drawn once, oversize, so the zoomed-out state has grid to sample from.
+  const SW = 1800, SH = 1000, OX = (SW - W) / 2, OY = (SH - H) / 2;
+  const src = document.createElement("canvas"); src.width = SW; src.height = SH; const s = src.getContext("2d");
+  s.fillStyle = PAPER; s.fillRect(0, 0, SW, SH);
+  s.strokeStyle = "#d9d3c4"; s.lineWidth = 2;
+  for (let x = (OX + CX) % 60; x < SW; x += 60) { s.beginPath(); s.moveTo(x, 0); s.lineTo(x, SH); s.stroke(); }
+  for (let y = (OY + CY) % 60; y < SH; y += 60) { s.beginPath(); s.moveTo(0, y); s.lineTo(SW, y); s.stroke(); }
+  s.fillStyle = INK; for (let x = (OX + CX) % 60; x < SW; x += 60) for (let y = (OY + CY) % 60; y < SH; y += 60) { s.beginPath(); s.arc(x, y, 2.5, 0, 7); s.fill(); }
+  const cx0 = OX + CX, cy0 = OY + CY;
+  rr(s, cx0 - 280, cy0 - 170, 560, 340, 24); s.fillStyle = CARD; s.fill(); s.lineWidth = 2; s.strokeStyle = INK; s.stroke();
+  s.fillStyle = MUTED; s.font = "13px " + SANS; s.textAlign = "left"; s.fillText("ORBIT", cx0 - 232, cy0 - 120);
+  s.fillStyle = INK; s.font = "700 52px " + SANS; s.fillText("Invite your team", cx0 - 232, cy0 - 58);
+  s.fillStyle = MUTED; s.font = "22px " + SANS; s.fillText("3 seats left on this plan", cx0 - 232, cy0 - 14);
+  rr(s, cx0 - 232, cy0 + 40, 200, 60, 14); s.fillStyle = ACC; s.fill(); s.strokeStyle = INK; s.stroke();
+  s.fillStyle = INK; s.font = "700 20px " + SANS; s.textAlign = "center"; s.fillText("Continue", cx0 - 132, cy0 + 77);
+  const RMAX = Math.hypot(CX, CY), STEP = 6;
+  const ease = gsap.parseEase("power2.inOut");
+  function renderAt(t) {
+    // approach 0.5 -> 1.5 s: zoom 1 -> 1.4 while barrel distortion rises to 0.25 at the midpoint and returns to 0; retreat 2.0 -> 2.8 s the same way back.
+    const a = ease(clamp((t - 0.5) / 1.0)), b = ease(clamp((t - 2.0) / 0.8));
+    const zoom = 1 + 0.4 * a - 0.4 * b;
+    const k = 0.25 * Math.sin(Math.PI * a) + 0.25 * Math.sin(Math.PI * b);
+    ctx.fillStyle = PAPER; ctx.fillRect(0, 0, W, H);
+    // Ring-slice remap: each annulus of the output samples the source scaled by zoom / (1 + k r^2), so straight lines bow outward.
+    for (let r = 0; r <= RMAX + STEP; r += STEP) {
+      const rn = (r + STEP / 2) / RMAX;
+      const sc = zoom / (1 + k * rn * rn);
+      ctx.save(); ctx.beginPath(); ctx.arc(CX, CY, r + STEP, 0, Math.PI * 2); ctx.arc(CX, CY, r, 0, Math.PI * 2, true); ctx.clip("evenodd");
+      ctx.drawImage(src, CX - cx0 * sc, CY - cy0 * sc, SW * sc, SH * sc);
+      ctx.restore();
+    }
+    // a thin vignette of the lens, stronger with distortion
+    const g = ctx.createRadialGradient(CX, CY, RMAX * 0.55, CX, CY, RMAX);
+    g.addColorStop(0, "rgba(29,28,26,0)"); g.addColorStop(1, "rgba(29,28,26," + (0.08 + 0.5 * k).toFixed(3) + ")");
+    ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+    ctx.fillStyle = MUTED; ctx.font = "13px " + SANS; ctx.textAlign = "left"; ctx.fillText("ZOOM " + zoom.toFixed(2) + "   DISTORTION " + k.toFixed(2), 32, 548);
+  }
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power2.inOut", duration: 0.6 } });
+  renderAt(0);
+  tl.to({ k: 0 }, { k: 1, duration: 3, ease: "none", onUpdate: () => renderAt(tl.time()) }, 0);
+  const baseRender = tl.render; tl.render = function () { const r = baseRender.apply(this, arguments); renderAt(this.time()); return r; };
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

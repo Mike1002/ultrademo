@@ -1,0 +1,21 @@
+{
+  "name": "Mask reveal",
+  "family": "Typography",
+  "purpose": [
+    "Attention",
+    "Sequence"
+  ],
+  "energy": "steady",
+  "tier": 2,
+  "runtime": "gsap",
+  "tags": [
+    "line reveal",
+    "directional menu image reveal",
+    "mask text reveal",
+    "line mask typography",
+    "type",
+    "clip window",
+    "rise"
+  ],
+  "one_line": "Three lines of a title rise into clipped windows one after another, each appearing from below its own invisible edge, hold, then slide up and out the same way."
+}

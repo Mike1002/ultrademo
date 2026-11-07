@@ -1,0 +1,47 @@
+{
+  "name": "Motion Principles",
+  "fonts": {
+    "display": "Inter Tight",
+    "body": "Inter Tight",
+    "mono": "JetBrains Mono",
+    "label": "JetBrains Mono"
+  },
+  "font_families": [
+    "Caveat",
+    "Inter Tight",
+    "JetBrains Mono"
+  ],
+  "font_substitutions": {},
+  "canvas": "light",
+  "mood": [
+    "precise",
+    "playful",
+    "craft-obsessed"
+  ],
+  "suits": [
+    "motion-design showreels",
+    "craft-led launches",
+    "annotated explainers"
+  ],
+  "direction_settings": {
+    "energy": "high",
+    "density": "sparse",
+    "ground": "alternating",
+    "depth": "flat",
+    "camera": "locked",
+    "type": "loud",
+    "texture": "clean",
+    "colour": "one-accent",
+    "product_presence": "illustrated",
+    "sound": "beat-driven",
+    "voice": "spoken-headline"
+  },
+  "duration_s": 10,
+  "size": [
+    1280,
+    720
+  ],
+  "fps": 30,
+  "strip": "D-58 style strip: hook · project card · number · agent · close",
+  "one_line": ""
+}

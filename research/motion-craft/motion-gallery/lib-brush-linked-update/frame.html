@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-brush-linked-update</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  #chart { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  #cap { position: absolute; left: 160px; top: 8px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  text { font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .axis { stroke: #1d1c1a; stroke-width: 2; }
+  .grid { stroke: #e3ded2; stroke-width: 2; }
+  .tx { font-size: 16px; fill: #6d6a63; }
+  #ov { fill: none; stroke: #a19d93; stroke-width: 2; stroke-linejoin: round; }
+  #brush { fill: #f2c200; fill-opacity: 0.35; stroke: #1d1c1a; stroke-width: 2; }
+  .handle { fill: #f2c200; stroke: #1d1c1a; stroke-width: 2; }
+  #area { fill: #ece7da; stroke: none; }
+  #det { fill: none; stroke: #1d1c1a; stroke-width: 3; stroke-linejoin: round; }
+  #range { font-size: 22px; font-weight: 700; fill: #1d1c1a; font-variant-numeric: tabular-nums; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div id="cap">Invites · last 90 days</div>
+      <svg id="chart" viewBox="0 0 1168 580" width="1168" height="580">
+        <line class="axis" x1="160" y1="170" x2="1080" y2="170"/>
+        <polyline id="ov" points=""/>
+        <rect id="brush" x="0" y="52" width="0" height="122" rx="4"/>
+        <rect id="h1" class="handle" x="0" y="96" width="10" height="34" rx="3"/>
+        <rect id="h2" class="handle" x="0" y="96" width="10" height="34" rx="3"/>
+        <text class="tx" x="160" y="196">Day 1</text>
+        <text class="tx" x="1080" y="196" text-anchor="end">Day 90</text>
+        <g id="grid"></g>
+        <line class="axis" x1="160" y1="540" x2="1080" y2="540"/>
+        <path id="area" d=""/>
+        <polyline id="det" points=""/>
+        <text id="range" x="160" y="262">Day 20 – 40</text>
+      </svg>
+    </div>
+    <div id="label"><span class="l-name">Brush-linked update</span><span class="l-sep">·</span><span>Data</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  function rand(seed){ let a = seed >>> 0 || 1; return function(){ a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+  const SVG = "http://www.w3.org/2000/svg";
+  // 90 daily values: a seeded walk with a rising trend and a weekly ripple.
+  const r = rand(90), data = []; let v = 40;
+  for (let d = 0; d < 90; d++) { v = Math.max(8, Math.min(100, v + (r() - 0.46) * 14)); data.push(Math.round(v + 10 * Math.sin(d * 0.9))); }
+  const OX = d => 160 + d * (920 / 89), OY = y => 170 - y * 1.0;          // overview strip
+  const DX = u => 160 + u * 920, DY = y => 540 - y * 2.4;               // detail chart (fixed value scale)
+  const at = d => { const k = Math.max(0, Math.min(88, Math.floor(d))), f = d - k; return data[k] + (data[Math.min(89, k + 1)] - data[k]) * f; };
+  document.getElementById("ov").setAttribute("points", data.map((y, d) => OX(d) + "," + OY(y)).join(" "));
+  const grid = document.getElementById("grid");
+  [25, 50, 75, 100].forEach(y => { const l = document.createElementNS(SVG, "line"); l.setAttribute("class", "grid"); l.setAttribute("x1", 160); l.setAttribute("x2", 1080); l.setAttribute("y1", DY(y)); l.setAttribute("y2", DY(y)); grid.appendChild(l);
+    const t = document.createElementNS(SVG, "text"); t.setAttribute("class", "tx"); t.setAttribute("x", 140); t.setAttribute("y", DY(y) + 5); t.setAttribute("text-anchor", "end"); t.textContent = y; grid.appendChild(t); });
+  const brush = document.getElementById("brush"), h1 = document.getElementById("h1"), h2 = document.getElementById("h2");
+  const area = document.getElementById("area"), det = document.getElementById("det"), range = document.getElementById("range");
+  // The brush window is a pure function of time: slide (day 20-40 to 45-65), hold, widen (to 30-80), hold.
+  const io = x => { x = Math.max(0, Math.min(1, x)); return x < 0.5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2; };
+  function windowAt(t) {
+    const p1 = io((t - 0.3) / 1.0), p2 = io((t - 1.7) / 0.9);
+    const s = 20 + 25 * p1 - 15 * p2, e = 40 + 25 * p1 + 15 * p2;
+    return [s, e];
+  }
+  function renderAt(t) {
+    const [s, e] = windowAt(t);
+    brush.setAttribute("x", OX(s)); brush.setAttribute("width", OX(e) - OX(s));
+    h1.setAttribute("x", OX(s) - 5); h2.setAttribute("x", OX(e) - 5);
+    // The detail chart re-draws to the window: 24 samples across the selected days, at the same value scale.
+    let pts = "", d = "M" + DX(0) + "," + DY(0);
+    for (let k = 0; k <= 24; k++) { const u = k / 24, y = at(s + (e - s) * u); pts += DX(u) + "," + DY(y) + " "; d += " L" + DX(u) + "," + DY(y); }
+    d += " L" + DX(1) + "," + DY(0) + " Z";
+    det.setAttribute("points", pts); area.setAttribute("d", d);
+    range.textContent = "Day " + Math.round(s) + " – " + Math.round(e);
+  }
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "none", duration: 3 } });
+  renderAt(0);
+  tl.to({ k: 0 }, { k: 1, duration: 3, ease: "none", onUpdate: () => renderAt(tl.time()) }, 0);
+  const baseRender = tl.render; tl.render = function () { const r = baseRender.apply(this, arguments); renderAt(this.time()); return r; };
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

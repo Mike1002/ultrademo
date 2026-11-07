@@ -1,0 +1,22 @@
+{
+  "name": "Geographic outline comparison",
+  "family": "Data",
+  "purpose": [
+    "Comparison",
+    "Data evidence"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "svg",
+  "tags": [
+    "geographic outline comparison",
+    "data",
+    "map",
+    "outline",
+    "rescale",
+    "move",
+    "reference",
+    "overlay"
+  ],
+  "one_line": "A yellow region outline slides across an abstract map and shrinks to its true relative size as it settles over a fixed grey reference outline, leaving a dashed ghost where it started, then nudges once into place."
+}

@@ -1,0 +1,20 @@
+{
+  "name": "Layout reflow",
+  "family": "UI Demo",
+  "purpose": [
+    "Sequence"
+  ],
+  "energy": "steady",
+  "tier": 2,
+  "runtime": "gsap",
+  "tags": [
+    "layout reflow",
+    "flip",
+    "animated reordering",
+    "collapsing gap exit",
+    "ui",
+    "transforms only",
+    "grid reflow"
+  ],
+  "one_line": "One card in a grid of six fades out and the remaining cards glide into the freed slots, the last one stretching to fill two columns, so each card keeps its identity while the layout changes."
+}

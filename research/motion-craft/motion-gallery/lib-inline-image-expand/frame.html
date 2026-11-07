@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-inline-image-expand</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  #row { position: absolute; left: 0; top: 250px; width: 1168px; height: 80px; display: flex; justify-content: center; align-items: center; font-size: 56px; font-weight: 700; letter-spacing: -0.01em; white-space: nowrap; }
+  #row .w { display: block; height: 80px; line-height: 80px; will-change: transform; }
+  #slot { position: relative; width: 44px; height: 44px; margin: 0 18px; flex: none; }
+  #pic { position: absolute; left: -98px; top: -70px; width: 240px; height: 184px; background: #f2c200; border: 2px solid #1d1c1a; border-radius: 20px; will-change: transform; }
+  #pic .t { position: absolute; left: 22px; top: 20px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #1d1c1a; }
+  #pic .av { position: absolute; top: 52px; width: 56px; height: 56px; border-radius: 50%; background: #fffdf8; border: 2px solid #1d1c1a; font-size: 20px; font-weight: 700; line-height: 52px; text-align: center; }
+  #pic .n { position: absolute; left: 22px; top: 128px; font-size: 22px; font-weight: 700; }
+  #sub { position: absolute; left: 0; top: 420px; width: 1168px; text-align: center; font-size: 18px; color: #6d6a63; letter-spacing: .06em; text-transform: uppercase; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div id="row">
+        <div class="w" id="left" data-layout-allow-overlap>Invite your team</div>
+        <div id="slot" data-layout-allow-overlap><div id="pic" data-layout-allow-overlap>
+          <div class="t">Orbit</div>
+          <div class="av" style="left:22px">JD</div><div class="av" style="left:68px">SK</div><div class="av" style="left:114px">ML</div>
+          <div class="n">3 seats left</div>
+        </div></div>
+        <div class="w" id="right" data-layout-allow-overlap>in one click</div>
+      </div>
+      <div id="sub">the picture in the sentence takes the frame</div>
+    </div>
+    <div id="label"><span class="l-name">Inline image expand</span><span class="l-sep">·</span><span>Typography</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  // Params: inline picture grows from a 44 px thumbnail to 240x184 (scale 0.18 -> 1, never width/height) over 1.0 s power2.inOut;
+  // the words on either side translate apart (x -/+ 150) and dim; a hold, then the picture shrinks back and the line re-closes.
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power2.inOut", duration: 1.0 } });
+  tl.fromTo("#pic", { scale: 0.18, transformOrigin: "50% 50%" }, { scale: 1, duration: 1.0, ease: "power2.inOut" }, 0.3);
+  tl.fromTo("#left", { x: 0, opacity: 1 }, { x: -150, opacity: 0.45, duration: 1.0, ease: "power2.inOut" }, 0.3);
+  tl.fromTo("#right", { x: 0, opacity: 1 }, { x: 150, opacity: 0.45, duration: 1.0, ease: "power2.inOut" }, 0.3);
+  // second beat: the sentence closes again
+  tl.to("#pic", { scale: 0.18, duration: 0.7, ease: "power2.inOut" }, 2.15);
+  tl.to("#left", { x: 0, opacity: 1, duration: 0.7, ease: "power2.inOut" }, 2.15);
+  tl.to("#right", { x: 0, opacity: 1, duration: 0.7, ease: "power2.inOut" }, 2.15);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

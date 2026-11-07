@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-boxplot-update</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  #chart { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  #cap { position: absolute; left: 160px; top: 8px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  text { font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .axis { stroke: #1d1c1a; stroke-width: 2; }
+  .grid { stroke: #e3ded2; stroke-width: 2; }
+  .tx { font-size: 18px; fill: #6d6a63; }
+  .name { font-size: 22px; font-weight: 700; fill: #1d1c1a; }
+  .period { font-size: 22px; font-weight: 700; fill: #1d1c1a; }
+  .whisk { stroke: #1d1c1a; stroke-width: 2; }
+  .box { fill: #ece7da; stroke: #1d1c1a; stroke-width: 2; }
+  .med { stroke: #f2c200; stroke-width: 6; stroke-linecap: round; }
+  .out { fill: #fffdf8; stroke: #1d1c1a; stroke-width: 2; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div id="cap">Time to accept (days)</div>
+      <svg id="chart" viewBox="0 0 1168 580" width="1168" height="580">
+        <g id="grid"></g>
+        <line class="axis" x1="160" y1="80" x2="160" y2="500"/>
+        <line class="axis" x1="160" y1="500" x2="1080" y2="500"/>
+        <g id="plots"></g>
+        <text class="name" x="380" y="540" text-anchor="middle">Jamie Dalton</text>
+        <text class="name" x="640" y="540" text-anchor="middle">Sam Kim</text>
+        <text class="name" x="900" y="540" text-anchor="middle">Morgan Lee</text>
+        <text class="period" id="p0" x="1080" y="60" text-anchor="end">March</text>
+        <text class="period" id="p1" x="1080" y="60" text-anchor="end">April</text>
+        <text class="period" id="p2" x="1080" y="60" text-anchor="end">May</text>
+      </svg>
+    </div>
+    <div id="label"><span class="l-name">Boxplot update</span><span class="l-sep">·</span><span>Data</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const SVG = "http://www.w3.org/2000/svg";
+  const Y = d => 500 - d * 30, BW = 120, cx = [380, 640, 900];
+  // Three summaries per period: [low whisker, Q1, median, Q3, high whisker] in days, plus one outlier per period (or none).
+  const periods = [
+    { s: [[2, 4, 5.5, 7, 9.5], [3, 5, 7, 9, 12], [1, 2.5, 4, 5, 6.5]], out: [null, 13.5, null] },
+    { s: [[1.5, 3, 4, 5, 7], [2, 4, 5.5, 7.5, 10], [2, 3.5, 5, 6.5, 9]], out: [null, null, 12] },
+    { s: [[1, 2, 3, 4, 5.5], [3, 4.5, 6, 7, 9], [1.5, 2.5, 3.5, 5, 7]], out: [8.5, null, null] }
+  ];
+  const grid = document.getElementById("grid");
+  [0, 2, 4, 6, 8, 10, 12, 14].forEach(d => {
+    const l = document.createElementNS(SVG, "line"); l.setAttribute("class", "grid"); l.setAttribute("x1", 160); l.setAttribute("x2", 1080); l.setAttribute("y1", Y(d)); l.setAttribute("y2", Y(d)); grid.appendChild(l);
+    const t = document.createElementNS(SVG, "text"); t.setAttribute("class", "tx"); t.setAttribute("x", 140); t.setAttribute("y", Y(d) + 6); t.setAttribute("text-anchor", "end"); t.textContent = d; grid.appendChild(t);
+  });
+  // One set of parts per plot; identities are preserved across every update, only attributes move.
+  const plots = document.getElementById("plots"), parts = [];
+  const attrsFor = (s, i) => ({
+    whisk: { y1: Y(s[0]), y2: Y(s[4]) }, lo: { y1: Y(s[0]), y2: Y(s[0]) }, hi: { y1: Y(s[4]), y2: Y(s[4]) },
+    box: { y: Y(s[3]), height: Y(s[1]) - Y(s[3]) }, med: { y1: Y(s[2]), y2: Y(s[2]) }
+  });
+  cx.forEach((x, i) => {
+    const mk = (tag, cls, a) => { const e = document.createElementNS(SVG, tag); e.setAttribute("class", cls); for (const k in a) e.setAttribute(k, a[k]); plots.appendChild(e); return e; };
+    const A = attrsFor(periods[0].s[i]);
+    const p = {
+      whisk: mk("line", "whisk", { x1: x, x2: x, ...A.whisk }), lo: mk("line", "whisk", { x1: x - 30, x2: x + 30, ...A.lo }), hi: mk("line", "whisk", { x1: x - 30, x2: x + 30, ...A.hi }),
+      box: mk("rect", "box", { x: x - BW / 2, width: BW, rx: 4, ...A.box }), med: mk("line", "med", { x1: x - BW / 2 + 6, x2: x + BW / 2 - 6, ...A.med }),
+      out: mk("circle", "out", { cx: x, cy: Y(periods[0].out[i] === null ? 7 : periods[0].out[i]), r: 8, opacity: periods[0].out[i] === null ? 0 : 1 })
+    };
+    parts.push(p);
+  });
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power2.inOut", duration: 0.9 } });
+  const U = [0.4, 1.9];   // two updates: March -> April, April -> May
+  cx.forEach((x, i) => {
+    const A = attrsFor(periods[0].s[i]), p = parts[i];
+    // Rest state written as a from-state so a cold seek to 0 is correct.
+    Object.keys(A).forEach(k => tl.fromTo(p[k], { attr: A[k] }, { attr: A[k], duration: 0.01 }, 0));
+    U.forEach((t0, u) => {
+      const B = attrsFor(periods[u + 1].s[i]), P = attrsFor(periods[u].s[i]);
+      Object.keys(B).forEach(k => tl.fromTo(p[k], { attr: P[k] }, { attr: B[k], duration: 0.9, immediateRender: false }, t0));
+    });
+    // Outliers keep their identity: fade out before the move, fade in at the new period's value after it.
+    const o0 = periods[0].out[i];
+    tl.fromTo(p.out, { opacity: o0 === null ? 0 : 1, attr: { cy: Y(o0 === null ? 7 : o0) } }, { opacity: o0 === null ? 0 : 1, duration: 0.01 }, 0);
+    U.forEach((t0, u) => {
+      const prev = periods[u].out[i], next = periods[u + 1].out[i];
+      if (prev !== null) tl.fromTo(p.out, { opacity: 1 }, { opacity: 0, duration: 0.25, ease: "none", immediateRender: false }, t0);
+      if (next !== null) tl.fromTo(p.out, { opacity: 0, attr: { cy: Y(next) } }, { opacity: 1, attr: { cy: Y(next) }, duration: 0.25, ease: "none", immediateRender: false }, t0 + 0.65);
+    });
+  });
+  // Period label crossfades with each update.
+  tl.fromTo("#p1", { opacity: 0 }, { opacity: 0, duration: 0.01 }, 0);
+  tl.fromTo("#p2", { opacity: 0 }, { opacity: 0, duration: 0.01 }, 0);
+  tl.fromTo("#p0", { opacity: 1 }, { opacity: 0, duration: 0.3, ease: "none", immediateRender: false }, U[0]);
+  tl.fromTo("#p1", { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "none", immediateRender: false }, U[0] + 0.3);
+  tl.fromTo("#p1", { opacity: 1 }, { opacity: 0, duration: 0.3, ease: "none", immediateRender: false }, U[1]);
+  tl.fromTo("#p2", { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "none", immediateRender: false }, U[1] + 0.3);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

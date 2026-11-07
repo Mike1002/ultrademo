@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>scale-swap-transition</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  /* fixed-size wrapper 560x320 centred; never resizes */
+  .swap-wrap { position: absolute; left: 360px; top: 200px; width: 560px; height: 320px; }
+  .card { position: absolute; left: 0; top: 0; width: 560px; height: 320px; background: #fffdf8; border: 2px solid #1d1c1a; border-radius: 24px;
+    transform-origin: 50% 50%; will-change: transform, opacity; }
+  #outgoing { z-index: 1; } #mid { z-index: 2; opacity: 0; } #incoming { z-index: 3; opacity: 0; }
+  .eyebrow { position: absolute; left: 44px; top: 40px; font-size: 18px; color: #6d6a63; letter-spacing: 0.08em; text-transform: uppercase; }
+  .big { position: absolute; left: 44px; top: 80px; font-size: 64px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.1; }
+  .sub { position: absolute; left: 44px; top: 200px; font-size: 20px; color: #6d6a63; opacity: 0; will-change: transform, opacity; }
+  .ring { position: absolute; right: 44px; top: 44px; width: 96px; height: 96px; border-radius: 50%; border: 10px solid #e3ded2; }
+  .ring.on { border-color: #f2c200; }
+  .pill { position: absolute; right: 44px; top: 48px; width: 200px; height: 60px; border-radius: 14px; background: #f2c200;
+    border: 2px solid #1d1c1a; font-size: 22px; font-weight: 700; display: grid; place-items: center; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div class="swap-wrap">
+      <div class="card" id="outgoing">
+        <div class="eyebrow">Step 1</div>
+        <div class="big">Draft</div>
+        <div class="ring"></div>
+        <div class="sub" id="sub-a" style="opacity: 1">Every frame is code</div>
+      </div>
+      <div class="card" id="mid">
+        <div class="eyebrow">Step 2</div>
+        <div class="big">Review</div>
+        <div class="ring on"></div>
+        <div class="sub" id="sub-b">1,284 frames checked</div>
+      </div>
+      <div class="card" id="incoming">
+        <div class="eyebrow">Step 3</div>
+        <div class="big">Live</div>
+        <div class="pill">Continue</div>
+        <div class="sub" id="sub-c">98% of the video is unchanged</div>
+      </div>
+    </div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true });
+  // Rule values: EXIT_DUR 0.4 power2.in, ENTER_DUR 0.6 back.out(1.8), OVERLAP 0.15, EXIT_SCALE 0.7, sub reveal +0.3 s.
+  const EXIT_DUR = 0.4, ENTER_DUR = 0.6, OVERLAP = 0.15, EXIT_SCALE = 0.7, BOUNCE_FACTOR = 1.8;
+  const SUB_REVEAL_DELAY = 0.3, SUB_REVEAL_DUR = 0.35, SUB_REVEAL_Y_PX = 14;
+  function swap(outId, inId, subId, TRIGGER) {
+    tl.fromTo(outId, { scale: 1, opacity: 1 }, { scale: EXIT_SCALE, opacity: 0, duration: EXIT_DUR, ease: "power2.in", immediateRender: false }, TRIGGER);
+    tl.fromTo(inId, { scale: EXIT_SCALE, opacity: 0 }, { scale: 1, opacity: 1, duration: ENTER_DUR, ease: `back.out(${BOUNCE_FACTOR})`, immediateRender: false },
+      TRIGGER + EXIT_DUR - OVERLAP);
+    tl.fromTo(subId, { opacity: 0, y: SUB_REVEAL_Y_PX }, { opacity: 1, y: 0, duration: SUB_REVEAL_DUR, ease: "power3.out", immediateRender: false },
+      TRIGGER + EXIT_DUR + SUB_REVEAL_DELAY);
+  }
+  tl.set("#outgoing", { scale: 1, opacity: 1 }, 0);
+  tl.set(["#mid", "#incoming"], { scale: EXIT_SCALE, opacity: 0 }, 0);
+  // Triple swap: Draft -> Review -> Live. The outgoing lands and dwells before each trigger.
+  swap("#outgoing", "#mid", "#sub-b", 0.55);
+  swap("#mid", "#incoming", "#sub-c", 1.75);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

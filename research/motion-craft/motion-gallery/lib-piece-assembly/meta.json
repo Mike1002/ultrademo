@@ -1,0 +1,19 @@
+{
+  "name": "Piece assembly",
+  "family": "Shape & Path",
+  "purpose": [
+    "Explanation",
+    "Branding"
+  ],
+  "energy": "steady",
+  "tier": 2,
+  "runtime": "svg",
+  "tags": [
+    "logo part assembly",
+    "mosaic pack",
+    "shape",
+    "staggered arrival",
+    "rotate into place"
+  ],
+  "one_line": "Six scattered, tilted squares, one of them yellow, travel and rotate one after another until they lock into a single gap-free mark."
+}

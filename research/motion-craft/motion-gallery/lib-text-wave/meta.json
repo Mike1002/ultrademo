@@ -1,0 +1,24 @@
+{
+  "name": "Text wave",
+  "family": "Typography",
+  "purpose": [
+    "Mood",
+    "Sequence"
+  ],
+  "energy": "calm",
+  "tier": 3,
+  "runtime": "gsap",
+  "tags": [
+    "offset-cascade-wave",
+    "text wave",
+    "text wave selector",
+    "wiggly selector",
+    "expression selector",
+    "text baseline wave",
+    "type",
+    "wave",
+    "lift",
+    "idle"
+  ],
+  "one_line": "A narrow wave runs left to right along a headline twice, lifting and slightly enlarging only the three or four glyphs it is passing while the rest of the line stays on its baseline."
+}

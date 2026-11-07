@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-montage</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; overflow: hidden; }
+  .panel { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  .art { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  .art.a { background: #ece7da; }
+  .art.b { background: #f6f3ec; }
+  .card { position: absolute; left: 204px; top: 100px; width: 760px; height: 380px; background: #fffdf8;
+    border: 2px solid #1d1c1a; border-radius: 24px; }
+  .card .eyebrow { position: absolute; left: 56px; top: 44px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  .card .h1 { position: absolute; left: 56px; top: 84px; font-size: 56px; font-weight: 700; line-height: 1.1; white-space: nowrap; }
+  .card .sub { position: absolute; left: 56px; top: 164px; font-size: 22px; color: #6d6a63; }
+  .card .btn { position: absolute; left: 56px; top: 254px; width: 200px; height: 60px; background: #f2c200; border: 2px solid #1d1c1a;
+    border-radius: 14px; font-size: 20px; font-weight: 700; line-height: 56px; text-align: center; color: #1d1c1a; }
+  .card .av { position: absolute; top: 44px; width: 64px; height: 64px; border-radius: 50%; border: 2px solid #1d1c1a; background: #ece7da;
+    font-size: 20px; font-weight: 700; line-height: 60px; text-align: center; }
+  .card .av.v1 { left: 540px; } .card .av.v2 { left: 592px; } .card .av.v3 { left: 644px; }
+  .art.b .num { position: absolute; left: 92px; top: 86px; font-size: 136px; font-weight: 700; line-height: 1; letter-spacing: -.02em;
+    font-variant-numeric: tabular-nums; }
+  .art.b .cap { position: absolute; left: 100px; top: 236px; font-size: 22px; color: #6d6a63; }
+  .art.b .row { position: absolute; left: 96px; width: 520px; height: 60px; border-top: 2px solid #e3ded2; font-size: 22px; line-height: 58px;
+    padding-left: 30px; will-change: transform; }
+  .art.b .row .dot { position: absolute; left: 0; top: 24px; width: 12px; height: 12px; border-radius: 50%; background: #f2c200; }
+  .art.b .row.r1 { top: 320px; } .art.b .row.r2 { top: 384px; } .art.b .row.r3 { top: 448px; }
+  .art.b .disc { will-change: transform; position: absolute; left: 780px; top: 150px; width: 280px; height: 280px; border-radius: 50%; background: #f2c200;
+    border: 2px solid #1d1c1a; text-align: center; color: #1d1c1a; }
+  .art.b .disc .pct { position: absolute; left: 0; width: 276px; top: 86px; font-size: 72px; font-weight: 700; line-height: 1; }
+  .art.b .disc .pl { position: absolute; left: 0; width: 276px; top: 166px; font-size: 18px; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+
+  .shot { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; background: #ece7da; }
+  .shot .card { height: 380px; }
+  .step { position: absolute; left: 56px; top: 44px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  .ttl { position: absolute; left: 56px; top: 84px; font-size: 48px; font-weight: 700; line-height: 1.1; white-space: nowrap; }
+  /* 01 Record: a yellow REC dot and 24 waveform bars rising from a baseline. */
+  .rec { position: absolute; left: 600px; top: 96px; width: 18px; height: 18px; border-radius: 50%; background: #f2c200; border: 2px solid #1d1c1a; will-change: transform; }
+  .rect { position: absolute; left: 628px; top: 92px; font-size: 20px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .bars { position: absolute; left: 56px; top: 190px; width: 648px; height: 140px; }
+  .bar { position: absolute; bottom: 0; width: 16px; height: 140px; border-radius: 6px; background: #1d1c1a; transform-origin: 50% 100%; will-change: transform; }
+  /* 02 Edit: three clip blocks on a track and a yellow playhead travelling across. */
+  .track { position: absolute; left: 56px; top: 200px; width: 648px; height: 96px; border: 2px solid #e3ded2; border-radius: 12px; background: #f6f3ec; }
+  .clipb { position: absolute; top: 12px; height: 68px; border: 2px solid #1d1c1a; border-radius: 8px; background: #fffdf8; }
+  .clipb.c1 { left: 12px; width: 190px; } .clipb.c2 { left: 214px; width: 240px; background: #fbf3cf; } .clipb.c3 { left: 466px; width: 168px; }
+  .head { position: absolute; left: 60px; top: 190px; width: 4px; height: 116px; background: #f2c200; border-radius: 2px; will-change: transform; }
+  .headcap { position: absolute; left: -6px; top: -8px; width: 16px; height: 16px; border-radius: 50%; background: #f2c200; border: 2px solid #1d1c1a; }
+  /* 03 Ship: a yellow Ship button pressed by the arrow cursor. */
+  .ship { position: absolute; left: 56px; top: 220px; width: 200px; height: 60px; border-radius: 14px; background: #f2c200; border: 2px solid #1d1c1a;
+    font-size: 20px; font-weight: 700; line-height: 56px; text-align: center; will-change: transform; }
+  .cur { position: absolute; left: 0; top: 0; width: 28px; height: 38px; will-change: transform; }
+  .cur svg { width: 28px; height: 38px; display: block; }
+  .chk { position: absolute; left: 290px; top: 226px; width: 48px; height: 48px; will-change: transform; }
+  /* 04 Result: the number. */
+  .big { position: absolute; left: 56px; top: 110px; font-size: 128px; font-weight: 700; line-height: 1; letter-spacing: -.02em; font-variant-numeric: tabular-nums; transform-origin: 0% 50%; will-change: transform; }
+  .bigcap { position: absolute; left: 60px; top: 262px; font-size: 22px; color: #6d6a63; }
+  /* Sequence strip under the card: four dots, the active one yellow. */
+  .seq { position: absolute; left: 536px; top: 516px; width: 96px; height: 16px; }
+  .sd { position: absolute; top: 0; width: 16px; height: 16px; border-radius: 50%; border: 2px solid #1d1c1a; background: #fffdf8; }
+  .sd .on { position: absolute; left: -2px; top: -2px; width: 16px; height: 16px; border-radius: 50%; background: #f2c200; border: 2px solid #1d1c1a; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div class="shot" id="s0"><div class="card"><div class="step">01 · Record</div><div class="ttl">Capture the flow</div><div class="rec" id="rec"></div><div class="rect">REC 00:12</div><div class="bars" id="bars"></div></div></div>
+      <div class="shot" id="s1" data-layout-allow-overlap><div class="card"><div class="step">02 · Edit</div><div class="ttl">Trim the beats</div><div class="track"><div class="clipb c1"></div><div class="clipb c2"></div><div class="clipb c3"></div></div><div class="head" id="head"><div class="headcap"></div></div></div></div>
+      <div class="shot" id="s2" data-layout-allow-overlap><div class="card"><div class="step">03 · Ship</div><div class="ttl">Publish the video</div><div class="ship" id="ship">Ship</div><svg class="chk" id="chk" viewBox="0 0 48 48"><circle cx="24" cy="24" r="21" fill="#fffdf8" stroke="#1d1c1a" stroke-width="2"/><path d="M14 25 L21 32 L34 17" fill="none" stroke="#1d1c1a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg><div class="cur" id="cur"><svg viewBox="0 0 28 38"><path d="M2.5 2.5 L2.5 29.5 L9.6 23 L14.4 33.6 L19 31.6 L14.3 21.4 L23.8 21.4 Z" fill="#ffffff" stroke="#1d1c1a" stroke-width="2" stroke-linejoin="round"/></svg></div></div></div>
+      <div class="shot" id="s3" data-layout-allow-overlap><div class="card"><div class="step">04 · Result</div><div class="big" id="big">12,480</div><div class="bigcap" id="bigcap">invites sent</div></div></div>
+      <div class="seq" data-layout-allow-overlap><div class="sd" style="left:0"><div class="on" id="d0"></div></div><div class="sd" style="left:26px"><div class="on" id="d1"></div></div><div class="sd" style="left:52px"><div class="on" id="d2"></div></div><div class="sd" style="left:78px"><div class="on" id="d3"></div></div></div>
+    </div>
+    <div id="label"><span class="l-name">Montage</span><span class="l-sep">·</span><span>Transitions</span><span class="l-sep">·</span><span>high</span></div>
+  </section>
+</div>
+<script>
+  const bars = document.getElementById("bars");
+  for (let i = 0; i < 24; i++) bars.insertAdjacentHTML("beforeend", '<div class="bar" id="bar' + i + '" style="left:' + (i * 27) + 'px"></div>');
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+  // Montage: four shots cut hard at 0.5, 0.95 and 1.35 s (shorter as it goes), then the result holds with a slow settle. Cuts are one-frame opacity steps.
+  const CUTS = [0, 0.5, 0.95, 1.35, 3.1];
+  for (let i = 0; i < 4; i++) {
+    const on = CUTS[i], off = CUTS[i + 1];
+    tl.fromTo("#s" + i, { opacity: i === 0 ? 1 : 0 }, { opacity: 1, duration: 0.02, ease: "none" }, Math.max(0, on - 0.03));
+    tl.fromTo("#d" + i, { opacity: i === 0 ? 1 : 0 }, { opacity: 1, duration: 0.02, ease: "none" }, Math.max(0, on - 0.03));
+    if (i < 3) {
+      tl.to("#s" + i, { opacity: 0, duration: 0.02, ease: "none" }, off - 0.03);
+      tl.to("#d" + i, { opacity: 0, duration: 0.02, ease: "none" }, off - 0.03);
+    }
+  }
+  // 01 Record: bars rise to seeded heights with a stagger; the REC dot pulses.
+  for (let i = 0; i < 24; i++) {
+    const h = 0.25 + ((i * 9301 + 49297) % 233280) / 233280 * 0.75;
+    tl.fromTo("#bar" + i, { scaleY: 0.08 }, { scaleY: h, duration: 0.35, ease: "power3.out" }, 0.05 + i * 0.012);
+  }
+  tl.fromTo("#rec", { scale: 1 }, { scale: 1.35, duration: 0.2, ease: "sine.inOut", yoyo: true, repeat: 1 }, 0.08);
+  // 02 Edit: the playhead runs across the track at a steady rate.
+  tl.fromTo("#head", { x: 0 }, { x: 580, duration: 0.45, ease: "none" }, 0.5);
+  // 03 Ship: the cursor arrives on the button, presses it, and a check pops.
+  tl.fromTo("#cur", { x: 520, y: 330 }, { x: 160, y: 246, duration: 0.22, ease: "power2.out" }, 0.95);
+  tl.fromTo("#ship", { scale: 1 }, { scale: 0.94, duration: 0.07, ease: "power2.in", yoyo: true, repeat: 1 }, 1.17);
+  tl.fromTo("#chk", { scale: 0, opacity: 0, transformOrigin: "50% 50%" }, { scale: 1, opacity: 1, duration: 0.2, ease: "back.out(2)" }, 1.22);
+  // 04 Result: the number settles from a slight zoom while the caption rises in; a last nudge keeps the hold alive.
+  tl.fromTo("#big", { scale: 1.06 }, { scale: 1, duration: 1.1, ease: "power2.out" }, 1.35);
+  tl.fromTo("#bigcap", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 1.6);
+  tl.to("#big", { x: 6, duration: 0.5, ease: "sine.inOut", yoyo: true, repeat: 1 }, 2.3);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

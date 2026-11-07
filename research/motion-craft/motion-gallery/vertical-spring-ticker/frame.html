@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>vertical-spring-ticker</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  /* card 640x300 centred at (320,210) */
+  .card { position: absolute; left: 320px; top: 210px; width: 640px; height: 300px; background: #fffdf8;
+    border: 2px solid #1d1c1a; border-radius: 24px; }
+  .label { position: absolute; left: 48px; top: 48px; font-size: 20px; color: #6d6a63; letter-spacing: 0.08em; text-transform: uppercase; }
+  /* ticker window: ITEM_HEIGHT = 64px font x 1.25 = 80px; the window height MUST equal it */
+  .ticker { position: absolute; left: 48px; top: 110px; width: 540px; height: 80px; overflow: hidden;
+    background: #f2c200; border-radius: 14px; }
+  .stack-inner { display: flex; flex-direction: column; will-change: transform; }
+  .item { height: 80px; display: flex; align-items: center; justify-content: flex-start; padding-left: 24px;
+    font-size: 64px; font-weight: 800; letter-spacing: -0.02em; line-height: 1; }
+  .hint { position: absolute; left: 48px; top: 214px; font-size: 18px; color: #6d6a63; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div class="card" id="card">
+      <div class="label">Next step</div>
+      <div class="ticker" id="ticker">
+        <div class="stack-inner" id="stack-inner">
+          <div class="item">Record</div>
+          <div class="item">Edit</div>
+          <div class="item">Review</div>
+          <div class="item">Ship</div>
+        </div>
+      </div>
+      <div class="hint">Every frame is code</div>
+    </div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true });
+  // Values: ITEM_HEIGHT 80, STEPS 3 (4 items), two quick clicks then a pause and a casino climax step.
+  const ITEM_HEIGHT = 80;
+  const STEPS = [
+    { at: 0.30, dur: 0.50, bounce: 2.0 },
+    { at: 0.65, dur: 0.50, bounce: 2.0 },
+    { at: 1.40, dur: 0.60, bounce: 2.6 },
+  ];
+  const innerEl = document.getElementById("stack-inner");
+  const eases = STEPS.map((s) => gsap.parseEase(`back.out(${s.bounce})`));
+  // Additive springs: each step contributes its own 0..1 progress; the sum is the scroll position.
+  function renderAt(t) {
+    let sumP = 0;
+    STEPS.forEach((s, i) => {
+      const raw = (t - s.at) / s.dur;
+      sumP += raw <= 0 ? 0 : raw >= 1 ? 1 : eases[i](raw);
+    });
+    innerEl.style.transform = `translateY(${-sumP * ITEM_HEIGHT}px)`;
+  }
+  renderAt(0);
+  tl.to({ k: 0 }, { k: 1, duration: 3, ease: "none", onUpdate: () => renderAt(tl.time()) }, 0);
+  const baseRender = tl.render;
+  tl.render = function () { const r = baseRender.apply(this, arguments); renderAt(this.time()); return r; };
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

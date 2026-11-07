@@ -1,0 +1,22 @@
+{
+  "name": "Particle image reveal",
+  "family": "Generative",
+  "purpose": [
+    "Attention",
+    "Transition",
+    "Branding"
+  ],
+  "energy": "steady",
+  "tier": 2,
+  "runtime": "canvas",
+  "tags": [
+    "generative",
+    "particles",
+    "converge",
+    "seeded",
+    "image reveal",
+    "cross-fade",
+    "dark"
+  ],
+  "one_line": "Particles scattered across a dark stage drift together, each carrying its target colour, until they form three pale bars and a yellow disc, then the solid picture fades in over them."
+}

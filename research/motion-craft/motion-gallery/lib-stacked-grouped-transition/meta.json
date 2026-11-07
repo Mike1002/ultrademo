@@ -1,0 +1,20 @@
+{
+  "name": "Stacked-to-grouped transition",
+  "family": "Data",
+  "purpose": [
+    "Comparison",
+    "Data evidence"
+  ],
+  "energy": "steady",
+  "tier": 2,
+  "runtime": "svg",
+  "tags": [
+    "stacked-to-grouped bars",
+    "data",
+    "svg attr",
+    "two-phase",
+    "baseline",
+    "grouped bars"
+  ],
+  "one_line": "Three stacked bars of ink and yellow segments first narrow and spread sideways into pairs, then the floating segments drop onto the shared baseline so the series can be compared."
+}

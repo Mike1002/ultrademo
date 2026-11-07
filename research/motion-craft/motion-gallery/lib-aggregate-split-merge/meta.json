@@ -1,0 +1,22 @@
+{
+  "name": "Aggregate split and merge",
+  "family": "Data",
+  "purpose": [
+    "Explanation",
+    "Comparison"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "svg",
+  "tags": [
+    "aggregate split and merge",
+    "data",
+    "chart",
+    "bars",
+    "split",
+    "merge",
+    "total",
+    "svg"
+  ],
+  "one_line": "One wide bar of 12,480 invites comes apart into three named bars that slide onto their own rows, then fold back into the single total."
+}

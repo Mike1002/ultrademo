@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-frame-scrub</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; overflow: hidden; }
+  #cv { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage"><canvas id="cv" width="1168" height="580"></canvas></div>
+    <div id="label"><span class="l-name">Frame scrub</span><span class="l-sep">·</span><span>Camera</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const cv = document.getElementById("cv"), ctx = cv.getContext("2d");
+  const W = 1168, H = 580, INK = "#1d1c1a", PAPER = "#f6f3ec", CARD = "#fffdf8", ACC = "#f2c200", RULE = "#e3ded2", MUTED = "#6d6a63", SOFT = "#fbf3cf";
+  const SANS = '-apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif';
+  const clamp = x => Math.max(0, Math.min(1, x));
+  const NF = 24;
+  // Bake the 24-frame sequence once: an invite card whose cover slides open and a check that draws in. Frame k is a pure function of k.
+  function rr(c, x, y, w, h, r) { c.beginPath(); c.moveTo(x + r, y); c.arcTo(x + w, y, x + w, y + h, r); c.arcTo(x + w, y + h, x, y + h, r); c.arcTo(x, y + h, x, y, r); c.arcTo(x, y, x + w, y, r); c.closePath(); }
+  const frames = [];
+  for (let k = 0; k < NF; k++) {
+    const f = document.createElement("canvas"); f.width = 760; f.height = 440; const c = f.getContext("2d");
+    const u = k / (NF - 1);
+    const open = clamp(u / 0.6), check = clamp((u - 0.45) / 0.55);
+    c.fillStyle = PAPER; c.fillRect(0, 0, 760, 440);
+    // the card
+    rr(c, 80, 60, 600, 320, 24); c.fillStyle = CARD; c.fill(); c.lineWidth = 2; c.strokeStyle = INK; c.stroke();
+    c.fillStyle = MUTED; c.font = "13px " + SANS; c.textAlign = "left"; c.fillText("ORBIT", 128, 112);
+    c.fillStyle = INK; c.font = "700 44px " + SANS; c.fillText("Invite your team", 128, 170);
+    c.fillStyle = MUTED; c.font = "20px " + SANS; c.fillText("3 seats left on this plan", 128, 210);
+    rr(c, 128, 262, 180, 56, 14); c.fillStyle = ACC; c.fill(); c.strokeStyle = INK; c.stroke();
+    c.fillStyle = INK; c.font = "700 19px " + SANS; c.textAlign = "center"; c.fillText("Continue", 218, 297);
+    // the check, drawn in after the cover is mostly open
+    if (check > 0) {
+      c.save(); c.translate(560, 190); c.beginPath(); c.arc(0, 0, 54, 0, Math.PI * 2); c.fillStyle = SOFT; c.fill(); c.strokeStyle = INK; c.lineWidth = 2; c.stroke();
+      c.beginPath(); c.lineWidth = 8; c.lineCap = "round"; c.lineJoin = "round"; c.strokeStyle = INK;
+      const p1 = clamp(check / 0.4), p2 = clamp((check - 0.4) / 0.6);
+      c.moveTo(-26, 2); c.lineTo(-26 + 18 * p1, 2 + 18 * p1);
+      if (p2 > 0) c.lineTo(-8 + 36 * p2, 20 - 38 * p2);
+      c.stroke(); c.restore();
+    }
+    // the cover slides to the right and off the card as the sequence advances
+    const cx = 80 + 600 * open;
+    c.save(); rr(c, 80, 60, 600, 320, 24); c.clip();
+    rr(c, cx, 60, 600, 320, 24); c.fillStyle = "#ece7da"; c.fill(); c.strokeStyle = INK; c.lineWidth = 2; c.stroke();
+    c.fillStyle = MUTED; c.font = "600 22px " + SANS; c.textAlign = "center"; c.fillText("Sealed", cx + 300, 228);
+    c.restore();
+    frames.push(f);
+  }
+  function renderAt(t) {
+    // progress runs forward 0.2 -> 1.5, holds, then scrubs back 1.8 -> 2.9 (ease none, as a scrub would).
+    const p = t < 1.8 ? clamp((t - 0.2) / 1.3) : 1 - clamp((t - 1.8) / 1.1);
+    const i = Math.round(p * (NF - 1));
+    ctx.fillStyle = PAPER; ctx.fillRect(0, 0, W, H);
+    ctx.drawImage(frames[i], 204, 20);
+    // progress bar and frame readout
+    ctx.fillStyle = RULE; rr(ctx, 284, 486, 600, 10, 5); ctx.fill();
+    ctx.fillStyle = ACC; rr(ctx, 284, 486, Math.max(10, 600 * p), 10, 5); ctx.fill();
+    ctx.beginPath(); ctx.arc(284 + 600 * p, 491, 13, 0, Math.PI * 2); ctx.fillStyle = CARD; ctx.fill(); ctx.lineWidth = 2; ctx.strokeStyle = INK; ctx.stroke();
+    ctx.fillStyle = MUTED; ctx.font = "13px " + SANS; ctx.textAlign = "left"; ctx.fillText("PROGRESS", 284, 536);
+    ctx.fillStyle = INK; ctx.font = "700 15px " + SANS; ctx.textAlign = "right"; ctx.fillText("frame " + (i + 1) + " of " + NF, 884, 536);
+    // small frame ladder: the active frame index steps along 24 ticks
+    for (let k = 0; k < NF; k++) { ctx.fillStyle = k === i ? INK : RULE; ctx.fillRect(284 + k * 25.2, 510, 16, 4); }
+  }
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "none", duration: 0.6 } });
+  renderAt(0);
+  tl.to({ k: 0 }, { k: 1, duration: 3, ease: "none", onUpdate: () => renderAt(tl.time()) }, 0);
+  const baseRender = tl.render; tl.render = function () { const r = baseRender.apply(this, arguments); renderAt(this.time()); return r; };
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

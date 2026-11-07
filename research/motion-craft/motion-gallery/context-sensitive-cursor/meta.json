@@ -1,0 +1,22 @@
+{
+  "name": "Context-sensitive cursor",
+  "family": "Text & Typography",
+  "purpose": [
+    "typing",
+    "emphasis",
+    "terminal"
+  ],
+  "energy": "steady",
+  "tags": [
+    "cursor",
+    "color",
+    "context",
+    "typewriter",
+    "styling",
+    "segment"
+  ],
+  "one_line": "A block cursor types the line and changes colour with what it is typing: dark on plain words, yellow and taller on the keyword, grey on a trailing hint, dark again on the check mark.",
+  "aliases": [
+    "awesome-ai-motion:context-caret"
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "name": "Hotspot pulse",
+  "family": "UI Demo",
+  "purpose": [
+    "Feedback",
+    "Emphasis"
+  ],
+  "energy": "calm",
+  "tier": 3,
+  "runtime": "svg",
+  "tags": [
+    "guided hotspot pulse",
+    "ui",
+    "hotspot",
+    "pulse",
+    "ring",
+    "guide",
+    "next step"
+  ],
+  "one_line": "A yellow dot sits on the Add chip of a form while rings expand and fade from it; the dot then glides to the Continue button and pulses there, marking the next click."
+}

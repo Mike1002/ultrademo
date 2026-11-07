@@ -1,0 +1,23 @@
+{
+  "name": "Spring & overshoot",
+  "family": "Principles",
+  "purpose": [
+    "Attention",
+    "Feedback",
+    "Explanation"
+  ],
+  "energy": "steady",
+  "tier": 2,
+  "runtime": "gsap",
+  "tags": [
+    "back easing",
+    "elastic spring slide",
+    "spring text pop",
+    "impact number reveal",
+    "principles",
+    "overshoot",
+    "settle",
+    "graph"
+  ],
+  "one_line": "A card grows from nothing, briefly overshoots to 1.08 of its size and settles back to 1.00, while a graph beside it draws the same curve and a readout tracks the scale; a selection ring then springs on."
+}

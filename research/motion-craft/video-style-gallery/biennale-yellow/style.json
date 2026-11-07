@@ -1,0 +1,126 @@
+{
+  "id": "biennale-yellow",
+  "name": "Biennale Yellow",
+  "canvas": "light",
+  "mood": [
+    "restrained",
+    "editorial",
+    "sunny"
+  ],
+  "suits": [
+    "editorial launches",
+    "annual reports",
+    "design-led products"
+  ],
+  "palette": {
+    "bg": "#E9E5DB",
+    "bg_alt": "#DCD6C4",
+    "surface": "#F0EDE4",
+    "surface_2": "#DCD6C4",
+    "ink": "#1B2566",
+    "muted": "#5a6190",
+    "line": "rgba(27,37,102,0.35)",
+    "accent": "#E26B4A",
+    "accent_2": "#F1EE2E",
+    "on_accent": "#E9E5DB",
+    "hi": "#F1EE2E",
+    "button_bg": "#1B2566",
+    "button_ink": "#E9E5DB",
+    "pill_bg": "#F8F39B",
+    "pill_ink": "#1B2566",
+    "pill_dot": "#1B2566",
+    "term_bg": "#1B2566",
+    "term_ink": "#E9E5DB",
+    "term_muted": "#8f96c4",
+    "term_line": "#1B2566",
+    "term_prompt": "#F1EE2E",
+    "term_ok": "#F1EE2E"
+  },
+  "type": {
+    "display": {
+      "family": "Instrument Serif",
+      "weight": 400,
+      "hook_px": 100,
+      "stat_px": 260,
+      "mark_px": 140,
+      "transform": "none",
+      "tracking": "-0.01em",
+      "line_height": "1.0",
+      "style": "normal",
+      "generic": "serif",
+      "card_title_px": 32
+    },
+    "body": {
+      "family": "Archivo",
+      "weight": 400,
+      "generic": "sans"
+    },
+    "mono": {
+      "family": "JetBrains Mono",
+      "weight": 400
+    },
+    "label": {
+      "family": "Archivo",
+      "weight": 600,
+      "transform": "uppercase",
+      "tracking": "0.18em",
+      "generic": "sans",
+      "px": 13
+    }
+  },
+  "easing": {
+    "entry": "power2.out",
+    "exit": "power1.in",
+    "ambient": "none",
+    "pop": "power2.out",
+    "counter": "power2.out",
+    "wipe": null
+  },
+  "rhythm": {
+    "energy": "calm",
+    "entrance": 0.7,
+    "stagger": 0.1
+  },
+  "transition": {
+    "kind": "crossfade",
+    "duration": 0.5,
+    "flash": false,
+    "band": false
+  },
+  "text_animation": "rise-mask",
+  "accent_word": "highlight",
+  "layout": "center",
+  "atmosphere": [
+    "rules",
+    "pagenum"
+  ],
+  "shape": {
+    "radius_card": 2,
+    "radius_button": 2,
+    "radius_pill": 999,
+    "border": "hairline",
+    "border_px": 1,
+    "shadow": "none",
+    "rule_px": 1
+  },
+  "stat_colour": "ink",
+  "direction_settings": {
+    "energy": "calm",
+    "density": "sparse",
+    "ground": "light",
+    "depth": "flat",
+    "camera": "locked",
+    "type": "editorial",
+    "texture": "clean",
+    "colour": "two-accent",
+    "product_presence": "illustrated",
+    "sound": "ambient",
+    "voice": "narrated"
+  },
+  "notes": "Parchment ground, one indigo ink, solar yellow only as an underprint behind the accent word; hairlines, no shadows, a page number.",
+  "transitions": {
+    "between_moments": "crossfade",
+    "duration_s": 0.5,
+    "text": "rise-mask"
+  }
+}

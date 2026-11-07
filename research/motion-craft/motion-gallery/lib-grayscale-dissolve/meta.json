@@ -1,0 +1,20 @@
+{
+  "name": "Grayscale dissolve",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Mood"
+  ],
+  "energy": "calm",
+  "tier": 3,
+  "runtime": "css",
+  "tags": [
+    "grayscale dissolve",
+    "transitions",
+    "crossfade",
+    "grayscale",
+    "desaturate",
+    "filter"
+  ],
+  "one_line": "The invite card loses its colour as it fades, the two scenes mix in black and white with the yellow button and bar gone grey, and colour comes back as the stats card lands; the same dissolve then carries it back."
+}

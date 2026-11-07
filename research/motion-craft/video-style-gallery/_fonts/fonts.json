@@ -1,0 +1,929 @@
+{
+ "fetched": {
+  "Inter": {
+   "dir": "_fonts/inter",
+   "css_url": "https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap",
+   "faces": [
+    {
+     "file": "_fonts/inter/inter-300.woff2",
+     "weight": "300",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7W0Q5nw.woff2"
+    },
+    {
+     "file": "_fonts/inter/inter-400.woff2",
+     "weight": "400",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7W0Q5nw.woff2"
+    },
+    {
+     "file": "_fonts/inter/inter-500.woff2",
+     "weight": "500",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7W0Q5nw.woff2"
+    },
+    {
+     "file": "_fonts/inter/inter-600.woff2",
+     "weight": "600",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7W0Q5nw.woff2"
+    },
+    {
+     "file": "_fonts/inter/inter-700.woff2",
+     "weight": "700",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7W0Q5nw.woff2"
+    },
+    {
+     "file": "_fonts/inter/inter-800.woff2",
+     "weight": "800",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7W0Q5nw.woff2"
+    },
+    {
+     "file": "_fonts/inter/inter-900.woff2",
+     "weight": "900",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7W0Q5nw.woff2"
+    }
+   ]
+  },
+  "Inter Tight": {
+   "dir": "_fonts/inter-tight",
+   "css_url": "https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;900&display=swap",
+   "faces": [
+    {
+     "file": "_fonts/inter-tight/inter-tight-500.woff2",
+     "weight": "500",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/intertight/v9/NGSwv5HMAFg6IuGlBNMjxLsH8ahuQ2e8.woff2"
+    },
+    {
+     "file": "_fonts/inter-tight/inter-tight-900.woff2",
+     "weight": "900",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/intertight/v9/NGSwv5HMAFg6IuGlBNMjxLsH8ahuQ2e8.woff2"
+    }
+   ]
+  },
+  "Space Grotesk": {
+   "dir": "_fonts/space-grotesk",
+   "css_url": "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap",
+   "faces": [
+    {
+     "file": "_fonts/space-grotesk/space-grotesk-400.woff2",
+     "weight": "400",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/spacegrotesk/v22/V8mDoQDjQSkFtoMM3T6r8E7mPbF4C_k3HqU.woff2"
+    },
+    {
+     "file": "_fonts/space-grotesk/space-grotesk-500.woff2",
+     "weight": "500",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/spacegrotesk/v22/V8mDoQDjQSkFtoMM3T6r8E7mPbF4C_k3HqU.woff2"
+    },
+    {
+     "file": "_fonts/space-grotesk/space-grotesk-600.woff2",
+     "weight": "600",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/spacegrotesk/v22/V8mDoQDjQSkFtoMM3T6r8E7mPbF4C_k3HqU.woff2"
+    },
+    {
+     "file": "_fonts/space-grotesk/space-grotesk-700.woff2",
+     "weight": "700",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/spacegrotesk/v22/V8mDoQDjQSkFtoMM3T6r8E7mPbF4C_k3HqU.woff2"
+    }
+   ]
+  },
+  "Space Mono": {
+   "dir": "_fonts/space-mono",
+   "css_url": "https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap",
+   "faces": [
+    {
+     "file": "_fonts/space-mono/space-mono-400.woff2",
+     "weight": "400",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/spacemono/v17/i7dPIFZifjKcF5UAWdDRYEF8RXi4EwQ.woff2"
+    },
+    {
+     "file": "_fonts/space-mono/space-mono-700.woff2",
+     "weight": "700",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/spacemono/v17/i7dMIFZifjKcF5UAWdDRaPpZUFWaHi6WZ3Q.woff2"
+    }
+   ]
+  },
+  "Anton": {
+   "dir": "_fonts/anton",
+   "css_url": "https://fonts.googleapis.com/css2?family=Anton:wght@400&display=swap",
+   "faces": [
+    {
+     "file": "_fonts/anton/anton-400.woff2",
+     "weight": "400",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/anton/v27/1Ptgg87LROyAm3Kz-C8CSKlv.woff2"
+    }
+   ]
+  },
+  "Playfair Display": {
+   "dir": "_fonts/playfair-display",
+   "css_url": "https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;0,900;1,400&display=swap",
+   "faces": [
+    {
+     "file": "_fonts/playfair-display/playfair-display-400-italic.woff2",
+     "weight": "400",
+     "style": "italic",
+     "src": "https://fonts.gstatic.com/s/playfairdisplay/v40/nuFRD-vYSZviVYUb_rj3ij__anPXDTnCjmHKM4nYO7KN_qiTXtHA-X-uE0qEEw.woff2"
+    },
+    {
+     "file": "_fonts/playfair-display/playfair-display-400.woff2",
+     "weight": "400",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/playfairdisplay/v40/nuFiD-vYSZviVYUb_rj3ij__anPXDTzYgEM86xQ.woff2"
+    },
+    {
+     "file": "_fonts/playfair-display/playfair-display-500.woff2",
+     "weight": "500",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/playfairdisplay/v40/nuFiD-vYSZviVYUb_rj3ij__anPXDTzYgEM86xQ.woff2"
+    },
+    {
+     "file": "_fonts/playfair-display/playfair-display-700.woff2",
+     "weight": "700",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/playfairdisplay/v40/nuFiD-vYSZviVYUb_rj3ij__anPXDTzYgEM86xQ.woff2"
+    },
+    {
+     "file": "_fonts/playfair-display/playfair-display-900.woff2",
+     "weight": "900",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/playfairdisplay/v40/nuFiD-vYSZviVYUb_rj3ij__anPXDTzYgEM86xQ.woff2"
+    }
+   ]
+  },
+  "Fredoka": {
+   "dir": "_fonts/fredoka",
+   "css_url": "https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap",
+   "faces": [
+    {
+     "file": "_fonts/fredoka/fredoka-400.woff2",
+     "weight": "400",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/fredoka/v17/X7n64b87HvSqjb_WIi2yDCRwoQ_k7367_DWu89XgHPyh.woff2"
+    },
+    {
+     "file": "_fonts/fredoka/fredoka-600.woff2",
+     "weight": "600",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/fredoka/v17/X7n64b87HvSqjb_WIi2yDCRwoQ_k7367_DWu89XgHPyh.woff2"
+    },
+    {
+     "file": "_fonts/fredoka/fredoka-700.woff2",
+     "weight": "700",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/fredoka/v17/X7n64b87HvSqjb_WIi2yDCRwoQ_k7367_DWu89XgHPyh.woff2"
+    }
+   ]
+  },
+  "Nunito": {
+   "dir": "_fonts/nunito",
+   "css_url": "https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap",
+   "faces": [
+    {
+     "file": "_fonts/nunito/nunito-400.woff2",
+     "weight": "400",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/nunito/v32/XRXV3I6Li01BKofINeaBTMnFcQ.woff2"
+    },
+    {
+     "file": "_fonts/nunito/nunito-600.woff2",
+     "weight": "600",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/nunito/v32/XRXV3I6Li01BKofINeaBTMnFcQ.woff2"
+    },
+    {
+     "file": "_fonts/nunito/nunito-700.woff2",
+     "weight": "700",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/nunito/v32/XRXV3I6Li01BKofINeaBTMnFcQ.woff2"
+    }
+   ]
+  },
+  "Oswald": {
+   "dir": "_fonts/oswald",
+   "css_url": "https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&display=swap",
+   "faces": [
+    {
+     "file": "_fonts/oswald/oswald-400.woff2",
+     "weight": "400",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/oswald/v57/TK3IWkUHHAIjg75cFRf3bXL8LICs1_Fv40pKlN4NNSeSASz7FmlWHYjMdZwl.woff2"
+    },
+    {
+     "file": "_fonts/oswald/oswald-500.woff2",
+     "weight": "500",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/oswald/v57/TK3IWkUHHAIjg75cFRf3bXL8LICs1_Fv40pKlN4NNSeSASz7FmlWHYjMdZwl.woff2"
+    },
+    {
+     "file": "_fonts/oswald/oswald-700.woff2",
+     "weight": "700",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/oswald/v57/TK3IWkUHHAIjg75cFRf3bXL8LICs1_Fv40pKlN4NNSeSASz7FmlWHYjMdZwl.woff2"
+    }
+   ]
+  },
+  "Instrument Serif": {
+   "dir": "_fonts/instrument-serif",
+   "css_url": "https://fonts.googleapis.com/css2?family=Instrument+Serif:ital,wght@0,400;1,400&display=swap",
+   "faces": [
+    {
+     "file": "_fonts/instrument-serif/instrument-serif-400-italic.woff2",
+     "weight": "400",
+     "style": "italic",
+     "src": "https://fonts.gstatic.com/s/instrumentserif/v5/jizHRFtNs2ka5fXjeivQ4LroWlx-6zAjjH7Motmp5g.woff2"
+    },
+    {
+     "file": "_fonts/instrument-serif/instrument-serif-400.woff2",
+     "weight": "400",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/instrumentserif/v5/jizBRFtNs2ka5fXjeivQ4LroWlx-6zUTjnTLgNs.woff2"
+    }
+   ]
+  },
+  "Archivo": {
+   "dir": "_fonts/archivo",
+   "css_url": "https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&display=swap",
+   "faces": [
+    {
+     "file": "_fonts/archivo/archivo-400.woff2",
+     "weight": "400",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/archivo/v25/k3kPo8UDI-1M0wlSV9XAw6lQkqWY8Q82sLydOxKsv4Rn.woff2"
+    },
+    {
+     "file": "_fonts/archivo/archivo-500.woff2",
+     "weight": "500",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/archivo/v25/k3kPo8UDI-1M0wlSV9XAw6lQkqWY8Q82sLydOxKsv4Rn.woff2"
+    },
+    {
+     "file": "_fonts/archivo/archivo-600.woff2",
+     "weight": "600",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/archivo/v25/k3kPo8UDI-1M0wlSV9XAw6lQkqWY8Q82sLydOxKsv4Rn.woff2"
+    },
+    {
+     "file": "_fonts/archivo/archivo-700.woff2",
+     "weight": "700",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/archivo/v25/k3kPo8UDI-1M0wlSV9XAw6lQkqWY8Q82sLydOxKsv4Rn.woff2"
+    }
+   ]
+  },
+  "JetBrains Mono": {
+   "dir": "_fonts/jetbrains-mono",
+   "css_url": "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&display=swap",
+   "faces": [
+    {
+     "file": "_fonts/jetbrains-mono/jetbrains-mono-400.woff2",
+     "weight": "400",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/jetbrainsmono/v24/tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxDcwgknk-4.woff2"
+    },
+    {
+     "file": "_fonts/jetbrains-mono/jetbrains-mono-500.woff2",
+     "weight": "500",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/jetbrainsmono/v24/tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxDcwgknk-4.woff2"
+    },
+    {
+     "file": "_fonts/jetbrains-mono/jetbrains-mono-700.woff2",
+     "weight": "700",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/jetbrainsmono/v24/tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxDcwgknk-4.woff2"
+    },
+    {
+     "file": "_fonts/jetbrains-mono/jetbrains-mono-800.woff2",
+     "weight": "800",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/jetbrainsmono/v24/tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxDcwgknk-4.woff2"
+    }
+   ]
+  },
+  "Libre Baskerville": {
+   "dir": "_fonts/libre-baskerville",
+   "css_url": "https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&display=swap",
+   "faces": [
+    {
+     "file": "_fonts/libre-baskerville/libre-baskerville-400.woff2",
+     "weight": "400",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/librebaskerville/v24/kmKnZrc3Hgbbcjq75U4uslyuy4kn0qNZaxMaC82U.woff2"
+    },
+    {
+     "file": "_fonts/libre-baskerville/libre-baskerville-700.woff2",
+     "weight": "700",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/librebaskerville/v24/kmKnZrc3Hgbbcjq75U4uslyuy4kn0qNZaxMaC82U.woff2"
+    }
+   ]
+  },
+  "Shrikhand": {
+   "dir": "_fonts/shrikhand",
+   "css_url": "https://fonts.googleapis.com/css2?family=Shrikhand:wght@400&display=swap",
+   "faces": [
+    {
+     "file": "_fonts/shrikhand/shrikhand-400.woff2",
+     "weight": "400",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/shrikhand/v17/a8IbNovtLWfR7T7bMJwrA4KR8TtctQ.woff2"
+    }
+   ]
+  },
+  "Barlow": {
+   "dir": "_fonts/barlow",
+   "css_url": "https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;800;900&display=swap",
+   "faces": [
+    {
+     "file": "_fonts/barlow/barlow-400.woff2",
+     "weight": "400",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/barlow/v13/7cHpv4kjgoGqM7E_DMs5ynghnQ.woff2"
+    },
+    {
+     "file": "_fonts/barlow/barlow-600.woff2",
+     "weight": "600",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/barlow/v13/7cHqv4kjgoGqM7E30-8s51ostz0rdg.woff2"
+    },
+    {
+     "file": "_fonts/barlow/barlow-700.woff2",
+     "weight": "700",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/barlow/v13/7cHqv4kjgoGqM7E3t-4s51ostz0rdg.woff2"
+    },
+    {
+     "file": "_fonts/barlow/barlow-800.woff2",
+     "weight": "800",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/barlow/v13/7cHqv4kjgoGqM7E3q-0s51ostz0rdg.woff2"
+    },
+    {
+     "file": "_fonts/barlow/barlow-900.woff2",
+     "weight": "900",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/barlow/v13/7cHqv4kjgoGqM7E3j-ws51ostz0rdg.woff2"
+    }
+   ]
+  },
+  "IBM Plex Mono": {
+   "dir": "_fonts/ibm-plex-mono",
+   "css_url": "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&display=swap",
+   "faces": [
+    {
+     "file": "_fonts/ibm-plex-mono/ibm-plex-mono-400.woff2",
+     "weight": "400",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/ibmplexmono/v20/-F63fjptAgt5VM-kVkqdyU8n1i8q131nj-o.woff2"
+    },
+    {
+     "file": "_fonts/ibm-plex-mono/ibm-plex-mono-500.woff2",
+     "weight": "500",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/ibmplexmono/v20/-F6qfjptAgt5VM-kVkqdyU8n3twJwlBFgsAXHNk.woff2"
+    },
+    {
+     "file": "_fonts/ibm-plex-mono/ibm-plex-mono-700.woff2",
+     "weight": "700",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/ibmplexmono/v20/-F6qfjptAgt5VM-kVkqdyU8n3pQPwlBFgsAXHNk.woff2"
+    }
+   ]
+  },
+  "Bodoni Moda": {
+   "dir": "_fonts/bodoni-moda",
+   "css_url": "https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@400;600;700;800&display=swap",
+   "faces": [
+    {
+     "file": "_fonts/bodoni-moda/bodoni-moda-400.woff2",
+     "weight": "400",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/bodonimoda/v28/aFTH7PxzY382XsXX63LUYL6GYFcan6NJrKp-VPj1KOxQVAS1Eg.woff2"
+    },
+    {
+     "file": "_fonts/bodoni-moda/bodoni-moda-600.woff2",
+     "weight": "600",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/bodonimoda/v28/aFTH7PxzY382XsXX63LUYL6GYFcan6NJrKp-VPj1KOxQVAS1Eg.woff2"
+    },
+    {
+     "file": "_fonts/bodoni-moda/bodoni-moda-700.woff2",
+     "weight": "700",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/bodonimoda/v28/aFTH7PxzY382XsXX63LUYL6GYFcan6NJrKp-VPj1KOxQVAS1Eg.woff2"
+    },
+    {
+     "file": "_fonts/bodoni-moda/bodoni-moda-800.woff2",
+     "weight": "800",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/bodonimoda/v28/aFTH7PxzY382XsXX63LUYL6GYFcan6NJrKp-VPj1KOxQVAS1Eg.woff2"
+    }
+   ]
+  },
+  "Newsreader": {
+   "dir": "_fonts/newsreader",
+   "css_url": "https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;1,400&display=swap",
+   "faces": [
+    {
+     "file": "_fonts/newsreader/newsreader-400-italic.woff2",
+     "weight": "400",
+     "style": "italic",
+     "src": "https://fonts.gstatic.com/s/newsreader/v26/cY9kfjOCX1hbuyalUrK439vogqC9yFZCYg7oRZaLP4obnf7fTXglsMwoT9ZHFjSShVCjzSY.woff2"
+    },
+    {
+     "file": "_fonts/newsreader/newsreader-400.woff2",
+     "weight": "400",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/newsreader/v26/cY9VfjOCX1hbuyalUrK49dLac06G1ZGsZBtoBAbNJYQ5ayZC.woff2"
+    },
+    {
+     "file": "_fonts/newsreader/newsreader-500.woff2",
+     "weight": "500",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/newsreader/v26/cY9VfjOCX1hbuyalUrK49dLac06G1ZGsZBtoBAbNJYQ5ayZC.woff2"
+    }
+   ]
+  },
+  "Hanken Grotesk": {
+   "dir": "_fonts/hanken-grotesk",
+   "css_url": "https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700&display=swap",
+   "faces": [
+    {
+     "file": "_fonts/hanken-grotesk/hanken-grotesk-400.woff2",
+     "weight": "400",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/hankengrotesk/v12/ieVn2YZDLWuGJpnzaiwFXS9tYtpd59CxCis4.woff2"
+    },
+    {
+     "file": "_fonts/hanken-grotesk/hanken-grotesk-600.woff2",
+     "weight": "600",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/hankengrotesk/v12/ieVn2YZDLWuGJpnzaiwFXS9tYtpd59CxCis4.woff2"
+    },
+    {
+     "file": "_fonts/hanken-grotesk/hanken-grotesk-700.woff2",
+     "weight": "700",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/hankengrotesk/v12/ieVn2YZDLWuGJpnzaiwFXS9tYtpd59CxCis4.woff2"
+    }
+   ]
+  },
+  "DM Mono": {
+   "dir": "_fonts/dm-mono",
+   "css_url": "https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&display=swap",
+   "faces": [
+    {
+     "file": "_fonts/dm-mono/dm-mono-400.woff2",
+     "weight": "400",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/dmmono/v16/aFTU7PB1QTsUX8KYthqQBK6PYK0.woff2"
+    },
+    {
+     "file": "_fonts/dm-mono/dm-mono-500.woff2",
+     "weight": "500",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/dmmono/v16/aFTR7PB1QTsUX8KYvumzEYOtbYf-Vlg.woff2"
+    }
+   ]
+  },
+  "EB Garamond": {
+   "dir": "_fonts/eb-garamond",
+   "css_url": "https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,700;1,400&display=swap",
+   "faces": [
+    {
+     "file": "_fonts/eb-garamond/eb-garamond-400-italic.woff2",
+     "weight": "400",
+     "style": "italic",
+     "src": "https://fonts.gstatic.com/s/ebgaramond/v33/SlGFmQSNjdsmc35JDF1K5GRwUjcdlttVFm-rI7e8QL99U6i1hGFJRvw.woff2"
+    },
+    {
+     "file": "_fonts/eb-garamond/eb-garamond-400.woff2",
+     "weight": "400",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/ebgaramond/v33/SlGUmQSNjdsmc35JDF1K5GR1SDk_YAPI.woff2"
+    },
+    {
+     "file": "_fonts/eb-garamond/eb-garamond-500.woff2",
+     "weight": "500",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/ebgaramond/v33/SlGUmQSNjdsmc35JDF1K5GR1SDk_YAPI.woff2"
+    },
+    {
+     "file": "_fonts/eb-garamond/eb-garamond-700.woff2",
+     "weight": "700",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/ebgaramond/v33/SlGUmQSNjdsmc35JDF1K5GR1SDk_YAPI.woff2"
+    }
+   ]
+  },
+  "Bebas Neue": {
+   "dir": "_fonts/bebas-neue",
+   "css_url": "https://fonts.googleapis.com/css2?family=Bebas+Neue:wght@400&display=swap",
+   "faces": [
+    {
+     "file": "_fonts/bebas-neue/bebas-neue-400.woff2",
+     "weight": "400",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/bebasneue/v16/JTUSjIg69CK48gW7PXoo9WlhyyTh89Y.woff2"
+    }
+   ]
+  },
+  "Archivo Black": {
+   "dir": "_fonts/archivo-black",
+   "css_url": "https://fonts.googleapis.com/css2?family=Archivo+Black:wght@400&display=swap",
+   "faces": [
+    {
+     "file": "_fonts/archivo-black/archivo-black-400.woff2",
+     "weight": "400",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/archivoblack/v23/HTxqL289NzCGg4MzN6KJ7eW6CYyF_jzx13E.woff2"
+    }
+   ]
+  },
+  "Quicksand": {
+   "dir": "_fonts/quicksand",
+   "css_url": "https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&display=swap",
+   "faces": [
+    {
+     "file": "_fonts/quicksand/quicksand-500.woff2",
+     "weight": "500",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/quicksand/v37/6xKtdSZaM9iE8KbpRA_hK1QNYuDyPw.woff2"
+    },
+    {
+     "file": "_fonts/quicksand/quicksand-600.woff2",
+     "weight": "600",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/quicksand/v37/6xKtdSZaM9iE8KbpRA_hK1QNYuDyPw.woff2"
+    },
+    {
+     "file": "_fonts/quicksand/quicksand-700.woff2",
+     "weight": "700",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/quicksand/v37/6xKtdSZaM9iE8KbpRA_hK1QNYuDyPw.woff2"
+    }
+   ]
+  },
+  "Source Serif 4": {
+   "dir": "_fonts/source-serif-4",
+   "css_url": "https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400;500;600&display=swap",
+   "faces": [
+    {
+     "file": "_fonts/source-serif-4/source-serif-4-400.woff2",
+     "weight": "400",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/sourceserif4/v15/vEFF2_tTDB4M7-auWDN0ahZJW3IX2ih5nk3AucvUHf6kDXr4Y3qwzQ.woff2"
+    },
+    {
+     "file": "_fonts/source-serif-4/source-serif-4-500.woff2",
+     "weight": "500",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/sourceserif4/v15/vEFF2_tTDB4M7-auWDN0ahZJW3IX2ih5nk3AucvUHf6kDXr4Y3qwzQ.woff2"
+    },
+    {
+     "file": "_fonts/source-serif-4/source-serif-4-600.woff2",
+     "weight": "600",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/sourceserif4/v15/vEFF2_tTDB4M7-auWDN0ahZJW3IX2ih5nk3AucvUHf6kDXr4Y3qwzQ.woff2"
+    }
+   ]
+  },
+  "Outfit": {
+   "dir": "_fonts/outfit",
+   "css_url": "https://fonts.googleapis.com/css2?family=Outfit:wght@500;800&display=swap",
+   "faces": [
+    {
+     "file": "_fonts/outfit/outfit-500.woff2",
+     "weight": "500",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/outfit/v15/QGYvz_MVcBeNP4NJtEtqUYLknw.woff2"
+    },
+    {
+     "file": "_fonts/outfit/outfit-800.woff2",
+     "weight": "800",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/outfit/v15/QGYvz_MVcBeNP4NJtEtqUYLknw.woff2"
+    }
+   ]
+  },
+  "STIX Two Text": {
+   "dir": "_fonts/stix-two-text",
+   "css_url": "https://fonts.googleapis.com/css2?family=STIX+Two+Text:ital,wght@0,500;1,500&display=swap",
+   "faces": [
+    {
+     "file": "_fonts/stix-two-text/stix-two-text-500-italic.woff2",
+     "weight": "500",
+     "style": "italic",
+     "src": "https://fonts.gstatic.com/s/stixtwotext/v18/YA9Er02F12Xkf5whdwKf11l0p7uWhf8lJUzXZT2omvnbYRJkM2eGiStY4g.woff2"
+    },
+    {
+     "file": "_fonts/stix-two-text/stix-two-text-500.woff2",
+     "weight": "500",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/stixtwotext/v18/YA9Gr02F12Xkf5whdwKf11l0jbKkeidMTtZ5YihS2ROfURBuMkWCkSo.woff2"
+    }
+   ]
+  },
+  "IBM Plex Sans": {
+   "dir": "_fonts/ibm-plex-sans",
+   "css_url": "https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap",
+   "faces": [
+    {
+     "file": "_fonts/ibm-plex-sans/ibm-plex-sans-400.woff2",
+     "weight": "400",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/ibmplexsans/v23/zYXzKVElMYYaJe8bpLHnCwDKr932-G7dytD-Dmu1syxeKYbSB4Zh.woff2"
+    },
+    {
+     "file": "_fonts/ibm-plex-sans/ibm-plex-sans-500.woff2",
+     "weight": "500",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/ibmplexsans/v23/zYXzKVElMYYaJe8bpLHnCwDKr932-G7dytD-Dmu1syxeKYbSB4Zh.woff2"
+    },
+    {
+     "file": "_fonts/ibm-plex-sans/ibm-plex-sans-600.woff2",
+     "weight": "600",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/ibmplexsans/v23/zYXzKVElMYYaJe8bpLHnCwDKr932-G7dytD-Dmu1syxeKYbSB4Zh.woff2"
+    }
+   ]
+  },
+  "Courier Prime": {
+   "dir": "_fonts/courier-prime",
+   "css_url": "https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap",
+   "faces": [
+    {
+     "file": "_fonts/courier-prime/courier-prime-400.woff2",
+     "weight": "400",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/courierprime/v11/u-450q2lgwslOqpF_6gQ8kELawFpWs39pvk.woff2"
+    },
+    {
+     "file": "_fonts/courier-prime/courier-prime-700.woff2",
+     "weight": "700",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/courierprime/v11/u-4k0q2lgwslOqpF_6gQ8kELY7pMT-Dfq9PrNX0.woff2"
+    }
+   ]
+  },
+  "Fraunces": {
+   "dir": "_fonts/fraunces",
+   "css_url": "https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,800;1,700&display=swap",
+   "faces": [
+    {
+     "file": "_fonts/fraunces/fraunces-700-italic.woff2",
+     "weight": "700",
+     "style": "italic",
+     "src": "https://fonts.gstatic.com/s/fraunces/v38/6NVf8FyLNQOQZAnv9ZwNjucMHVn85Ni7emAe9lKqZTnbB-gzTK0K1ChJdt9vIVYX9G37lvd9sPEKsxx664UJf1isSs7RrU9kMz3lR24.woff2"
+    },
+    {
+     "file": "_fonts/fraunces/fraunces-400.woff2",
+     "weight": "400",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/fraunces/v38/6NUu8FyLNQOQZAnv9bYEvDiIdE9Ea92uemAk_WBq8U_9v0c2Wa0K7iN7hzFUPJH58nib14c7qv8oRcTn.woff2"
+    },
+    {
+     "file": "_fonts/fraunces/fraunces-800.woff2",
+     "weight": "800",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/fraunces/v38/6NUu8FyLNQOQZAnv9bYEvDiIdE9Ea92uemAk_WBq8U_9v0c2Wa0K7iN7hzFUPJH58nib14c7qv8oRcTn.woff2"
+    }
+   ]
+  },
+  "Pixelify Sans": {
+   "dir": "_fonts/pixelify-sans",
+   "css_url": "https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;700&display=swap",
+   "faces": [
+    {
+     "file": "_fonts/pixelify-sans/pixelify-sans-400.woff2",
+     "weight": "400",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/pixelifysans/v3/CHylV-3HFUT7aC4iv1TxGDR9Jn0Ei0tSaJ0.woff2"
+    },
+    {
+     "file": "_fonts/pixelify-sans/pixelify-sans-700.woff2",
+     "weight": "700",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/pixelifysans/v3/CHylV-3HFUT7aC4iv1TxGDR9Jn0Ei0tSaJ0.woff2"
+    }
+   ]
+  },
+  "Silkscreen": {
+   "dir": "_fonts/silkscreen",
+   "css_url": "https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&display=swap",
+   "faces": [
+    {
+     "file": "_fonts/silkscreen/silkscreen-400.woff2",
+     "weight": "400",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/silkscreen/v6/m8JXjfVPf62XiF7kO-i9YLNla0GA1dM.woff2"
+    },
+    {
+     "file": "_fonts/silkscreen/silkscreen-700.woff2",
+     "weight": "700",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/silkscreen/v6/m8JUjfVPf62XiF7kO-i9aAhAfmyi2PmeBvY.woff2"
+    }
+   ]
+  },
+  "DM Serif Display": {
+   "dir": "_fonts/dm-serif-display",
+   "css_url": "https://fonts.googleapis.com/css2?family=DM+Serif+Display:wght@400&display=swap",
+   "faces": [
+    {
+     "file": "_fonts/dm-serif-display/dm-serif-display-400.woff2",
+     "weight": "400",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/dmserifdisplay/v17/-nFnOHM81r4j6k0gjAW3mujVU2B2G_Bx0vrx52g.woff2"
+    }
+   ]
+  },
+  "Covered By Your Grace": {
+   "dir": "_fonts/covered-by-your-grace",
+   "css_url": "https://fonts.googleapis.com/css2?family=Covered+By+Your+Grace:wght@400&display=swap",
+   "faces": [
+    {
+     "file": "_fonts/covered-by-your-grace/covered-by-your-grace-400.woff2",
+     "weight": "400",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/coveredbyyourgrace/v17/QGYwz-AZahWOJJI9kykWW9mD6opopoqXSOSEEQgsiaXVIw.woff2"
+    }
+   ]
+  },
+  "Caveat": {
+   "dir": "_fonts/caveat",
+   "css_url": "https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&display=swap",
+   "faces": [
+    {
+     "file": "_fonts/caveat/caveat-600.woff2",
+     "weight": "600",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/caveat/v23/Wnz6HAc5bAfYB2Q7ZjYYiAzcPA.woff2"
+    },
+    {
+     "file": "_fonts/caveat/caveat-700.woff2",
+     "weight": "700",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/caveat/v23/Wnz6HAc5bAfYB2Q7ZjYYiAzcPA.woff2"
+    }
+   ]
+  },
+  "Cormorant Garamond": {
+   "dir": "_fonts/cormorant-garamond",
+   "css_url": "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&display=swap",
+   "faces": [
+    {
+     "file": "_fonts/cormorant-garamond/cormorant-garamond-500-italic.woff2",
+     "weight": "500",
+     "style": "italic",
+     "src": "https://fonts.gstatic.com/s/cormorantgaramond/v21/co3smX5slCNuHLi8bLeY9MK7whWMhyjYrGFEsdtdc62E6zd5wDD-iNM8A_6pUKz9.woff2"
+    },
+    {
+     "file": "_fonts/cormorant-garamond/cormorant-garamond-500.woff2",
+     "weight": "500",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/cormorantgaramond/v21/co3bmX5slCNuHLi8bLeY9MK7whWMhyjYqXtKky2F7g.woff2"
+    },
+    {
+     "file": "_fonts/cormorant-garamond/cormorant-garamond-600.woff2",
+     "weight": "600",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/cormorantgaramond/v21/co3bmX5slCNuHLi8bLeY9MK7whWMhyjYqXtKky2F7g.woff2"
+    }
+   ]
+  },
+  "Share Tech Mono": {
+   "dir": "_fonts/share-tech-mono",
+   "css_url": "https://fonts.googleapis.com/css2?family=Share+Tech+Mono:wght@400&display=swap",
+   "faces": [
+    {
+     "file": "_fonts/share-tech-mono/share-tech-mono-400.woff2",
+     "weight": "400",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/sharetechmono/v16/J7aHnp1uDWRBEqV98dVQztYldFcLowEFA87Heg.woff2"
+    }
+   ]
+  },
+  "Dela Gothic One": {
+   "dir": "_fonts/dela-gothic-one",
+   "css_url": "https://fonts.googleapis.com/css2?family=Dela+Gothic+One:wght@400&display=swap",
+   "faces": [
+    {
+     "file": "_fonts/dela-gothic-one/dela-gothic-one-400.woff2",
+     "weight": "400",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/delagothicone/v19/hESp6XxvMDRA-2eD0lXpDa6QkBA2QkEIYgpLUQ.woff2"
+    }
+   ]
+  },
+  "Barlow Condensed": {
+   "dir": "_fonts/barlow-condensed",
+   "css_url": "https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&display=swap",
+   "faces": [
+    {
+     "file": "_fonts/barlow-condensed/barlow-condensed-500.woff2",
+     "weight": "500",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/barlowcondensed/v13/HTxwL3I-JCGChYJ8VI-L6OO_au7B4-Lwz3bWuYMBYro.woff2"
+    },
+    {
+     "file": "_fonts/barlow-condensed/barlow-condensed-600.woff2",
+     "weight": "600",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/barlowcondensed/v13/HTxwL3I-JCGChYJ8VI-L6OO_au7B4873z3bWuYMBYro.woff2"
+    },
+    {
+     "file": "_fonts/barlow-condensed/barlow-condensed-700.woff2",
+     "weight": "700",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/barlowcondensed/v13/HTxwL3I-JCGChYJ8VI-L6OO_au7B46r2z3bWuYMBYro.woff2"
+    }
+   ]
+  },
+  "Cinzel": {
+   "dir": "_fonts/cinzel",
+   "css_url": "https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&display=swap",
+   "faces": [
+    {
+     "file": "_fonts/cinzel/cinzel-700.woff2",
+     "weight": "700",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/cinzel/v26/8vIJ7ww63mVu7gt79mT7PkRXMw.woff2"
+    },
+    {
+     "file": "_fonts/cinzel/cinzel-900.woff2",
+     "weight": "900",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/cinzel/v26/8vIJ7ww63mVu7gt79mT7PkRXMw.woff2"
+    }
+   ]
+  },
+  "Geist": {
+   "dir": "_fonts/geist",
+   "css_url": "https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap",
+   "faces": [
+    {
+     "file": "_fonts/geist/geist-400.woff2",
+     "weight": "400",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/geist/v5/gyByhwUxId8gMEwcGFWNOITd.woff2"
+    },
+    {
+     "file": "_fonts/geist/geist-500.woff2",
+     "weight": "500",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/geist/v5/gyByhwUxId8gMEwcGFWNOITd.woff2"
+    },
+    {
+     "file": "_fonts/geist/geist-600.woff2",
+     "weight": "600",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/geist/v5/gyByhwUxId8gMEwcGFWNOITd.woff2"
+    },
+    {
+     "file": "_fonts/geist/geist-700.woff2",
+     "weight": "700",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/geist/v5/gyByhwUxId8gMEwcGFWNOITd.woff2"
+    }
+   ]
+  },
+  "Geist Mono": {
+   "dir": "_fonts/geist-mono",
+   "css_url": "https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;700&display=swap",
+   "faces": [
+    {
+     "file": "_fonts/geist-mono/geist-mono-400.woff2",
+     "weight": "400",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/geistmono/v6/or3nQ6H-1_WfwkMZI_qYFrcdmhHkjko.woff2"
+    },
+    {
+     "file": "_fonts/geist-mono/geist-mono-500.woff2",
+     "weight": "500",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/geistmono/v6/or3nQ6H-1_WfwkMZI_qYFrcdmhHkjko.woff2"
+    },
+    {
+     "file": "_fonts/geist-mono/geist-mono-700.woff2",
+     "weight": "700",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/geistmono/v6/or3nQ6H-1_WfwkMZI_qYFrcdmhHkjko.woff2"
+    }
+   ]
+  }
+ },
+ "failed": {}
+}

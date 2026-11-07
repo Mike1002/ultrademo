@@ -1,0 +1,47 @@
+{
+  "name": "Shadow Cut",
+  "fonts": {
+    "display": "Oswald",
+    "body": "Inter",
+    "mono": "JetBrains Mono",
+    "label": "Inter"
+  },
+  "font_families": [
+    "Inter",
+    "JetBrains Mono",
+    "Oswald"
+  ],
+  "font_substitutions": {},
+  "canvas": "dark",
+  "mood": [
+    "dark",
+    "cinematic"
+  ],
+  "suits": [
+    "security products",
+    "dramatic reveals",
+    "investigative content",
+    "intense launches"
+  ],
+  "direction_settings": {
+    "energy": "steady",
+    "density": "sparse",
+    "ground": "dark",
+    "depth": "deep",
+    "camera": "push",
+    "type": "display",
+    "texture": "grain",
+    "colour": "one-accent",
+    "product_presence": "illustrated",
+    "sound": "scored",
+    "voice": "narrated"
+  },
+  "duration_s": 10,
+  "size": [
+    1280,
+    720
+  ],
+  "fps": 30,
+  "strip": "D-58 style strip: hook · project card · number · agent · close",
+  "one_line": ""
+}

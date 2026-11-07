@@ -1,0 +1,22 @@
+{
+  "name": "Shader directional warp wipe",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Attention",
+    "Mood"
+  ],
+  "energy": "high",
+  "tier": 2,
+  "runtime": "webgl",
+  "tags": [
+    "directional warp",
+    "warp wipe",
+    "smear wipe",
+    "transitions",
+    "canvas",
+    "diagonal",
+    "smear"
+  ],
+  "one_line": "A soft, bent diagonal edge sweeps from the top left to the bottom right; near the edge both scenes smear along the direction of travel as the light card scene is swept away and the dark number scene takes over, its count still climbing."
+}

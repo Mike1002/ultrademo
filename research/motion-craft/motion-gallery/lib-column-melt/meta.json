@@ -1,0 +1,21 @@
+{
+  "name": "Column melt",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Mood"
+  ],
+  "energy": "high",
+  "tier": 3,
+  "runtime": "webgl",
+  "tags": [
+    "screen melt columns",
+    "transitions",
+    "melt",
+    "strips",
+    "columns",
+    "drop",
+    "clip-path"
+  ],
+  "one_line": "The invite scene is cut into twelve vertical strips that drop out of the frame at different seeded delays and speeds, like a melting screen, leaving the stats scene behind."
+}

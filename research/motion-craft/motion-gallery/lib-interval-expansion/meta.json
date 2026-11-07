@@ -1,0 +1,22 @@
+{
+  "name": "Interval expansion",
+  "family": "Data",
+  "purpose": [
+    "Comparison",
+    "Data evidence"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "svg",
+  "tags": [
+    "floating interval expansion",
+    "data",
+    "chart",
+    "interval",
+    "range",
+    "end caps",
+    "estimate",
+    "svg"
+  ],
+  "one_line": "Four invites-per-week points, one per member and a yellow one for the team, expand in both directions at once into min-to-max range bars with end caps and numbers; then the team range widens again as more weeks are counted."
+}

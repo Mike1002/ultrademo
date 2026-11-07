@@ -1,0 +1,24 @@
+{
+  "name": "Bar grow",
+  "family": "Data",
+  "purpose": [
+    "Explanation",
+    "Data evidence"
+  ],
+  "energy": "steady",
+  "tier": 2,
+  "runtime": "gsap",
+  "tags": [
+    "bar reveal",
+    "scroll progress indicator",
+    "bar grow",
+    "stat-bars-and-fills",
+    "directional-fill",
+    "progress fill",
+    "data",
+    "scalex",
+    "stagger",
+    "ranking"
+  ],
+  "one_line": "Five horizontal bars grow from the left on a shared scale, top to bottom a beat apart, the leading one in yellow, and their percentages fade in at the tips."
+}

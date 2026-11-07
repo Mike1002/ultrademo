@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-marquee</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  .heading { position: absolute; left: 80px; top: 50px; font-size: 18px; color: #6d6a63; }
+  .copy { position: absolute; left: 650px; top: 160px; }
+  .copy .t-xl { font-size: 72px; font-weight: 700; line-height: 1.1; letter-spacing: -0.02em; white-space: nowrap; }
+  .copy p { font-size: 22px; color: #6d6a63; margin-top: 18px; white-space: nowrap; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+  .belt { position: absolute; left: 0; top: 145px; width: 1168px; height: 200px; border-top: 2px solid #1d1c1a; border-bottom: 1px solid #1d1c1a; overflow: hidden; }
+  .track { position: absolute; left: 0; top: 0; width: 3000px; height: 200px; display: flex; align-items: center; will-change: transform; }
+  .unit { display: flex; flex: none; align-items: center; gap: 48px; width: 1000px; padding-left: 48px; font-size: 80px; font-weight: 700; letter-spacing: -0.02em; white-space: nowrap; }
+  .unit .dot { width: 36px; height: 36px; flex: none; border-radius: 50%; background: #f2c200; border: 2px solid #1d1c1a; }
+  .center-note { position: absolute; left: 0; width: 1168px; top: 438px; text-align: center; color: #6d6a63; font-size: 18px; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <span class="heading">A stream that never stops</span>
+      <div class="belt"><div class="track" id="track">
+        <div class="unit"><span>Record</span><span>Edit</span><span>Ship</span><i class="dot"></i></div>
+        <div class="unit"><span>Record</span><span>Edit</span><span>Ship</span><i class="dot"></i></div>
+        <div class="unit"><span>Record</span><span>Edit</span><span>Ship</span><i class="dot"></i></div>
+      </div></div>
+      <div class="center-note">Record to ship · the strip repeats seamlessly at 120 px per second</div>
+    </div>
+    <div id="label"><span class="l-name">Marquee</span><span class="l-sep">·</span><span>Loop &amp; Ambient</span><span class="l-sep">·</span><span>calm</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+  // Three identical 1000 px units; the track slides left at a constant 120 px/s so the copies read as one endless belt.
+  tl.fromTo("#track", { x: 0 }, { x: -360, duration: 3, ease: "none" }, 0);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

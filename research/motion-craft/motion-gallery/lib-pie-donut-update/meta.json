@@ -1,0 +1,20 @@
+{
+  "name": "Pie and donut update",
+  "family": "Data",
+  "purpose": [
+    "Explanation",
+    "Comparison"
+  ],
+  "energy": "steady",
+  "tier": 2,
+  "runtime": "svg",
+  "tags": [
+    "pie and donut value update",
+    "data",
+    "arc interpolation",
+    "donut",
+    "share",
+    "counter"
+  ],
+  "one_line": "A three-slice donut re-divides itself as the shares change, the yellow slice widening then easing back, while the centre percentage and legend values count along."
+}

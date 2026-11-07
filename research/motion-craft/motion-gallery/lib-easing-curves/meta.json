@@ -1,0 +1,23 @@
+{
+  "name": "Easing",
+  "family": "Principles",
+  "purpose": [
+    "Comparison",
+    "Explanation",
+    "Feedback"
+  ],
+  "energy": "steady",
+  "tier": 2,
+  "runtime": "gsap",
+  "tags": [
+    "ease",
+    "easing curves",
+    "speed-graph-power-family",
+    "keyframe-velocity-to-cubic-bezier",
+    "easy-ease-linear-hold-usage",
+    "principles",
+    "velocity",
+    "comparison"
+  ],
+  "one_line": "Three dots cover the same distance in the same time with a linear, ease-in and ease-out curve, so only their speed differs; small graphs of each curve appear once they arrive together."
+}

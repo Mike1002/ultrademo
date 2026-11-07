@@ -1,0 +1,22 @@
+{
+  "name": "Datamosh transition",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Attention"
+  ],
+  "energy": "high",
+  "tier": 3,
+  "runtime": "webgl",
+  "tags": [
+    "strip datamosh",
+    "transitions",
+    "strips",
+    "tear",
+    "slits",
+    "residue",
+    "glitch",
+    "corrupt"
+  ],
+  "one_line": "An invite scene tears into 24 horizontal strips that slide sideways while narrow vertical slits jump out of line, blurred residue of the old picture smears across, and the stats scene takes over underneath."
+}

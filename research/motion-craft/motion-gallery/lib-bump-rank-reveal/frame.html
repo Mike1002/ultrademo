@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-bump-rank-reveal</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  #chart { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  #cap { position: absolute; left: 160px; top: 8px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  text { font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .grid { stroke: #e3ded2; stroke-width: 2; }
+  .rank { font-size: 20px; font-weight: 700; fill: #6d6a63; }
+  .per { font-size: 16px; fill: #6d6a63; }
+  .line { fill: none; stroke: #a19d93; stroke-width: 4; stroke-linecap: round; }
+  .line.acc { stroke: #f2c200; stroke-width: 7; }
+  .pt { fill: #fffdf8; stroke: #a19d93; stroke-width: 3; }
+  .pt.acc { fill: #f2c200; stroke: #1d1c1a; }
+  .end { font-size: 20px; font-weight: 700; fill: #1d1c1a; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div id="cap">Rank by invites</div>
+      <svg id="chart" viewBox="0 0 1168 580" width="1168" height="580">
+        <defs><clipPath id="reveal"><rect id="rv" x="150" y="60" width="0" height="480"/></clipPath></defs>
+        <g id="grid"></g>
+        <g id="lines" clip-path="url(#reveal)"></g>
+        <g id="ends"></g>
+        <circle id="pulse" cx="0" cy="0" r="12" fill="none" stroke="#f2c200" stroke-width="3"/>
+      </svg>
+    </div>
+    <div id="label"><span class="l-name">Bump chart reveal</span><span class="l-sep">·</span><span>Data</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const SVG = "http://www.w3.org/2000/svg";
+  const PX = [220, 410, 600, 790, 980], RY = r => 120 + (r - 1) * 110;
+  const periods = ["Jan", "Feb", "Mar", "Apr", "May"];
+  // Rank per period, 1 is top. The yellow line is the one that ends first.
+  const items = [
+    { n: "Jamie Dalton", acc: true, r: [3, 2, 2, 1, 1] },
+    { n: "Sam Kim", r: [1, 1, 3, 2, 2] },
+    { n: "Morgan Lee", r: [2, 3, 1, 3, 4] },
+    { n: "Support", r: [4, 4, 4, 4, 3] }
+  ];
+  const grid = document.getElementById("grid");
+  [1, 2, 3, 4].forEach(r => { const l = document.createElementNS(SVG, "line"); l.setAttribute("class", "grid"); l.setAttribute("x1", 160); l.setAttribute("x2", 1080); l.setAttribute("y1", RY(r)); l.setAttribute("y2", RY(r)); grid.appendChild(l);
+    const t = document.createElementNS(SVG, "text"); t.setAttribute("class", "rank"); t.setAttribute("x", 150); t.setAttribute("y", RY(r) + 7); t.setAttribute("text-anchor", "end"); t.textContent = "#" + r; grid.appendChild(t); });
+  periods.forEach((p, i) => { const t = document.createElementNS(SVG, "text"); t.setAttribute("class", "per"); t.setAttribute("x", PX[i]); t.setAttribute("y", 520); t.setAttribute("text-anchor", "middle"); t.textContent = p; grid.appendChild(t); });
+  // Smooth S-curves between periods so the crossings read as swaps.
+  const lines = document.getElementById("lines"), ends = document.getElementById("ends");
+  const mk = (tag, cls, a, parent) => { const e = document.createElementNS(SVG, tag); e.setAttribute("class", cls); for (const k in a) e.setAttribute(k, a[k]); parent.appendChild(e); return e; };
+  items.slice().reverse().forEach(it => {
+    let d = "M" + PX[0] + "," + RY(it.r[0]);
+    for (let i = 1; i < 5; i++) { const x0 = PX[i - 1], x1 = PX[i], y0 = RY(it.r[i - 1]), y1 = RY(it.r[i]), m = (x0 + x1) / 2; d += " C" + m + "," + y0 + " " + m + "," + y1 + " " + x1 + "," + y1; }
+    mk("path", "line" + (it.acc ? " acc" : ""), { d }, lines);
+    it.r.forEach((r, i) => mk("circle", "pt" + (it.acc ? " acc" : ""), { cx: PX[i], cy: RY(r), r: it.acc ? 11 : 8 }, lines));
+    it.end = mk("text", "end", { x: 1004, y: RY(it.r[4]) + 7, opacity: 0 }, ends); it.end.textContent = it.n;
+  });
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "none", duration: 0.6 } });
+  // Reveal left to right at an even rate: 0.45 s per period step through a widening clip window.
+  tl.fromTo("#rv", { attr: { width: 0 } }, { attr: { width: 930 }, duration: 1.8, ease: "none" }, 0.2);
+  // End labels arrive as the reveal reaches the last period; the yellow leader gets its ring first.
+  items.forEach((it, i) => tl.fromTo(it.end, { opacity: 0, x: -12 }, { opacity: 1, x: 0, duration: 0.3, ease: "power2.out" }, 2.0 + (it.acc ? 0 : 0.12 + i * 0.06)));
+  tl.fromTo("#pulse", { attr: { cx: PX[4], cy: RY(1), r: 12 }, opacity: 1 }, { attr: { cx: PX[4], cy: RY(1), r: 30 }, opacity: 0, duration: 0.6, ease: "power2.out" }, 2.05);
+  tl.fromTo("#pulse", { opacity: 0 }, { opacity: 0, duration: 0.01 }, 0);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

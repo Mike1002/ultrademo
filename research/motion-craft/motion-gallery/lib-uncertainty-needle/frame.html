@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-uncertainty-needle</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  #chart { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  text { font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .arc { fill: none; stroke: #1d1c1a; stroke-width: 3; }
+  .band { fill: #fbf3cf; stroke: none; }
+  .tick { stroke: #a19d93; stroke-width: 2; }
+  .tick.c { stroke: #f2c200; stroke-width: 8; }
+  .ghost { stroke: #a19d93; stroke-width: 2; stroke-dasharray: 4 6; }
+  .needle { fill: #1d1c1a; }
+  .hub { fill: #fffdf8; stroke: #1d1c1a; stroke-width: 3; }
+  .big { font-size: 84px; font-weight: 700; fill: #1d1c1a; text-anchor: middle; font-variant-numeric: tabular-nums; }
+  .title { font-size: 34px; font-weight: 700; fill: #1d1c1a; }
+  .lab { font-size: 13px; letter-spacing: .06em; fill: #6d6a63; }
+  .num { font-size: 18px; fill: #6d6a63; text-anchor: middle; font-variant-numeric: tabular-nums; }
+  #needle { will-change: transform; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <svg id="chart" viewBox="0 0 1168 580" width="1168" height="580">
+        <text class="title" x="60" y="56">Forecast · 62%</text>
+        <text class="lab" x="60" y="84">SEATS FILLED BY LAUNCH DAY · SAMPLED OUTCOMES</text>
+        <g id="gauge"></g>
+        <g id="needle" data-layout-allow-overlap><polygon class="needle" points="584,180 574,470 594,470"/></g>
+        <circle class="hub" cx="584" cy="470" r="16"/>
+        <text class="big" x="584" y="548">62%</text>
+      </svg>
+    </div>
+    <div id="label"><span class="l-name">Uncertainty needle motion</span><span class="l-sep">·</span><span>Data</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const SVGNS = "http://www.w3.org/2000/svg";
+  const el = (tag, attrs, cls) => { const e = document.createElementNS(SVGNS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (cls) e.setAttribute("class", cls); return e; };
+  const CX = 584, CY = 470, R = 300;
+  const pt = (deg, r) => [CX + r * Math.sin(deg * Math.PI / 180), CY - r * Math.cos(deg * Math.PI / 180)];
+  const g = document.getElementById("gauge");
+  // Band of plausible outcomes (-25 to 25 degrees around the estimate), the arc, ticks every 5 degrees, the central tick in yellow.
+  const [bx0, by0] = pt(-25, R + 22), [bx1, by1] = pt(25, R + 22), [ix0, iy0] = pt(25, R - 40), [ix1, iy1] = pt(-25, R - 40);
+  g.appendChild(el("path", { d: `M ${bx0} ${by0} A ${R + 22} ${R + 22} 0 0 1 ${bx1} ${by1} L ${ix0} ${iy0} A ${R - 40} ${R - 40} 0 0 0 ${ix1} ${iy1} Z` }, "band"));
+  const [ax0, ay0] = pt(-42, R), [ax1, ay1] = pt(42, R);
+  g.appendChild(el("path", { d: `M ${ax0} ${ay0} A ${R} ${R} 0 0 1 ${ax1} ${ay1}` }, "arc"));
+  for (let d = -40; d <= 40; d += 5) { const [x0, y0] = pt(d, R - (d % 10 ? 10 : 18)), [x1, y1] = pt(d, R + (d === 0 ? 24 : 8)); g.appendChild(el("line", { x1: x0, y1: y0, x2: x1, y2: y1 }, d === 0 ? "tick c" : "tick")); }
+  [[-40, "46%"], [-20, "54%"], [0, "62%"], [20, "70%"], [40, "78%"]].forEach(([d, s]) => { const [x, y] = pt(d, R + 48); const t = el("text", { x, y: y + 6 }, "num"); t.textContent = s; g.appendChild(t); });
+  // Ghost needles at the sampled positions show the distribution the needle hops among.
+  const samples = [0, 14, -9, 21, -18, 6, -23, 11, 3, -5];
+  samples.slice(1).forEach(d => { const [x0, y0] = pt(d, 60), [x1, y1] = pt(d, R - 48); g.appendChild(el("line", { x1: x0, y1: y0, x2: x1, y2: y1 }, "ghost")); });
+
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power2.inOut", duration: 0.25 } });
+  // The needle hops to the next sampled angle every 400 ms; each hop takes 250 ms with power2.inOut. The first hop at 0.25 s.
+  for (let i = 1; i < samples.length; i++) {
+    tl.fromTo("#needle", { rotation: samples[i - 1], svgOrigin: "584 470" }, { rotation: samples[i], duration: 0.25, immediateRender: i === 1 }, 0.25 + (i - 1) * 0.4);
+  }
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

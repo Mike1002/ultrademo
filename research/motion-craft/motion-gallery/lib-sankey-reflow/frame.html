@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-sankey-reflow</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  #chart { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  #chart text { font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .node { fill: #1d1c1a; }
+  .nl { font-size: 20px; font-weight: 600; fill: #1d1c1a; font-variant-numeric: tabular-nums; }
+  .hot { fill: #f2c200; opacity: .92; }
+  .cold { fill: #d9d4c7; opacity: .92; }
+  .heading { position: absolute; left: 32px; top: 16px; font-size: 34px; font-weight: 700; }
+  .sub { position: absolute; left: 34px; top: 64px; font-size: 18px; color: #6d6a63; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div class="heading">Sent → Opened → Joined</div>
+      <div class="sub">Ribbons, nodes and endpoints move together as the week's numbers update</div>
+      <svg id="chart" viewBox="0 0 1168 580" xmlns="http://www.w3.org/2000/svg">
+        <path id="rSO" class="hot" d=""/>
+        <path id="rSN" class="cold" d=""/>
+        <path id="rOJ" class="hot" d=""/>
+        <path id="rOD" class="cold" d=""/>
+        <rect id="nS" class="node" x="160" y="150" width="24" height="320"/>
+        <rect id="nO" class="node" x="560" y="150" width="24" height="0"/>
+        <rect id="nN" class="node" x="560" y="150" width="24" height="0"/>
+        <rect id="nJ" class="node" x="960" y="150" width="24" height="0"/>
+        <rect id="nD" class="node" x="960" y="150" width="24" height="0"/>
+        <text class="nl" x="160" y="132">Sent 100</text>
+        <text id="tO" class="nl" x="560" y="132">Opened</text>
+        <text id="tN" class="nl" x="560" y="0">Not opened</text>
+        <text id="tJ" class="nl" x="984" y="132" text-anchor="end">Joined</text>
+        <text id="tD" class="nl" x="984" y="0" text-anchor="end">Dropped</text>
+      </svg>
+    </div>
+    <div id="label"><span class="l-name">Sankey reflow</span><span class="l-sep">·</span><span>Data</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const TOP = 150, PX = 3.2, GAP = 8, NW = 24;   // 100 invites = 320 px, 8 px between nodes, 24 px node width
+  // Three states of [opened, joined] out of 100 sent; the rest are not opened / dropped.
+  const A = [60, 45], B = [80, 70], C = [70, 50];
+  const io = k => k < 0.5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;   // power2.inOut
+  const clamp = x => Math.max(0, Math.min(1, x));
+  const $ = id => document.getElementById(id);
+  const ribbon = (x1, t1, b1, x2, t2, b2) => { const m = (x1 + x2) / 2; return `M${x1} ${t1} C${m} ${t1} ${m} ${t2} ${x2} ${t2} L${x2} ${b2} C${m} ${b2} ${m} ${b1} ${x1} ${b1} Z`; };
+  function renderAt(t) {
+    const p1 = io(clamp((t - 0.4) / 1.0)), p2 = io(clamp((t - 2.0) / 0.9));
+    const O = A[0] + (B[0] - A[0]) * p1 + (C[0] - B[0]) * p2;
+    const J = A[1] + (B[1] - A[1]) * p1 + (C[1] - B[1]) * p2;
+    const N = 100 - O, D = O - J;
+    // Column 2: Opened on top, Not opened below a fixed gap. Column 3: Joined on top, Dropped below.
+    const oT = TOP, oB = TOP + O * PX, nT = oB + GAP, nB = nT + N * PX;
+    const jT = TOP, jB = TOP + J * PX, dT = jB + GAP, dB = dT + D * PX;
+    $("nO").setAttribute("height", (O * PX).toFixed(1));
+    $("nN").setAttribute("y", nT.toFixed(1)); $("nN").setAttribute("height", (N * PX).toFixed(1));
+    $("nJ").setAttribute("height", (J * PX).toFixed(1));
+    $("nD").setAttribute("y", dT.toFixed(1)); $("nD").setAttribute("height", (D * PX).toFixed(1));
+    // Ribbons share endpoints with the nodes they join, so widths and endpoints move as one.
+    $("rSO").setAttribute("d", ribbon(184, TOP, TOP + O * PX, 560, oT, oB));
+    $("rSN").setAttribute("d", ribbon(184, TOP + O * PX, TOP + 100 * PX, 560, nT, nB));
+    $("rOJ").setAttribute("d", ribbon(584, oT, oT + J * PX, 960, jT, jB));
+    $("rOD").setAttribute("d", ribbon(584, oT + J * PX, oB, 960, dT, dB));
+    $("tO").textContent = "Opened " + Math.round(O);
+    $("tN").textContent = "Not opened " + Math.round(N); $("tN").setAttribute("y", (nB + 26).toFixed(1));
+    $("tJ").textContent = "Joined " + Math.round(J);
+    $("tD").textContent = "Dropped " + Math.round(D); $("tD").setAttribute("y", (dB + 26).toFixed(1));
+  }
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power2.inOut", duration: 1 } });
+  renderAt(0);
+  tl.to({ k: 0 }, { k: 1, duration: 3, ease: "none", onUpdate: () => renderAt(tl.time()) }, 0);
+  const baseRender = tl.render; tl.render = function () { const r = baseRender.apply(this, arguments); renderAt(this.time()); return r; };
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

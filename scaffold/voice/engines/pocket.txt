@@ -1,0 +1,3 @@
+# Pocket TTS (Kyutai): the default free tier, CPU on every platform. Pinned 2026-10-11.
+pocket-tts==3.3.0
+soundfile==0.14.0

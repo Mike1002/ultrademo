@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-motion-hierarchy</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  .lab { font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  .kicker { position: absolute; left: 88px; top: 49px; }
+  #title { position: absolute; left: 88px; top: 96px; width: 700px; font-size: 84px; font-weight: 700; line-height: 1.04; letter-spacing: -0.01em; will-change: transform; }
+  #sub { position: absolute; left: 88px; top: 322px; font-size: 34px; font-weight: 700; }
+  #divider { position: absolute; left: 88px; top: 384px; width: 790px; height: 2px; background: #e3ded2; }
+  #detail { position: absolute; left: 88px; top: 408px; width: 800px; font-size: 21px; line-height: 1.7; color: #6d6a63; }
+  .order-axis { position: absolute; left: 971px; top: 113px; width: 2px; height: 350px; background: #e3ded2; }
+  .lead { position: absolute; left: 919px; display: flex; align-items: center; }
+  .lead i { display: block; width: 8px; height: 8px; border-radius: 50%; background: #1d1c1a; }
+  .lead s { display: block; width: 66px; height: 2px; background: #e3ded2; text-decoration: none; }
+  .lead span { font-size: 38px; font-weight: 700; margin-left: 18px; line-height: 1; font-variant-numeric: tabular-nums; }
+  #n1 { top: 140px; } #n1 span { color: #f2c200; -webkit-text-stroke: 1px #1d1c1a; }
+  #n2 { top: 322px; } #n3 { top: 416px; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div class="lab kicker">Reading order · 1 / 2 / 3</div>
+      <div id="title">Every frame is code.</div>
+      <div id="sub">Your product, in motion.</div>
+      <div id="divider"></div>
+      <div id="detail">Point it at your product and get a finished, editable video. Re-run it the day the interface ships.</div>
+      <div class="order-axis" data-layout-allow-overlap></div>
+      <div class="lead" id="n1" data-layout-allow-overlap><i></i><s></s><span>1</span></div>
+      <div class="lead" id="n2" data-layout-allow-overlap><i></i><s></s><span>2</span></div>
+      <div class="lead" id="n3" data-layout-allow-overlap><i></i><s></s><span>3</span></div>
+    </div>
+    <div id="label"><span class="l-name">Motion hierarchy</span><span class="l-sep">·</span><span>Principles</span><span class="l-sep">·</span><span>calm</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+  // Title first and slowest, subtitle next, detail last and quickest; each rises less than the one before.
+  tl.fromTo("#title", { y: 32, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7, ease: "power3.out" }, 0.3);
+  tl.fromTo("#sub", { y: 18, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, ease: "power3.out" }, 1.05);
+  tl.fromTo("#detail", { y: 10, opacity: 0 }, { y: 0, opacity: 1, duration: 0.22, ease: "power2.out" }, 1.5);
+  tl.fromTo("#divider", { scaleX: 0, transformOrigin: "left center" }, { scaleX: 1, duration: 0.22, ease: "power2.out" }, 1.5);
+  tl.fromTo(".lead", { opacity: 0, x: -8 }, { opacity: 1, x: 0, duration: 0.18, stagger: 0.07 }, 1.95);
+  // Quiet tail: the order axis draws down behind the numbers.
+  tl.fromTo(".order-axis", { scaleY: 0, transformOrigin: "top center" }, { scaleY: 1, duration: 0.7, ease: "power2.inOut" }, 2.2);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

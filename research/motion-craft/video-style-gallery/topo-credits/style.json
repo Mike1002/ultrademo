@@ -1,0 +1,125 @@
+{
+  "id": "topo-credits",
+  "name": "Topo Credits",
+  "canvas": "dark",
+  "mood": [
+    "cinematic",
+    "brooding",
+    "elegant"
+  ],
+  "suits": [
+    "title sequences",
+    "film-like brand pieces",
+    "credits"
+  ],
+  "palette": {
+    "bg": "#070707",
+    "bg_alt": "#070707",
+    "surface": "#111111",
+    "surface_2": "#1a1a1a",
+    "ink": "#e9e4da",
+    "muted": "#8d877d",
+    "line": "rgba(217,214,207,0.3)",
+    "accent": "#c4161c",
+    "accent_2": "#8f0f14",
+    "on_accent": "#ffffff",
+    "pill_bg": "#070707",
+    "pill_ink": "#e9e4da",
+    "pill_dot": "#c4161c",
+    "term_bg": "#0d0d0d",
+    "term_ink": "#e9e4da",
+    "term_muted": "#8d877d",
+    "term_line": "rgba(217,214,207,0.3)",
+    "term_prompt": "#c4161c",
+    "term_ok": "#e9e4da"
+  },
+  "type": {
+    "display": {
+      "family": "Cormorant Garamond",
+      "weight": 600,
+      "hook_px": 72,
+      "stat_px": 220,
+      "mark_px": 104,
+      "transform": "uppercase",
+      "tracking": "0.24em",
+      "line_height": "1.15",
+      "style": "normal",
+      "generic": "serif",
+      "card_title_px": 24,
+      "card_title_tracking": "0.12em"
+    },
+    "body": {
+      "family": "Cormorant Garamond",
+      "weight": 500,
+      "generic": "serif"
+    },
+    "mono": {
+      "family": "Cormorant Garamond",
+      "weight": 500
+    },
+    "label": {
+      "family": "Cormorant Garamond",
+      "weight": 500,
+      "transform": "uppercase",
+      "tracking": "0.4em",
+      "generic": "serif",
+      "px": 15
+    }
+  },
+  "easing": {
+    "entry": "power2.out",
+    "exit": "power2.in",
+    "ambient": "none",
+    "pop": "power2.out",
+    "counter": "power2.inOut",
+    "wipe": null
+  },
+  "rhythm": {
+    "energy": "calm",
+    "entrance": 0.9,
+    "stagger": 0.14
+  },
+  "transition": {
+    "kind": "blur",
+    "duration": 0.6,
+    "flash": false,
+    "band": false
+  },
+  "text_animation": "blur-in",
+  "accent_word": "none",
+  "layout": "center",
+  "atmosphere": [
+    "letterbox:73",
+    "rings",
+    "grain:0.1"
+  ],
+  "shape": {
+    "radius_card": 0,
+    "radius_button": 0,
+    "radius_pill": 0,
+    "border": "hairline",
+    "border_px": 1,
+    "shadow": "none",
+    "rule_px": 1
+  },
+  "stat_colour": "ink",
+  "direction_settings": {
+    "energy": "calm",
+    "density": "sparse",
+    "ground": "dark",
+    "depth": "layered",
+    "camera": "drift",
+    "type": "editorial",
+    "texture": "grain",
+    "colour": "one-accent",
+    "product_presence": "illustrated",
+    "sound": "scored",
+    "voice": "narrated"
+  },
+  "notes": "Black with permanent letterbox bars, pale contour rings, one red rule, Cormorant Garamond tracked uppercase that resolves from blur.",
+  "transitions": {
+    "between_moments": "blur",
+    "duration_s": 0.6,
+    "text": "blur-in"
+  }
+}

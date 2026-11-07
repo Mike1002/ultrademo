@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-fly-eye-transition</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #171a21; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #171a21; color: #ece8df;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; overflow: hidden; }
+  .art { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; will-change: opacity; }
+  .art.a { background: #1f232c; }
+  .art.b { background: #171a21; }
+  .card { position: absolute; left: 264px; top: 110px; width: 640px; height: 360px; background: #1f232c; border: 2px solid #ece8df; border-radius: 24px; }
+  .art.a .card { background: #171a21; }
+  .card .lab { position: absolute; left: 56px; top: 48px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #a7adbb; }
+  .card .h1 { position: absolute; left: 56px; top: 80px; font-size: 56px; font-weight: 700; line-height: 64px; white-space: nowrap; color: #ece8df; }
+  .card .sub { position: absolute; left: 56px; top: 160px; font-size: 22px; color: #a7adbb; }
+  .card .btn { position: absolute; left: 56px; top: 240px; width: 200px; height: 60px; border-radius: 14px; background: #f2c200; border: 2px solid #1d1c1a;
+    font-size: 20px; font-weight: 700; line-height: 56px; text-align: center; color: #1d1c1a; }
+  .card.b .h1 { font-size: 96px; line-height: 104px; top: 74px; font-variant-numeric: tabular-nums; }
+  .card.b .sub { top: 190px; }
+  .lens { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  .mag, .fr { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; will-change: transform, opacity; }
+  .fr { mix-blend-mode: screen; }
+  .fr.y { filter: url(#tintY); } .fr.c { filter: url(#tintC); }
+  #rims { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; pointer-events: none; }
+  #defs { position: absolute; width: 0; height: 0; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #a7adbb; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #ece8df; font-weight: 700; }
+  #label .l-sep { color: #6d7380; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <svg id="defs" aria-hidden="true">
+      <filter id="tintY" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="1 0 0 0 0  0 0.8 0 0 0  0 0 0 0 0  0 0 0 1 0"/></filter>
+      <filter id="tintC" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 0 0 0 0  0 0.3 0 0 0  0 0 1 0 0  0 0 0 1 0"/></filter>
+    </svg>
+    <div id="stage"></div>
+    <div id="label"><span class="l-name">Fly eye transition</span><span class="l-sep">·</span><span>Transitions</span><span class="l-sep">·</span><span>high</span></div>
+  </section>
+</div>
+<script>
+  const AT = ' data-layout-allow-overlap data-layout-allow-occlusion';
+  const A_HTML = '<div class="art a"' + AT + '><div class="card"' + AT + '><div class="lab"' + AT + '>Orbit</div><div class="h1"' + AT + '>Invite your team</div><div class="sub"' + AT + '>3 seats left on this plan</div><div class="btn"' + AT + '>Continue</div></div></div>';
+  const B_HTML = '<div class="art b bb"' + AT + '><div class="card b"' + AT + '><div class="lab"' + AT + '>This month</div><div class="h1"' + AT + '>12,480</div><div class="sub"' + AT + '>invites sent</div></div></div>';
+  const SCENE = A_HTML + B_HTML;
+  const COLS = 6, ROWS = 4, W = 1168, H = 580, R = 70;
+  // Beneath the lenses: the plain crossfade.
+  let html = '<div id="base"' + AT + '>' + SCENE + '</div>';
+  let rims = '';
+  for (let r = 0; r < ROWS; r++) for (let c = 0; c < COLS; c++) {
+    const i = r * COLS + c, cx = ((c + 0.5) * W / COLS).toFixed(1), cy = ((r + 0.5) * H / ROWS).toFixed(1);
+    // Each lens: a circular window on a magnified copy of the scene, with a warm and a cool fringe copy screened on top.
+    html += '<div class="lens" id="l' + i + '"' + AT + ' style="clip-path:circle(' + R + 'px at ' + cx + 'px ' + cy + 'px)">'
+      + '<div class="mag" data-cx="' + cx + '" data-cy="' + cy + '"' + AT + '>' + SCENE + '</div>'
+      + '<div class="fr y" data-cx="' + cx + '" data-cy="' + cy + '"' + AT + '>' + SCENE + '</div>'
+      + '<div class="fr c" data-cx="' + cx + '" data-cy="' + cy + '"' + AT + '>' + SCENE + '</div>'
+      + '</div>';
+    rims += '<circle cx="' + cx + '" cy="' + cy + '" r="' + R + '" fill="none" stroke="#ece8df" stroke-width="1.5"/>';
+  }
+  html += '<svg id="rims" viewBox="0 0 1168 580"' + AT + '>' + rims + '</svg>';
+  document.getElementById("stage").innerHTML = html;
+  document.querySelectorAll(".mag, .fr").forEach(el => { el.style.transformOrigin = el.dataset.cx + "px " + el.dataset.cy + "px"; });
+
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "none", duration: 0.6 } });
+  const T0 = 0.5, D = 1.2, HALF = D / 2;
+  // Blend by p: every B copy (beneath and inside each lens) fades up linearly over the whole dissolve.
+  tl.fromTo(".bb", { opacity: 0 }, { opacity: 1, duration: D, ease: "none" }, T0);
+  // Refraction zoom and colour separation follow sin(pi * p): rise to the middle, fall back to nothing.
+  tl.fromTo(".mag", { scale: 1 }, { scale: 1.55, duration: HALF, ease: "sine.inOut", yoyo: true, repeat: 1 }, T0);
+  tl.fromTo(".fr", { scale: 1, opacity: 0 }, { scale: 1.55, duration: HALF, ease: "sine.inOut", yoyo: true, repeat: 1 }, T0);
+  tl.fromTo(".fr", { opacity: 0 }, { opacity: 0.75, duration: HALF, ease: "sine.inOut", yoyo: true, repeat: 1, immediateRender: false }, T0);
+  tl.fromTo(".fr.y", { x: 0 }, { x: -12, duration: HALF, ease: "sine.inOut", yoyo: true, repeat: 1 }, T0);
+  tl.fromTo(".fr.c", { x: 0 }, { x: 12, duration: HALF, ease: "sine.inOut", yoyo: true, repeat: 1 }, T0);
+  tl.fromTo("#rims", { opacity: 0 }, { opacity: 0.35, duration: HALF, ease: "sine.inOut", yoyo: true, repeat: 1 }, T0);
+  // After-beat: the glass shimmers once more, gently, over the settled scene.
+  tl.to(".mag", { scale: 1.12, duration: 0.3, ease: "sine.inOut", yoyo: true, repeat: 1 }, 2.2);
+  tl.to(".fr", { scale: 1.12, opacity: 0.3, duration: 0.3, ease: "sine.inOut", yoyo: true, repeat: 1 }, 2.2);
+  tl.to("#rims", { opacity: 0.18, duration: 0.3, ease: "sine.inOut", yoyo: true, repeat: 1 }, 2.2);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-split-flap</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  #board { position: absolute; left: 36px; top: 96px; width: 1096px; height: 388px; background: #fffdf8; border: 2px solid #1d1c1a; border-radius: 24px; }
+  .row { position: absolute; left: 22px; height: 108px; display: flex; gap: 8px; }
+  .card { position: relative; width: 80px; height: 108px; perspective: 400px; }
+  .half { position: absolute; left: 0; width: 80px; height: 53px; overflow: hidden; background: #1d1c1a; color: #fffdf8; backface-visibility: hidden; }
+  .half .g { position: absolute; left: 0; width: 80px; height: 108px; line-height: 108px; text-align: center; font-size: 72px; font-weight: 700; }
+  .top { top: 0; border-radius: 8px 8px 0 0; }
+  .top .g { top: 0; }
+  .bot { top: 55px; border-radius: 0 0 8px 8px; }
+  .bot .g { top: -55px; }
+  .flap { will-change: transform; }
+  .lamp { position: absolute; left: 1058px; width: 14px; height: 14px; border-radius: 50%; background: #e3ded2; border: 2px solid #1d1c1a; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div id="board">
+        <div class="row" id="row0" style="top:60px"></div>
+        <div class="row" id="row1" style="top:220px"></div>
+        <div class="lamp" id="lamp0" style="top:107px"></div>
+        <div class="lamp" id="lamp1" style="top:267px"></div>
+      </div>
+    </div>
+    <div id="label"><span class="l-name">Split flap</span><span class="l-sep">·</span><span>Typography</span><span class="l-sep">·</span><span>high</span></div>
+  </section>
+</div>
+<script>
+  // Params: flip 0.2 s (top half folds down 0.1 s power1.in, new bottom half unfolds 0.1 s power1.out), 50 ms between slots,
+  // perspective 400 px per card (so end cards do not shear), 2 intermediate glyphs from blank. Every state is a pure function of t (renderAt + tl.render wrap):
+  // each card has a static top (next glyph), static bottom (current glyph), a top flap (current) and a bottom flap (next).
+  const ROWS = [" LAUNCH DAY ", "3 SEATS LEFT"];
+  const START = [0.25, 1.75], STAG = 0.05, FLIP = 0.2, INTER = 2;
+  const A = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  const easeIn = gsap.parseEase("power1.in"), easeOut = gsap.parseEase("power1.out");
+  const slots = [];
+  ROWS.forEach((text, r) => {
+    const row = document.getElementById("row" + r);
+    let html = "";
+    for (let i = 0; i < text.length; i++) {
+      html += '<div class="card" data-layout-allow-overlap>' +
+        '<div class="half top stat" data-layout-allow-overlap><div class="g"></div></div>' +
+        '<div class="half bot stat" data-layout-allow-overlap><div class="g"></div></div>' +
+        '<div class="half top flap" data-layout-allow-overlap><div class="g"></div></div>' +
+        '<div class="half bot flap" data-layout-allow-overlap><div class="g"></div></div></div>';
+    }
+    row.innerHTML = html;
+    const cards = row.querySelectorAll(".card");
+    for (let i = 0; i < text.length; i++) {
+      const c = text[i];
+      const seq = [""];
+      if (c !== " ") {
+        for (let k = 1; k <= INTER; k++) seq.push(A[(A.indexOf(c) + 7 * k + 3 * i + 11 * r) % A.length]);
+        seq.push(c);
+      }
+      const t0 = START[r] + i * STAG;
+      const el = cards[i];
+      slots.push({ seq, t0, st: el.children[0].firstChild, sb: el.children[1].firstChild, ft: el.children[2], fb: el.children[3],
+        ftg: el.children[2].firstChild, fbg: el.children[3].firstChild });
+    }
+  });
+  function renderAt(t) {
+    slots.forEach(s => {
+      const n = s.seq.length - 1;           // number of flips
+      let j = 0, phase = -1;                 // j = index of glyph currently settled or arriving
+      for (let k = 1; k <= n; k++) {
+        const tk = s.t0 + (k - 1) * FLIP;
+        if (t >= tk + FLIP) { j = k; }
+        else if (t >= tk) { j = k; phase = (t - tk) / FLIP; break; }
+        else break;
+      }
+      const cur = phase < 0 ? s.seq[j] : s.seq[j - 1];
+      const nxt = s.seq[j];
+      s.st.textContent = nxt; s.sb.textContent = cur; s.ftg.textContent = cur; s.fbg.textContent = nxt;
+      let rt = 0, rb = 0;
+      if (phase >= 0) {
+        rt = Math.max(-88, -90 * easeIn(Math.min(1, phase * 2)));          // never exactly edge-on: a 90 deg plane rasterises as a stray line
+        rb = Math.min(88, 90 * (1 - easeOut(Math.max(0, phase * 2 - 1))));
+      }
+      // a flap parked edge-on (exactly 90 deg) renders as a stray full-width line, so each flap is shown only during its own half of the flip
+      const showTop = phase < 0 || phase < 0.5, showBot = phase < 0 || phase >= 0.5;
+      gsap.set(s.ft, { rotationX: rt, opacity: showTop ? 1 : 0, transformOrigin: "50% 100%" });
+      gsap.set(s.fb, { rotationX: rb, opacity: showBot ? 1 : 0, transformOrigin: "50% 0%" });
+    });
+  }
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "none", duration: 0.2 } });
+  renderAt(0);
+  tl.to({ k: 0 }, { k: 1, duration: 3, ease: "none", onUpdate: () => renderAt(tl.time()) }, 0);
+  // lamps light when each row has landed
+  tl.fromTo("#lamp0", { backgroundColor: "#e3ded2" }, { backgroundColor: "#f2c200", duration: 0.15, ease: "none" }, 1.45);
+  tl.fromTo("#lamp1", { backgroundColor: "#e3ded2" }, { backgroundColor: "#f2c200", duration: 0.15, ease: "none" }, 2.92);
+  const baseRender = tl.render; tl.render = function () { const r = baseRender.apply(this, arguments); renderAt(this.time()); return r; };
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

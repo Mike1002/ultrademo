@@ -1,0 +1,20 @@
+{
+  "name": "Vector tip-to-tail",
+  "family": "Explainer",
+  "purpose": [
+    "Explanation",
+    "Sequence"
+  ],
+  "energy": "steady",
+  "tier": 2,
+  "runtime": "svg",
+  "tags": [
+    "vector tip-to-tail construction",
+    "explainer",
+    "vectors",
+    "arrows",
+    "stroke-dashoffset",
+    "grid"
+  ],
+  "one_line": "On a hairline grid a horizontal arrow and a diagonal arrow extend from one origin, the second slides so its tail sits on the first's tip, and a thick yellow resultant draws from the origin to the far tip."
+}

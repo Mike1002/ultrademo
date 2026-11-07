@@ -1,0 +1,8 @@
+.DS_Store
+scaffold/node_modules
+scaffold/.env
+scaffold/projects/*
+!scaffold/projects/README.md
+scaffold/brands/
+scaffold/.ultrademo/
+scaffold/ultrademo-dashboard.html

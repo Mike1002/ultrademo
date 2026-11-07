@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-vector-tip-to-tail</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  .head { position: absolute; left: 48px; top: 40px; font-size: 34px; font-weight: 700; }
+  #diagram { position: absolute; left: 40px; top: 110px; width: 1088px; height: 350px; overflow: visible; }
+  #diagram text { fill: #1d1c1a; font-size: 22px; }
+  .vec { fill: none; stroke: #1d1c1a; stroke-width: 4; }
+  .tip { fill: #1d1c1a; }
+  #sum .vec { stroke: #f2c200; stroke-width: 6; } #sum .tip { fill: #f2c200; } #sum text { font-weight: 700; }
+  #eq { position: absolute; left: 48px; top: 500px; font-size: 28px; font-weight: 700; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div class="head">Join them tip to tail and the sum appears</div>
+      <svg id="diagram" viewBox="0 0 1088 350" data-layout-allow-overlap>
+        <defs><pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse"><path d="M50 0H0V50" fill="none" stroke="#e3ded2" stroke-width="1"/></pattern></defs>
+        <rect x="60" y="15" width="960" height="320" fill="url(#grid)"/>
+        <circle cx="210" cy="285" r="6" fill="#1d1c1a"/>
+        <g id="va"><path class="vec" id="pa" d="M210 285H536"/><path class="tip" id="ta" d="M532 275L552 285L532 295Z"/><text id="xa" x="340" y="318">first move</text></g>
+        <g id="vb"><path class="vec" id="pb" d="M210 285L380 124"/><path class="tip" id="tb" d="M372 118L392 113L384 134Z"/><text id="xb" x="300" y="160" text-anchor="end">second move</text></g>
+        <g id="sum"><path class="vec" id="ps" d="M210 285L716 120"/><path class="tip" id="ts" d="M708 110L732 115L714 132Z"/><text id="xs" x="430" y="252">total</text></g>
+      </svg>
+      <div id="eq">first move + second move = total</div>
+    </div>
+    <div id="label"><span class="l-name">Vector tip-to-tail</span><span class="l-sep">·</span><span>Explainer</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+  // Each vector extends from its tail (dash draw), its arrowhead and label arriving at the end.
+  function draw(p, tip, txt, at) {
+    const L = document.querySelector(p).getTotalLength();
+    tl.fromTo(p, { strokeDasharray: `${L} ${L + 20}`, strokeDashoffset: L + 10 }, { strokeDashoffset: 0, duration: 0.65, ease: "power2.inOut" }, at);
+    tl.fromTo(tip, { opacity: 0, scale: 0.4, transformOrigin: "center center" }, { opacity: 1, scale: 1, duration: 0.2 }, at + 0.5);
+    tl.fromTo(txt, { opacity: 0 }, { opacity: 1, duration: 0.25 }, at + 0.4);
+  }
+  tl.set(["#ta", "#tb", "#ts"], { opacity: 0 }, 0);
+  draw("#pa", "#ta", "#xa", 0.15);
+  draw("#pb", "#tb", "#xb", 0.85);
+  // The second vector slides so its tail sits on the first vector's tip (340 px right).
+  tl.fromTo("#vb", { x: 0 }, { x: 340, duration: 0.7, ease: "power2.inOut" }, 1.55);
+  // The resultant draws from the shared origin to the far tip.
+  draw("#ps", "#ts", "#xs", 2.2);
+  tl.fromTo("#eq", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 2.5);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

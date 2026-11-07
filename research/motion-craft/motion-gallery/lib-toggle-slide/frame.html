@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-toggle-slide</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  .card { position: absolute; left: 244px; top: 40px; width: 680px; height: 500px; background: #fffdf8; border: 2px solid #1d1c1a; border-radius: 24px; }
+  .card .title { position: absolute; left: 48px; top: 44px; font-size: 40px; font-weight: 700; letter-spacing: -0.01em; }
+  .card .sub { position: absolute; left: 48px; top: 100px; font-size: 20px; color: #6d6a63; }
+  .card .hr { position: absolute; left: 48px; width: 584px; height: 2px; background: #e3ded2; }
+  .row { position: absolute; left: 48px; width: 584px; height: 56px; }
+  .row .lab { position: absolute; left: 0; top: 8px; font-size: 22px; font-weight: 600; }
+  .row .hint { position: absolute; left: 0; top: 38px; font-size: 15px; color: #6d6a63; }
+  .sw { position: absolute; right: 0; top: 0; width: 96px; height: 56px; }
+  .track { position: absolute; left: 0; top: 0; width: 96px; height: 56px; border-radius: 28px; background: #e3ded2; border: 2px solid #1d1c1a; }
+  .thumb { position: absolute; left: 4px; top: 4px; width: 48px; height: 48px; border-radius: 50%; background: #fffdf8; border: 2px solid #1d1c1a; will-change: transform; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div class="card">
+        <div class="title">Invite your team</div>
+        <div class="sub">Orbit · 3 seats left</div>
+        <div class="hr" style="top:150px"></div>
+        <div class="row" style="top:186px"><div class="lab">Allow invites</div><div class="hint">Members can invite others</div>
+          <div class="sw"><div class="track" id="tr1"></div><div class="thumb" id="th1"></div></div></div>
+        <div class="hr" style="top:262px"></div>
+        <div class="row" style="top:298px"><div class="lab">Notify on join</div><div class="hint">Email when a seat is taken</div>
+          <div class="sw"><div class="track" id="tr2"></div><div class="thumb" id="th2"></div></div></div>
+        <div class="hr" style="top:374px"></div>
+        <div class="row" style="top:410px"><div class="lab">Require approval</div><div class="hint">Admins confirm each invite</div>
+          <div class="sw"><div class="track" id="tr3"></div><div class="thumb" id="th3"></div></div></div>
+      </div>
+    </div>
+    <div id="label"><span class="l-name">Toggle slide</span><span class="l-sep">·</span><span>UI Demo</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+  // Params: thumb travel 40 px over 400 ms with a 6% overshoot (42.4 px at 70%), track colour over 200 ms.
+  const ON = "#f2c200", OFF = "#e3ded2";
+  function switchOn(thumb, track, at) {
+    tl.fromTo(thumb, { x: 0 }, { x: 42.4, duration: 0.28, ease: "power3.out" }, at);
+    tl.to(thumb, { x: 40, duration: 0.12, ease: "power2.inOut" }, at + 0.28);
+    tl.fromTo(track, { backgroundColor: OFF }, { backgroundColor: ON, duration: 0.2, ease: "none" }, at);
+  }
+  function switchOff(thumb, track, at) {
+    tl.to(thumb, { x: -2.4, duration: 0.28, ease: "power3.out" }, at);
+    tl.to(thumb, { x: 0, duration: 0.12, ease: "power2.inOut" }, at + 0.28);
+    tl.to(track, { backgroundColor: OFF, duration: 0.2, ease: "none" }, at);
+  }
+  gsap.set(["#th2", "#th3"], { x: 0 });
+  gsap.set(["#tr2", "#tr3"], { backgroundColor: OFF });
+  switchOn("#th1", "#tr1", 0.5);     // first switch: on, settled by 0.9 s (poster at 1.2 s)
+  switchOn("#th2", "#tr2", 1.55);    // second switch: on
+  switchOff("#th1", "#tr1", 2.4);    // first switch: back off (the reverse travel)
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

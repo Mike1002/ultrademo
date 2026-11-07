@@ -1,0 +1,21 @@
+{
+  "name": "Keyword glow",
+  "family": "Text & Typography",
+  "purpose": [
+    "emphasis",
+    "narration",
+    "captions"
+  ],
+  "energy": "steady",
+  "tags": [
+    "asr",
+    "audio-sync",
+    "highlight",
+    "glow",
+    "keyword",
+    "text",
+    "speech",
+    "emphasis"
+  ],
+  "one_line": "The words of a dim line light up one at a time as if spoken, each swelling and glowing yellow before settling back, with the last word held longest."
+}

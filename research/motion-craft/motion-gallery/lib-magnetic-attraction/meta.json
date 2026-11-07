@@ -1,0 +1,22 @@
+{
+  "name": "Magnetic attraction",
+  "family": "UI Demo",
+  "purpose": [
+    "Feedback",
+    "Emphasis"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "gsap",
+  "tags": [
+    "ui",
+    "magnetic",
+    "hover",
+    "lean",
+    "pointer",
+    "proximity",
+    "spring back",
+    "cursor"
+  ],
+  "one_line": "As the cursor comes near, the yellow Continue button leans a few pixels toward it and follows as the cursor drifts; when the cursor leaves, the button springs back into place."
+}

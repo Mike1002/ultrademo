@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-layout-yield</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  #card { position: absolute; left: 304px; top: 110px; width: 560px; height: 360px; background: #fffdf8; border: 2px solid #1d1c1a; border-radius: 24px; will-change: transform; }
+  #card .lab { position: absolute; left: 48px; top: 40px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  #card h1 { position: absolute; left: 48px; top: 70px; font-size: 48px; font-weight: 700; line-height: 56px; white-space: nowrap; letter-spacing: -0.01em; }
+  #card .sub { position: absolute; left: 48px; top: 140px; font-size: 20px; color: #6d6a63; }
+  #card .av { position: absolute; top: 196px; width: 44px; height: 44px; border-radius: 50%; background: #ece7da; border: 2px solid #1d1c1a; }
+  #card .btn { position: absolute; left: 48px; top: 266px; width: 200px; height: 60px; border-radius: 14px; background: #ece7da; border: 2px solid #1d1c1a;
+    font-size: 20px; font-weight: 700; line-height: 56px; text-align: center; }
+  #focal { position: absolute; left: 628px; top: 140px; width: 480px; height: 300px; background: #f2c200; border: 2px solid #1d1c1a; border-radius: 24px; will-change: transform, opacity; }
+  #focal .lab { position: absolute; left: 44px; top: 40px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #1d1c1a; opacity: .7; }
+  #focal h2 { position: absolute; left: 44px; top: 72px; font-size: 64px; font-weight: 700; line-height: 72px; white-space: nowrap; letter-spacing: -0.02em; }
+  #focal .sub { position: absolute; left: 44px; top: 160px; width: 400px; font-size: 20px; line-height: 28px; color: #1d1c1a; }
+  #focal .seats { position: absolute; left: 44px; top: 226px; display: flex; gap: 10px; }
+  #focal .seat { width: 36px; height: 36px; border-radius: 10px; border: 2px solid #1d1c1a; background: #1d1c1a; }
+  #focal .seat.free { background: #fffdf8; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div id="card" data-layout-allow-overlap>
+        <div class="lab">Orbit</div>
+        <h1>Invite your team</h1>
+        <div class="sub">Jamie Dalton · Sam Kim · Morgan Lee</div>
+        <div class="av" style="left:48px"></div><div class="av" style="left:84px"></div><div class="av" style="left:120px"></div>
+        <div class="btn">Continue</div>
+      </div>
+      <div id="focal" data-layout-allow-overlap>
+        <div class="lab">Plan</div>
+        <h2>3 seats left</h2>
+        <div class="sub">Add members before the plan fills up.</div>
+        <div class="seats"><div class="seat"></div><div class="seat"></div><div class="seat"></div><div class="seat"></div><div class="seat"></div><div class="seat free"></div><div class="seat free"></div><div class="seat free"></div></div>
+      </div>
+    </div>
+    <div id="label"><span class="l-name">Layout yield</span><span class="l-sep">·</span><span>UI Demo</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.inOut", duration: 0.6 } });
+  // Params: existing layer moves 600 ms (power3.inOut), the new message appears over 400 ms starting 300 ms in (overlapping), travel scaled to this frame.
+  // Yield: the card slides left and shrinks, the yellow message arrives at the shared anchor.
+  tl.fromTo("#card", { x: 0, scale: 1 }, { x: -340, scale: 0.78, duration: 0.6, ease: "power3.inOut" }, 0.4);
+  tl.fromTo("#focal", { x: 32, opacity: 0 }, { x: 0, opacity: 1, duration: 0.4, ease: "power3.out" }, 0.7);
+  // Hold, then the message leaves and the card takes the room back.
+  tl.to("#focal", { x: 32, opacity: 0, duration: 0.3, ease: "power3.in" }, 2.1);
+  tl.to("#card", { x: 0, scale: 1, duration: 0.6, ease: "power3.inOut" }, 2.25);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

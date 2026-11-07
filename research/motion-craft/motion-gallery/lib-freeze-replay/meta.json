@@ -1,0 +1,21 @@
+{
+  "name": "Freeze and replay",
+  "family": "Data",
+  "purpose": [
+    "Data evidence",
+    "Comparison"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "gsap",
+  "tags": [
+    "data checkpoint freeze and replay",
+    "data",
+    "chart",
+    "checkpoint",
+    "annotation",
+    "replay",
+    "line"
+  ],
+  "one_line": "A seats-used line draws up to the day only three seats are left, freezes there with a yellow callout, then jumps back a few days and replays that last stretch at half speed before freezing again."
+}

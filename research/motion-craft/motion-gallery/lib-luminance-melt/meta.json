@@ -1,0 +1,21 @@
+{
+  "name": "Luminance melt",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Mood"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "webgl",
+  "tags": [
+    "luminance melt",
+    "transitions",
+    "melt",
+    "strips",
+    "brightness",
+    "downward",
+    "stretch"
+  ],
+  "one_line": "The invite card melts downward in vertical strips that stretch as they slide off the stage, the light ground strips first and the dark headline and yellow button last, uncovering the stats scene underneath."
+}

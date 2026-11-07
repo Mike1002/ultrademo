@@ -1,0 +1,22 @@
+{
+  "name": "Spatial word composition",
+  "family": "Typography",
+  "purpose": [
+    "Emphasis",
+    "Explanation",
+    "Mood"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "gsap",
+  "tags": [
+    "spatial kinetic word composition",
+    "type",
+    "poster",
+    "placement",
+    "size",
+    "angle",
+    "spoken order"
+  ],
+  "one_line": "Four words of one line appear in spoken order at different sizes and tilts, scattered across the frame as one type poster with the last word big and yellow; the poster then pushes in slowly."
+}

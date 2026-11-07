@@ -1,0 +1,21 @@
+{
+  "name": "Tree re-rooting",
+  "family": "Data",
+  "purpose": [
+    "Data evidence",
+    "Comparison"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "svg",
+  "tags": [
+    "tree focus and re-rooting",
+    "data",
+    "tree",
+    "hierarchy",
+    "re-root",
+    "layout",
+    "svg"
+  ],
+  "one_line": "A selected team member rises to the top of the org tree while the old root and every connected branch slide into the new layout along the same links, then the tree re-roots back."
+}

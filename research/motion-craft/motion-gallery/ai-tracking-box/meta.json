@@ -1,0 +1,21 @@
+{
+  "name": "AI tracking box",
+  "family": "Layout & Network",
+  "purpose": [
+    "detection",
+    "emphasis",
+    "tracking"
+  ],
+  "energy": "steady",
+  "tags": [
+    "ai",
+    "tracking",
+    "bounding-box",
+    "detection",
+    "corner",
+    "yellow",
+    "ml",
+    "dark"
+  ],
+  "one_line": "Four yellow corner brackets snap onto a pale circle, then follow it around an oval path while the box breathes slightly and a confidence readout flickers between 95 and 99 percent."
+}

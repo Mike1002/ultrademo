@@ -1,0 +1,120 @@
+{
+  "id": "data-drift",
+  "name": "Data Drift",
+  "canvas": "dark",
+  "mood": [
+    "futuristic",
+    "immersive"
+  ],
+  "suits": [
+    "AI products",
+    "ML platforms",
+    "data companies",
+    "speculative tech"
+  ],
+  "palette": {
+    "bg": "#0a0a0a",
+    "bg_alt": "#0a0a0a",
+    "surface": "#121216",
+    "surface_2": "#1b1b22",
+    "ink": "#e0e0e0",
+    "muted": "#8a8a96",
+    "line": "rgba(255,255,255,0.12)",
+    "accent": "#7c3aed",
+    "accent_2": "#06b6d4",
+    "on_accent": "#ffffff",
+    "pill_dot": "#06b6d4",
+    "term_prompt": "#06b6d4",
+    "term_ok": "#7c3aed",
+    "glow_1": "#7c3aed",
+    "glow_2": "#06b6d4"
+  },
+  "type": {
+    "display": {
+      "family": "Inter",
+      "weight": 200,
+      "hook_px": 76,
+      "stat_px": 220,
+      "mark_px": 110,
+      "transform": "none",
+      "tracking": "0.05em",
+      "line_height": "1.1",
+      "style": "normal",
+      "generic": "sans",
+      "card_title_px": 26,
+      "card_title_tracking": "0.02em"
+    },
+    "body": {
+      "family": "Inter",
+      "weight": 300,
+      "generic": "sans"
+    },
+    "mono": {
+      "family": "JetBrains Mono",
+      "weight": 400
+    },
+    "label": {
+      "family": "Inter",
+      "weight": 300,
+      "transform": "uppercase",
+      "tracking": "0.2em",
+      "generic": "sans",
+      "px": 15
+    }
+  },
+  "easing": {
+    "entry": "sine.inOut",
+    "exit": "power2.out",
+    "ambient": "sine.inOut",
+    "pop": "sine.inOut",
+    "counter": "sine.inOut",
+    "wipe": null
+  },
+  "rhythm": {
+    "energy": "calm",
+    "entrance": 0.9,
+    "stagger": 0.1
+  },
+  "transition": {
+    "kind": "zoom",
+    "duration": 0.9,
+    "flash": false,
+    "band": false
+  },
+  "text_animation": "blur-in",
+  "accent_word": "none",
+  "layout": "center",
+  "atmosphere": [
+    "glow:0.45",
+    "dots:26"
+  ],
+  "shape": {
+    "radius_card": 12,
+    "radius_button": 999,
+    "radius_pill": 999,
+    "border": "hairline",
+    "border_px": 1,
+    "shadow": "soft",
+    "rule_px": 2
+  },
+  "stat_colour": "accent",
+  "direction_settings": {
+    "energy": "calm",
+    "density": "sparse",
+    "ground": "dark",
+    "depth": "deep",
+    "camera": "drift",
+    "type": "quiet",
+    "texture": "clean",
+    "colour": "two-accent",
+    "product_presence": "illustrated",
+    "sound": "ambient",
+    "voice": "narrated"
+  },
+  "notes": "Thin weightless Inter, purple and cyan light pools that drift, everything resolves through blur and scale; the particle field is a faint dot grid.",
+  "transitions": {
+    "between_moments": "zoom",
+    "duration_s": 0.9,
+    "text": "blur-in"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "name": "Fade slide",
+  "family": "Entrance & Exit",
+  "purpose": [
+    "Attention",
+    "Transition"
+  ],
+  "energy": "calm",
+  "tier": 2,
+  "runtime": "gsap",
+  "tags": [
+    "fade up",
+    "fade through translation",
+    "fade and slide entrance",
+    "alpha cutout",
+    "alpha-matte-cutout",
+    "entrance",
+    "slide",
+    "opacity"
+  ],
+  "one_line": "A headline, a big number and a caption each fade in while sliding up 24 px into place, one after another, and a Continue button arrives the same way a beat later."
+}

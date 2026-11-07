@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-map-outline-comparison</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  #map { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  #map text { font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .ref { fill: url(#dots); stroke: #a19d93; stroke-width: 2; }
+  .region { fill: #f2c200; stroke: #1d1c1a; stroke-width: 3; will-change: transform; }
+  .ghost { fill: none; stroke: #1d1c1a; stroke-width: 2; stroke-dasharray: 8 8; opacity: 0; }
+  .lab { font-size: 13px; letter-spacing: .06em; text-transform: uppercase; fill: #6d6a63; }
+  .note { font-size: 22px; fill: #1d1c1a; font-weight: 600; }
+  .heading { position: absolute; left: 32px; top: 20px; font-size: 34px; font-weight: 700; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div class="heading">Region vs reference</div>
+      <svg id="map" viewBox="0 0 1168 580" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <pattern id="dots" x="0" y="0" width="16" height="16" patternUnits="userSpaceOnUse">
+            <circle cx="8" cy="8" r="2" fill="#cfcabd"/>
+          </pattern>
+        </defs>
+        <!-- Fixed grey reference outline (abstract blob). -->
+        <path class="ref" d="M780 110 C900 90 1010 150 1030 250 C1050 350 990 460 880 500 C770 540 640 500 590 410 C540 320 580 200 660 150 C700 125 740 117 780 110 Z"/>
+        <text class="lab" x="810" y="545" text-anchor="middle">Reference · fixed</text>
+        <!-- Dashed ghost of where the region started. -->
+        <path id="ghost" class="ghost" d="M300 130 C390 110 470 170 480 260 C490 350 430 430 340 460 C250 490 160 430 140 340 C120 250 170 170 240 140 C260 133 280 134 300 130 Z"/>
+        <text class="lab" x="310" y="545" text-anchor="middle">Region · as drawn</text>
+        <!-- The moving region outline. -->
+        <path id="region" class="region" d="M300 130 C390 110 470 170 480 260 C490 350 430 430 340 460 C250 490 160 430 140 340 C120 250 170 170 240 140 C260 133 280 134 300 130 Z"/>
+        <text id="note" class="note" x="810" y="70" text-anchor="middle" opacity="0">Same scale: 62% of the reference span</text>
+      </svg>
+    </div>
+    <div id="label"><span class="l-name">Geographic outline comparison</span><span class="l-sep">·</span><span>Data</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power2.inOut", duration: 0.6 } });
+  // The region travels 500 px onto the fixed reference and rescales to its true relative size (0.62) in 1.2 s.
+  tl.fromTo("#region", { x: 0, y: 0, scale: 1, transformOrigin: "50% 50%" }, { x: 500, y: -10, scale: 0.62, duration: 1.2, ease: "power2.inOut" }, 0.3);
+  tl.fromTo("#region", { opacity: 1 }, { opacity: 0.72, duration: 0.25, ease: "none" }, 0.95);
+  tl.fromTo("#ghost", { opacity: 0 }, { opacity: 0.55, duration: 0.4, ease: "none" }, 0.35);
+  tl.fromTo("#note", { attr: { opacity: 0 } }, { attr: { opacity: 1 }, duration: 0.35, ease: "none" }, 1.5);
+  // Settle, then one nudge so the overlay is read as deliberate alignment, and back to rest.
+  tl.fromTo("#region", { x: 500 }, { x: 518, duration: 0.22, ease: "power2.out", immediateRender: false }, 2.1);
+  tl.fromTo("#region", { x: 518 }, { x: 500, duration: 0.32, ease: "power2.inOut", immediateRender: false }, 2.32);
+  tl.fromTo("#region", { scale: 0.62 }, { scale: 0.66, duration: 0.22, ease: "power2.out", immediateRender: false }, 2.1);
+  tl.fromTo("#region", { scale: 0.66 }, { scale: 0.62, duration: 0.32, ease: "power2.inOut", immediateRender: false }, 2.32);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

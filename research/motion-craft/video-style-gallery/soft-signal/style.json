@@ -1,0 +1,122 @@
+{
+  "id": "soft-signal",
+  "name": "Soft Signal",
+  "canvas": "light",
+  "mood": [
+    "intimate",
+    "warm"
+  ],
+  "suits": [
+    "wellness brands",
+    "personal stories",
+    "lifestyle products",
+    "human-centred apps"
+  ],
+  "palette": {
+    "bg": "#FFF8EC",
+    "bg_alt": "#FFF8EC",
+    "surface": "#fffdf7",
+    "surface_2": "#f6ecda",
+    "ink": "#2a2a2a",
+    "muted": "#7a7068",
+    "line": "#e9dcc6",
+    "accent": "#F5A623",
+    "accent_2": "#C4A3A3",
+    "on_accent": "#2a2a2a",
+    "pill_bg": "#e9efe3",
+    "pill_ink": "#3f5a3c",
+    "pill_dot": "#8FAF8C",
+    "thumb": "#f3e4e4",
+    "term_bg": "#2a2a2a",
+    "term_ink": "#FFF8EC",
+    "term_muted": "#a9a096",
+    "term_line": "#3a3a3a"
+  },
+  "type": {
+    "display": {
+      "family": "Playfair Display",
+      "weight": 400,
+      "hook_px": 88,
+      "stat_px": 220,
+      "mark_px": 120,
+      "transform": "none",
+      "tracking": "-0.01em",
+      "line_height": "1.1",
+      "style": "italic",
+      "generic": "serif",
+      "card_title_px": 30
+    },
+    "body": {
+      "family": "Inter",
+      "weight": 300,
+      "generic": "sans"
+    },
+    "mono": {
+      "family": "JetBrains Mono",
+      "weight": 400
+    },
+    "label": {
+      "family": "Inter",
+      "weight": 400,
+      "transform": "lowercase",
+      "tracking": "0.08em",
+      "generic": "sans",
+      "px": 15
+    }
+  },
+  "easing": {
+    "entry": "sine.inOut",
+    "exit": "power1.inOut",
+    "ambient": "sine.inOut",
+    "pop": "sine.inOut",
+    "counter": "sine.inOut",
+    "wipe": null
+  },
+  "rhythm": {
+    "energy": "calm",
+    "entrance": 0.9,
+    "stagger": 0.16
+  },
+  "transition": {
+    "kind": "blur",
+    "duration": 0.9,
+    "flash": false,
+    "band": false
+  },
+  "text_animation": "word-blur",
+  "accent_word": "colour",
+  "layout": "center",
+  "atmosphere": [
+    "grain:0.07",
+    "corner-glow:0.25"
+  ],
+  "shape": {
+    "radius_card": 24,
+    "radius_button": 999,
+    "radius_pill": 999,
+    "border": "hairline",
+    "border_px": 1,
+    "shadow": "soft",
+    "rule_px": 2
+  },
+  "stat_colour": "ink",
+  "direction_settings": {
+    "energy": "calm",
+    "density": "sparse",
+    "ground": "light",
+    "depth": "layered",
+    "camera": "drift",
+    "type": "editorial",
+    "texture": "grain",
+    "colour": "one-accent",
+    "product_presence": "illustrated",
+    "sound": "ambient",
+    "voice": "narrated"
+  },
+  "notes": "Playfair italic, warm cream, slow word-by-word blur; nothing snaps.",
+  "transitions": {
+    "between_moments": "blur",
+    "duration_s": 0.9,
+    "text": "word-blur"
+  }
+}

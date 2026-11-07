@@ -1,0 +1,24 @@
+{
+  "name": "Chart scrub readout",
+  "family": "Data & Stats",
+  "purpose": [
+    "data",
+    "proof",
+    "inspection"
+  ],
+  "energy": "steady",
+  "tags": [
+    "chart",
+    "scrub",
+    "readout",
+    "tooltip",
+    "tracking-line",
+    "data",
+    "cursor",
+    "playhead"
+  ],
+  "one_line": "A dashed tracking line and a yellow marker sweep left to right along a line chart that is already drawn, while a dark tooltip steps through the dates and values and lands on the final peak with a small pop.",
+  "aliases": [
+    "awesome-ai-motion:chart-scrub"
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "name": "Layout yield",
+  "family": "UI Demo",
+  "purpose": [
+    "Emphasis"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "gsap",
+  "tags": [
+    "layer yield pivot",
+    "ui",
+    "make room",
+    "slide aside",
+    "shrink",
+    "focal message",
+    "return"
+  ],
+  "one_line": "An invite card slides aside and shrinks to make room for a yellow message panel that arrives beside it; after a hold the panel leaves and the card moves back to the centre."
+}

@@ -1,0 +1,24 @@
+{
+  "name": "Path highlight",
+  "family": "Shape & Path",
+  "purpose": [
+    "Sequence",
+    "Emphasis"
+  ],
+  "energy": "steady",
+  "tier": 2,
+  "runtime": "svg",
+  "tags": [
+    "passing path highlight",
+    "showpassingflash",
+    "showpassingflashwiththinningstrokewidth",
+    "vshowpassingflash",
+    "flasharound",
+    "showpassingflasharound",
+    "pulsing border energy",
+    "shape",
+    "dash offset",
+    "travelling segment"
+  ],
+  "one_line": "A short yellow stretch travels twice along a grey curve between three nodes at constant speed, showing the direction of flow while the line itself stays put."
+}

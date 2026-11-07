@@ -1,0 +1,48 @@
+{
+  "name": "Daisy Days",
+  "fonts": {
+    "display": "Fredoka",
+    "body": "Quicksand",
+    "mono": "Quicksand",
+    "label": "Quicksand"
+  },
+  "font_families": [
+    "Fredoka",
+    "Quicksand"
+  ],
+  "font_substitutions": {
+    "Fredoka One": "Fredoka"
+  },
+  "canvas": "light",
+  "mood": [
+    "sunny",
+    "rounded",
+    "cheerful"
+  ],
+  "suits": [
+    "consumer apps",
+    "kids and family products",
+    "wellness"
+  ],
+  "direction_settings": {
+    "energy": "high",
+    "density": "dense",
+    "ground": "light",
+    "depth": "flat",
+    "camera": "locked",
+    "type": "display",
+    "texture": "clean",
+    "colour": "full-palette",
+    "product_presence": "illustrated",
+    "sound": "scored",
+    "voice": "spoken-headline"
+  },
+  "duration_s": 10,
+  "size": [
+    1280,
+    720
+  ],
+  "fps": 30,
+  "strip": "D-58 style strip: hook · project card · number · agent · close",
+  "one_line": ""
+}

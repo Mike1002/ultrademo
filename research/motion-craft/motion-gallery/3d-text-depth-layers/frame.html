@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>3d-text-depth-layers</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  .stage { position: absolute; inset: 0; display: grid; place-items: center; }
+  .depth-stack { position: relative; }
+  .depth-text { font-weight: 900; font-size: 300px; letter-spacing: -0.03em; line-height: 1; color: #f2c200; will-change: transform; }
+  .depth-text.is-back { position: absolute; top: 0; left: 0; pointer-events: none; }
+  .depth-text.is-front { position: relative; z-index: 10; }
+  .sub { position: absolute; left: 0; top: 560px; width: 1280px; text-align: center; font-size: 28px; font-weight: 700;
+    letter-spacing: 0.14em; text-transform: uppercase; color: #6d6a63; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div class="stage">
+      <div class="depth-stack" id="depth-stack"></div>
+    </div>
+    <div class="sub" id="sub">Every frame is code</div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true });
+  // Values: 6 layers, 3px offsets (light upper-left), alpha 0.8 stepping 0.12 to a 0.15 floor, cascade 0.08, fade 0.4, grow 0.6.
+  const LABEL = "SHIP", LAYER_COUNT = 6, OFFSET_X = 3, OFFSET_Y = 3;
+  const BACK_ALPHA_MAX = 0.8, BACK_ALPHA_STEP = 0.12, BACK_ALPHA_MIN = 0.15;
+  const LAYER_CASCADE_START = 0.2, LAYER_CASCADE_STEP = 0.08, LAYER_FADE_DUR = 0.4, DEPTH_GROW_DUR = 0.6;
+  const BEAT_PERIOD = 1.0, BEAT_AMP = 0.4; // dynamic depth pulse after the grow lands
+  const stack = document.getElementById("depth-stack");
+  const layers = [];
+  for (let i = LAYER_COUNT - 1; i >= 0; i--) {
+    const el = document.createElement("div");
+    el.className = "depth-text " + (i === 0 ? "is-front" : "is-back");
+    el.textContent = LABEL;
+    if (i > 0) {
+      const alpha = Math.max(BACK_ALPHA_MAX - i * BACK_ALPHA_STEP, BACK_ALPHA_MIN);
+      el.style.color = `rgba(29,28,26,${alpha})`; // rgba in color, not element opacity
+      el.style.transform = `translate(${i * OFFSET_X}px, ${i * OFFSET_Y}px)`;
+    }
+    el.dataset.layer = String(i);
+    el.setAttribute("data-layout-allow-overlap", ""); // stacked copies overlap by construction
+    if (i > 0) el.setAttribute("aria-hidden", "true");
+    stack.appendChild(el);
+    layers.push(el);
+  }
+  // Cascade entry: back layers first, building forward.
+  layers.forEach((el) => {
+    const i = Number(el.dataset.layer);
+    tl.fromTo(el, { opacity: 0 }, { opacity: 1, duration: LAYER_FADE_DUR, ease: "power2.out" },
+      LAYER_CASCADE_START + (LAYER_COUNT - 1 - i) * LAYER_CASCADE_STEP);
+  });
+  // Depth grows 0 -> full with the cascade, then breathes on a 1 s heartbeat (pure function of time).
+  const growEase = gsap.parseEase("power2.out");
+  const GROW_END = LAYER_CASCADE_START + DEPTH_GROW_DUR;
+  function renderAt(t) {
+    const raw = (t - LAYER_CASCADE_START) / DEPTH_GROW_DUR;
+    const p = raw <= 0 ? 0 : raw >= 1 ? 1 : growEase(raw);
+    const beat = t <= GROW_END ? 1 : 1 + BEAT_AMP * Math.sin(((t - GROW_END) / BEAT_PERIOD) * Math.PI * 2);
+    layers.forEach((el) => {
+      const i = Number(el.dataset.layer);
+      if (i === 0) return;
+      el.style.transform = `translate(${i * OFFSET_X * p * beat}px, ${i * OFFSET_Y * p * beat}px)`;
+    });
+  }
+  renderAt(0);
+  tl.to({ k: 0 }, { k: 1, duration: 3, ease: "none", onUpdate: () => renderAt(tl.time()) }, 0);
+  tl.fromTo("#sub", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.out" }, 0.8);
+  const baseRender = tl.render;
+  tl.render = function () { const r = baseRender.apply(this, arguments); renderAt(this.time()); return r; };
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

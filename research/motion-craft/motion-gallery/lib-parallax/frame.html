@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-parallax</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; overflow: hidden; }
+  .lab { font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; white-space: nowrap; }
+  .num { font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1; white-space: nowrap; }
+  .t-xl { font-size: 84px; font-weight: 700; line-height: 1.05; white-space: nowrap; }
+  .t-l { font-size: 56px; font-weight: 700; line-height: 1.1; white-space: nowrap; }
+  .t-m { font-size: 34px; font-weight: 700; line-height: 1.15; white-space: nowrap; }
+  .t-body { font-size: 22px; line-height: 1.4; }
+  .hair { height: 1px; background: #e3ded2; }
+  .dot { border-radius: 50%; background: #1d1c1a; }
+  .dot.v { background: #f2c200; border: 2px solid #1d1c1a; }
+
+  .layer { position: absolute; inset: 0; will-change: transform; }
+  #far .num { position: absolute; left: 330px; top: 110px; font-size: 230px; color: #a19d93; opacity: .32; }
+  #mid .blk { position: absolute; top: 295px; width: 105px; height: 100px; background: #1d1c1a; border-radius: 12px; }
+  #mid .blk.b2 { height: 145px; top: 250px; }
+  #mid .blk.b3 { height: 70px; top: 325px; }
+  #near .dot { position: absolute; left: 1030px; top: 375px; width: 72px; height: 72px; }
+  .depth { position: absolute; left: 70px; width: 1028px; height: 1px; background: #e3ded2; }
+  .depth .lab { position: absolute; left: 0; top: 12px; }
+  .head { position: absolute; left: 70px; top: 42px; }
+
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+
+      <div class="head lab">Camera ← 420px</div>
+      <div class="depth" style="top:145px" data-layout-allow-overlap><span class="lab">Far layer · 0.3×</span></div>
+      <div class="depth" style="top:280px" data-layout-allow-overlap><span class="lab">Middle layer · 0.6×</span></div>
+      <div class="depth" style="top:430px" data-layout-allow-overlap><span class="lab">Near layer · 1.2×</span></div>
+      <div class="layer" id="far" data-layout-allow-overlap data-layout-allow-overflow><div class="num" data-layout-allow-occlusion>12,480</div></div>
+      <div class="layer" id="mid" data-layout-allow-overlap data-layout-allow-overflow><div class="blk" style="left:560px"></div><div class="blk b2" style="left:715px"></div><div class="blk b3" style="left:870px"></div></div>
+      <div class="layer" id="near" data-layout-allow-overlap data-layout-allow-overflow><div class="dot v"></div></div>
+
+    </div>
+    <div id="label"><span class="l-name">Parallax</span><span class="l-sep">·</span><span>Camera</span><span class="l-sep">·</span><span>calm</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+
+  // Parallax: one camera move of 420px, each layer travels its own fraction of it (near fastest, far slowest).
+  [["#far", 0.3], ["#mid", 0.6], ["#near", 1.2]].forEach(([s, ratio]) => {
+    tl.fromTo(s, { x: 0 }, { x: -420 * ratio, duration: 2.0, ease: "sine.inOut" }, 0.3);
+  });
+  // Settle: the near dot keeps a small drift so the clip never sits still.
+  tl.to("#near", { x: -420 * 1.2 - 24, duration: 0.7, ease: "sine.inOut" }, 2.3);
+
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

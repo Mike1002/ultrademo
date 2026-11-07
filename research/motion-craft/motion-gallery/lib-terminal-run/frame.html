@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-terminal-run</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  #term { position: absolute; left: 134px; top: 80px; width: 900px; height: 420px; background: #171a21; border: 2px solid #1d1c1a; border-radius: 20px; overflow: hidden; }
+  #bar { position: absolute; left: 0; top: 0; width: 896px; height: 52px; background: #1f232c; border-bottom: 2px solid #2a2f3a; }
+  #bar .d { position: absolute; top: 19px; width: 14px; height: 14px; border-radius: 50%; background: #6d7380; }
+  #bar .ttl { position: absolute; left: 0; width: 896px; top: 15px; text-align: center; font-size: 15px; color: #a7adbb; }
+  .ln { position: absolute; left: 36px; height: 34px; font-family: ui-monospace, Menlo, Monaco, "Courier New", monospace; font-size: 24px; line-height: 34px; color: #ece8df; white-space: pre; }
+  .ln .p { color: #f2c200; }
+  .ln .c { opacity: 0; }
+  .log { color: #a7adbb; }
+  .log .ok { color: #f2c200; }
+  .log b { color: #ece8df; font-weight: 600; }
+  #caret1, #caret2 { position: absolute; top: 4px; width: 13px; height: 28px; background: #f2c200; will-change: transform; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div id="term">
+        <div id="bar"><div class="d" style="left:20px"></div><div class="d" style="left:44px"></div><div class="d" style="left:68px"></div><div class="ttl">orbit — zsh</div></div>
+        <div class="ln" id="cmd1" style="top:84px"><span class="p">$ </span><span id="chars1"></span><div id="caret1" data-layout-allow-overlap></div></div>
+        <div class="ln log" id="log1" style="top:136px"><span class="ok">✔</span> Invited <b>Jamie Dalton</b>  design</div>
+        <div class="ln log" id="log2" style="top:176px"><span class="ok">✔</span> Invited <b>Sam Kim</b>  engineering</div>
+        <div class="ln log" id="log3" style="top:216px"><span class="ok">✔</span> Invited <b>Morgan Lee</b>  product</div>
+        <div class="ln log" id="log4" style="top:266px">3 invites sent · 12,480 total · 3 seats left</div>
+        <div class="ln" id="cmd2" style="top:326px"><span class="p">$ </span><span id="chars2"></span><div id="caret2" data-layout-allow-overlap></div></div>
+      </div>
+    </div>
+    <div id="label"><span class="l-name">Terminal run</span><span class="l-sep">·</span><span>UI Demo</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "none", duration: 0.6 } });
+  // Params: 50 ms per character, 300 ms before output, log lines 180 ms apart, result held at the end.
+  const CPS = 0.05;
+  function splitInto(id, text) {
+    const host = document.getElementById(id);
+    return text.split("").map(ch => { const s = document.createElement("span"); s.className = "c"; s.textContent = ch; host.appendChild(s); return s; });
+  }
+  const c1 = splitInto("chars1", "orbit invite --team");
+  const c2 = splitInto("chars2", "orbit status");
+  // Caret positions: the right edge of each character, measured once at build time (works for any font).
+  const promptW = document.querySelector("#cmd1 .p").getBoundingClientRect().width;
+  const edges = (spans, lineId) => { const L = document.getElementById(lineId).getBoundingClientRect().left; return spans.map(s => s.getBoundingClientRect().right - L + 2); };
+  const e1 = edges(c1, "cmd1"), e2 = edges(c2, "cmd2");
+  gsap.set(".c", { opacity: 0 });
+  gsap.set(["#log1", "#log2", "#log3", "#log4", "#cmd2"], { opacity: 0 });
+  gsap.set("#caret1", { x: promptW, opacity: 1 });
+  gsap.set("#caret2", { x: promptW, opacity: 0 });
+
+  // Command 1 typed from 0.1 s: each character appears and the caret steps right.
+  const T1 = 0.1;
+  c1.forEach((s, i) => { tl.set(s, { opacity: 1 }, T1 + i * CPS); tl.set("#caret1", { x: e1[i] }, T1 + i * CPS); });
+  const typed1 = T1 + c1.length * CPS;            // 1.05 s
+  // Execute: 300 ms pause, caret leaves the command line, output lines land 180 ms apart.
+  const RUN = typed1 + 0.3;                        // 1.35 s
+  tl.set("#caret1", { opacity: 0 }, RUN);
+  ["#log1", "#log2", "#log3"].forEach((id, i) => tl.set(id, { opacity: 1 }, RUN + i * 0.18));
+  tl.set("#log4", { opacity: 1 }, RUN + 3 * 0.18 + 0.12);   // 2.01 s
+  // Next prompt appears, a second command is typed, then the caret blinks (the held result keeps moving).
+  const P2 = RUN + 3 * 0.18 + 0.36;                // 2.25 s
+  tl.set("#cmd2", { opacity: 1 }, P2);
+  tl.set("#caret2", { opacity: 1 }, P2);
+  c2.forEach((s, i) => { tl.set(s, { opacity: 1 }, P2 + 0.05 + i * CPS); tl.set("#caret2", { x: e2[i] }, P2 + 0.05 + i * CPS); });
+  tl.set("#caret2", { opacity: 0 }, 2.92);
+  tl.set("#caret2", { opacity: 1 }, 2.98);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

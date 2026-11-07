@@ -1,0 +1,20 @@
+{
+  "name": "Montage",
+  "family": "Transitions",
+  "purpose": [
+    "Sequence",
+    "Mood"
+  ],
+  "energy": "high",
+  "tier": 3,
+  "runtime": "gsap",
+  "tags": [
+    "montage",
+    "transitions",
+    "hard cuts",
+    "sequence",
+    "shots",
+    "compression"
+  ],
+  "one_line": "Four product shots cut hard one after another, Record with rising waveform bars, Edit with a playhead crossing a track, Ship with the cursor pressing the button, then the result number holds and settles, a dot strip marking the step."
+}

@@ -1,0 +1,27 @@
+{
+  "name": "Cursor drag",
+  "family": "Transition & Motion",
+  "purpose": [
+    "drag",
+    "cursor",
+    "interaction",
+    "placement"
+  ],
+  "energy": "steady",
+  "tags": [
+    "cursor",
+    "drag",
+    "drop",
+    "ghost",
+    "handle",
+    "resize",
+    "reorder",
+    "snap",
+    "interaction",
+    "mouse"
+  ],
+  "one_line": "A cursor grabs a button chip from a tray, a translucent copy rides under it in lockstep across to the layout, and it snaps into place with corner handles on the drop (grab, carry, drop form).",
+  "aliases": [
+    "awesome-ai-motion:drag-and-drop"
+  ]
+}

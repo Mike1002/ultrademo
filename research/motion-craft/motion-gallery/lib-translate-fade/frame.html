@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-translate-fade</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; overflow: hidden; }
+  #card { position: absolute; left: 184px; top: 70px; width: 800px; height: 440px; background: #fffdf8; border: 2px solid #1d1c1a; border-radius: 24px; }
+  #card .lab { position: absolute; left: 56px; top: 44px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  #card h1 { position: absolute; left: 56px; top: 72px; font-size: 40px; font-weight: 700; line-height: 48px; white-space: nowrap; }
+  .row { position: absolute; left: 40px; width: 716px; height: 84px; border-top: 2px solid #e3ded2; overflow: hidden; }
+  .row.r1 { top: 150px; } .row.r2 { top: 234px; } .row.r3 { top: 318px; }
+  .st { position: absolute; left: 16px; top: 0; width: 684px; height: 82px; will-change: transform, opacity, filter; }
+  .st .av { position: absolute; left: 0; top: 17px; width: 48px; height: 48px; border-radius: 50%; border: 2px solid #1d1c1a; background: #ece7da;
+    font-size: 16px; font-weight: 700; line-height: 44px; text-align: center; }
+  .st .nm { position: absolute; left: 66px; top: 18px; font-size: 24px; font-weight: 700; line-height: 28px; white-space: nowrap; }
+  .st .tx { position: absolute; left: 66px; top: 48px; font-size: 17px; color: #6d6a63; line-height: 20px; white-space: nowrap; }
+  .st .chip { position: absolute; right: 8px; top: 25px; height: 32px; padding: 0 14px; border-radius: 16px; border: 2px solid #1d1c1a;
+    font-size: 15px; font-weight: 700; line-height: 28px; white-space: nowrap; background: #fffdf8; }
+  .st .chip.y { background: #f2c200; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div id="card">
+        <div class="lab">Orbit</div>
+        <h1>Invite your team</h1>
+        <div class="row r1" id="row1"></div>
+        <div class="row r2" id="row2"></div>
+        <div class="row r3" id="row3"></div>
+      </div>
+    </div>
+    <div id="label"><span class="l-name">Translate fade</span><span class="l-sep">·</span><span>Transitions</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const PEOPLE = [["JD", "Jamie Dalton"], ["SK", "Sam Kim"], ["ML", "Morgan Lee"]];
+  const STATES = [
+    ["Invite pending", "<span class=\"chip\">Sent</span>"],
+    ["Opened the invite", "<span class=\"chip y\">Accepted</span>"],
+    ["Joined the workspace", "<span class=\"chip\">Member</span>"]
+  ];
+  PEOPLE.forEach((p, i) => {
+    let h = "";
+    STATES.forEach((s, k) => {
+      h += '<div class="st" id="s' + i + k + '" data-layout-allow-overlap><div class="av" data-layout-allow-overlap data-layout-allow-occlusion>' + p[0] + '</div>' +
+           '<div class="nm" data-layout-allow-overlap data-layout-allow-occlusion>' + p[1] + '</div><div class="tx" data-layout-allow-overlap data-layout-allow-occlusion>' + s[0] + '</div>' + s[1].replace('class="chip', 'data-layout-allow-overlap data-layout-allow-occlusion class="chip') + '</div>';
+    });
+    document.getElementById("row" + (i + 1)).innerHTML = h;
+  });
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power2.inOut", duration: 0.7 } });
+  const D = 0.7, X = 350;   // 700 ms, travel 30% of the stage width
+  // Resting state: state 0 in place, states 1 and 2 parked off to the right and clear.
+  for (let i = 0; i < 3; i++) {
+    tl.fromTo("#s" + i + "0", { x: 0, opacity: 1, filter: "blur(0px)" }, { x: 0, duration: 0.01 }, 0);
+    tl.fromTo("#s" + i + "1", { x: X, opacity: 0, filter: "blur(6px)" }, { x: X, duration: 0.01 }, 0);
+    tl.fromTo("#s" + i + "2", { x: X, opacity: 0, filter: "blur(6px)" }, { x: X, duration: 0.01 }, 0);
+  }
+  // Translate fade in row i from state k to k+1 at time t: the old content travels left while fading and blurring,
+  // the new content travels into the same zone from the right while sharpening; both 700 ms, power2.inOut, opacity crossing near 40%.
+  function swap(i, k, t) {
+    const oldS = "#s" + i + k, newS = "#s" + i + (k + 1);
+    tl.to(oldS, { x: -X, duration: D }, t);
+    tl.to(oldS, { opacity: 0, filter: "blur(6px)", duration: D * 0.55, ease: "power2.in" }, t);
+    tl.to(newS, { x: 0, duration: D }, t);
+    tl.to(newS, { opacity: 1, filter: "blur(0px)", duration: D * 0.6, ease: "power2.out" }, t + D * 0.3);
+  }
+  // First pass, one row after another.
+  swap(0, 0, 0.3); swap(1, 0, 0.5); swap(2, 0, 0.7);
+  // Second pass, same travel, so the clip keeps moving.
+  swap(0, 1, 1.75); swap(1, 1, 1.95); swap(2, 1, 2.15);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

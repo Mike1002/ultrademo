@@ -1,0 +1,21 @@
+{
+  "name": "Rank transition",
+  "family": "Data",
+  "purpose": [
+    "Comparison",
+    "Data evidence"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "svg",
+  "tags": [
+    "rank sorting transition",
+    "animated sorting",
+    "rank transition",
+    "data",
+    "leaderboard",
+    "reorder",
+    "stagger"
+  ],
+  "one_line": "A four-row leaderboard re-sorts when the criterion changes: each row keeps its name, colour and bar and glides to its new rank, then sorts back."
+}

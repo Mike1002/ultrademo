@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-chromatic-wipe</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #171a21; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #171a21; color: #ece8df;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; overflow: hidden; }
+  .panel { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  .panel.pa { background: #2a2f3a; }
+  .panel.pb { background: #171a21; }
+  .card { position: absolute; left: 264px; top: 110px; width: 640px; height: 360px; background: #1f232c; border: 2px solid #ece8df; border-radius: 24px; }
+  .card .lab { position: absolute; left: 56px; top: 48px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #a7adbb; }
+  .card .h1 { position: absolute; left: 56px; top: 80px; font-size: 56px; font-weight: 700; line-height: 64px; white-space: nowrap; }
+  .card .sub { position: absolute; left: 56px; top: 160px; font-size: 22px; color: #a7adbb; white-space: nowrap; }
+  .card .btn { position: absolute; left: 56px; top: 240px; width: 200px; height: 60px; border-radius: 14px; background: #f2c200; border: 2px solid #ece8df;
+    font-size: 20px; font-weight: 700; line-height: 56px; text-align: center; color: #1d1c1a; }
+  .card.b .h1 { font-size: 96px; line-height: 104px; top: 74px; font-variant-numeric: tabular-nums; }
+  .card.b .sub { top: 190px; }
+  .card .av { position: absolute; top: 44px; width: 56px; height: 56px; border-radius: 50%; border: 2px solid #ece8df; background: #2a2f3a;
+    font-size: 18px; font-weight: 700; line-height: 52px; text-align: center; will-change: transform; }
+  .card .av.v1 { left: 396px; } .card .av.v2 { left: 456px; } .card .av.v3 { left: 516px; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #a7adbb; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #ece8df; font-weight: 700; }
+  #label .l-sep { color: #6d7380; }
+
+  .chroma { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; background: #000; isolation: isolate; overflow: hidden; }
+  .chroma .panel { mix-blend-mode: screen; will-change: transform; }
+  .chR { filter: url(#fR); } .chG { filter: url(#fG); } .chB { filter: url(#fB); }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+        <filter id="fR" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="1 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0"/></filter>
+        <filter id="fG" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 0 0 0 0  0 1 0 0 0  0 0 0 0 0  0 0 0 1 0"/></filter>
+        <filter id="fB" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 1 0 0  0 0 0 1 0"/></filter>
+      </defs></svg>
+      <div id="chromaB" class="chroma" data-layout-allow-overlap>
+        <div class="panel pb chR" id="bR" data-layout-allow-overlap data-layout-allow-overflow><div class="card b" data-layout-allow-overlap data-layout-allow-occlusion><div class="lab" data-layout-allow-overlap data-layout-allow-occlusion>This month</div><div class="h1" data-layout-allow-overlap data-layout-allow-occlusion>12,480</div><div class="sub" data-layout-allow-overlap data-layout-allow-occlusion>invites sent</div><div class="av v1" data-layout-allow-overlap data-layout-allow-occlusion>JD</div><div class="av v2" data-layout-allow-overlap data-layout-allow-occlusion>SK</div><div class="av v3" data-layout-allow-overlap data-layout-allow-occlusion>ML</div></div></div>
+        <div class="panel pb chG" id="bG" data-layout-allow-overlap data-layout-allow-overflow><div class="card b" data-layout-allow-overlap data-layout-allow-occlusion><div class="lab" data-layout-allow-overlap data-layout-allow-occlusion>This month</div><div class="h1" data-layout-allow-overlap data-layout-allow-occlusion>12,480</div><div class="sub" data-layout-allow-overlap data-layout-allow-occlusion>invites sent</div><div class="av v1" data-layout-allow-overlap data-layout-allow-occlusion>JD</div><div class="av v2" data-layout-allow-overlap data-layout-allow-occlusion>SK</div><div class="av v3" data-layout-allow-overlap data-layout-allow-occlusion>ML</div></div></div>
+        <div class="panel pb chB" id="bB" data-layout-allow-overlap data-layout-allow-overflow><div class="card b" data-layout-allow-overlap data-layout-allow-occlusion><div class="lab" data-layout-allow-overlap data-layout-allow-occlusion>This month</div><div class="h1" data-layout-allow-overlap data-layout-allow-occlusion>12,480</div><div class="sub" data-layout-allow-overlap data-layout-allow-occlusion>invites sent</div><div class="av v1" data-layout-allow-overlap data-layout-allow-occlusion>JD</div><div class="av v2" data-layout-allow-overlap data-layout-allow-occlusion>SK</div><div class="av v3" data-layout-allow-overlap data-layout-allow-occlusion>ML</div></div></div>
+      </div>
+      <div id="chromaA" class="chroma" data-layout-allow-overlap>
+        <div class="panel pa chR" id="aR" data-layout-allow-overlap data-layout-allow-overflow><div class="card a" data-layout-allow-overlap data-layout-allow-occlusion><div class="lab" data-layout-allow-overlap data-layout-allow-occlusion>Orbit</div><div class="h1" data-layout-allow-overlap data-layout-allow-occlusion>Invite your team</div><div class="sub" data-layout-allow-overlap data-layout-allow-occlusion>3 seats left on this plan</div><div class="btn" data-layout-allow-overlap data-layout-allow-occlusion>Continue</div></div></div>
+        <div class="panel pa chG" id="aG" data-layout-allow-overlap data-layout-allow-overflow><div class="card a" data-layout-allow-overlap data-layout-allow-occlusion><div class="lab" data-layout-allow-overlap data-layout-allow-occlusion>Orbit</div><div class="h1" data-layout-allow-overlap data-layout-allow-occlusion>Invite your team</div><div class="sub" data-layout-allow-overlap data-layout-allow-occlusion>3 seats left on this plan</div><div class="btn" data-layout-allow-overlap data-layout-allow-occlusion>Continue</div></div></div>
+        <div class="panel pa chB" id="aB" data-layout-allow-overlap data-layout-allow-overflow><div class="card a" data-layout-allow-overlap data-layout-allow-occlusion><div class="lab" data-layout-allow-overlap data-layout-allow-occlusion>Orbit</div><div class="h1" data-layout-allow-overlap data-layout-allow-occlusion>Invite your team</div><div class="sub" data-layout-allow-overlap data-layout-allow-occlusion>3 seats left on this plan</div><div class="btn" data-layout-allow-overlap data-layout-allow-occlusion>Continue</div></div></div>
+      </div>
+    </div>
+    <div id="label"><span class="l-name">Chromatic wipe</span><span class="l-sep">·</span><span>Transitions</span><span class="l-sep">·</span><span>high</span></div>
+  </section>
+</div>
+<script>
+  const A_HTML = "<div class=\"card a\" data-layout-allow-overlap data-layout-allow-occlusion><div class=\"lab\" data-layout-allow-overlap data-layout-allow-occlusion>Orbit</div><div class=\"h1\" data-layout-allow-overlap data-layout-allow-occlusion>Invite your team</div><div class=\"sub\" data-layout-allow-overlap data-layout-allow-occlusion>3 seats left on this plan</div><div class=\"btn\" data-layout-allow-overlap data-layout-allow-occlusion>Continue</div></div>";
+  const B_HTML = "<div class=\"card b\" data-layout-allow-overlap data-layout-allow-occlusion><div class=\"lab\" data-layout-allow-overlap data-layout-allow-occlusion>This month</div><div class=\"h1\" data-layout-allow-overlap data-layout-allow-occlusion>12,480</div><div class=\"sub\" data-layout-allow-overlap data-layout-allow-occlusion>invites sent</div><div class=\"av v1\" data-layout-allow-overlap data-layout-allow-occlusion>JD</div><div class=\"av v2\" data-layout-allow-overlap data-layout-allow-occlusion>SK</div><div class=\"av v3\" data-layout-allow-overlap data-layout-allow-occlusion>ML</div></div>";
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+  // Second beat: the three avatars on the new card pop in so the clip keeps moving after the transition.
+  function avatars(at) {
+    tl.fromTo(".av.v1", { scale: 0.4, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.5, ease: "back.out(1.8)" }, at);
+    tl.fromTo(".av.v2", { scale: 0.4, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.5, ease: "back.out(1.8)" }, at + 0.1);
+    tl.fromTo(".av.v3", { scale: 0.4, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.5, ease: "back.out(1.8)" }, at + 0.2);
+  }
+
+  // Chromatic wipe: each scene is three single-channel copies (feColorMatrix) screened over black, so they add back to the
+  // original when aligned. A's copies slide left at different speeds while a clip-path wipe runs left to right; B's copies
+  // start split and converge as the wipe passes.
+  const T0 = 0.7;
+  tl.fromTo("#aR", { x: 0 }, { x: -520, duration: 0.75, ease: "power3.inOut" }, T0);
+  tl.fromTo("#aG", { x: 0 }, { x: -360, duration: 0.75, ease: "power3.inOut" }, T0);
+  tl.fromTo("#aB", { x: 0 }, { x: -200, duration: 0.75, ease: "power3.inOut" }, T0);
+  tl.fromTo("#chromaA", { clipPath: "inset(0px 0px 0px 0px)" }, { clipPath: "inset(0px 0px 0px 1168px)", duration: 0.75, ease: "power3.inOut" }, T0 + 0.05);
+  tl.fromTo("#bR", { x: -110 }, { x: 0, duration: 0.55, ease: "power2.out" }, T0 + 0.35);
+  tl.fromTo("#bG", { x: -30 }, { x: 0, duration: 0.55, ease: "power2.out" }, T0 + 0.35);
+  tl.fromTo("#bB", { x: 110 }, { x: 0, duration: 0.55, ease: "power2.out" }, T0 + 0.35);
+  avatars(2.1);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+{
+  "name": "Answer streaming",
+  "family": "UI Demo",
+  "purpose": [
+    "Explanation",
+    "Feedback"
+  ],
+  "energy": "steady",
+  "tier": 2,
+  "runtime": "gsap",
+  "tags": [
+    "answer stream",
+    "answer streaming",
+    "word stream replacement",
+    "ui",
+    "token groups",
+    "opacity settle",
+    "cursor block"
+  ],
+  "one_line": "An assistant's answer appears in ten word groups, one every 0.18 s, each new group fading from pale to full ink while a yellow cursor block sits at the end of the text."
+}

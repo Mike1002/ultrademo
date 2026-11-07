@@ -1,0 +1,22 @@
+{
+  "name": "Paint splatter wipe",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Mood"
+  ],
+  "energy": "high",
+  "tier": 3,
+  "runtime": "svg",
+  "tags": [
+    "paint splatter wipe",
+    "transitions",
+    "splatter",
+    "blob",
+    "droplets",
+    "mask",
+    "clip-path",
+    "reveal"
+  ],
+  "one_line": "Yellow paint droplets land around the invite card, then one irregular blob bursts from the centre and spreads until the stats scene shows through all of it, a yellow rim riding the edge; the rows then settle in."
+}

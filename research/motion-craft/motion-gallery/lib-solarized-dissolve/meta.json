@@ -1,0 +1,21 @@
+{
+  "name": "Solarized dissolve",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Mood"
+  ],
+  "energy": "high",
+  "tier": 3,
+  "runtime": "webgl",
+  "tags": [
+    "solarized dissolve",
+    "transitions",
+    "invert",
+    "contrast",
+    "filter",
+    "print",
+    "flash"
+  ],
+  "one_line": "The invite scene passes into a high-contrast, mostly inverted print-like state, the stats scene takes over at the peak, and it comes back out of the same inverted state to normal colour; its rows then settle in."
+}

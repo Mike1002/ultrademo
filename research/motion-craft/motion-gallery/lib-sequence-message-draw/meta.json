@@ -1,0 +1,20 @@
+{
+  "name": "Sequence message draw",
+  "family": "Explainer",
+  "purpose": [
+    "Explanation",
+    "Sequence"
+  ],
+  "energy": "steady",
+  "tier": 2,
+  "runtime": "svg",
+  "tags": [
+    "explainer",
+    "sequence diagram",
+    "actors",
+    "arrows",
+    "stroke-dashoffset",
+    "receiver highlight"
+  ],
+  "one_line": "Between three lifelines (Jamie Dalton, Orbit, Sam Kim) the messages Invite, Deliver, Accept and Joined draw as arrows in time order, a yellow dot popping on each receiver."
+}

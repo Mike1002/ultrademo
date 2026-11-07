@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-quote-card-build</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  #card { position: absolute; left: 184px; top: 70px; width: 800px; height: 440px; background: #fffdf8; border: 2px solid #1d1c1a; border-radius: 24px; will-change: transform; }
+  #mark { position: absolute; left: 60px; top: 30px; width: 120px; height: 120px; font-size: 200px; line-height: 200px; font-weight: 700; color: #f2c200; font-family: Georgia, "Times New Roman", serif; will-change: transform, opacity; }
+  .line { position: absolute; left: 64px; width: 680px; height: 64px; font-size: 54px; line-height: 64px; font-weight: 700; letter-spacing: -0.01em; white-space: nowrap; will-change: transform, opacity; }
+  #hr { position: absolute; left: 64px; top: 318px; width: 672px; height: 2px; background: #e3ded2; will-change: transform; }
+  #author { position: absolute; left: 64px; top: 346px; height: 56px; display: flex; align-items: center; gap: 16px; will-change: transform, opacity; }
+  #author .av { width: 52px; height: 52px; border-radius: 50%; background: #1d1c1a; color: #fffdf8; font-size: 18px; font-weight: 700; line-height: 52px; text-align: center; will-change: transform, opacity; }
+  #author .nm { font-size: 22px; font-weight: 700; }
+  #author .co { font-size: 22px; color: #6d6a63; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div id="card">
+        <div id="mark" data-layout-allow-overlap>“</div>
+        <div class="line" id="l1" style="top:160px">Every frame</div>
+        <div class="line" id="l2" style="top:232px">is code.</div>
+        <div id="hr"></div>
+        <div id="author"><div class="av" id="av">JD</div><div class="nm">Jamie Dalton</div><div class="co">Orbit</div></div>
+      </div>
+    </div>
+    <div id="label"><span class="l-name">Quote card build</span><span class="l-sep">·</span><span>Typography</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  // Params: mark 0.3 s scale 0.8 -> 1, lines rise 24 px over 0.5 s and 0.12 s apart, attribution slides in from the left 0.25 s after the last line.
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power2.out", duration: 0.5 } });
+  tl.fromTo("#card", { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, ease: "power2.out" }, 0);
+  tl.fromTo("#mark", { scale: 0.8, opacity: 0, transformOrigin: "50% 50%" }, { scale: 1, opacity: 1, duration: 0.3, ease: "back.out(1.6)" }, 0.3);
+  tl.fromTo("#l1", { y: 24, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: "power2.out" }, 0.55);
+  tl.fromTo("#l2", { y: 24, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: "power2.out" }, 0.67);
+  tl.fromTo("#hr", { scaleX: 0, transformOrigin: "0% 50%" }, { scaleX: 1, duration: 0.45, ease: "power2.out" }, 1.0);
+  tl.fromTo("#author", { x: -16, opacity: 0 }, { x: 0, opacity: 1, duration: 0.4, ease: "power2.out" }, 1.42);
+  // second beats: the avatar pops in, then the mark gives a small nod
+  tl.fromTo("#av", { scale: 0.4, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.45, ease: "back.out(2)" }, 1.95);
+  tl.to("#mark", { scale: 1.08, duration: 0.2, ease: "power2.out" }, 2.5);
+  tl.to("#mark", { scale: 1, duration: 0.3, ease: "power2.out" }, 2.7);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

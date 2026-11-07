@@ -1,0 +1,23 @@
+{
+  "name": "Split flap",
+  "family": "Typography",
+  "purpose": [
+    "Feedback",
+    "Mood"
+  ],
+  "energy": "high",
+  "tier": 3,
+  "runtime": "css",
+  "tags": [
+    "split flap",
+    "flipboard text",
+    "flipboard-3d-rotatex",
+    "hacker-flip-3d",
+    "split flap number flip",
+    "type",
+    "board",
+    "hinge",
+    "mechanical"
+  ],
+  "one_line": "A two-row departure-style board of dark flap cards: each card's top half folds down and a new bottom half swings up through a couple of stray glyphs, left to right, until the rows spell out the headline and a seat count."
+}

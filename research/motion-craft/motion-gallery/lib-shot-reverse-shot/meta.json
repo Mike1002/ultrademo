@@ -1,0 +1,20 @@
+{
+  "name": "Shot reverse shot",
+  "family": "Transitions",
+  "purpose": [
+    "Sequence",
+    "Explanation"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "gsap",
+  "tags": [
+    "shot reverse shot",
+    "transitions",
+    "dialogue",
+    "cut",
+    "eyeline",
+    "alternate"
+  ],
+  "one_line": "Two speaker panels face each other across the same axis, one from the left facing right and one from the right facing left, and the video cuts between them as each line lands in a speech bubble."
+}

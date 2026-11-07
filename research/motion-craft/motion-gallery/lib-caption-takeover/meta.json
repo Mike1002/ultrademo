@@ -1,0 +1,19 @@
+{
+  "name": "Caption takeover",
+  "family": "Captions",
+  "purpose": [
+    "Emphasis",
+    "Attention"
+  ],
+  "energy": "high",
+  "tier": 2,
+  "runtime": "gsap",
+  "tags": [
+    "caption takeover",
+    "ticker takeover",
+    "caption",
+    "full-frame",
+    "snap"
+  ],
+  "one_line": "A normal caption sits at the bottom of a product scene; for one beat it vanishes and the sentence fills the whole frame huge, then the big title fades and the caption is back in its rail."
+}

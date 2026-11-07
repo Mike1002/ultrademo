@@ -1,0 +1,24 @@
+{
+  "name": "Particle scatter & assemble",
+  "family": "Generative",
+  "purpose": [
+    "Attention",
+    "Emphasis",
+    "Data evidence",
+    "Branding"
+  ],
+  "energy": "high",
+  "tier": 2,
+  "runtime": "canvas",
+  "tags": [
+    "particle morph to text",
+    "particle text formation",
+    "generative",
+    "particles",
+    "assemble",
+    "sampled glyphs",
+    "seeded",
+    "dark"
+  ],
+  "one_line": "Nine hundred drifting particles fly in on gently bent paths, the farthest arriving last, and assemble into the big number 1,284 while the camera eases back; the last digit turns yellow once it has formed."
+}

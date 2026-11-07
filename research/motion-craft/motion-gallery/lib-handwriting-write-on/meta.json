@@ -1,0 +1,25 @@
+{
+  "name": "Handwriting write-on",
+  "family": "Typography",
+  "purpose": [
+    "Mood",
+    "Branding",
+    "Explanation"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "svg",
+  "tags": [
+    "handwritten stroke",
+    "handwritten write and erase",
+    "write",
+    "unwrite",
+    "svg stroke text draw",
+    "stitched text",
+    "type",
+    "pen",
+    "stroke draw",
+    "signature"
+  ],
+  "one_line": "A cursive headline writes itself stroke by stroke with a yellow pen tip leading each line, then the full stop is erased and written again."
+}

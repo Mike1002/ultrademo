@@ -1,0 +1,20 @@
+{
+  "name": "Toast stack",
+  "family": "UI Demo",
+  "purpose": [
+    "Feedback"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "gsap",
+  "tags": [
+    "notification stack",
+    "toast stack reshuffle",
+    "toast slide",
+    "ui",
+    "notification",
+    "reflow",
+    "dismiss"
+  ],
+  "one_line": "Beside a product card, notification toasts slide in from the right and stack upward; when the middle one is dismissed the toast above drops to close the gap, then a fourth arrives."
+}

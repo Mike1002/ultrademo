@@ -1,0 +1,22 @@
+{
+  "name": "Match on action",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Sequence"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "gsap",
+  "tags": [
+    "vector continuity",
+    "motion-vector-inheritance",
+    "axis-of-action-pan-handoff",
+    "transitions",
+    "cursor",
+    "cut",
+    "same direction",
+    "same speed"
+  ],
+  "one_line": "The cursor speeds right across the invite card and leaves the stage, the cut lands while it is off screen, and in the stats card a yellow dot enters from the left on the same line at the same speed and slows to a stop after the number."
+}

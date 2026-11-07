@@ -1,0 +1,22 @@
+{
+  "name": "Card flip",
+  "family": "3D & Depth",
+  "purpose": [
+    "Explanation",
+    "Transition"
+  ],
+  "energy": "steady",
+  "tier": 2,
+  "runtime": "css",
+  "tags": [
+    "card flip",
+    "3d card flip",
+    "rotate and flip",
+    "3d layer flip",
+    "depth",
+    "rotatey",
+    "backface",
+    "dark"
+  ],
+  "one_line": "A card rotates 180 degrees around its vertical axis to swap its front (Invite your team) for its back (12,480 invites sent), then turns on back to the front."
+}

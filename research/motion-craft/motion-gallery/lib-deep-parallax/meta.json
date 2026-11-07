@@ -1,0 +1,22 @@
+{
+  "name": "Deep multi-layer parallax",
+  "family": "3D & Depth",
+  "purpose": [
+    "Attention",
+    "Explanation",
+    "Transition"
+  ],
+  "energy": "steady",
+  "tier": 2,
+  "runtime": "gsap",
+  "tags": [
+    "deep multi-layer parallax",
+    "depth",
+    "layers",
+    "depth of field",
+    "blur",
+    "camera move",
+    "dark"
+  ],
+  "one_line": "One horizontal camera move across seven layers at seven speeds, from a blurred faint far number to a big soft near word, so the flat scene reads as deep space."
+}

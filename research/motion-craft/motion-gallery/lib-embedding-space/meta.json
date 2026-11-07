@@ -1,0 +1,19 @@
+{
+  "name": "Embedding space",
+  "family": "Explainer",
+  "purpose": [
+    "Explanation",
+    "Sequence"
+  ],
+  "energy": "steady",
+  "tier": 2,
+  "runtime": "gsap",
+  "tags": [
+    "semantic space",
+    "embedding projection / point movement",
+    "explainer",
+    "clusters",
+    "axes"
+  ],
+  "one_line": "Six words in a row travel to coordinates on hairline axes so three names cluster left and three steps cluster right, then a yellow ring circles one cluster."
+}

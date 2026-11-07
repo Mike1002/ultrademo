@@ -1,0 +1,22 @@
+{
+  "name": "Brush-linked update",
+  "family": "Data",
+  "purpose": [
+    "Explanation",
+    "Data evidence"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "svg",
+  "tags": [
+    "brush-window linked update",
+    "data",
+    "brush",
+    "overview",
+    "detail",
+    "window",
+    "linked",
+    "svg"
+  ],
+  "one_line": "A yellow brush window slides along a 90-day overview line and then widens, and the detail chart below re-draws its path to the selected days each time it moves."
+}

@@ -1,0 +1,22 @@
+{
+  "name": "3D card flip stack",
+  "family": "3D & Depth",
+  "purpose": [
+    "Attention",
+    "Explanation",
+    "Transition"
+  ],
+  "energy": "high",
+  "tier": 2,
+  "runtime": "gsap",
+  "tags": [
+    "3d card flip stack",
+    "depth",
+    "rotatex",
+    "stagger",
+    "sheets",
+    "stack",
+    "dark"
+  ],
+  "one_line": "Five overlapping sheets flip up in sequence 0.18 s apart and stack tilted behind, leaving the fifth, yellow-numbered sheet frontal and in focus."
+}

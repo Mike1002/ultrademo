@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-spring-overshoot</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  .lab { font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  .heading { position: absolute; left: 120px; top: 66px; }
+  .target { position: absolute; left: 120px; top: 198px; width: 310px; height: 218px; border: 2px dashed #a19d93; border-radius: 20px; }
+  #card { position: absolute; left: 120px; top: 198px; width: 310px; height: 218px; background: #fffdf8; border: 2px solid #1d1c1a; border-radius: 20px; padding: 28px; will-change: transform; }
+  #card .t { font-size: 34px; font-weight: 700; line-height: 1.1; }
+  #card .s { font-size: 20px; color: #6d6a63; margin-top: 12px; }
+  #card .b { position: absolute; left: 28px; bottom: 24px; width: 150px; height: 46px; border-radius: 12px; background: #f2c200; border: 2px solid #1d1c1a; font-size: 18px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+  #ring { position: absolute; left: 108px; top: 186px; width: 334px; height: 242px; border: 3px solid #f2c200; border-radius: 28px; will-change: transform; }
+  .readout { position: absolute; left: 120px; top: 454px; font-size: 46px; font-weight: 700; font-variant-numeric: tabular-nums; display: flex; align-items: baseline; gap: 16px; }
+  .readout small { font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; font-weight: 400; }
+  .chart { position: absolute; left: 520px; top: 96px; width: 580px; height: 420px; overflow: visible; }
+  .axis { stroke: #e3ded2; stroke-width: 1.5; fill: none; }
+  .target-line { stroke: #a19d93; stroke-width: 1.5; stroke-dasharray: 4 5; }
+  .curve { fill: none; stroke: #1d1c1a; stroke-width: 3; stroke-dasharray: 1; stroke-dashoffset: 1; }
+  .over { stroke: #f2c200; stroke-width: 5; }
+  .chart text { font-size: 13px; letter-spacing: .06em; fill: #6d6a63; }
+  .pointer { fill: #1d1c1a; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div class="lab heading">Scale · target 1.00 · peaks at 1.08</div>
+      <div class="target"></div>
+      <div id="card" data-layout-allow-overlap><div class="t">Invite your team</div><div class="s">3 seats left</div><div class="b">Continue</div></div>
+      <div id="ring" data-layout-allow-overlap></div>
+      <div class="readout"><small>Scale</small><span id="value">0.00</span></div>
+      <svg class="chart" viewBox="0 0 580 420">
+        <defs><clipPath id="above"><rect x="40" y="0" width="480" height="78"/></clipPath></defs>
+        <path class="axis" d="M40 35 V338 H535"/><path class="target-line" d="M40 78 H520"/>
+        <text x="0" y="83">1.00</text><text x="20" y="342">0</text><text x="40" y="368">0.0 s</text><text x="470" y="368">1.4 s</text>
+        <text x="40" y="402">TIME</text>
+        <path id="curve" class="curve" pathLength="1"/><path id="over" class="curve over" pathLength="1" clip-path="url(#above)"/>
+        <circle id="pointer" class="pointer" cx="40" cy="338" r="6"/>
+      </svg>
+    </div>
+    <div id="label"><span class="l-name">Spring &amp; overshoot</span><span class="l-sep">·</span><span>Principles</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+  const T0 = 0.3, D = 1.4, N = 280, samples = [], lengths = [0];
+  // back.out(1.5) written out, so the graph and the card share one formula.
+  const spring = (t) => 1 + 2.5 * Math.pow(t - 1, 3) + 1.5 * Math.pow(t - 1, 2);
+  for (let i = 0; i <= N; i++) {
+    const t = i / N, p = { x: 40 + 480 * t, y: 338 - 260 * spring(t) };
+    samples.push(p);
+    if (i) lengths.push(lengths[i - 1] + Math.hypot(p.x - samples[i - 1].x, p.y - samples[i - 1].y));
+  }
+  const d = samples.map((p, i) => (i ? "L" : "M") + p.x.toFixed(3) + " " + p.y.toFixed(3)).join(" ");
+  document.querySelectorAll(".curve").forEach((p) => p.setAttribute("d", d));
+  const pointer = document.getElementById("pointer"), value = document.getElementById("value");
+  function renderAt(time) {
+    const t = Math.max(0, Math.min(1, (time - T0) / D));
+    const v = spring(t), idx = Math.min(N - 1, Math.floor(t * N)), f = t * N - idx;
+    const length = lengths[idx] + (lengths[idx + 1] - lengths[idx]) * f;
+    document.querySelectorAll(".curve").forEach((p) => { p.style.strokeDashoffset = 1 - length / lengths[N]; });
+    pointer.setAttribute("cx", (40 + 480 * t).toFixed(2));
+    pointer.setAttribute("cy", (338 - 260 * v).toFixed(2));
+    value.textContent = v.toFixed(2);
+  }
+  renderAt(0);
+  // The card itself is a plain GSAP tween with the same ease; the graph is drawn from the time.
+  tl.fromTo("#card", { scale: 0 }, { scale: 1, duration: D, ease: "back.out(1.5)" }, T0);
+  tl.to({ k: 0 }, { k: 1, duration: 3, ease: "none", onUpdate: () => renderAt(tl.time()) }, 0);
+  const baseRender = tl.render;
+  tl.render = function () { const r = baseRender.apply(this, arguments); renderAt(this.time()); return r; };
+  // Second beat: a selection ring springs onto the settled card.
+  tl.fromTo("#ring", { scale: 0.8, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.5, ease: "back.out(1.5)" }, 2.2);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

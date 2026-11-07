@@ -1,0 +1,22 @@
+{
+  "name": "Diff reveal",
+  "family": "UI Demo",
+  "purpose": [
+    "Explanation",
+    "Comparison"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "gsap",
+  "tags": [
+    "semantic diff paint",
+    "ui",
+    "diff",
+    "code",
+    "strikethrough",
+    "added",
+    "removed",
+    "red green tints"
+  ],
+  "one_line": "In a short config file, a removed line fades in on a red tint with a minus sign and gets struck through, then the replacement line slides in on a green tint with a plus sign; a second change follows and a change count pops in."
+}

@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-annotation-callout</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  #chart { position: absolute; left: 105px; top: 75px; width: 958px; height: 435px; overflow: visible; }
+  .axis { stroke: #e3ded2; stroke-width: 2; fill: none; }
+  .graph { stroke: #1d1c1a; stroke-width: 4; fill: none; stroke-linejoin: round; stroke-linecap: round; }
+  .tick { font-size: 15px; fill: #6d6a63; letter-spacing: .06em; }
+  .call { stroke: #1d1c1a; stroke-width: 2; fill: none; }
+  .note { font-size: 30px; font-weight: 700; fill: #1d1c1a; }
+  .sub { font-size: 17px; fill: #6d6a63; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <svg id="chart" viewBox="0 0 958 435">
+        <path class="axis" d="M 50 35 V 370 H 920"/>
+        <text class="tick" x="50" y="404">WEEK 1</text>
+        <text class="tick" x="470" y="404">WEEK 4</text>
+        <text class="tick" x="860" y="404">WEEK 7</text>
+        <path class="graph" id="graph" pathLength="1" d="M 50 330 L 200 285 L 350 305 L 500 195 L 650 225 L 800 110 L 900 65"/>
+        <circle id="pulse" cx="500" cy="195" r="14" fill="none" stroke="#f2c200" stroke-width="3"/>
+        <circle id="focus" cx="500" cy="195" r="9" fill="#f2c200" stroke="#1d1c1a" stroke-width="2"/>
+        <path class="call" id="call" pathLength="1" d="M 500 195 L 545 95 H 760"/>
+        <text class="note" id="note" x="558" y="66">12,480 invites</text>
+        <text class="sub" id="sub" x="558" y="86">Peak week · 60% accepted</text>
+      </svg>
+    </div>
+    <div id="label"><span class="l-name">Annotation callout</span><span class="l-sep">·</span><span>Data</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+  // The chart line arrives first, then the focus dot pops.
+  tl.fromTo("#graph", { strokeDasharray: 1, strokeDashoffset: 1 }, { strokeDashoffset: 0, autoRound: false, duration: 0.5, ease: "power2.out" }, 0);
+  tl.fromTo("#focus", { scale: 0, transformOrigin: "50% 50%" }, { scale: 1, duration: 0.3, ease: "back.out(2)" }, 0.3);
+  // Leader line draws from the point toward the annotation (0.65 s, linear).
+  tl.fromTo("#call", { strokeDasharray: 1, strokeDashoffset: 1 }, { strokeDashoffset: 0, autoRound: false, duration: 0.65, ease: "none" }, 0.45);
+  // Annotation reveals once the line is complete: body first, then the secondary figure 0.12 s later.
+  tl.fromTo(["#note", "#sub"], { y: 8, opacity: 0 }, { y: 0, opacity: 1, duration: 0.35, stagger: 0.12 }, 1.1);
+  // Second half: the focus dot keeps a quiet pulse ring so the point stays alive.
+  tl.fromTo("#pulse", { scale: 0.6, opacity: 0, transformOrigin: "50% 50%" }, { scale: 1, opacity: 1, duration: 0.3 }, 1.7);
+  tl.to("#pulse", { scale: 2.4, opacity: 0, duration: 0.7, ease: "power2.out" }, 2.0);
+  tl.to("#pulse", { scale: 0.6, duration: 0.01 }, 2.7);
+  tl.fromTo("#pulse", { opacity: 0 }, { opacity: 0.6, duration: 0.28 }, 2.71);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

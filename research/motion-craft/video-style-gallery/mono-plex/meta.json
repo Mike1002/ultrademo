@@ -1,0 +1,46 @@
+{
+  "name": "Mono Plex",
+  "fonts": {
+    "display": "IBM Plex Sans",
+    "body": "IBM Plex Sans",
+    "mono": "IBM Plex Mono",
+    "label": "IBM Plex Mono"
+  },
+  "font_families": [
+    "IBM Plex Mono",
+    "IBM Plex Sans"
+  ],
+  "font_substitutions": {},
+  "canvas": "light",
+  "mood": [
+    "minimal",
+    "calm",
+    "technical"
+  ],
+  "suits": [
+    "changelogs",
+    "release notes",
+    "minimal product updates"
+  ],
+  "direction_settings": {
+    "energy": "calm",
+    "density": "sparse",
+    "ground": "light",
+    "depth": "flat",
+    "camera": "locked",
+    "type": "quiet",
+    "texture": "clean",
+    "colour": "mono",
+    "product_presence": "illustrated",
+    "sound": "none",
+    "voice": "caption"
+  },
+  "duration_s": 10,
+  "size": [
+    1280,
+    720
+  ],
+  "fps": 30,
+  "strip": "D-58 style strip: hook · project card · number · agent · close",
+  "one_line": ""
+}

@@ -1,0 +1,22 @@
+{
+  "name": "Grid flip",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Sequence"
+  ],
+  "energy": "high",
+  "tier": 2,
+  "runtime": "css",
+  "tags": [
+    "grid flip",
+    "puzzleright",
+    "tile wave flip",
+    "card wipe",
+    "transitions",
+    "3d",
+    "tiles",
+    "stagger"
+  ],
+  "one_line": "The scene is cut into a grid of 8 by 5 tiles that flip over one after another in a wave from the top left, each showing a piece of the next scene on its back."
+}

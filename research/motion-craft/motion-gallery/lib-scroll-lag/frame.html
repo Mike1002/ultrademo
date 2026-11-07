@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-scroll-lag</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  #view { position: absolute; left: 234px; top: 60px; width: 700px; height: 460px; background: #fffdf8; border: 2px solid #1d1c1a; border-radius: 24px; overflow: hidden; }
+  #hero { position: absolute; left: 0; top: 0; width: 310px; height: 780px; background: #ece7da; border-right: 2px solid #1d1c1a; will-change: transform; }
+  #hero .lab { position: absolute; left: 36px; top: 40px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  #hero .h { position: absolute; left: 36px; font-size: 44px; font-weight: 700; line-height: 50px; white-space: nowrap; letter-spacing: -0.01em; }
+  #hero .btn { position: absolute; left: 36px; top: 190px; width: 180px; height: 52px; border-radius: 14px; background: #f2c200; border: 2px solid #1d1c1a;
+    font-size: 18px; font-weight: 700; line-height: 48px; text-align: center; }
+  #hero .hr { position: absolute; left: 36px; width: 238px; height: 2px; background: #a19d93; }
+  #hero .num { position: absolute; left: 36px; font-size: 52px; font-weight: 700; line-height: 60px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  #hero .sub { position: absolute; left: 36px; font-size: 18px; color: #6d6a63; white-space: nowrap; }
+  #list { position: absolute; left: 312px; top: 0; width: 384px; height: 780px; background: #fffdf8; will-change: transform; }
+  .row { position: absolute; left: 0; width: 384px; height: 64px; border-bottom: 2px solid #e3ded2; }
+  .row .av { position: absolute; left: 28px; top: 12px; width: 40px; height: 40px; border-radius: 50%; background: #ece7da; border: 2px solid #1d1c1a; }
+  .row .nm { position: absolute; left: 84px; top: 11px; font-size: 19px; font-weight: 600; white-space: nowrap; }
+  .row .rl { position: absolute; left: 84px; top: 36px; font-size: 14px; color: #6d6a63; }
+  .row .b1 { position: absolute; left: 84px; top: 16px; width: 150px; height: 12px; border-radius: 6px; background: #e3ded2; }
+  .row .b2 { position: absolute; left: 84px; top: 38px; width: 90px; height: 10px; border-radius: 5px; background: #ece7da; }
+  #track { position: absolute; left: 676px; top: 10px; width: 10px; height: 436px; border-radius: 5px; background: #e3ded2; z-index: 3; }
+  #thumb { position: absolute; left: 0; top: 0; width: 10px; height: 180px; border-radius: 5px; background: #1d1c1a; will-change: transform; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div id="view">
+        <div id="hero">
+          <div class="lab">Orbit · Members</div>
+          <div class="h" style="top:66px">Invite</div>
+          <div class="h" style="top:116px">your team</div>
+          <div class="btn">Continue</div>
+          <div class="hr" style="top:280px"></div>
+          <div class="num" style="top:304px">12,480</div>
+          <div class="sub" style="top:368px">invites sent this month</div>
+          <div class="hr" style="top:420px"></div>
+          <div class="num" style="top:444px">3</div>
+          <div class="sub" style="top:508px">seats left on this plan</div>
+          <div class="hr" style="top:560px"></div>
+          <div class="num" style="top:584px">98%</div>
+          <div class="sub" style="top:648px">of invites accepted</div>
+        </div>
+        <div id="list">
+          <div class="row" style="top:0"><div class="av"></div><div class="nm">Jamie Dalton</div><div class="rl">Owner</div></div>
+          <div class="row" style="top:64px"><div class="av"></div><div class="nm">Sam Kim</div><div class="rl">Editor</div></div>
+          <div class="row" style="top:128px"><div class="av"></div><div class="nm">Morgan Lee</div><div class="rl">Editor</div></div>
+          <div class="row" style="top:192px"><div class="av"></div><div class="b1"></div><div class="b2"></div></div>
+          <div class="row" style="top:256px"><div class="av"></div><div class="b1" style="width:120px"></div><div class="b2"></div></div>
+          <div class="row" style="top:320px"><div class="av"></div><div class="b1" style="width:170px"></div><div class="b2"></div></div>
+          <div class="row" style="top:384px"><div class="av"></div><div class="b1" style="width:110px"></div><div class="b2"></div></div>
+          <div class="row" style="top:448px"><div class="av"></div><div class="b1" style="width:160px"></div><div class="b2"></div></div>
+          <div class="row" style="top:512px"><div class="av"></div><div class="b1" style="width:130px"></div><div class="b2"></div></div>
+          <div class="row" style="top:576px"><div class="av"></div><div class="b1" style="width:180px"></div><div class="b2"></div></div>
+          <div class="row" style="top:640px"><div class="av"></div><div class="b1" style="width:140px"></div><div class="b2"></div></div>
+        </div>
+        <div id="track" data-layout-allow-overlap><div id="thumb"></div></div>
+      </div>
+    </div>
+    <div id="label"><span class="l-name">Scroll lag</span><span class="l-sep">·</span><span>UI Demo</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "expo.out", duration: 0.8 } });
+  // Params: the page (list) follows the scroll with 800 ms expo.out; the hero layer follows at 0.9x the distance with 1.1 s expo.out, starting 300 ms later.
+  // Two side-by-side layers so the lag is visible as a vertical offset between them. The scrollbar thumb is the scroll position itself: it jumps in one step, and the layers trail behind it.
+  const S = 260;
+  // Scroll 1: up.
+  tl.fromTo("#thumb", { y: 0 }, { y: 120, duration: 0.12, ease: "none" }, 0.3);
+  tl.fromTo("#list", { y: 0 }, { y: -S, duration: 0.8, ease: "expo.out" }, 0.3);
+  tl.fromTo("#hero", { y: 0 }, { y: -S * 0.9, duration: 1.1, ease: "expo.out" }, 0.6);
+  // Scroll 2: back down, same lags.
+  tl.to("#thumb", { y: 0, duration: 0.12, ease: "none" }, 1.85);
+  tl.to("#list", { y: 0, duration: 0.8, ease: "expo.out" }, 1.85);
+  tl.to("#hero", { y: 0, duration: 1.1, ease: "expo.out" }, 2.15);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

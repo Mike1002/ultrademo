@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-answer-stream</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  .lab { position: absolute; left: 110px; top: 86px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  .question { position: absolute; left: 110px; top: 118px; color: #6d6a63; font-size: 24px; }
+  .rule { position: absolute; left: 110px; top: 183px; width: 930px; height: 1px; background: #e3ded2; }
+  .answer { position: absolute; left: 110px; top: 220px; width: 925px; font-size: 38px; line-height: 1.8; font-weight: 700; color: #1d1c1a; }
+  .token { display: none; opacity: 0; }
+  .block { display: inline-block; width: 15px; height: 34px; background: #f2c200; margin-left: 8px; vertical-align: -4px; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div class="lab">Orbit · Assistant</div>
+      <div class="question">How do I invite my team?</div>
+      <div class="rule"></div>
+      <div class="answer"><span id="tokens"></span><span class="block" id="block"></span></div>
+    </div>
+    <div id="label"><span class="l-name">Answer streaming</span><span class="l-sep">·</span><span>UI Demo</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+  // 10 token groups, one every 0.18 s from 0.3 s; each settles from opacity 0.22 to 1 over 0.26 s.
+  const chunks = ["Orbit ", "reads ", "your team ", "list, ", "sends ", "an invite ", "to each ", "person ", "and tracks ", "who joins."];
+  const START = 0.3, GAP = 0.18, DIM = 0.22, SETTLE = 0.26;
+  const host = document.getElementById("tokens");
+  const tokens = chunks.map((s) => { const el = document.createElement("span"); el.className = "token"; el.textContent = s; host.appendChild(el); return el; });
+  const block = document.getElementById("block");
+  function renderAt(t) {
+    tokens.forEach((el, i) => {
+      const at = START + i * GAP;
+      if (t < at) { el.style.display = "none"; el.style.opacity = "0"; return; }
+      const k = Math.min(1, (t - at) / SETTLE);
+      el.style.display = "inline";
+      el.style.opacity = String(DIM + (1 - DIM) * k);
+    });
+    // After the last group lands the cursor block idles with a slow blink (0.3 s half period).
+    const done = START + (chunks.length - 1) * GAP + SETTLE;
+    block.style.opacity = t < done ? "1" : (Math.floor((t - done) / 0.3) % 2 === 0 ? "1" : "0.25");
+  }
+  renderAt(0);
+  tl.to({ k: 0 }, { k: 1, duration: 3, ease: "none", onUpdate: () => renderAt(tl.time()) }, 0);
+  const baseRender = tl.render; tl.render = function () { const r = baseRender.apply(this, arguments); renderAt(this.time()); return r; };
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

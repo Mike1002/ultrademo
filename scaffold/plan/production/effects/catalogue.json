@@ -1,0 +1,30 @@
+{
+ "note": "D-78: one visual and one sound per event. group = the gallery section; name = UDFX.play name in effects.js; sound = an id in sfx/library.json (add it to the scene's cues at the same time). level: none, subtle or lively for the whole video.",
+ "effects": [
+  {"name": "money", "group": "Celebrate", "event": "Money earned or paid", "label": "Money", "sound": "ka-ching", "when": "a payout turns Paid, a bonus is earned, revenue arrives"},
+  {"name": "confetti", "group": "Celebrate", "event": "Hired, approved, success", "label": "Confetti", "sound": "chime", "when": "a status turns Hired or Approved, a goal is reached"},
+  {"name": "cannon", "group": "Celebrate", "event": "Launch or celebration", "label": "Confetti cannon", "sound": "cheer-small", "when": "the launch moment, a big announcement, the close of a launch video"},
+  {"name": "sparkle", "group": "Celebrate", "event": "Success, polish, magic", "label": "Sparkles", "sound": "sparkle", "when": "something works, is generated or shines"},
+  {"name": "bigstar", "group": "Celebrate", "event": "Achievement, badge, level", "label": "Big star", "sound": "level-up", "when": "a badge is earned, a level is reached, a top spot is taken"},
+  {"name": "thumbsup", "group": "Reactions", "event": "Approval", "label": "Thumbs up", "sound": "reaction-pop", "when": "a yes, an approval, a positive response"},
+  {"name": "hearts", "group": "Reactions", "event": "Delight", "label": "Hearts", "sound": "reaction-pop", "when": "love, delight, a happy customer"},
+  {"name": "highfive", "group": "Reactions", "event": "A team win", "label": "High five", "sound": "high-five", "when": "a deal closed together, a shared milestone, a teammate's win"},
+  {"name": "smiley", "group": "Reactions", "event": "Happy customer", "label": "Smiley", "sound": "reaction-pop", "when": "a happy customer, a good experience, a smile"},
+  {"name": "stars", "group": "Reactions", "event": "Rating or experience", "label": "Star rating", "sound": "chime", "when": "a review, a rating, customer experience"},
+  {"name": "stamp", "group": "Status", "event": "Approved, verified, cited", "label": "Stamp", "sound": "sparkle", "when": "a review is approved, a claim is verified, the brand is cited (the label changes: Approved, Verified, Cited)"},
+  {"name": "check", "group": "Status", "event": "Task done", "label": "Check", "sound": "check-done", "when": "a step completes, a form is submitted, a task is ticked off"},
+  {"name": "shield", "group": "Status", "event": "Security", "label": "Shield and lock", "sound": "lock-click", "when": "security, compliance, protection, encryption"},
+  {"name": "erase", "group": "Status", "event": "Privacy or deletion", "label": "Erase sweep", "sound": "whoosh", "when": "data removed, a declined invite, privacy"},
+  {"name": "growth", "group": "Status", "event": "Growth", "label": "Rising arrow", "sound": "rise", "when": "a number goes up, growth, improvement"},
+  {"name": "drop", "group": "Status", "event": "Drop or problem", "label": "Dip and shake", "sound": "warn", "when": "a fall, an error, the problem being shown"},
+  {"name": "bell", "group": "Status", "event": "Notification", "label": "Bell", "sound": "notify", "when": "someone is notified, an alert arrives"},
+  {"name": "clock", "group": "Status", "event": "Time saved", "label": "Spinning clock", "sound": "clock-ticks", "when": "hours saved, faster turnaround, scheduling"},
+  {"name": "speed", "group": "Movement", "event": "Speed or automation", "label": "Speed lines", "sound": "whoosh", "when": "faster, automatic, instant"},
+  {"name": "pulse", "group": "Movement", "event": "Sync or connection", "label": "Pulse along a line", "sound": "blip", "when": "two systems sync, data flows, a connection is made"},
+  {"name": "send", "group": "Movement", "event": "Sent or shared", "label": "Paper plane", "sound": "whoosh", "when": "a message, invite or link is sent or shared"},
+  {"name": "glint", "group": "Movement", "event": "New or introducing", "label": "Glint", "sound": "sparkle", "when": "a logo or title is revealed, something is new"},
+  {"name": "click", "group": "Interface", "event": "A button is clicked", "label": "Click", "sound": "mouse-click", "when": "the cursor presses a button, a tab or a link"},
+  {"name": "typing", "group": "Interface", "event": "Text is typed", "label": "Typing", "sound": "typing", "when": "a field fills in, a prompt is written, a message is typed (trim the sound to the typing length)"},
+  {"name": "wave", "group": "Interface", "event": "Audio playing", "label": "Sound wave", "sound": "phone-call", "when": "a call, a voice or a recording plays (the sound is the audio itself)"}
+ ]
+}

@@ -1,0 +1,125 @@
+{
+  "id": "creative-mode",
+  "name": "Creative Mode",
+  "canvas": "light",
+  "mood": [
+    "workshop",
+    "bold",
+    "colourful"
+  ],
+  "suits": [
+    "creator tools",
+    "design products",
+    "maker communities"
+  ],
+  "palette": {
+    "bg": "#EFE9D9",
+    "bg_alt": "#E4DCC4",
+    "surface": "#FFFFFF",
+    "surface_2": "#E4DCC4",
+    "ink": "#0F0F0F",
+    "muted": "#2A2A2A",
+    "line": "#0F0F0F",
+    "accent": "#E85A1F",
+    "accent_2": "#F06CA8",
+    "on_accent": "#FFFFFF",
+    "shadow": "#0F0F0F",
+    "button_bg": "#F5C518",
+    "button_ink": "#0F0F0F",
+    "pill_bg": "#1F8A4C",
+    "pill_ink": "#FFFFFF",
+    "pill_dot": "#FFFFFF",
+    "thumb": "#F9CFE2",
+    "term_bg": "#0F0F0F",
+    "term_ink": "#EFE9D9",
+    "term_muted": "#8f8a80",
+    "term_line": "#0F0F0F",
+    "term_prompt": "#F5C518",
+    "term_ok": "#1F8A4C"
+  },
+  "type": {
+    "display": {
+      "family": "Archivo Black",
+      "weight": 400,
+      "hook_px": 96,
+      "stat_px": 240,
+      "mark_px": 136,
+      "transform": "uppercase",
+      "tracking": "-0.01em",
+      "line_height": "0.92",
+      "style": "normal",
+      "generic": "sans",
+      "card_title_px": 26
+    },
+    "body": {
+      "family": "Space Grotesk",
+      "weight": 400,
+      "generic": "sans"
+    },
+    "mono": {
+      "family": "JetBrains Mono",
+      "weight": 400
+    },
+    "label": {
+      "family": "JetBrains Mono",
+      "weight": 400,
+      "transform": "uppercase",
+      "tracking": "0.14em",
+      "generic": "sans",
+      "px": 13
+    }
+  },
+  "easing": {
+    "entry": "expo.out",
+    "exit": "power3.in",
+    "ambient": "none",
+    "pop": "back.out(1.8)",
+    "counter": "power3.out",
+    "wipe": "power4.inOut"
+  },
+  "rhythm": {
+    "energy": "high",
+    "entrance": 0.4,
+    "stagger": 0.06
+  },
+  "transition": {
+    "kind": "push",
+    "duration": 0.4,
+    "flash": false,
+    "band": false
+  },
+  "text_animation": "slam",
+  "accent_word": "none",
+  "layout": "left",
+  "atmosphere": [],
+  "shape": {
+    "radius_card": 0,
+    "radius_button": 0,
+    "radius_pill": 0,
+    "border": "bold",
+    "border_px": 4,
+    "shadow": "hard",
+    "rule_px": 10,
+    "hard_offset": 8
+  },
+  "stat_colour": "accent",
+  "direction_settings": {
+    "energy": "high",
+    "density": "dense",
+    "ground": "light",
+    "depth": "flat",
+    "camera": "locked",
+    "type": "loud",
+    "texture": "clean",
+    "colour": "full-palette",
+    "product_presence": "illustrated",
+    "sound": "beat-driven",
+    "voice": "spoken-headline"
+  },
+  "notes": "Cream canvas, 4 px ink borders with hard offset shadows, Archivo Black uppercase at 0.92 line height, JetBrains Mono taxonomy, four accents.",
+  "transitions": {
+    "between_moments": "push",
+    "duration_s": 0.4,
+    "text": "slam"
+  }
+}

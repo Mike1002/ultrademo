@@ -1,0 +1,22 @@
+{
+  "name": "Character input response",
+  "family": "UI Demo",
+  "purpose": [
+    "Feedback",
+    "Emphasis"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "svg",
+  "tags": [
+    "character login response",
+    "ui",
+    "face",
+    "eyes",
+    "password",
+    "typing",
+    "cover eyes",
+    "sign in"
+  ],
+  "one_line": "On a sign-in panel, a round face follows the caret with its eyes while an email types, then covers its eyes with two hands as the password dots appear, and uncovers them when the caret moves on to the button."
+}

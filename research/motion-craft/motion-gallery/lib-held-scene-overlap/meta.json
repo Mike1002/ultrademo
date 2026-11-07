@@ -1,0 +1,20 @@
+{
+  "name": "Held scene overlap",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Sequence"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "gsap",
+  "tags": [
+    "held scene overlap",
+    "transitions",
+    "overlap",
+    "hold",
+    "delay",
+    "reveal"
+  ],
+  "one_line": "The stats card starts rising from the bottom while the cursor on the invite card is still moving; the cursor is held frozen for a beat as the new card's bar keeps filling, then the reveal completes in one frame."
+}

@@ -1,0 +1,21 @@
+{
+  "name": "Letter drop pile",
+  "family": "Typography",
+  "purpose": [
+    "Attention",
+    "Feedback"
+  ],
+  "energy": "high",
+  "tier": 3,
+  "runtime": "canvas",
+  "tags": [
+    "falling letters",
+    "physical letter drop",
+    "type",
+    "gravity",
+    "bounce",
+    "pile",
+    "collapse"
+  ],
+  "one_line": "The letters of a headline detach one after another, fall with a bounce and come to rest tilted in a heap on the floor line, which then settles."
+}

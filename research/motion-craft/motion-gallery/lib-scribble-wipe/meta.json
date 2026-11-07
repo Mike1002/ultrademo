@@ -1,0 +1,21 @@
+{
+  "name": "Scribble wipe",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Mood"
+  ],
+  "energy": "high",
+  "tier": 3,
+  "runtime": "svg",
+  "tags": [
+    "scribble cover",
+    "transitions",
+    "scribble",
+    "hand-drawn",
+    "stroke",
+    "dashoffset",
+    "wipe"
+  ],
+  "one_line": "Ten thick ink scribble strokes draw quickly across the invite scene from top to bottom until it is covered, the scene swaps underneath, and the scribble wipes itself off to show the stats scene."
+}

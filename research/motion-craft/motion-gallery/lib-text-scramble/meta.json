@@ -1,0 +1,21 @@
+{
+  "name": "Text scramble",
+  "family": "Typography",
+  "purpose": [
+    "Attention",
+    "Mood"
+  ],
+  "energy": "high",
+  "tier": 2,
+  "runtime": "gsap",
+  "tags": [
+    "text scramble",
+    "matrix decode",
+    "binary decrypt",
+    "hacker-flip-3d",
+    "type",
+    "decode",
+    "glyph cycling"
+  ],
+  "one_line": "Every character slot of 'Every frame is code.' cycles through symbols, and from the left the slots lock into the real letters one by one, the next slot to lock shown in yellow."
+}

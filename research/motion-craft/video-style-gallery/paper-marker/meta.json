@@ -1,0 +1,48 @@
+{
+  "name": "Paper Marker",
+  "fonts": {
+    "display": "Archivo Black",
+    "body": "Archivo",
+    "mono": "JetBrains Mono",
+    "label": "Caveat"
+  },
+  "font_families": [
+    "Archivo",
+    "Archivo Black",
+    "Caveat",
+    "JetBrains Mono"
+  ],
+  "font_substitutions": {},
+  "canvas": "light",
+  "mood": [
+    "smart",
+    "hand-made",
+    "punchy"
+  ],
+  "suits": [
+    "explainers",
+    "launches",
+    "hand-annotated product stories"
+  ],
+  "direction_settings": {
+    "energy": "high",
+    "density": "balanced",
+    "ground": "alternating",
+    "depth": "flat",
+    "camera": "locked",
+    "type": "loud",
+    "texture": "textured",
+    "colour": "two-accent",
+    "product_presence": "illustrated",
+    "sound": "beat-driven",
+    "voice": "spoken-headline"
+  },
+  "duration_s": 10,
+  "size": [
+    1280,
+    720
+  ],
+  "fps": 30,
+  "strip": "D-58 style strip: hook · project card · number · agent · close",
+  "one_line": ""
+}

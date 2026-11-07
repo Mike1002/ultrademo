@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-map-event-accumulation</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  #map { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  .blob { fill: url(#dots); stroke: #e3ded2; stroke-width: 2; }
+  .mk { fill: #f2c200; stroke: #1d1c1a; stroke-width: 2; }
+  .ring { fill: none; stroke: #1d1c1a; stroke-width: 2; opacity: 0; }
+  #card { position: absolute; left: 820px; top: 150px; width: 320px; height: 280px; background: #fffdf8; border: 2px solid #1d1c1a; border-radius: 24px; }
+  #card .lab { position: absolute; left: 36px; top: 40px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  #num { position: absolute; left: 36px; top: 76px; font-size: 76px; font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1; }
+  #cities { position: absolute; left: 36px; top: 180px; font-size: 22px; color: #6d6a63; font-variant-numeric: tabular-nums; }
+  #hint { position: absolute; left: 36px; top: 218px; font-size: 16px; color: #a19d93; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <svg id="map" viewBox="0 0 1168 580" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <pattern id="dots" x="0" y="0" width="16" height="16" patternUnits="userSpaceOnUse">
+            <circle cx="8" cy="8" r="2" fill="#cfcabd"/>
+          </pattern>
+        </defs>
+        <path class="blob" d="M220 70 C350 20 540 40 660 110 C780 180 810 310 740 410 C680 500 540 550 400 530 C250 510 140 440 100 340 C60 240 100 120 220 70 Z"/>
+        <g id="rings"></g>
+        <g id="marks"></g>
+      </svg>
+      <div id="card">
+        <div class="lab">Invites by city</div>
+        <div id="num">0</div>
+        <div id="cities">0 cities</div>
+        <div id="hint">markers stay once they appear</div>
+      </div>
+    </div>
+    <div id="label"><span class="l-name">Map event accumulation</span><span class="l-sep">·</span><span>Data</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  // Twelve cities in time order: [x, y, invites]. Earlier markers stay while later ones arrive.
+  const EV = [[330,150,96],[560,180,142],[230,250,88],[470,290,210],[640,260,64],[370,320,120],
+              [300,430,180],[610,360,74],[190,340,96],[520,440,132],[420,470,58],[260,170,24]];
+  const START = 0.25, GAP = 0.2, POP = 0.15, RING = 0.45;
+  const NS = "http://www.w3.org/2000/svg";
+  const gM = document.getElementById("marks"), gR = document.getElementById("rings");
+  const marks = [], rings = [];
+  EV.forEach(([x, y], i) => {
+    const r = document.createElementNS(NS, "circle"); r.setAttribute("class", "ring"); r.setAttribute("cx", x); r.setAttribute("cy", y); r.setAttribute("r", 7); r.id = "ring" + i; gR.appendChild(r); rings.push(r);
+    const m = document.createElementNS(NS, "circle"); m.setAttribute("class", "mk"); m.setAttribute("cx", x); m.setAttribute("cy", y); m.setAttribute("r", 0); m.id = "mk" + i; gM.appendChild(m); marks.push(m);
+  });
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "none", duration: 0.6 } });
+  EV.forEach((e, i) => {
+    const at = START + i * GAP;
+    tl.fromTo(marks[i], { attr: { r: 0 } }, { attr: { r: 8 }, duration: POP, ease: "back.out(2)" }, at);
+    tl.fromTo(rings[i], { opacity: 0 }, { opacity: 0.7, duration: 0.04 }, at);
+    tl.fromTo(rings[i], { opacity: 0.7 }, { opacity: 0, duration: RING - 0.04, immediateRender: false }, at + 0.04);
+    tl.fromTo(rings[i], { attr: { r: 8 } }, { attr: { r: 30 }, duration: RING, ease: "power2.out" }, at);
+  });
+  // The running total and city count are pure functions of time (seek-safe).
+  const numEl = document.getElementById("num"), cityEl = document.getElementById("cities");
+  function renderAt(t) {
+    let sum = 0, n = 0;
+    EV.forEach((e, i) => {
+      const at = START + i * GAP;
+      if (t < at) return;
+      const k = Math.min(1, (t - at) / POP);
+      sum += e[2] * k; if (k >= 1) n++;
+    });
+    numEl.textContent = Math.round(sum).toLocaleString("en-US");
+    cityEl.textContent = n + (n === 1 ? " city" : " cities");
+  }
+  renderAt(0);
+  tl.to({ k: 0 }, { k: 1, duration: 3, ease: "none", onUpdate: () => renderAt(tl.time()) }, 0);
+  const baseRender = tl.render; tl.render = function () { const r = baseRender.apply(this, arguments); renderAt(this.time()); return r; };
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

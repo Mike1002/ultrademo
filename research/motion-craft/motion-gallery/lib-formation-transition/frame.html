@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-formation-transition</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  #chart { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  text { font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .cap { font-size: 13px; letter-spacing: .06em; text-transform: uppercase; fill: #6d6a63; }
+  .ttl { font-size: 34px; font-weight: 700; fill: #1d1c1a; }
+  .pitch { fill: #fffdf8; stroke: #a19d93; stroke-width: 3; }
+  .pline { fill: none; stroke: #a19d93; stroke-width: 3; }
+  .trail { stroke: #1d1c1a; stroke-width: 6; stroke-linecap: round; }
+  .pl circle { fill: #f2c200; stroke: #1d1c1a; stroke-width: 3; }
+  .pl.gk circle { fill: #1d1c1a; }
+  .pl text { font-size: 17px; font-weight: 700; fill: #1d1c1a; }
+  .pl.gk text { fill: #f6f3ec; }
+  .pl { will-change: transform; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <svg id="chart" viewBox="0 0 1168 580" width="1168" height="580">
+        <text class="cap" x="160" y="36">Orbit FC · 7-a-side</text>
+        <g id="tA"><text class="ttl" x="1008" y="44" text-anchor="end">Formation A → B</text></g>
+        <g id="tB"><text class="ttl" x="1008" y="44" text-anchor="end">Formation B → C</text></g>
+        <rect class="pitch" x="160" y="70" width="848" height="470" rx="6"/>
+        <line class="pline" x1="584" y1="70" x2="584" y2="540"/>
+        <circle class="pline" cx="584" cy="305" r="64"/>
+        <rect class="pline" x="160" y="200" width="110" height="210"/>
+        <rect class="pline" x="898" y="200" width="110" height="210"/>
+        <g id="trails"></g>
+        <g id="players"></g>
+      </svg>
+    </div>
+    <div id="label"><span class="l-name">Formation transition</span><span class="l-sep">·</span><span>Data</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const NS = "http://www.w3.org/2000/svg";
+  // Three formations for seven markers (keeper first): A 2-3-1, B 3-2-1 pressing higher, C the same shape pushed up the pitch.
+  const A = [[222, 305], [360, 200], [360, 410], [520, 150], [520, 305], [520, 460], [700, 305]];
+  const B = [[250, 305], [420, 160], [420, 305], [420, 450], [600, 230], [600, 380], [800, 305]];
+  const C = [[300, 305], [500, 160], [500, 305], [500, 450], [690, 230], [690, 380], [900, 305]];
+  const trailsG = document.getElementById("trails"), playersG = document.getElementById("players");
+  const mk = (tag, attrs, parent) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); parent.appendChild(e); return e; };
+  const players = A.map((p, i) => {
+    const g = mk("g", { class: "pl" + (i === 0 ? " gk" : "") }, playersG);
+    mk("circle", { cx: 0, cy: 0, r: 22 }, g);
+    const t = mk("text", { x: 0, y: 6, "text-anchor": "middle" }, g); t.textContent = i + 1;
+    return g;
+  });
+  const trail1 = A.map((p, i) => mk("line", { class: "trail", x1: p[0], y1: p[1], x2: p[0], y2: p[1], opacity: 0 }, trailsG));
+  const trail2 = B.map((p, i) => mk("line", { class: "trail", x1: p[0], y1: p[1], x2: p[0], y2: p[1], opacity: 0 }, trailsG));
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power2.inOut", duration: 1.2 } });
+  tl.fromTo("#tA", { opacity: 1 }, { opacity: 1, duration: 0.01 }, 0);
+  tl.fromTo("#tB", { opacity: 0 }, { opacity: 0, duration: 0.01 }, 0);
+  // Move 1 (0.3-1.5 s): every marker travels A -> B over 1.2 s with power2.inOut; its trail is a line from where it started to where it is, at 0.3 opacity.
+  function move(from, to, trails, t0, dur) {
+    players.forEach((g, i) => tl.fromTo(g, { x: from[i][0], y: from[i][1] }, { x: to[i][0], y: to[i][1], duration: dur, immediateRender: from === A }, t0));
+    trails.forEach((l, i) => {
+      tl.fromTo(l, { attr: { x2: from[i][0], y2: from[i][1] }, opacity: 0.3 }, { attr: { x2: to[i][0], y2: to[i][1] }, duration: dur, immediateRender: false }, t0);
+      tl.to(l, { opacity: 0, duration: 0.5, ease: "power2.out" }, t0 + dur + 0.1);
+    });
+  }
+  move(A, B, trail1, 0.3, 1.2);
+  // Move 2 (2.0-2.8 s): the whole shape presses up the pitch, with a fresh set of trails; the title changes with it.
+  tl.to("#tA", { opacity: 0, duration: 0.3, ease: "none" }, 1.95);
+  tl.to("#tB", { opacity: 1, duration: 0.3, ease: "none" }, 1.95);
+  move(B, C, trail2, 2.0, 0.8);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

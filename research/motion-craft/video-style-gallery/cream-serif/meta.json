@@ -1,0 +1,47 @@
+{
+  "name": "Cream Serif",
+  "fonts": {
+    "display": "Fraunces",
+    "body": "Inter",
+    "mono": "JetBrains Mono",
+    "label": "Inter"
+  },
+  "font_families": [
+    "Fraunces",
+    "Inter",
+    "JetBrains Mono"
+  ],
+  "font_substitutions": {},
+  "canvas": "light",
+  "mood": [
+    "warm",
+    "friendly",
+    "credible"
+  ],
+  "suits": [
+    "developer-tool launches",
+    "comparisons",
+    "warm SaaS"
+  ],
+  "direction_settings": {
+    "energy": "steady",
+    "density": "balanced",
+    "ground": "light",
+    "depth": "layered",
+    "camera": "locked",
+    "type": "editorial",
+    "texture": "clean",
+    "colour": "one-accent",
+    "product_presence": "illustrated",
+    "sound": "scored",
+    "voice": "narrated"
+  },
+  "duration_s": 10,
+  "size": [
+    1280,
+    720
+  ],
+  "fps": 30,
+  "strip": "D-58 style strip: hook · project card · number · agent · close",
+  "one_line": ""
+}

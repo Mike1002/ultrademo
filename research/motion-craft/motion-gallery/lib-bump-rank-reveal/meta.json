@@ -1,0 +1,22 @@
+{
+  "name": "Bump chart reveal",
+  "family": "Data",
+  "purpose": [
+    "Explanation",
+    "Comparison"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "svg",
+  "tags": [
+    "bump rank timeline",
+    "bump chart animation",
+    "data",
+    "rank",
+    "lines",
+    "reveal",
+    "crossing",
+    "svg"
+  ],
+  "one_line": "Four rank lines unfold left to right across five months, crossing wherever two names swap places, and the yellow line that ends in first place gets its name and a ring as the reveal lands."
+}

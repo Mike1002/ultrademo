@@ -1,0 +1,27 @@
+{
+  "name": "Scale pop",
+  "family": "Entrance & Exit",
+  "purpose": [
+    "Attention",
+    "Transition"
+  ],
+  "energy": "steady",
+  "tier": 2,
+  "runtime": "gsap",
+  "tags": [
+    "scale pop entrance",
+    "spring-pop-entrance",
+    "overlay-pop",
+    "scale in and out",
+    "zoom reveal",
+    "grow reveal",
+    "grow from anchor",
+    "growfrompoint",
+    "growfromcenter",
+    "growfromedge",
+    "shrinktocenter",
+    "entrance",
+    "scale"
+  ],
+  "one_line": "A round result badge grows from nothing to full size out of its own centre with an ease-out, a small yellow dot pops on after it, and both shrink back to nothing at the end."
+}

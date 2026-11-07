@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-ui-scroll</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  .heading { position: absolute; left: 100px; top: 47px; font-size: 34px; font-weight: 700; }
+  .window { position: absolute; left: 100px; top: 125px; width: 820px; height: 390px; overflow: hidden; border-top: 2px solid #1d1c1a; border-bottom: 1px solid #e3ded2; }
+  .doc { position: absolute; left: 35px; top: 30px; width: 730px; height: 900px; will-change: transform; }
+  .section { position: absolute; left: 0; width: 710px; height: 140px; }
+  .section .lab { font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; margin-bottom: 14px; }
+  .section h2 { font-size: 31px; font-weight: 700; }
+  .section p { margin-top: 12px; font-size: 22px; color: #6d6a63; line-height: 1.6; }
+  .s1 { top: 0; } .s2 { top: 185px; } .s3 { top: 370px; } .target { top: 555px; } .s5 { top: 740px; }
+  .mark { position: absolute; left: -25px; top: 0; width: 4px; height: 125px; background: #f2c200; opacity: 0; }
+  .rail { position: absolute; left: 956px; top: 125px; width: 1px; height: 390px; background: #e3ded2; }
+  .thumb { position: absolute; left: -2px; top: 0; width: 5px; height: 82px; background: #a19d93; will-change: transform; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div class="heading">Orbit · Getting started</div>
+      <div class="window">
+        <div class="doc" id="doc">
+          <div class="section s1"><div class="lab">01 · Invite</div><h2>Invite your team</h2><p>Add people by email or share a link.</p></div>
+          <div class="section s2"><div class="lab">02 · Seats</div><h2>Check your seats</h2><p>3 seats left on the current plan.</p></div>
+          <div class="section s3"><div class="lab">03 · Roles</div><h2>Set a role per person</h2><p>Jamie Dalton · Sam Kim · Morgan Lee</p></div>
+          <div class="section target"><div class="mark" id="mark"></div><div class="lab">04 · Send</div><h2>Send the invites</h2><p>Orbit emails each person and tracks who joins. 12,480 invites sent so far.</p></div>
+          <div class="section s5"><div class="lab">05 · Done</div><h2>Continue</h2></div>
+        </div>
+      </div>
+      <div class="rail"><div class="thumb" id="thumb"></div></div>
+    </div>
+    <div id="label"><span class="l-name">UI scroll</span><span class="l-sep">·</span><span>UI Demo</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+  // The timeline plays the scroll: the document travels 555 px up over 1.55 s (power3.inOut) and the rail thumb follows.
+  tl.fromTo("#doc", { y: 0 }, { y: -555, duration: 1.55, ease: "power3.inOut" }, 0.3);
+  tl.fromTo("#thumb", { y: 0 }, { y: 250, duration: 1.55, ease: "power3.inOut" }, 0.3);
+  // Arrived: a yellow 4x125 px line stands up beside the target paragraph.
+  tl.fromTo("#mark", { scaleY: 0, opacity: 0, transformOrigin: "50% 0%" }, { scaleY: 1, opacity: 1, duration: 0.3, ease: "power2.out" }, 1.9);
+  // Quiet idle: a small overscroll settle so the second half keeps breathing.
+  tl.fromTo("#doc", { y: -555 }, { y: -547, duration: 0.4, ease: "sine.inOut", yoyo: true, repeat: 1, immediateRender: false }, 2.2);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

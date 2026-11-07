@@ -1,0 +1,22 @@
+{
+  "name": "Vector pen demo",
+  "family": "UI Demo",
+  "purpose": [
+    "Explanation"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "svg",
+  "tags": [
+    "vector pen demo",
+    "ui",
+    "pen tool",
+    "anchors",
+    "bezier",
+    "handles",
+    "selection",
+    "draw",
+    "svg"
+  ],
+  "one_line": "A pen tool places three anchor points in turn, a smooth curve draws between them, the control handles extend from the anchors, and a dashed selection frame wraps the finished path."
+}

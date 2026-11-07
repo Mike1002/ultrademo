@@ -1,0 +1,22 @@
+{
+  "name": "Cursor click ripple",
+  "family": "Transition & Motion",
+  "purpose": [
+    "click",
+    "call to action",
+    "interaction"
+  ],
+  "energy": "steady",
+  "tags": [
+    "cursor",
+    "click",
+    "ripple",
+    "interaction",
+    "mouse",
+    "button"
+  ],
+  "one_line": "A cursor darts to the button, presses it (both compress together), and three rings ping outward from the click point.",
+  "aliases": [
+    "awesome-ai-motion:cursor-click"
+  ]
+}

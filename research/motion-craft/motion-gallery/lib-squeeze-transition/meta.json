@@ -1,0 +1,21 @@
+{
+  "name": "Squeeze transition",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Emphasis"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "css",
+  "tags": [
+    "squeeze transition",
+    "accordion fold",
+    "transitions",
+    "squeeze",
+    "scalex",
+    "fold",
+    "edge"
+  ],
+  "one_line": "The invite scene is squashed sideways into its right edge like a closing door, and the stats scene unfolds back out from that same edge."
+}

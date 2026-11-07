@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-squeeze-transition</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; overflow: hidden; }
+  .panel { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  .panel.pa { background: #ece7da; }
+  .panel.pb { background: #f6f3ec; }
+  .card { position: absolute; left: 264px; top: 110px; width: 640px; height: 360px; background: #fffdf8; border: 2px solid #1d1c1a; border-radius: 24px; }
+  .card .lab { position: absolute; left: 56px; top: 48px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  .card .h1 { position: absolute; left: 56px; top: 80px; font-size: 56px; font-weight: 700; line-height: 64px; white-space: nowrap; }
+  .card .sub { position: absolute; left: 56px; top: 160px; font-size: 22px; color: #6d6a63; white-space: nowrap; }
+  .card .btn { position: absolute; left: 56px; top: 240px; width: 200px; height: 60px; border-radius: 14px; background: #f2c200; border: 2px solid #1d1c1a;
+    font-size: 20px; font-weight: 700; line-height: 56px; text-align: center; color: #1d1c1a; }
+  .card.b .h1 { font-size: 96px; line-height: 104px; top: 74px; font-variant-numeric: tabular-nums; }
+  .card.b .sub { top: 190px; }
+  .card .av { position: absolute; top: 44px; width: 56px; height: 56px; border-radius: 50%; border: 2px solid #1d1c1a; background: #ece7da;
+    font-size: 18px; font-weight: 700; line-height: 52px; text-align: center; will-change: transform; }
+  .card .av.v1 { left: 396px; } .card .av.v2 { left: 456px; } .card .av.v3 { left: 516px; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+
+  #A, #B { will-change: transform, filter; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div class="panel pb" style="background:#f0ebe0" id="B" data-layout-allow-overlap data-layout-allow-overflow><div class="card b" data-layout-allow-overlap data-layout-allow-occlusion><div class="lab" data-layout-allow-overlap data-layout-allow-occlusion>This month</div><div class="h1" data-layout-allow-overlap data-layout-allow-occlusion>12,480</div><div class="sub" data-layout-allow-overlap data-layout-allow-occlusion>invites sent</div><div class="av v1" data-layout-allow-overlap data-layout-allow-occlusion>JD</div><div class="av v2" data-layout-allow-overlap data-layout-allow-occlusion>SK</div><div class="av v3" data-layout-allow-overlap data-layout-allow-occlusion>ML</div></div></div>
+      <div class="panel pa" id="A" data-layout-allow-overlap data-layout-allow-overflow><div class="card a" data-layout-allow-overlap data-layout-allow-occlusion><div class="lab" data-layout-allow-overlap data-layout-allow-occlusion>Orbit</div><div class="h1" data-layout-allow-overlap data-layout-allow-occlusion>Invite your team</div><div class="sub" data-layout-allow-overlap data-layout-allow-occlusion>3 seats left on this plan</div><div class="btn" data-layout-allow-overlap data-layout-allow-occlusion>Continue</div></div></div>
+    </div>
+    <div id="label"><span class="l-name">Squeeze transition</span><span class="l-sep">·</span><span>Transitions</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const A_HTML = "<div class=\"card a\" data-layout-allow-overlap data-layout-allow-occlusion><div class=\"lab\" data-layout-allow-overlap data-layout-allow-occlusion>Orbit</div><div class=\"h1\" data-layout-allow-overlap data-layout-allow-occlusion>Invite your team</div><div class=\"sub\" data-layout-allow-overlap data-layout-allow-occlusion>3 seats left on this plan</div><div class=\"btn\" data-layout-allow-overlap data-layout-allow-occlusion>Continue</div></div>";
+  const B_HTML = "<div class=\"card b\" data-layout-allow-overlap data-layout-allow-occlusion><div class=\"lab\" data-layout-allow-overlap data-layout-allow-occlusion>This month</div><div class=\"h1\" data-layout-allow-overlap data-layout-allow-occlusion>12,480</div><div class=\"sub\" data-layout-allow-overlap data-layout-allow-occlusion>invites sent</div><div class=\"av v1\" data-layout-allow-overlap data-layout-allow-occlusion>JD</div><div class=\"av v2\" data-layout-allow-overlap data-layout-allow-occlusion>SK</div><div class=\"av v3\" data-layout-allow-overlap data-layout-allow-occlusion>ML</div></div>";
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+  // Second beat: the three avatars on the new card pop in so the clip keeps moving after the transition.
+  function avatars(at) {
+    tl.fromTo(".av.v1", { scale: 0.4, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.5, ease: "back.out(1.8)" }, at);
+    tl.fromTo(".av.v2", { scale: 0.4, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.5, ease: "back.out(1.8)" }, at + 0.1);
+    tl.fromTo(".av.v3", { scale: 0.4, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.5, ease: "back.out(1.8)" }, at + 0.2);
+  }
+
+  // Squeeze transition: A's scaleX goes 1 to 0 about its right edge over 0.4 s (power2.in) and darkens a little as it
+  // compresses; B's scaleX goes 0 to 1 from the same edge over 0.45 s (power2.out). Transform origins are set in the from-state.
+  const T0 = 0.6;
+  tl.fromTo("#A", { scaleX: 1, transformOrigin: "100% 50%", filter: "brightness(1)" }, { scaleX: 0, filter: "brightness(0.82)", duration: 0.4, ease: "power2.in" }, T0);
+  tl.fromTo("#B", { scaleX: 0, transformOrigin: "100% 50%", filter: "brightness(0.82)" }, { scaleX: 1, filter: "brightness(1)", duration: 0.45, ease: "power2.out" }, T0 + 0.4);
+  avatars(2.05);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+{
+  "name": "Stereo viewer swap",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Branding"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "webgl",
+  "tags": [
+    "stereo viewer swap",
+    "transitions",
+    "viewer",
+    "window",
+    "rounded",
+    "split",
+    "3d",
+    "rotate",
+    "dark"
+  ],
+  "one_line": "The invite scene shrinks into a rounded window, splits into two halves that swing apart into the dark, and after a short gap the stats scene opens as a window and grows back to full size."
+}

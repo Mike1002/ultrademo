@@ -1,0 +1,21 @@
+{
+  "name": "Audio waveform",
+  "family": "Data",
+  "purpose": [
+    "Comparison",
+    "Data evidence"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "canvas",
+  "tags": [
+    "audio waveform",
+    "data",
+    "waveform",
+    "audio",
+    "playhead",
+    "scroll",
+    "svg"
+  ],
+  "one_line": "A baked waveform scrolls right to left under a fixed yellow playhead, the played part in ink and the part still to come in grey, while the clock ticks from 0:12."
+}

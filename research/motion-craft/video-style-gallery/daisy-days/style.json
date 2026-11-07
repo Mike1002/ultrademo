@@ -1,0 +1,125 @@
+{
+  "id": "daisy-days",
+  "name": "Daisy Days",
+  "canvas": "light",
+  "mood": [
+    "sunny",
+    "rounded",
+    "cheerful"
+  ],
+  "suits": [
+    "consumer apps",
+    "kids and family products",
+    "wellness"
+  ],
+  "palette": {
+    "bg": "#F5F0E6",
+    "bg_alt": "#F5F0E6",
+    "surface": "#FFFFFF",
+    "surface_2": "#FDE68A",
+    "ink": "#2D2D2D",
+    "muted": "#6B6B6B",
+    "line": "#2D2D2D",
+    "accent": "#F8635F",
+    "accent_2": "#7ECDC0",
+    "on_accent": "#FFFFFF",
+    "shadow": "#2D2D2D",
+    "pill_bg": "#FDE68A",
+    "pill_ink": "#2D2D2D",
+    "pill_dot": "#7ECDC0",
+    "thumb": "#A8D8F0",
+    "term_bg": "#2D2D2D",
+    "term_ink": "#F5F0E6",
+    "term_muted": "#9a9a9a",
+    "term_line": "#2D2D2D",
+    "term_prompt": "#FDE68A",
+    "term_ok": "#A8E6CF"
+  },
+  "type": {
+    "display": {
+      "family": "Fredoka One",
+      "weight": 600,
+      "hook_px": 92,
+      "stat_px": 236,
+      "mark_px": 132,
+      "transform": "none",
+      "tracking": "0.02em",
+      "line_height": "1.1",
+      "style": "normal",
+      "generic": "sans",
+      "card_title_px": 30
+    },
+    "body": {
+      "family": "Quicksand",
+      "weight": 600,
+      "generic": "sans"
+    },
+    "mono": {
+      "family": "Quicksand",
+      "weight": 700
+    },
+    "label": {
+      "family": "Quicksand",
+      "weight": 700,
+      "transform": "uppercase",
+      "tracking": "0.1em",
+      "generic": "sans",
+      "px": 15
+    }
+  },
+  "easing": {
+    "entry": "back.out(1.6)",
+    "exit": "power2.in",
+    "ambient": "sine.inOut",
+    "pop": "back.out(2.2)",
+    "counter": "power2.out",
+    "wipe": null
+  },
+  "rhythm": {
+    "energy": "high",
+    "entrance": 0.5,
+    "stagger": 0.07
+  },
+  "transition": {
+    "kind": "iris",
+    "duration": 0.55,
+    "flash": false,
+    "band": false
+  },
+  "text_animation": "letters",
+  "accent_word": "none",
+  "layout": "center",
+  "atmosphere": [
+    "dots:30"
+  ],
+  "shape": {
+    "radius_card": 28,
+    "radius_button": 999,
+    "radius_pill": 999,
+    "border": "bold",
+    "border_px": 3,
+    "shadow": "hard",
+    "rule_px": 8,
+    "hard_offset": 6
+  },
+  "stat_colour": "accent",
+  "direction_settings": {
+    "energy": "high",
+    "density": "dense",
+    "ground": "light",
+    "depth": "flat",
+    "camera": "locked",
+    "type": "display",
+    "texture": "clean",
+    "colour": "full-palette",
+    "product_presence": "illustrated",
+    "sound": "scored",
+    "voice": "spoken-headline"
+  },
+  "notes": "Sunny-garden pastels with charcoal 3 px outlines and hard offset shadows, Fredoka against Quicksand, bouncy letters and iris cuts.",
+  "transitions": {
+    "between_moments": "iris",
+    "duration_s": 0.55,
+    "text": "letters"
+  }
+}

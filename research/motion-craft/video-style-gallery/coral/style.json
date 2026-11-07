@@ -1,0 +1,124 @@
+{
+  "id": "coral",
+  "name": "Coral",
+  "canvas": "light",
+  "mood": [
+    "bold",
+    "graphic",
+    "warm"
+  ],
+  "suits": [
+    "brand launches",
+    "agency showreels",
+    "consumer products"
+  ],
+  "palette": {
+    "bg": "#F5F0E8",
+    "bg_alt": "#E85D5D",
+    "surface": "#FFFFFF",
+    "surface_2": "#E8E0D4",
+    "ink": "#1A1A1A",
+    "muted": "#6B6B6B",
+    "line": "rgba(26,26,26,0.25)",
+    "accent": "#E85D5D",
+    "accent_2": "#D44A4A",
+    "on_accent": "#FFFFFF",
+    "pill_bg": "#1A1A1A",
+    "pill_ink": "#F5F0E8",
+    "pill_dot": "#E85D5D",
+    "term_bg": "#1A1A1A",
+    "term_ink": "#F5F0E8",
+    "term_muted": "#8a8a8a",
+    "term_line": "#1A1A1A",
+    "term_prompt": "#E85D5D",
+    "term_ok": "#E85D5D"
+  },
+  "type": {
+    "display": {
+      "family": "Bebas Neue",
+      "weight": 400,
+      "hook_px": 124,
+      "stat_px": 280,
+      "mark_px": 160,
+      "transform": "uppercase",
+      "tracking": "0.04em",
+      "line_height": "0.9",
+      "style": "normal",
+      "generic": "sans",
+      "card_title_px": 34,
+      "card_title_tracking": "0.03em"
+    },
+    "body": {
+      "family": "Inter",
+      "weight": 400,
+      "generic": "sans"
+    },
+    "mono": {
+      "family": "Inter",
+      "weight": 500
+    },
+    "label": {
+      "family": "Inter",
+      "weight": 700,
+      "transform": "uppercase",
+      "tracking": "0.3em",
+      "generic": "sans",
+      "px": 12
+    }
+  },
+  "easing": {
+    "entry": "expo.out",
+    "exit": "power3.in",
+    "ambient": "none",
+    "pop": "expo.out",
+    "counter": "power3.out",
+    "wipe": "power4.inOut"
+  },
+  "rhythm": {
+    "energy": "brisk",
+    "entrance": 0.45,
+    "stagger": 0.06
+  },
+  "transition": {
+    "kind": "wipe",
+    "duration": 0.45,
+    "flash": false,
+    "band": true,
+    "band_colour": "#1A1A1A"
+  },
+  "text_animation": "rise-mask",
+  "accent_word": "none",
+  "layout": "center",
+  "atmosphere": [
+    "hatch"
+  ],
+  "shape": {
+    "radius_card": 0,
+    "radius_button": 0,
+    "radius_pill": 0,
+    "border": "none",
+    "border_px": 0,
+    "shadow": "none",
+    "rule_px": 8
+  },
+  "stat_colour": "accent",
+  "direction_settings": {
+    "energy": "brisk",
+    "density": "balanced",
+    "ground": "alternating",
+    "depth": "flat",
+    "camera": "locked",
+    "type": "loud",
+    "texture": "clean",
+    "colour": "one-accent",
+    "product_presence": "illustrated",
+    "sound": "beat-driven",
+    "voice": "spoken-headline"
+  },
+  "notes": "Three surfaces (coral fire, ink black, warm cream), Bebas Neue tracked uppercase, a 45-degree hatch, zero radius; the card and terminal moments sit on the coral region.",
+  "transitions": {
+    "between_moments": "wipe",
+    "duration_s": 0.45,
+    "text": "rise-mask"
+  }
+}

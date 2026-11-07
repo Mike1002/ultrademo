@@ -1,0 +1,22 @@
+{
+  "name": "Ribbon-to-particle transition",
+  "family": "Data",
+  "purpose": [
+    "Explanation",
+    "Comparison"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "svg",
+  "tags": [
+    "flow-band-to-particle decomposition",
+    "data",
+    "flow",
+    "ribbon",
+    "particles",
+    "unit dots",
+    "cross-fade",
+    "time-driven"
+  ],
+  "one_line": "A yellow flow band between an invites column and an accepted column dissolves into forty travelling dots, one per ten invites, that stream along the same path, then the band re-forms as the dots fade."
+}

@@ -1,0 +1,115 @@
+{
+  "id": "broadside",
+  "name": "Broadside",
+  "canvas": "dark",
+  "mood": [
+    "graphic",
+    "lowercase",
+    "direct"
+  ],
+  "suits": [
+    "bold statements",
+    "developer launches",
+    "manifesto-style videos"
+  ],
+  "palette": {
+    "bg": "#111111",
+    "bg_alt": "#E85D26",
+    "surface": "#1A1A18",
+    "surface_2": "#282826",
+    "ink": "#F0ECE5",
+    "muted": "#888880",
+    "line": "#282826",
+    "accent": "#E85D26",
+    "accent_2": "#E85D26",
+    "on_accent": "#111111",
+    "pill_bg": "#282826",
+    "pill_ink": "#F0ECE5",
+    "pill_dot": "#E85D26"
+  },
+  "type": {
+    "display": {
+      "family": "Barlow",
+      "weight": 900,
+      "hook_px": 110,
+      "stat_px": 270,
+      "mark_px": 150,
+      "transform": "lowercase",
+      "tracking": "-0.04em",
+      "line_height": "0.9",
+      "style": "normal",
+      "generic": "sans",
+      "card_title_px": 30,
+      "card_title_tracking": "-0.02em"
+    },
+    "body": {
+      "family": "Barlow",
+      "weight": 400,
+      "generic": "sans"
+    },
+    "mono": {
+      "family": "IBM Plex Mono",
+      "weight": 500
+    },
+    "label": {
+      "family": "IBM Plex Mono",
+      "weight": 500,
+      "transform": "uppercase",
+      "tracking": "0.14em",
+      "generic": "sans",
+      "px": 13
+    }
+  },
+  "easing": {
+    "entry": "expo.out",
+    "exit": "power3.in",
+    "ambient": "none",
+    "pop": "expo.out",
+    "counter": "power3.out",
+    "wipe": "expo.inOut"
+  },
+  "rhythm": {
+    "energy": "brisk",
+    "entrance": 0.45,
+    "stagger": 0.06
+  },
+  "transition": {
+    "kind": "push",
+    "duration": 0.4,
+    "flash": false,
+    "band": false
+  },
+  "text_animation": "rise-mask",
+  "accent_word": "none",
+  "layout": "left",
+  "atmosphere": [],
+  "shape": {
+    "radius_card": 0,
+    "radius_button": 0,
+    "radius_pill": 0,
+    "border": "hairline",
+    "border_px": 1,
+    "shadow": "none",
+    "rule_px": 8
+  },
+  "stat_colour": "accent",
+  "direction_settings": {
+    "energy": "brisk",
+    "density": "sparse",
+    "ground": "alternating",
+    "depth": "flat",
+    "camera": "locked",
+    "type": "loud",
+    "texture": "clean",
+    "colour": "one-accent",
+    "product_presence": "illustrated",
+    "sound": "beat-driven",
+    "voice": "spoken-headline"
+  },
+  "notes": "Massive lowercase Barlow 900 as a graphic primitive, two registers (ink black and fire orange); the card and terminal moments switch to the orange register.",
+  "transitions": {
+    "between_moments": "push",
+    "duration_s": 0.4,
+    "text": "rise-mask"
+  }
+}

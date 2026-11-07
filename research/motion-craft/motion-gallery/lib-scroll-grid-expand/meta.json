@@ -1,0 +1,23 @@
+{
+  "name": "Scroll grid expansion",
+  "family": "UI Demo",
+  "purpose": [
+    "Feedback",
+    "Emphasis"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "gsap",
+  "tags": [
+    "sticky grid expansion",
+    "ui",
+    "grid",
+    "pinned",
+    "columns",
+    "expand",
+    "scale",
+    "caption",
+    "key scene"
+  ],
+  "one_line": "A grid of six product frames rises into place column by column, the whole grid expands, a caption line appears beneath it, and then the other frames fade back so one key frame stands out."
+}

@@ -1,0 +1,19 @@
+{
+  "name": "Reactive displacement",
+  "family": "Transition & Motion",
+  "purpose": [
+    "transition",
+    "collision",
+    "swap"
+  ],
+  "energy": "high",
+  "tags": [
+    "transition",
+    "physics",
+    "collision",
+    "displacement",
+    "spring",
+    "causal"
+  ],
+  "one_line": "A new card flies in tilted from the right and knocks the old card off to the left, then plants with a small wobble."
+}

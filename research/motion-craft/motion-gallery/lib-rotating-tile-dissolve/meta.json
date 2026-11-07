@@ -1,0 +1,21 @@
+{
+  "name": "Rotating tile dissolve",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Mood"
+  ],
+  "energy": "high",
+  "tier": 3,
+  "runtime": "webgl",
+  "tags": [
+    "rotating tiled dissolve",
+    "transitions",
+    "tiles",
+    "rotate",
+    "grid",
+    "pattern",
+    "shrink"
+  ],
+  "one_line": "The invite scene repeats as a grid of small tiles that turns ninety degrees around the stage centre and swells, while the stats scene fades in beneath and the tiles shrink away from the middle outward."
+}

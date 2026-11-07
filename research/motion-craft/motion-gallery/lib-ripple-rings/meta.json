@@ -1,0 +1,21 @@
+{
+  "name": "Ripple rings",
+  "family": "Loop & Ambient",
+  "purpose": [
+    "Feedback",
+    "Mood"
+  ],
+  "energy": "calm",
+  "tier": 2,
+  "runtime": "gsap",
+  "tags": [
+    "expanding ripple rings",
+    "ripple ring",
+    "ping",
+    "expanding ring",
+    "loop",
+    "concentric",
+    "scale and fade"
+  ],
+  "one_line": "Three thin rings grow out from a yellow dot in turn, 0.4 s apart, fading as they expand, so the dot reads as a signal spreading outward."
+}

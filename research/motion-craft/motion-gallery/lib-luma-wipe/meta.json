@@ -1,0 +1,22 @@
+{
+  "name": "Luma wipe",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Emphasis"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "webgl",
+  "tags": [
+    "luma map wipe",
+    "luma image dissolve",
+    "gradient wipe",
+    "transitions",
+    "brightness order",
+    "tile grid",
+    "clip-path",
+    "threshold"
+  ],
+  "one_line": "A 16 by 9 grid of tiles swaps the invite card for the stats scene in brightness order: the light ground and card surface go first, the dark headline and the yellow button hold out last, then the new rows settle in."
+}

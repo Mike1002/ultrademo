@@ -1,0 +1,23 @@
+{
+  "name": "Audio spectrum visualizer",
+  "family": "Data",
+  "purpose": [
+    "Data evidence",
+    "Comparison"
+  ],
+  "energy": "high",
+  "tier": 3,
+  "runtime": "canvas",
+  "tags": [
+    "audio spectrum visualizer",
+    "audio spectrum bars",
+    "audio spectrum",
+    "spectrum ribbon and waveform",
+    "data",
+    "bars",
+    "audio",
+    "bands",
+    "canvas"
+  ],
+  "one_line": "Thirty-two frequency bars bounce to a baked band table under a now-playing title, with a yellow cap riding whichever bar is loudest at that moment."
+}

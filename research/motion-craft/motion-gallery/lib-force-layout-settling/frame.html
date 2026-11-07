@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-force-layout-settling</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  #chart { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  text { font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .cap { font-size: 13px; letter-spacing: .06em; text-transform: uppercase; fill: #6d6a63; }
+  .state { font-size: 22px; fill: #6d6a63; }
+  .link { stroke: #a19d93; stroke-width: 3; }
+  .node circle { fill: #fffdf8; stroke: #1d1c1a; stroke-width: 3; }
+  .node.hub circle { fill: #f2c200; }
+  .node text { font-size: 17px; font-weight: 700; fill: #1d1c1a; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <svg id="chart" viewBox="0 0 1168 580" width="1168" height="580">
+        <text class="cap" x="60" y="40">Team graph · 12 members</text>
+        <text class="state" id="state" x="1108" y="44" text-anchor="end">settling</text>
+        <g id="links"></g>
+        <g id="nodes"></g>
+      </svg>
+    </div>
+    <div id="label"><span class="l-name">Force layout settling</span><span class="l-sep">·</span><span>Data</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const NS = "http://www.w3.org/2000/svg";
+  const N = 12, CX = 560, CY = 310, R = 26;
+  const names = ["JD", "SK", "ML", "AR", "TP", "NB", "LC", "EH", "RW", "OM", "PK", "DV"];
+  const links = [[0,1],[0,2],[0,3],[0,4],[1,5],[1,6],[2,7],[3,8],[3,9],[4,10],[4,11],[5,6],[8,9]];
+  function rand(seed){ let a = seed >>> 0 || 1; return function(){ a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+  // Fixed-tick force simulation baked up front: 300 ticks, alpha 1 -> ~0.001, alpha decay 0.012, velocity decay 0.6,
+  // many-body repulsion, link springs, a weak centring force and a per-tick speed cap. 
+  // The knot: a 20 px radial sketch of the tree (hub, four children, their children) with seeded jitter, so the relaxation can untangle.
+  const KNOT = 20, JIT = 20, ANG = [0, -2.2, -0.6, 1.0, 2.4, -2.5, -1.9, -0.6, 0.7, 1.3, 2.1, 2.7];
+  function solve(ticks, charge, linkD, linkS, centerS, decay, vdecay, cap) {
+    const px = [], py = [], vx = [], vy = [], frames = []; const rnd = rand(2);   // seeded mulberry32 jitter
+    for (let i = 0; i < N; i++) {
+      const ang = ANG[i], rad = i === 0 ? 0 : (i <= 4 ? 1 : 2);
+      px.push(CX + Math.cos(ang) * rad * KNOT + (rnd() - 0.5) * JIT); py.push(CY + Math.sin(ang) * rad * KNOT + (rnd() - 0.5) * JIT); vx.push(0); vy.push(0);
+    }
+    let alpha = 1;
+    for (let k = 0; k < ticks; k++) {
+      frames.push(px.map((x, i) => [x, py[i]]));
+      alpha += (0 - alpha) * decay;
+      for (let i = 0; i < N; i++) for (let j = i + 1; j < N; j++) {
+        let dx = px[j] - px[i], dy = py[j] - py[i]; let d2 = dx * dx + dy * dy; if (d2 < 1) { dx = 1; dy = 0; d2 = 1; }
+        const d = Math.sqrt(d2), f = charge * alpha / d2;
+        vx[i] -= dx / d * f; vy[i] -= dy / d * f; vx[j] += dx / d * f; vy[j] += dy / d * f;
+      }
+      for (const [a, b] of links) {
+        const dx = px[b] - px[a], dy = py[b] - py[a]; const d = Math.sqrt(dx * dx + dy * dy) || 1;
+        const l = (d - linkD) / d * alpha * linkS;
+        vx[a] += dx * l / 2; vy[a] += dy * l / 2; vx[b] -= dx * l / 2; vy[b] -= dy * l / 2;
+      }
+      for (let i = 0; i < N; i++) {
+        vx[i] += (CX - px[i]) * centerS * alpha; vy[i] += (CY - py[i]) * centerS * alpha;
+        vx[i] *= (1 - vdecay); vy[i] *= (1 - vdecay);
+        const sp = Math.hypot(vx[i], vy[i]); if (sp > cap) { vx[i] *= cap / sp; vy[i] *= cap / sp; }
+        px[i] += vx[i]; py[i] += vy[i];
+      }
+    }
+    return frames;
+  }
+  const frames = solve(300, 9000, 230, 0.3, 0.01, 0.012, 0.6, 3);
+  const linkEls = links.map(() => { const l = document.createElementNS(NS, "line"); l.setAttribute("class", "link"); document.getElementById("links").appendChild(l); return l; });
+  const nodeEls = names.map((n, i) => {
+    const g = document.createElementNS(NS, "g"); g.setAttribute("class", "node" + (i === 0 ? " hub" : ""));
+    const c = document.createElementNS(NS, "circle"); c.setAttribute("r", R);
+    const t = document.createElementNS(NS, "text"); t.setAttribute("text-anchor", "middle"); t.setAttribute("dy", "6"); t.textContent = n;
+    g.appendChild(c); g.appendChild(t); document.getElementById("nodes").appendChild(g); return { c, t };
+  });
+  const T0 = 0.15, T1 = 2.7;   // ticks 0..299 play linearly across 0.15-2.7 s
+  function renderAt(t) {
+    const tick = Math.max(0, Math.min(299, (t - T0) / (T1 - T0) * 299));
+    const i0 = Math.floor(tick), i1 = Math.min(299, i0 + 1), p = tick - i0;
+    const pos = frames[i0].map((a, i) => [a[0] + (frames[i1][i][0] - a[0]) * p, a[1] + (frames[i1][i][1] - a[1]) * p]);
+    links.forEach(([a, b], k) => { const l = linkEls[k]; l.setAttribute("x1", pos[a][0]); l.setAttribute("y1", pos[a][1]); l.setAttribute("x2", pos[b][0]); l.setAttribute("y2", pos[b][1]); });
+    const pulse = t > 2.4 ? Math.sin(Math.PI * Math.min(1, (t - 2.4) / 0.5)) * 6 : 0;   // the hub breathes once when the layout has settled
+    nodeEls.forEach((n, i) => { n.c.setAttribute("cx", pos[i][0]); n.c.setAttribute("cy", pos[i][1]); n.c.setAttribute("r", i === 0 ? R + pulse : R); n.t.setAttribute("x", pos[i][0]); n.t.setAttribute("y", pos[i][1]); });
+    document.getElementById("state").textContent = t < 2.4 ? "settling · tick " + Math.round(tick) : "settled";
+  }
+  renderAt(0);
+  const tl = gsap.timeline({ paused: true });
+  tl.fromTo({ k: 0 }, { k: 0 }, { k: 1, duration: 3, ease: "none", onUpdate: () => renderAt(tl.time()) }, 0);
+  const baseRender = tl.render; tl.render = function () { const r = baseRender.apply(this, arguments); renderAt(this.time()); return r; };
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

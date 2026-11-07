@@ -1,0 +1,23 @@
+{
+  "name": "Stat bars and fills",
+  "family": "Data & Stats",
+  "purpose": [
+    "data",
+    "proof",
+    "emphasis"
+  ],
+  "energy": "steady",
+  "tags": [
+    "data",
+    "stats",
+    "chart",
+    "bars",
+    "progress",
+    "ring",
+    "stars",
+    "rating",
+    "infographic",
+    "number"
+  ],
+  "one_line": "Five bars grow up from the baseline one after another with the last one in yellow, while a big percentage counts up and a progress bar fills beside it to the same beat."
+}

@@ -1,0 +1,123 @@
+{
+  "id": "paper-marker",
+  "name": "Paper Marker",
+  "canvas": "light",
+  "mood": [
+    "smart",
+    "hand-made",
+    "punchy"
+  ],
+  "suits": [
+    "explainers",
+    "launches",
+    "hand-annotated product stories"
+  ],
+  "palette": {
+    "bg": "#f4efe4",
+    "bg_alt": "#141210",
+    "surface": "#fbf8f1",
+    "surface_2": "#ebe5d8",
+    "ink": "#1c1a17",
+    "muted": "#2b59c3",
+    "line": "#1c1a17",
+    "accent": "#e2412b",
+    "accent_2": "#ffd23f",
+    "on_accent": "#f4efe4",
+    "hi": "#ffd23f",
+    "pill_bg": "#ffd23f",
+    "pill_ink": "#1c1a17",
+    "pill_dot": "#1c1a17",
+    "term_bg": "#141210",
+    "term_ink": "#f4efe4",
+    "term_muted": "#8f887a",
+    "term_line": "#1c1a17",
+    "term_prompt": "#ffd23f",
+    "term_ok": "#ffd23f"
+  },
+  "type": {
+    "display": {
+      "family": "Archivo Black",
+      "weight": 400,
+      "hook_px": 110,
+      "stat_px": 260,
+      "mark_px": 144,
+      "transform": "none",
+      "tracking": "-0.03em",
+      "line_height": "0.95",
+      "style": "normal",
+      "generic": "sans",
+      "card_title_px": 26
+    },
+    "body": {
+      "family": "Archivo",
+      "weight": 500,
+      "generic": "sans"
+    },
+    "mono": {
+      "family": "JetBrains Mono",
+      "weight": 500
+    },
+    "label": {
+      "family": "Caveat",
+      "weight": 700,
+      "transform": "none",
+      "tracking": "0",
+      "generic": "sans",
+      "px": 24
+    }
+  },
+  "easing": {
+    "entry": "expo.out",
+    "exit": "power2.in",
+    "ambient": "none",
+    "pop": "back.out(2.5)",
+    "counter": "power3.out",
+    "wipe": null
+  },
+  "rhythm": {
+    "energy": "high",
+    "entrance": 0.45,
+    "stagger": 0.16
+  },
+  "transition": {
+    "kind": "cut",
+    "duration": 0,
+    "flash": false,
+    "band": false
+  },
+  "text_animation": "slam",
+  "accent_word": "highlight",
+  "layout": "center",
+  "atmosphere": [
+    "dots:8"
+  ],
+  "shape": {
+    "radius_card": 0,
+    "radius_button": 0,
+    "radius_pill": 0,
+    "border": "bold",
+    "border_px": 3,
+    "shadow": "none",
+    "rule_px": 8
+  },
+  "stat_colour": "accent",
+  "direction_settings": {
+    "energy": "high",
+    "density": "balanced",
+    "ground": "alternating",
+    "depth": "flat",
+    "camera": "locked",
+    "type": "loud",
+    "texture": "textured",
+    "colour": "two-accent",
+    "product_presence": "illustrated",
+    "sound": "beat-driven",
+    "voice": "spoken-headline"
+  },
+  "notes": "Warm paper and ink-black cut hard against each other, Archivo Black lines that slam in, a yellow highlighter behind the accent word, Caveat marker notes.",
+  "transitions": {
+    "between_moments": "cut",
+    "duration_s": 0,
+    "text": "slam"
+  }
+}

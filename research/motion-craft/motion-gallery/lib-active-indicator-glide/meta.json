@@ -1,0 +1,21 @@
+{
+  "name": "Active indicator glide",
+  "family": "UI Demo",
+  "purpose": [
+    "Feedback"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "css",
+  "tags": [
+    "tabs indicator",
+    "active indicator glide",
+    "sliding active indicator",
+    "ui",
+    "tabs",
+    "underline",
+    "selection",
+    "cursor"
+  ],
+  "one_line": "A yellow underline glides along a tab row to each tab the cursor clicks, stretching to the new tab's width while the panel below crossfades; three tab changes in a row."
+}

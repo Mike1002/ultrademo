@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>asr-keyword-glow</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  .phrase { position: absolute; left: 0; top: 0; width: 1280px; height: 720px; display: flex; flex-wrap: wrap;
+    align-items: center; justify-content: center; gap: 0 52px; font-size: 88px; font-weight: 800; letter-spacing: -0.02em; }
+  .word { display: inline-block; transform-origin: 50% 50%; text-shadow: 0 0 0 rgba(242,194,0,0); color: #b9b4a8; will-change: transform; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div class="phrase" id="phrase">
+      <span class="word" data-word="every">Every</span>
+      <span class="word" data-word="frame">frame</span>
+      <span class="word" data-word="is">is</span>
+      <span class="word brand" data-word="code">code.</span>
+    </div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true });
+  // Karaoke style: inactive words dim, the spoken word brightens, grows and glows; the last word sustains ~2x.
+  // Baked per-word windows (seconds, monotonic, non-overlapping) stand in for a word-level transcript.
+  const TIMINGS = {
+    every: { start: 0.15, end: 0.45 },
+    frame: { start: 0.60, end: 0.90 },
+    is:    { start: 1.05, end: 1.25 },
+    code:  { start: 1.40, end: 2.10 },
+  };
+  const ATTACK_DUR = 0.12, RELEASE = 0.35, REST_LEVEL = 0.2, MAX_BLUR = 40, MAX_SCALE_BOOST = 0.2;
+  const REST_RGB = { r: 185, g: 180, b: 168 }, ACTIVE_RGB = { r: 29, g: 28, b: 26 };
+  function envelope(time, start, end) {
+    if (time < start) return 0;
+    if (time < end) return Math.min((time - start) / ATTACK_DUR, 1);
+    const releaseEnd = end + RELEASE;
+    if (time < releaseEnd) return 1 - ((time - end) / RELEASE) * (1 - REST_LEVEL);
+    return REST_LEVEL;
+  }
+  const lerp = (a, b, t) => Math.round(a + (b - a) * t);
+  const words = Array.from(document.querySelectorAll(".word"));
+  // One driver, all words: a pure function of timeline time.
+  function renderAt(t) {
+    words.forEach((el) => {
+      const timing = TIMINGS[el.dataset.word];
+      const env = envelope(t, timing.start, timing.end);
+      el.style.textShadow = `0 0 ${MAX_BLUR * env}px rgba(242,194,0,${(0.95 * env).toFixed(3)})`;
+      el.style.transform = `scale(${1 + MAX_SCALE_BOOST * env})`;
+      el.style.color = `rgb(${lerp(REST_RGB.r, ACTIVE_RGB.r, env)}, ${lerp(REST_RGB.g, ACTIVE_RGB.g, env)}, ${lerp(REST_RGB.b, ACTIVE_RGB.b, env)})`;
+    });
+  }
+  renderAt(0);
+  tl.to({ k: 0 }, { k: 1, duration: 3, ease: "none", onUpdate: () => renderAt(tl.time()) }, 0);
+  const baseRender = tl.render;
+  tl.render = function () { const r = baseRender.apply(this, arguments); renderAt(this.time()); return r; };
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

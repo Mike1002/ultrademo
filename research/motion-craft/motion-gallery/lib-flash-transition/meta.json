@@ -1,0 +1,19 @@
+{
+  "name": "Flash transition",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Attention"
+  ],
+  "energy": "high",
+  "tier": 2,
+  "runtime": "gsap",
+  "tags": [
+    "overexposure flash",
+    "flash cut",
+    "exposure flash",
+    "light flash",
+    "transitions"
+  ],
+  "one_line": "A white flash covers the frame, the card scene is swapped for the number scene at the peak, and brightness recovers."
+}

@@ -1,0 +1,20 @@
+{
+  "name": "Waterfall accumulation",
+  "family": "Data",
+  "purpose": [
+    "Comparison",
+    "Data evidence"
+  ],
+  "energy": "steady",
+  "tier": 2,
+  "runtime": "svg",
+  "tags": [
+    "waterfall accumulation",
+    "data",
+    "svg attr",
+    "cumulative",
+    "connector",
+    "sequence"
+  ],
+  "one_line": "Bars rise one after another, each starting from the top of the previous running total with a short connector between them, the one yellow bar stepping down, until a final total bar lands."
+}

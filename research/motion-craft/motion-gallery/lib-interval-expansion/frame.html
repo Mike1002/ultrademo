@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-interval-expansion</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  #chart { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  text { font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .cap { font-size: 13px; letter-spacing: .06em; text-transform: uppercase; fill: #6d6a63; }
+  .tick { font-size: 18px; fill: #6d6a63; }
+  .grid { stroke: #e3ded2; stroke-width: 2; }
+  .axis { stroke: #1d1c1a; stroke-width: 2; }
+  .name { font-size: 24px; font-weight: 700; fill: #1d1c1a; }
+  .interval { stroke: #1d1c1a; stroke-width: 4; }
+  .cap-l, .cap-r { stroke: #1d1c1a; stroke-width: 4; }
+  .row.hi .interval, .row.hi .cap-l, .row.hi .cap-r { stroke: #1d1c1a; stroke-width: 6; }
+  .estimate { fill: #fffdf8; stroke: #1d1c1a; stroke-width: 3; }
+  .row.hi .estimate { fill: #f2c200; }
+  .row.hi .interval { stroke: #f2c200; }
+  .num { font-size: 18px; font-weight: 700; fill: #6d6a63; font-variant-numeric: tabular-nums; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <svg id="chart" viewBox="0 0 1168 580" width="1168" height="580">
+        <text class="cap" x="60" y="36">Invites per week · min to max range, dot = this week</text>
+        <g id="grid"></g>
+        <line class="axis" x1="360" y1="500" x2="1080" y2="500"/>
+        <g id="rows"></g>
+      </svg>
+    </div>
+    <div id="label"><span class="l-name">Interval expansion</span><span class="l-sep">·</span><span>Data</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const NS = "http://www.w3.org/2000/svg";
+  const mk = (tag, attrs, parent) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); parent.appendChild(e); return e; };
+  const X0 = 360, AW = 720, x = v => X0 + v / 100 * AW;          // axis 0-100 invites per week
+  const gridG = document.getElementById("grid");
+  [0, 25, 50, 75, 100].forEach(v => { mk("line", { class: "grid", x1: x(v), y1: 70, x2: x(v), y2: 500 }, gridG); const t = mk("text", { class: "tick", x: x(v), y: 532, "text-anchor": "middle" }, gridG); t.textContent = v; });
+  // Rows: estimate, min, max (and for the highlighted row, a wider range once more weeks are counted).
+  const rows = [
+    { name: "Jamie Dalton", est: 42, min: 28, max: 61 },
+    { name: "Sam Kim", est: 55, min: 40, max: 77 },
+    { name: "Morgan Lee", est: 30, min: 18, max: 44 },
+    { name: "Team", est: 64, min: 46, max: 86, min2: 31, max2: 98, hi: true }
+  ];
+  const rowsG = document.getElementById("rows"), CAP = 16;
+  const built = rows.map((r, i) => {
+    const y = 130 + i * 100;
+    const g = mk("g", { class: "row" + (r.hi ? " hi" : "") }, rowsG);
+    const n = mk("text", { class: "name", x: 60, y: y + 8 }, g); n.textContent = r.name;
+    const line = mk("line", { class: "interval", x1: x(r.est), y1: y, x2: x(r.est), y2: y }, g);
+    const cl = mk("line", { class: "cap-l", x1: x(r.est), y1: y - CAP / 2, x2: x(r.est), y2: y + CAP / 2 }, g);
+    const cr = mk("line", { class: "cap-r", x1: x(r.est), y1: y - CAP / 2, x2: x(r.est), y2: y + CAP / 2 }, g);
+    mk("circle", { class: "estimate", cx: x(r.est), cy: y, r: 13 }, g);
+    const nl = mk("text", { class: "num", x: x(r.min) - 14, y: y + 7, "text-anchor": "end", opacity: 0 }, g); nl.textContent = r.min;
+    const nr = mk("text", { class: "num", x: x(r.max) + 14, y: y + 7, opacity: 0 }, g); nr.textContent = r.max;
+    return { r, y, line, cl, cr, nl, nr };
+  });
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power2.inOut", duration: 0.65 } });
+  // Expansion: from the estimate point, both ends move at once to min and max over 650 ms; the end caps ride the ends; rows start 120 ms apart.
+  built.forEach((b, i) => {
+    const t0 = 0.3 + i * 0.12, e = x(b.r.est), lo = x(b.r.min), hi = x(b.r.max);
+    tl.fromTo(b.line, { attr: { x1: e, x2: e } }, { attr: { x1: lo, x2: hi } }, t0);
+    tl.fromTo(b.cl, { attr: { x1: e, x2: e } }, { attr: { x1: lo, x2: lo } }, t0);
+    tl.fromTo(b.cr, { attr: { x1: e, x2: e } }, { attr: { x1: hi, x2: hi } }, t0);
+    tl.fromTo(b.nl, { opacity: 0 }, { opacity: 1, duration: 0.25, ease: "power2.out" }, t0 + 0.55);
+    tl.fromTo(b.nr, { opacity: 0 }, { opacity: 1, duration: 0.25, ease: "power2.out" }, t0 + 0.55);
+  });
+  // Second beat: more weeks are counted, so the team range expands again around the same estimate; its numbers update.
+  const T = built[3], lo1 = x(T.r.min), hi1 = x(T.r.max), lo2 = x(T.r.min2), hi2 = x(T.r.max2);
+  tl.to(T.line, { attr: { x1: lo2, x2: hi2 } }, 2.0);
+  tl.to(T.cl, { attr: { x1: lo2, x2: lo2 } }, 2.0);
+  tl.to(T.cr, { attr: { x1: hi2, x2: hi2 } }, 2.0);
+  tl.to(T.nl, { attr: { x: lo2 - 14 } }, 2.0);
+  tl.to(T.nr, { attr: { x: hi2 + 14 } }, 2.0);
+  tl.to(T.nl, { opacity: 0.2, duration: 0.3, ease: "none" }, 2.0);
+  tl.to(T.nr, { opacity: 0.2, duration: 0.3, ease: "none" }, 2.0);
+  tl.to(T.nl, { opacity: 1, duration: 0.3, ease: "none" }, 2.35);
+  tl.to(T.nr, { opacity: 1, duration: 0.3, ease: "none" }, 2.35);
+  // The number labels are text content: swap them as a pure function of time so seeks land on the right value.
+  function renderAt(t) { const late = t >= 2.33; T.nl.textContent = late ? T.r.min2 : T.r.min; T.nr.textContent = late ? T.r.max2 : T.r.max; }
+  renderAt(0);
+  tl.fromTo({ k: 0 }, { k: 0 }, { k: 1, duration: 3, ease: "none", onUpdate: () => renderAt(tl.time()) }, 0);
+  const baseRender = tl.render; tl.render = function () { const r = baseRender.apply(this, arguments); renderAt(this.time()); return r; };
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

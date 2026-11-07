@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-anticipation</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  .row { position: absolute; left: 80px; width: 1008px; height: 150px; }
+  .row.a { top: 110px; } .row.b { top: 340px; }
+  .lab { position: absolute; left: 0; top: -26px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  .track { position: absolute; left: 0; right: 0; top: 100px; height: 2px; background: #e3ded2; }
+  .start { position: absolute; left: 127px; top: 56px; width: 2px; height: 88px; border-left: 2px dashed #a19d93; }
+  .end { position: absolute; left: 857px; top: 56px; width: 2px; height: 88px; border-left: 2px dashed #a19d93; }
+  .dot { position: absolute; left: 100px; top: 72px; width: 56px; height: 56px; border-radius: 50%; will-change: transform; }
+  .row.a .dot { background: #a19d93; }
+  .row.b .dot { background: #f2c200; border: 2px solid #1d1c1a; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div class="row a"><div class="lab" id="labA">Without anticipation</div><div class="track"></div><div class="start"></div><div class="end"></div>
+        <div class="dot" id="plain" data-layout-allow-overlap></div></div>
+      <div class="row b"><div class="lab" id="labB">With anticipation: a short wind-up back, then the launch</div><div class="track"></div><div class="start"></div><div class="end"></div>
+        <div class="dot" id="ready" data-layout-allow-overlap></div></div>
+    </div>
+    <div id="label"><span class="l-name">Anticipation</span><span class="l-sep">·</span><span>Principles</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+  tl.fromTo("#labA", { opacity: 0 }, { opacity: 1, duration: 0.4 }, 0.1);
+  tl.fromTo("#labB", { opacity: 0 }, { opacity: 1, duration: 0.4 }, 0.25);
+  // Out: the plain dot just goes. The ready dot pulls back 54 px and squashes (0.3 s), then launches.
+  tl.fromTo("#plain", { x: 0 }, { x: 730, duration: 0.65, ease: "power3.out" }, 0.9);
+  tl.fromTo("#ready", { x: 0, scaleX: 1, scaleY: 1 }, { x: -54, scaleX: 1.3, scaleY: 1 / 1.3, duration: 0.3, ease: "power2.inOut" }, 0.9);
+  tl.to("#ready", { x: 730, scaleX: 1, scaleY: 1, duration: 0.65, ease: "power3.out" }, 1.2);
+  // Back: same contrast in the other direction so the clip keeps moving.
+  tl.to("#plain", { x: 0, duration: 0.65, ease: "power3.out" }, 2.1);
+  tl.to("#ready", { x: 784, scaleX: 1.3, scaleY: 1 / 1.3, duration: 0.25, ease: "power2.inOut" }, 2.1);
+  tl.to("#ready", { x: 0, scaleX: 1, scaleY: 1, duration: 0.6, ease: "power3.out" }, 2.35);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

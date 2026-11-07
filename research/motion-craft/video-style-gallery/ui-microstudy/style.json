@@ -1,0 +1,126 @@
+{
+  "id": "ui-microstudy",
+  "name": "UI Microstudy",
+  "canvas": "dark",
+  "mood": [
+    "crisp",
+    "playful",
+    "precise"
+  ],
+  "suits": [
+    "component tours",
+    "product UI studies",
+    "design-system launches"
+  ],
+  "palette": {
+    "bg": "#7c4dff",
+    "bg_alt": "#0fb5a6",
+    "surface": "#ffffff",
+    "surface_2": "#f0f0f3",
+    "ink": "#ffffff",
+    "muted": "rgba(255,255,255,0.78)",
+    "line": "rgba(255,255,255,0.35)",
+    "accent": "#ffc82e",
+    "accent_2": "#ff5c93",
+    "on_accent": "#17171d",
+    "card_ink": "#17171d",
+    "card_muted": "#6b6b76",
+    "card_line": "#e6e6ea",
+    "button_bg": "#17171d",
+    "button_ink": "#ffffff",
+    "pill_bg": "#f0f0f3",
+    "pill_ink": "#17171d",
+    "pill_dot": "#1fc76a",
+    "thumb": "#f0f0f3",
+    "term_bg": "#17171d",
+    "term_ink": "#ffffff",
+    "term_muted": "#8d8d9a",
+    "term_line": "#17171d",
+    "term_prompt": "#ff7a1a",
+    "term_ok": "#1fc76a"
+  },
+  "type": {
+    "display": {
+      "family": "Inter",
+      "weight": 800,
+      "hook_px": 92,
+      "stat_px": 250,
+      "mark_px": 140,
+      "transform": "none",
+      "tracking": "-0.045em",
+      "line_height": "1.0",
+      "style": "normal",
+      "generic": "sans",
+      "card_title_px": 28
+    },
+    "body": {
+      "family": "Inter",
+      "weight": 600,
+      "generic": "sans"
+    },
+    "mono": {
+      "family": "JetBrains Mono",
+      "weight": 500
+    },
+    "label": {
+      "family": "Inter",
+      "weight": 600,
+      "transform": "none",
+      "tracking": "0",
+      "generic": "sans",
+      "px": 15
+    }
+  },
+  "easing": {
+    "entry": "back.out(2)",
+    "exit": "power2.in",
+    "ambient": "none",
+    "pop": "back.out(3)",
+    "counter": "power3.out",
+    "wipe": "power3.out"
+  },
+  "rhythm": {
+    "energy": "brisk",
+    "entrance": 0.5,
+    "stagger": 0.03
+  },
+  "transition": {
+    "kind": "iris",
+    "duration": 0.6,
+    "flash": false,
+    "band": false
+  },
+  "text_animation": "letters",
+  "accent_word": "none",
+  "layout": "center",
+  "atmosphere": [],
+  "shape": {
+    "radius_card": 24,
+    "radius_button": 14,
+    "radius_pill": 999,
+    "border": "none",
+    "border_px": 0,
+    "shadow": "none",
+    "rule_px": 6
+  },
+  "stat_colour": "ink",
+  "direction_settings": {
+    "energy": "brisk",
+    "density": "sparse",
+    "ground": "alternating",
+    "depth": "flat",
+    "camera": "locked",
+    "type": "display",
+    "texture": "clean",
+    "colour": "full-palette",
+    "product_presence": "framed",
+    "sound": "scored",
+    "voice": "spoken-headline"
+  },
+  "notes": "One element on a flat saturated field (purple, then teal for the card and agent moments), white cards with ink text, Inter 800 numbers, letters that rise with back.out, a circular wipe from the centre.",
+  "transitions": {
+    "between_moments": "iris",
+    "duration_s": 0.6,
+    "text": "letters"
+  }
+}

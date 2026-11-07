@@ -1,0 +1,19 @@
+{
+  "name": "Card morph anchor",
+  "family": "Transition & Motion",
+  "purpose": [
+    "transition",
+    "shape change",
+    "container"
+  ],
+  "energy": "steady",
+  "tags": [
+    "morph",
+    "anchor",
+    "transition",
+    "border-radius",
+    "container",
+    "shape"
+  ],
+  "one_line": "A small yellow pill holds a beat, then grows and squares off into a full card while its label fades out and the card's headline and number fade in."
+}

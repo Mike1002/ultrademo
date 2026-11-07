@@ -1,0 +1,21 @@
+{
+  "name": "Additive dissolve",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Mood"
+  ],
+  "energy": "calm",
+  "tier": 3,
+  "runtime": "webgl",
+  "tags": [
+    "additive dissolve",
+    "transitions",
+    "crossfade",
+    "screen blend",
+    "light",
+    "brighten",
+    "dark"
+  ],
+  "one_line": "An invite card crossfades into a stats card on a dark ground with the incoming card screen-blended, so the overlap glows brighter in the middle before the new card settles to normal."
+}

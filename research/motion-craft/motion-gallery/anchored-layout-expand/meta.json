@@ -1,0 +1,28 @@
+{
+  "name": "Anchored layout expand",
+  "family": "Layout & Network",
+  "purpose": [
+    "dropdown",
+    "reveal",
+    "layout"
+  ],
+  "energy": "steady",
+  "tags": [
+    "expand",
+    "collapse",
+    "anchored",
+    "dropdown",
+    "menu",
+    "accordion",
+    "panel",
+    "reflow",
+    "push",
+    "mask",
+    "counter-scale",
+    "layout"
+  ],
+  "one_line": "A dropdown springs open under its header, three member rows arriving as it grows, and the card with the yellow button below rides down in contact with its edge, then it snaps shut.",
+  "aliases": [
+    "awesome-ai-motion:accordion-expand"
+  ]
+}

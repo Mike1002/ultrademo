@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-shot-reverse-shot</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; overflow: hidden; }
+  .shot { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; background: #ece7da; }
+  .axis { position: absolute; left: 0; top: 289px; width: 1168px; height: 2px; background: #e3ded2; }
+  .av { position: absolute; top: 170px; width: 240px; height: 240px; border-radius: 50%; background: #fffdf8; border: 2px solid #1d1c1a;
+    font-size: 72px; font-weight: 700; line-height: 236px; text-align: center; }
+  .gaze { position: absolute; top: 262px; width: 56px; height: 56px; }
+  .gaze svg { width: 56px; height: 56px; }
+  .name { position: absolute; top: 432px; font-size: 22px; font-weight: 700; }
+  .who { position: absolute; top: 464px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  .bubble { position: absolute; top: 196px; width: 440px; height: 120px; background: #fffdf8; border: 2px solid #1d1c1a; border-radius: 24px;
+    font-size: 40px; font-weight: 700; line-height: 116px; text-align: center; will-change: transform, opacity; }
+  .bubble .tail { position: absolute; top: 46px; width: 24px; height: 24px; background: #fffdf8; border-left: 2px solid #1d1c1a; border-bottom: 2px solid #1d1c1a; }
+  .bubble.r .tail { left: -13px; transform: rotate(45deg); }
+  .bubble.l .tail { right: -13px; transform: rotate(-135deg); }
+  #shotA .av { left: 120px; }
+  #shotA .gaze { left: 372px; }
+  #shotA .name, #shotA .who { left: 120px; }
+  #shotA .bubble { left: 520px; }
+  #shotB .av { left: 808px; }
+  #shotB .gaze { left: 740px; }
+  #shotB .name, #shotB .who { left: 808px; }
+  #shotB .bubble { left: 208px; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div class="shot" id="shotA" data-layout-allow-overlap>
+        <div class="axis"></div>
+        <div class="av" data-layout-allow-overlap>JD</div>
+        <div class="gaze"><svg viewBox="0 0 56 56"><path d="M18 10 L40 28 L18 46" fill="none" stroke="#1d1c1a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="name">Jamie Dalton</div>
+        <div class="who">Shot · facing right</div>
+        <div class="bubble r" id="a1" data-layout-allow-overlap><span class="tail"></span>Invite sent</div>
+        <div class="bubble r" id="a2" data-layout-allow-overlap><span class="tail"></span>Welcome aboard</div>
+      </div>
+      <div class="shot" id="shotB" data-layout-allow-overlap>
+        <div class="axis"></div>
+        <div class="av" data-layout-allow-overlap>SK</div>
+        <div class="gaze"><svg viewBox="0 0 56 56"><path d="M38 10 L16 28 L38 46" fill="none" stroke="#1d1c1a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="name">Sam Kim</div>
+        <div class="who">Reverse shot · facing left</div>
+        <div class="bubble l" id="b1" data-layout-allow-overlap><span class="tail"></span>Joined</div>
+        <div class="bubble l" id="b2" data-layout-allow-overlap><span class="tail"></span>Thanks!</div>
+      </div>
+    </div>
+    <div id="label"><span class="l-name">Shot reverse shot</span><span class="l-sep">·</span><span>Transitions</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+  // Cut times (the library's 2.0 s spacing compressed to fit 3 s): shot A, reverse B, A, B. Each cut is instant (one frame).
+  const CUTS = [0, 0.9, 1.7, 2.4];
+  tl.fromTo("#shotA", { opacity: 1 }, { opacity: 1, duration: 0.01 }, 0);
+  tl.fromTo("#shotB", { opacity: 0 }, { opacity: 0, duration: 0.01 }, 0);
+  CUTS.slice(1).forEach((t, k) => {
+    const toB = k % 2 === 0;
+    tl.to("#shotA", { opacity: toB ? 0 : 1, duration: 0.034, ease: "none" }, t);
+    tl.to("#shotB", { opacity: toB ? 1 : 0, duration: 0.034, ease: "none" }, t);
+  });
+  // Each line pops in 0.15 s after its cut and stays until the next cut (it ends 0.1 s before the next line starts, per the card).
+  const LINES = [["#a1", 0], ["#b1", 1], ["#a2", 2], ["#b2", 3]];
+  tl.fromTo(".bubble", { opacity: 0, scale: 0.7, transformOrigin: "0% 50%" }, { opacity: 0, scale: 0.7, duration: 0.01 }, 0);
+  gsap.set("#b1, #b2", { transformOrigin: "100% 50%" });
+  LINES.forEach(([id, i]) => {
+    const at = CUTS[i] + 0.15, end = i < 3 ? CUTS[i + 1] - 0.1 : 3.1;
+    tl.to(id, { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(1.6)" }, at);
+    if (end < 3) tl.to(id, { opacity: 0, duration: 0.08, ease: "none" }, end);
+  });
+  // A small nod on each speaker when their line lands.
+  tl.fromTo("#shotA .av", { y: 0 }, { y: -10, duration: 0.18, yoyo: true, repeat: 1, ease: "power2.inOut" }, 0.15);
+  tl.fromTo("#shotB .av", { y: 0 }, { y: -10, duration: 0.18, yoyo: true, repeat: 1, ease: "power2.inOut", immediateRender: false }, 1.05);
+  tl.fromTo("#shotA .av", { y: 0 }, { y: -10, duration: 0.18, yoyo: true, repeat: 1, ease: "power2.inOut", immediateRender: false }, 1.85);
+  tl.fromTo("#shotB .av", { y: 0 }, { y: -10, duration: 0.18, yoyo: true, repeat: 1, ease: "power2.inOut", immediateRender: false }, 2.55);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

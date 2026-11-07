@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-smash-cut</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; overflow: hidden; }
+  #A { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  .card { position: absolute; left: 264px; top: 110px; width: 640px; height: 360px; background: #fffdf8; border: 2px solid #1d1c1a; border-radius: 24px; }
+  .card .lab { position: absolute; left: 56px; top: 48px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  .card h1 { position: absolute; left: 56px; top: 80px; font-size: 56px; font-weight: 700; line-height: 64px; white-space: nowrap; }
+  .card .sub { position: absolute; left: 56px; top: 160px; font-size: 22px; color: #6d6a63; }
+  .card .btn { position: absolute; left: 56px; top: 240px; width: 200px; height: 60px; border-radius: 14px; background: #f2c200; border: 2px solid #1d1c1a;
+    font-size: 20px; font-weight: 700; line-height: 56px; text-align: center; will-change: transform; }
+  #cursor { position: absolute; left: 0; top: 0; width: 28px; height: 38px; will-change: transform; }
+  #cursor svg { width: 28px; height: 38px; display: block; }
+  #B { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; background: #1d1c1a; color: #f6f3ec; will-change: transform, opacity; }
+  #B .big { position: absolute; left: 0; top: 150px; width: 1168px; text-align: center; font-size: 200px; font-weight: 700; line-height: 1; letter-spacing: -.03em;
+    color: #f2c200; font-variant-numeric: tabular-nums; }
+  #B .cap { position: absolute; left: 0; top: 380px; width: 1168px; text-align: center; font-size: 40px; font-weight: 700; color: #f6f3ec; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div id="A">
+        <div class="card" id="a">
+          <div class="lab">Orbit</div>
+          <h1>Invite your team</h1>
+          <div class="sub">3 seats left on this plan</div>
+          <div class="btn" id="btn">Continue</div>
+        </div>
+        <div id="cursor" data-layout-allow-overlap>
+          <svg viewBox="0 0 28 38"><path d="M2.5 2.5 L2.5 29.5 L9.6 23 L14.4 33.6 L19 31.6 L14.3 21.4 L23.8 21.4 Z" fill="#ffffff" stroke="#1d1c1a" stroke-width="2" stroke-linejoin="round"/></svg>
+        </div>
+      </div>
+      <div id="B" data-layout-allow-overlap>
+        <div class="big" data-layout-allow-overlap>12,480</div>
+        <div class="cap" data-layout-allow-overlap>invites sent</div>
+      </div>
+    </div>
+    <div id="label"><span class="l-name">Smash cut</span><span class="l-sep">·</span><span>Transitions</span><span class="l-sep">·</span><span>high</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "none", duration: 0.6 } });
+  const CUT = 1.0, BACK = 2.1;
+  // Quiet scene A: a slow cursor drifts toward Continue; the last 300 ms before the cut are still.
+  tl.fromTo("#cursor", { x: 880, y: 470, scale: 1.7, transformOrigin: "0 0" }, { x: 560, y: 400, duration: 0.7, ease: "power1.inOut" }, 0);
+  // Smash cut at 1.0 s: A hides and the loud panel shows in the same frame; it settles from scale 1.05 over 0.18 s (power3.out) with a short shake.
+  tl.fromTo("#B", { opacity: 0, scale: 1.05, x: 0, y: 0 }, { opacity: 0, duration: 0.01 }, 0);
+  tl.to("#A", { opacity: 0, duration: 0.034 }, CUT);
+  tl.to("#B", { opacity: 1, duration: 0.034 }, CUT);
+  tl.to("#B", { scale: 1, duration: 0.18, ease: "power3.out" }, CUT);
+  const SHAKE = [[-16, 8], [14, -6], [-10, 5], [7, -4], [-4, 2], [0, 0]];
+  SHAKE.forEach(([sx, sy], i) => { tl.to("#B", { x: sx, y: sy, duration: 0.04 }, CUT + 0.02 + i * 0.04); });
+  // Cut back just as hard at 2.1 s; the cursor finishes its move and clicks the button.
+  tl.to("#B", { opacity: 0, duration: 0.034 }, BACK);
+  tl.to("#A", { opacity: 1, duration: 0.034 }, BACK);
+  tl.to("#cursor", { x: 420, y: 380, duration: 0.45, ease: "power2.inOut" }, BACK);
+  tl.fromTo("#btn", { scale: 1, transformOrigin: "50% 50%" }, { scale: 0.94, duration: 0.09, yoyo: true, repeat: 1, ease: "power2.inOut", immediateRender: false }, BACK + 0.5);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

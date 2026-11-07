@@ -1,0 +1,20 @@
+{
+  "name": "Multiply dissolve",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Mood"
+  ],
+  "energy": "calm",
+  "tier": 3,
+  "runtime": "canvas",
+  "tags": [
+    "multiply midpoint dissolve",
+    "transitions",
+    "multiply",
+    "blend",
+    "crossfade",
+    "dark midpoint"
+  ],
+  "one_line": "The stats scene fades over the invite card in multiply blend so the overlap sinks darker where either scene is dark, then the invite card fades away and the stats scene's brightness comes back, its rows settling in."
+}

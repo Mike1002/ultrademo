@@ -1,0 +1,27 @@
+{
+  "name": "Motion blur streak",
+  "family": "Transition & Motion",
+  "purpose": [
+    "entrance",
+    "emphasis",
+    "kinetic"
+  ],
+  "energy": "high",
+  "tags": [
+    "motion-blur",
+    "velocity",
+    "streak",
+    "entrance",
+    "fly-in",
+    "ghost",
+    "echo",
+    "svg-filter",
+    "kinetic",
+    "camera",
+    "snap",
+    "driven",
+    "tracked",
+    "baked-track"
+  ],
+  "one_line": "A huge 98% whips in from the left as a horizontal smear and snaps razor-sharp the instant it stops, then a headline streaks in from the right the same way (directional blur form)."
+}

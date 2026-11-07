@@ -1,0 +1,24 @@
+{
+  "name": "Node-link build",
+  "family": "Explainer",
+  "purpose": [
+    "Explanation",
+    "Sequence"
+  ],
+  "energy": "steady",
+  "tier": 2,
+  "runtime": "svg",
+  "tags": [
+    "avatar network",
+    "flowchart build",
+    "avatar hub",
+    "avatar-cloud-network",
+    "relation traverse",
+    "graph port linking",
+    "explainer",
+    "nodes",
+    "edges",
+    "stroke-dashoffset"
+  ],
+  "one_line": "Five circle nodes pop in one by one, their connecting edges draw in order, then one path through the network thickens to ink and the end node turns yellow."
+}

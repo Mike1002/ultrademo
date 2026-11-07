@@ -1,0 +1,22 @@
+{
+  "name": "Title card rhythm",
+  "family": "Transitions",
+  "purpose": [
+    "Sequence",
+    "Branding",
+    "Transition"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "gsap",
+  "tags": [
+    "credit card cut rhythm",
+    "transitions",
+    "titles",
+    "credits",
+    "beat",
+    "sequence",
+    "cut"
+  ],
+  "one_line": "Three name cards with a role line land one after another on a steady 0.6 s beat, each with a small pop and an instant cut to the next, and the key title card holds longest with a yellow underline drawing in."
+}

@@ -1,0 +1,20 @@
+{
+  "name": "Toggle slide",
+  "family": "UI Demo",
+  "purpose": [
+    "Feedback"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "css",
+  "tags": [
+    "toggle flip",
+    "switch thumb travel",
+    "animated toggle",
+    "ui",
+    "switch",
+    "overshoot",
+    "settle"
+  ],
+  "one_line": "In a settings card, a switch thumb travels across its track with a small overshoot and settles as the track turns yellow; a second switch follows and the first slides back off."
+}

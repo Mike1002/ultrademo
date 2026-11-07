@@ -1,0 +1,19 @@
+{
+  "name": "Chapter interstitial",
+  "family": "Transitions",
+  "purpose": [
+    "Sequence",
+    "Explanation"
+  ],
+  "energy": "calm",
+  "tier": 2,
+  "runtime": "gsap",
+  "tags": [
+    "demo chapter interstitial",
+    "transitions",
+    "title card",
+    "step",
+    "hold"
+  ],
+  "one_line": "A dark step-title card (number, title, step count) rises in between two scenes, holds long enough to read, then lifts away to reveal the next scene."
+}

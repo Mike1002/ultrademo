@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-warp-dissolve</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; overflow: hidden; }
+  .card { position: absolute; left: 264px; top: 110px; width: 640px; height: 360px; background: #fffdf8; border: 2px solid #1d1c1a; border-radius: 24px; will-change: transform, opacity, filter; }
+  .card .lab { position: absolute; left: 56px; top: 48px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  .card h1 { position: absolute; left: 56px; top: 80px; font-size: 56px; font-weight: 700; line-height: 64px; white-space: nowrap; }
+  .card .sub { position: absolute; left: 56px; top: 160px; font-size: 22px; color: #6d6a63; }
+  .card .btn { position: absolute; left: 56px; top: 240px; width: 200px; height: 60px; border-radius: 14px; background: #f2c200; border: 2px solid #1d1c1a;
+    font-size: 20px; font-weight: 700; line-height: 56px; text-align: center; }
+  #b h1 { font-size: 96px; line-height: 104px; top: 74px; font-variant-numeric: tabular-nums; }
+  #b .sub { top: 190px; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div class="card" id="a" data-layout-allow-overlap>
+        <div class="lab" data-layout-allow-overlap data-layout-allow-occlusion>Orbit</div>
+        <h1 data-layout-allow-overlap data-layout-allow-occlusion>Invite your team</h1>
+        <div class="sub" data-layout-allow-overlap data-layout-allow-occlusion>3 seats left on this plan</div>
+        <div class="btn" data-layout-allow-overlap data-layout-allow-occlusion>Continue</div>
+      </div>
+      <div class="card" id="b" data-layout-allow-overlap>
+        <div class="lab" data-layout-allow-overlap data-layout-allow-occlusion>This month</div>
+        <h1 data-layout-allow-overlap data-layout-allow-occlusion>12,480</h1>
+        <div class="sub" data-layout-allow-overlap data-layout-allow-occlusion>invites sent</div>
+      </div>
+    </div>
+    <div id="label"><span class="l-name">Warp dissolve</span><span class="l-sep">·</span><span>Transitions</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  // Warp windows: [start, duration, outgoing, incoming]. Progress p runs power2.inOut inside each window; the warp amplitude is
+  // 8% of the stage width times sin(pi*p), applied to the outgoing card one way and to the incoming card the opposite way, blended by p.
+  const A = document.getElementById("a"), B = document.getElementById("b");
+  const WIN = [[0.75, 0.9, A, B], [2.1, 0.8, B, A]];
+  const easeP = gsap.parseEase("power2.inOut");
+  const SHIFT = 0.08 * 1168, STRETCH = 0.3, SKEW = 12, BLUR = 5;
+  function warp(el, dir, amp, alpha) {
+    gsap.set(el, { x: dir * SHIFT * amp, scaleX: 1 + STRETCH * amp, skewX: dir * SKEW * amp, filter: "blur(" + (BLUR * amp).toFixed(2) + "px)", opacity: alpha, transformOrigin: dir > 0 ? "0% 50%" : "100% 50%" });
+  }
+  let last = null;
+  function renderAt(t) {
+    let w = null, p = 0;
+    for (const win of WIN) if (t >= win[0] && t < win[0] + win[1]) { w = win; p = easeP((t - win[0]) / win[1]); }
+    const key = w ? w[0] + ":" + Math.round(p * 1000) : (t < WIN[0][0] ? "a" : t < WIN[1][0] ? "b" : "a2");
+    if (key === last) return; last = key;
+    if (!w) {
+      const shown = key === "b" ? B : A, hidden = shown === A ? B : A;
+      warp(shown, 1, 0, 1); warp(hidden, 1, 0, 0);
+      return;
+    }
+    const amp = Math.sin(Math.PI * p);
+    warp(w[2], +1, amp, 1 - p);
+    warp(w[3], -1, amp, p);
+  }
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power2.inOut", duration: 0.9 } });
+  renderAt(0);
+  tl.to({ k: 0 }, { k: 1, duration: 3, ease: "none", onUpdate: () => renderAt(tl.time()) }, 0);
+  const baseRender = tl.render; tl.render = function () { const r = baseRender.apply(this, arguments); renderAt(this.time()); return r; };
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

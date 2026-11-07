@@ -1,0 +1,46 @@
+{
+  "name": "Dot Matrix",
+  "fonts": {
+    "display": "Silkscreen",
+    "body": "JetBrains Mono",
+    "mono": "JetBrains Mono",
+    "label": "JetBrains Mono"
+  },
+  "font_families": [
+    "JetBrains Mono",
+    "Silkscreen"
+  ],
+  "font_substitutions": {},
+  "canvas": "light",
+  "mood": [
+    "precise",
+    "technical",
+    "confident"
+  ],
+  "suits": [
+    "stats",
+    "status boards",
+    "numbers-led launches"
+  ],
+  "direction_settings": {
+    "energy": "steady",
+    "density": "balanced",
+    "ground": "alternating",
+    "depth": "flat",
+    "camera": "locked",
+    "type": "display",
+    "texture": "textured",
+    "colour": "one-accent",
+    "product_presence": "illustrated",
+    "sound": "beat-driven",
+    "voice": "caption"
+  },
+  "duration_s": 10,
+  "size": [
+    1280,
+    720
+  ],
+  "fps": 30,
+  "strip": "D-58 style strip: hook · project card · number · agent · close",
+  "one_line": ""
+}

@@ -1,0 +1,21 @@
+{
+  "name": "Mirror transition",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Comparison"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "webgl",
+  "tags": [
+    "mirror transition",
+    "transitions",
+    "mirror",
+    "fold",
+    "symmetry",
+    "3d",
+    "halves"
+  ],
+  "one_line": "The invite scene mirrors itself across the centre line, both halves fold to the middle like a closing book, and the stats scene unfolds from the same crease, its rows settling in after."
+}

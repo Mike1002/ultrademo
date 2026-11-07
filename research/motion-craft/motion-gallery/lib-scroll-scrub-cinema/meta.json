@@ -1,0 +1,26 @@
+{
+  "name": "Scroll-scrub cinema scene",
+  "family": "Camera",
+  "purpose": [
+    "Sequence",
+    "Explanation",
+    "Attention"
+  ],
+  "energy": "steady",
+  "tier": 2,
+  "runtime": "gsap",
+  "tags": [
+    "scroll-linked scene",
+    "pinned scrub scene",
+    "scrolltrigger scrub",
+    "camera",
+    "progress",
+    "scrub",
+    "mask reveal",
+    "parallax"
+  ],
+  "one_line": "One pinned scene driven by a single scroll progress value, played back by the timeline: the title rises through a mask, a three-node diagram assembles and draws its arrows, the background number parallaxes, and the next scene scrolls in while a rail shows the progress.",
+  "aliases": [
+    "awesome-ai-motion:scroll-scrub"
+  ]
+}

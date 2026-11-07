@@ -1,0 +1,2796 @@
+{
+ "gallery": "Ultrademo video-style gallery",
+ "generated": "2026-10-28",
+ "strip": {
+  "moments": [
+   "hook 0-2 s",
+   "project card 2-4.5 s",
+   "number 4.5-6.5 s",
+   "agent over MCP 6.5-8.5 s",
+   "close 8.5-10 s"
+  ],
+  "size": [
+   1280,
+   720
+  ],
+  "fps": 30,
+  "duration_s": 10
+ },
+ "count": 46,
+ "canvases": {
+  "light": 26,
+  "dark": 20
+ },
+ "moods": [
+  "analytical",
+  "bold",
+  "brooding",
+  "calm",
+  "candy",
+  "cheerful",
+  "cinematic",
+  "clear",
+  "clinical",
+  "colourful",
+  "confident",
+  "craft-obsessed",
+  "crafted",
+  "credible",
+  "crisp",
+  "cultural",
+  "curious",
+  "dark",
+  "deep-green",
+  "direct",
+  "drafted",
+  "dramatic",
+  "dreamy",
+  "editorial",
+  "electric",
+  "elegant",
+  "energetic",
+  "epic",
+  "friendly",
+  "futuristic",
+  "glossy",
+  "graphic",
+  "hand-made",
+  "helpful",
+  "hype",
+  "immersive",
+  "industrial",
+  "intimate",
+  "kinetic",
+  "literate",
+  "loud",
+  "lowercase",
+  "mechanical",
+  "minimal",
+  "modernist",
+  "moody",
+  "nostalgic",
+  "playful",
+  "precise",
+  "premium",
+  "printed",
+  "professional",
+  "punchy",
+  "quiet",
+  "raw",
+  "restrained",
+  "rounded",
+  "scholarly",
+  "showy",
+  "sleek",
+  "smart",
+  "sunny",
+  "suspenseful",
+  "tactile",
+  "technical",
+  "tender",
+  "timeless",
+  "trustworthy",
+  "vivid",
+  "warm",
+  "warm-stone",
+  "workshop",
+  "wry"
+ ],
+ "direction_settings_positions": {
+  "energy": [
+   "still",
+   "calm",
+   "steady",
+   "brisk",
+   "high"
+  ],
+  "density": [
+   "sparse",
+   "balanced",
+   "dense"
+  ],
+  "ground": [
+   "light",
+   "dark",
+   "alternating"
+  ],
+  "depth": [
+   "flat",
+   "layered",
+   "deep"
+  ],
+  "camera": [
+   "locked",
+   "drift",
+   "push",
+   "handheld"
+  ],
+  "type": [
+   "quiet",
+   "editorial",
+   "display",
+   "loud"
+  ],
+  "texture": [
+   "clean",
+   "grain",
+   "textured"
+  ],
+  "colour": [
+   "mono",
+   "one-accent",
+   "two-accent",
+   "full-palette"
+  ],
+  "product_presence": [
+   "absent",
+   "illustrated",
+   "framed",
+   "hero"
+  ],
+  "sound": [
+   "none",
+   "ambient",
+   "scored",
+   "beat-driven"
+  ],
+  "voice": [
+   "silent",
+   "caption",
+   "narrated",
+   "spoken-headline"
+  ]
+ },
+ "entries": [
+  {
+   "id": "acid-chrome",
+   "name": "Acid Chrome",
+   "canvas": "dark",
+   "mood": [
+    "loud",
+    "confident",
+    "glossy"
+   ],
+   "suits": [
+    "brand reels",
+    "portfolio pieces",
+    "hype launches"
+   ],
+   "fonts": {
+    "display": "Inter Tight",
+    "body": "Inter Tight",
+    "mono": "JetBrains Mono",
+    "label": "JetBrains Mono"
+   },
+   "font_substitutions": {},
+   "direction_settings": {
+    "energy": "high",
+    "density": "balanced",
+    "ground": "alternating",
+    "depth": "flat",
+    "camera": "locked",
+    "type": "loud",
+    "texture": "clean",
+    "colour": "one-accent",
+    "product_presence": "illustrated",
+    "sound": "beat-driven",
+    "voice": "spoken-headline"
+   },
+   "transition": "cut",
+   "text_animation": "rise-mask",
+   "energy": "high",
+   "notes": "Hard cuts on the beat with a full background swap (black to acid lime), Inter Tight 900 uppercase statements, mono HUD; the chrome object is left out.",
+   "palette": {
+    "bg": "#0b0b0a",
+    "ink": "#f2f1ea",
+    "accent": "#d4ff3a"
+   },
+   "style": "acid-chrome/style.json",
+   "frame": "acid-chrome/frame.html",
+   "strip": "acid-chrome/strip/",
+   "preview": "acid-chrome/preview.mp4",
+   "poster": "acid-chrome/poster.jpg",
+   "poster_card": "acid-chrome/poster-card.jpg",
+   "duration_s": 10,
+   "size": [
+    1280,
+    720
+   ],
+   "fps": 30,
+   "render_s": 20
+  },
+  {
+   "id": "airy-ui",
+   "name": "Airy UI",
+   "canvas": "light",
+   "mood": [
+    "calm",
+    "helpful",
+    "trustworthy"
+   ],
+   "suits": [
+    "AI agents",
+    "product demos",
+    "chat products"
+   ],
+   "fonts": {
+    "display": "Inter",
+    "body": "Inter",
+    "mono": "Inter",
+    "label": "Inter"
+   },
+   "font_substitutions": {},
+   "direction_settings": {
+    "energy": "steady",
+    "density": "sparse",
+    "ground": "light",
+    "depth": "layered",
+    "camera": "locked",
+    "type": "quiet",
+    "texture": "clean",
+    "colour": "one-accent",
+    "product_presence": "illustrated",
+    "sound": "ambient",
+    "voice": "narrated"
+   },
+   "transition": "push",
+   "text_animation": "fade-up",
+   "energy": "steady",
+   "notes": "Off-white canvas, white surfaces with very soft shadows, Inter only, one blue accent and green only for success; cards slide in from the right.",
+   "palette": {
+    "bg": "#f6f6f4",
+    "ink": "#1f1f1f",
+    "accent": "#3d6bff"
+   },
+   "style": "airy-ui/style.json",
+   "frame": "airy-ui/frame.html",
+   "strip": "airy-ui/strip/",
+   "preview": "airy-ui/preview.mp4",
+   "poster": "airy-ui/poster.jpg",
+   "poster_card": "airy-ui/poster-card.jpg",
+   "duration_s": 10,
+   "size": [
+    1280,
+    720
+   ],
+   "fps": 30,
+   "render_s": 20
+  },
+  {
+   "id": "bauhaus-grid",
+   "name": "Bauhaus Grid",
+   "canvas": "light",
+   "mood": [
+    "playful",
+    "crafted",
+    "modernist"
+   ],
+   "suits": [
+    "event launches",
+    "design tools",
+    "poster-like announcements"
+   ],
+   "fonts": {
+    "display": "Outfit",
+    "body": "Outfit",
+    "mono": "JetBrains Mono",
+    "label": "Instrument Serif"
+   },
+   "font_substitutions": {},
+   "direction_settings": {
+    "energy": "steady",
+    "density": "balanced",
+    "ground": "light",
+    "depth": "flat",
+    "camera": "locked",
+    "type": "display",
+    "texture": "clean",
+    "colour": "two-accent",
+    "product_presence": "illustrated",
+    "sound": "scored",
+    "voice": "spoken-headline"
+   },
+   "transition": "wipe-up",
+   "text_animation": "letters",
+   "energy": "steady",
+   "notes": "Only cream, red, blue and black with flat fills; Outfit 800 lowercase, an italic Instrument Serif label, per-letter rise with alternating tilt, a full-frame wipe from the bottom.",
+   "palette": {
+    "bg": "#ece6d6",
+    "ink": "#121212",
+    "accent": "#f2542d"
+   },
+   "style": "bauhaus-grid/style.json",
+   "frame": "bauhaus-grid/frame.html",
+   "strip": "bauhaus-grid/strip/",
+   "preview": "bauhaus-grid/preview.mp4",
+   "poster": "bauhaus-grid/poster.jpg",
+   "poster_card": "bauhaus-grid/poster-card.jpg",
+   "duration_s": 10,
+   "size": [
+    1280,
+    720
+   ],
+   "fps": 30,
+   "render_s": 20
+  },
+  {
+   "id": "biennale-yellow",
+   "name": "Biennale Yellow",
+   "canvas": "light",
+   "mood": [
+    "restrained",
+    "editorial",
+    "sunny"
+   ],
+   "suits": [
+    "editorial launches",
+    "annual reports",
+    "design-led products"
+   ],
+   "fonts": {
+    "display": "Instrument Serif",
+    "body": "Archivo",
+    "mono": "JetBrains Mono",
+    "label": "Archivo"
+   },
+   "font_substitutions": {},
+   "direction_settings": {
+    "energy": "calm",
+    "density": "sparse",
+    "ground": "light",
+    "depth": "flat",
+    "camera": "locked",
+    "type": "editorial",
+    "texture": "clean",
+    "colour": "two-accent",
+    "product_presence": "illustrated",
+    "sound": "ambient",
+    "voice": "narrated"
+   },
+   "transition": "crossfade",
+   "text_animation": "rise-mask",
+   "energy": "calm",
+   "notes": "Parchment ground, one indigo ink, solar yellow only as an underprint behind the accent word; hairlines, no shadows, a page number.",
+   "palette": {
+    "bg": "#E9E5DB",
+    "ink": "#1B2566",
+    "accent": "#E26B4A"
+   },
+   "style": "biennale-yellow/style.json",
+   "frame": "biennale-yellow/frame.html",
+   "strip": "biennale-yellow/strip/",
+   "preview": "biennale-yellow/preview.mp4",
+   "poster": "biennale-yellow/poster.jpg",
+   "poster_card": "biennale-yellow/poster-card.jpg",
+   "duration_s": 10,
+   "size": [
+    1280,
+    720
+   ],
+   "fps": 30,
+   "render_s": 19
+  },
+  {
+   "id": "blockframe",
+   "name": "BlockFrame",
+   "canvas": "light",
+   "mood": [
+    "bold",
+    "candy",
+    "playful"
+   ],
+   "suits": [
+    "consumer launches",
+    "indie tools",
+    "community products"
+   ],
+   "fonts": {
+    "display": "Inter",
+    "body": "Inter",
+    "mono": "Space Grotesk",
+    "label": "Space Grotesk"
+   },
+   "font_substitutions": {},
+   "direction_settings": {
+    "energy": "high",
+    "density": "dense",
+    "ground": "light",
+    "depth": "flat",
+    "camera": "locked",
+    "type": "loud",
+    "texture": "clean",
+    "colour": "full-palette",
+    "product_presence": "illustrated",
+    "sound": "beat-driven",
+    "voice": "spoken-headline"
+   },
+   "transition": "push",
+   "text_animation": "slam",
+   "energy": "high",
+   "notes": "4 px black borders with hard offset shadows, Inter 900 uppercase, the five-pastel candy palette; pushes between moments.",
+   "palette": {
+    "bg": "#FFFDF5",
+    "ink": "#000000",
+    "accent": "#FE90E8"
+   },
+   "style": "blockframe/style.json",
+   "frame": "blockframe/frame.html",
+   "strip": "blockframe/strip/",
+   "preview": "blockframe/preview.mp4",
+   "poster": "blockframe/poster.jpg",
+   "poster_card": "blockframe/poster-card.jpg",
+   "duration_s": 10,
+   "size": [
+    1280,
+    720
+   ],
+   "fps": 30,
+   "render_s": 19
+  },
+  {
+   "id": "blue-professional",
+   "name": "Blue Professional",
+   "canvas": "light",
+   "mood": [
+    "professional",
+    "clear",
+    "trustworthy"
+   ],
+   "suits": [
+    "B2B SaaS",
+    "fintech",
+    "reports",
+    "enterprise demos"
+   ],
+   "fonts": {
+    "display": "Space Grotesk",
+    "body": "Inter",
+    "mono": "Space Grotesk",
+    "label": "Space Grotesk"
+   },
+   "font_substitutions": {},
+   "direction_settings": {
+    "energy": "steady",
+    "density": "balanced",
+    "ground": "light",
+    "depth": "flat",
+    "camera": "locked",
+    "type": "display",
+    "texture": "clean",
+    "colour": "one-accent",
+    "product_presence": "illustrated",
+    "sound": "scored",
+    "voice": "narrated"
+   },
+   "transition": "wipe",
+   "text_animation": "fade-up",
+   "energy": "steady",
+   "notes": "Warm cream canvas, one saturated cobalt, cobalt-tinted cards with no shadows; a cobalt band wipes between moments.",
+   "palette": {
+    "bg": "#fdfae7",
+    "ink": "#111111",
+    "accent": "#1e2bfa"
+   },
+   "style": "blue-professional/style.json",
+   "frame": "blue-professional/frame.html",
+   "strip": "blue-professional/strip/",
+   "preview": "blue-professional/preview.mp4",
+   "poster": "blue-professional/poster.jpg",
+   "poster_card": "blue-professional/poster-card.jpg",
+   "duration_s": 10,
+   "size": [
+    1280,
+    720
+   ],
+   "fps": 30,
+   "render_s": 19
+  },
+  {
+   "id": "blueprint",
+   "name": "Blueprint",
+   "canvas": "dark",
+   "mood": [
+    "calm",
+    "curious",
+    "clear"
+   ],
+   "suits": [
+    "explainers",
+    "education",
+    "technical diagrams"
+   ],
+   "fonts": {
+    "display": "STIX Two Text",
+    "body": "IBM Plex Sans",
+    "mono": "IBM Plex Mono",
+    "label": "IBM Plex Mono"
+   },
+   "font_substitutions": {},
+   "direction_settings": {
+    "energy": "calm",
+    "density": "balanced",
+    "ground": "dark",
+    "depth": "flat",
+    "camera": "locked",
+    "type": "editorial",
+    "texture": "clean",
+    "colour": "two-accent",
+    "product_presence": "illustrated",
+    "sound": "ambient",
+    "voice": "narrated"
+   },
+   "transition": "crossfade",
+   "text_animation": "type",
+   "energy": "calm",
+   "notes": "Navy with a faint grid, strokes instead of fills, STIX Two Text for display, cyan for the subject and amber for measurements; no cuts, text writes on character by character.",
+   "palette": {
+    "bg": "#0f1626",
+    "ink": "#e8edf5",
+    "accent": "#7fd3ff"
+   },
+   "style": "blueprint/style.json",
+   "frame": "blueprint/frame.html",
+   "strip": "blueprint/strip/",
+   "preview": "blueprint/preview.mp4",
+   "poster": "blueprint/poster.jpg",
+   "poster_card": "blueprint/poster-card.jpg",
+   "duration_s": 10,
+   "size": [
+    1280,
+    720
+   ],
+   "fps": 30,
+   "render_s": 19
+  },
+  {
+   "id": "bold-poster",
+   "name": "Bold Poster",
+   "canvas": "light",
+   "mood": [
+    "loud",
+    "printed",
+    "confident"
+   ],
+   "suits": [
+    "event launches",
+    "bold brands",
+    "announcements"
+   ],
+   "fonts": {
+    "display": "Shrikhand",
+    "body": "Libre Baskerville",
+    "mono": "Space Grotesk",
+    "label": "Space Grotesk"
+   },
+   "font_substitutions": {},
+   "direction_settings": {
+    "energy": "brisk",
+    "density": "balanced",
+    "ground": "light",
+    "depth": "flat",
+    "camera": "locked",
+    "type": "loud",
+    "texture": "clean",
+    "colour": "one-accent",
+    "product_presence": "illustrated",
+    "sound": "beat-driven",
+    "voice": "spoken-headline"
+   },
+   "transition": "cut",
+   "text_animation": "slam",
+   "energy": "high",
+   "notes": "Shrikhand at poster scale against Libre Baskerville, tomato red, double-rule borders; hard cuts with a red flash.",
+   "palette": {
+    "bg": "#FFFFFF",
+    "ink": "#1C1410",
+    "accent": "#D8000F"
+   },
+   "style": "bold-poster/style.json",
+   "frame": "bold-poster/frame.html",
+   "strip": "bold-poster/strip/",
+   "preview": "bold-poster/preview.mp4",
+   "poster": "bold-poster/poster.jpg",
+   "poster_card": "bold-poster/poster-card.jpg",
+   "duration_s": 10,
+   "size": [
+    1280,
+    720
+   ],
+   "fps": 30,
+   "render_s": 19
+  },
+  {
+   "id": "broadside",
+   "name": "Broadside",
+   "canvas": "dark",
+   "mood": [
+    "graphic",
+    "lowercase",
+    "direct"
+   ],
+   "suits": [
+    "bold statements",
+    "developer launches",
+    "manifesto-style videos"
+   ],
+   "fonts": {
+    "display": "Barlow",
+    "body": "Barlow",
+    "mono": "IBM Plex Mono",
+    "label": "IBM Plex Mono"
+   },
+   "font_substitutions": {},
+   "direction_settings": {
+    "energy": "brisk",
+    "density": "sparse",
+    "ground": "alternating",
+    "depth": "flat",
+    "camera": "locked",
+    "type": "loud",
+    "texture": "clean",
+    "colour": "one-accent",
+    "product_presence": "illustrated",
+    "sound": "beat-driven",
+    "voice": "spoken-headline"
+   },
+   "transition": "push",
+   "text_animation": "rise-mask",
+   "energy": "brisk",
+   "notes": "Massive lowercase Barlow 900 as a graphic primitive, two registers (ink black and fire orange); the card and terminal moments switch to the orange register.",
+   "palette": {
+    "bg": "#111111",
+    "ink": "#F0ECE5",
+    "accent": "#E85D26"
+   },
+   "style": "broadside/style.json",
+   "frame": "broadside/frame.html",
+   "strip": "broadside/strip/",
+   "preview": "broadside/preview.mp4",
+   "poster": "broadside/poster.jpg",
+   "poster_card": "broadside/poster-card.jpg",
+   "duration_s": 10,
+   "size": [
+    1280,
+    720
+   ],
+   "fps": 30,
+   "render_s": 19
+  },
+  {
+   "id": "capsule",
+   "name": "Capsule",
+   "canvas": "light",
+   "mood": [
+    "candy",
+    "crafted",
+    "friendly"
+   ],
+   "suits": [
+    "consumer apps",
+    "creator tools",
+    "playful SaaS"
+   ],
+   "fonts": {
+    "display": "Bodoni Moda",
+    "body": "Space Grotesk",
+    "mono": "Space Grotesk",
+    "label": "Space Grotesk"
+   },
+   "font_substitutions": {},
+   "direction_settings": {
+    "energy": "steady",
+    "density": "balanced",
+    "ground": "light",
+    "depth": "layered",
+    "camera": "locked",
+    "type": "display",
+    "texture": "grain",
+    "colour": "full-palette",
+    "product_presence": "illustrated",
+    "sound": "scored",
+    "voice": "narrated"
+   },
+   "transition": "iris",
+   "text_animation": "scale-in",
+   "energy": "steady",
+   "notes": "Pill geometry with a 2 px ink outline on everything, soft hard-offset shadows, Bodoni Moda against Space Grotesk, grain; iris cuts.",
+   "palette": {
+    "bg": "#F5F5F0",
+    "ink": "#1A1A1A",
+    "accent": "#E85D4E"
+   },
+   "style": "capsule/style.json",
+   "frame": "capsule/frame.html",
+   "strip": "capsule/strip/",
+   "preview": "capsule/preview.mp4",
+   "poster": "capsule/poster.jpg",
+   "poster_card": "capsule/poster-card.jpg",
+   "duration_s": 10,
+   "size": [
+    1280,
+    720
+   ],
+   "fps": 30,
+   "render_s": 25
+  },
+  {
+   "id": "cartesian",
+   "name": "Cartesian",
+   "canvas": "light",
+   "mood": [
+    "quiet",
+    "drafted",
+    "warm-stone"
+   ],
+   "suits": [
+    "architecture and design tools",
+    "premium services",
+    "thoughtful explainers"
+   ],
+   "fonts": {
+    "display": "Playfair Display",
+    "body": "Inter",
+    "mono": "Inter",
+    "label": "Inter"
+   },
+   "font_substitutions": {},
+   "direction_settings": {
+    "energy": "calm",
+    "density": "sparse",
+    "ground": "light",
+    "depth": "flat",
+    "camera": "locked",
+    "type": "editorial",
+    "texture": "clean",
+    "colour": "mono",
+    "product_presence": "illustrated",
+    "sound": "ambient",
+    "voice": "narrated"
+   },
+   "transition": "crossfade",
+   "text_animation": "fade-up",
+   "energy": "calm",
+   "notes": "Warm stone palette, Playfair 400 against Inter, a single taupe hairline as the only structure, compass rings; slow crossfades.",
+   "palette": {
+    "bg": "#EDE8E0",
+    "ink": "#1A1A1A",
+    "accent": "#8A8178"
+   },
+   "style": "cartesian/style.json",
+   "frame": "cartesian/frame.html",
+   "strip": "cartesian/strip/",
+   "preview": "cartesian/preview.mp4",
+   "poster": "cartesian/poster.jpg",
+   "poster_card": "cartesian/poster-card.jpg",
+   "duration_s": 10,
+   "size": [
+    1280,
+    720
+   ],
+   "fps": 30,
+   "render_s": 21
+  },
+  {
+   "id": "case-file",
+   "name": "Case File",
+   "canvas": "light",
+   "mood": [
+    "suspenseful",
+    "wry",
+    "tactile"
+   ],
+   "suits": [
+    "problem-solution launches",
+    "investigative framing",
+    "dossier-style explainers"
+   ],
+   "fonts": {
+    "display": "Playfair Display",
+    "body": "Inter",
+    "mono": "Courier Prime",
+    "label": "Courier Prime"
+   },
+   "font_substitutions": {},
+   "direction_settings": {
+    "energy": "steady",
+    "density": "balanced",
+    "ground": "light",
+    "depth": "layered",
+    "camera": "push",
+    "type": "editorial",
+    "texture": "textured",
+    "colour": "one-accent",
+    "product_presence": "illustrated",
+    "sound": "scored",
+    "voice": "narrated"
+   },
+   "transition": "cut",
+   "text_animation": "type",
+   "energy": "steady",
+   "notes": "Grey-green paper with grain and vignette, Playfair 900 evidence numbers, typed Courier Prime captions, hard cuts with a slow push; the terminal sits on cork.",
+   "palette": {
+    "bg": "#b6b9a2",
+    "ink": "#161712",
+    "accent": "#c2241f"
+   },
+   "style": "case-file/style.json",
+   "frame": "case-file/frame.html",
+   "strip": "case-file/strip/",
+   "preview": "case-file/preview.mp4",
+   "poster": "case-file/poster.jpg",
+   "poster_card": "case-file/poster-card.jpg",
+   "duration_s": 10,
+   "size": [
+    1280,
+    720
+   ],
+   "fps": 30,
+   "render_s": 24
+  },
+  {
+   "id": "cobalt-grid",
+   "name": "Cobalt Grid",
+   "canvas": "light",
+   "mood": [
+    "technical",
+    "editorial",
+    "electric"
+   ],
+   "suits": [
+    "developer tools",
+    "data products",
+    "technical explainers"
+   ],
+   "fonts": {
+    "display": "Newsreader",
+    "body": "Hanken Grotesk",
+    "mono": "DM Mono",
+    "label": "Hanken Grotesk"
+   },
+   "font_substitutions": {},
+   "direction_settings": {
+    "energy": "steady",
+    "density": "balanced",
+    "ground": "light",
+    "depth": "flat",
+    "camera": "locked",
+    "type": "editorial",
+    "texture": "textured",
+    "colour": "mono",
+    "product_presence": "illustrated",
+    "sound": "scored",
+    "voice": "narrated"
+   },
+   "transition": "glitch",
+   "text_animation": "rise-mask",
+   "energy": "steady",
+   "notes": "Cream paper with cobalt as the only ink over permanent graph paper, Newsreader against Hanken Grotesk and DM Mono; pixel-glitch cuts.",
+   "palette": {
+    "bg": "#F0EBDE",
+    "ink": "#1F2BE0",
+    "accent": "#1F2BE0"
+   },
+   "style": "cobalt-grid/style.json",
+   "frame": "cobalt-grid/frame.html",
+   "strip": "cobalt-grid/strip/",
+   "preview": "cobalt-grid/preview.mp4",
+   "poster": "cobalt-grid/poster.jpg",
+   "poster_card": "cobalt-grid/poster-card.jpg",
+   "duration_s": 10,
+   "size": [
+    1280,
+    720
+   ],
+   "fps": 30,
+   "render_s": 20
+  },
+  {
+   "id": "code-editorial",
+   "name": "Code editorial",
+   "canvas": "light",
+   "mood": [
+    "warm",
+    "literate",
+    "technical"
+   ],
+   "suits": [
+    "developer tools",
+    "AI products",
+    "docs and changelog videos"
+   ],
+   "fonts": {
+    "display": "EB Garamond",
+    "body": "Inter",
+    "mono": "JetBrains Mono",
+    "label": "JetBrains Mono"
+   },
+   "font_substitutions": {},
+   "direction_settings": {
+    "energy": "steady",
+    "density": "balanced",
+    "ground": "light",
+    "depth": "flat",
+    "camera": "locked",
+    "type": "editorial",
+    "texture": "clean",
+    "colour": "one-accent",
+    "product_presence": "illustrated",
+    "sound": "ambient",
+    "voice": "narrated"
+   },
+   "transition": "crossfade",
+   "text_animation": "fade-up",
+   "energy": "steady",
+   "notes": "Warm cream paper, EB Garamond display, Inter body, JetBrains Mono on a warm-navy code surface, a single terracotta coral kept scarce.",
+   "palette": {
+    "bg": "#FAF9F5",
+    "ink": "#141413",
+    "accent": "#CC785C"
+   },
+   "style": "code-editorial/style.json",
+   "frame": "code-editorial/frame.html",
+   "strip": "code-editorial/strip/",
+   "preview": "code-editorial/preview.mp4",
+   "poster": "code-editorial/poster.jpg",
+   "poster_card": "code-editorial/poster-card.jpg",
+   "duration_s": 10,
+   "size": [
+    1280,
+    720
+   ],
+   "fps": 30,
+   "render_s": 19
+  },
+  {
+   "id": "control-room-at-night",
+   "name": "Control room at night",
+   "canvas": "dark",
+   "mood": [
+    "cinematic",
+    "technical",
+    "confident"
+   ],
+   "suits": [
+    "developer tools",
+    "live products",
+    "launch videos",
+    "dark-mode apps"
+   ],
+   "fonts": {
+    "display": "Archivo Black",
+    "body": "Geist",
+    "mono": "Geist Mono",
+    "label": "Geist Mono"
+   },
+   "font_substitutions": {},
+   "direction_settings": {
+    "energy": "steady",
+    "density": "balanced",
+    "ground": "dark",
+    "depth": "deep",
+    "camera": "drift",
+    "type": "display",
+    "texture": "clean",
+    "colour": "two-accent",
+    "product_presence": "framed",
+    "sound": "scored",
+    "voice": "narrated"
+   },
+   "transition": "crossfade",
+   "text_animation": "rise-mask",
+   "energy": "steady",
+   "notes": "A control-room launch look: navy ground with a royal-blue and a teal pool, cyan as the one emphasis colour, violet buttons, Archivo Black against Geist. Hero numbers are gold in the original; the strip keeps cyan.",
+   "palette": {
+    "bg": "#070a1f",
+    "ink": "#f4f6fb",
+    "accent": "#3ef2ff"
+   },
+   "style": "control-room-at-night/style.json",
+   "frame": "control-room-at-night/frame.html",
+   "strip": "control-room-at-night/strip/",
+   "preview": "control-room-at-night/preview.mp4",
+   "poster": "control-room-at-night/poster.jpg",
+   "poster_card": "control-room-at-night/poster-card.jpg",
+   "duration_s": 10,
+   "size": [
+    1280,
+    720
+   ],
+   "fps": 30,
+   "render_s": 18
+  },
+  {
+   "id": "coral",
+   "name": "Coral",
+   "canvas": "light",
+   "mood": [
+    "bold",
+    "graphic",
+    "warm"
+   ],
+   "suits": [
+    "brand launches",
+    "agency showreels",
+    "consumer products"
+   ],
+   "fonts": {
+    "display": "Bebas Neue",
+    "body": "Inter",
+    "mono": "Inter",
+    "label": "Inter"
+   },
+   "font_substitutions": {},
+   "direction_settings": {
+    "energy": "brisk",
+    "density": "balanced",
+    "ground": "alternating",
+    "depth": "flat",
+    "camera": "locked",
+    "type": "loud",
+    "texture": "clean",
+    "colour": "one-accent",
+    "product_presence": "illustrated",
+    "sound": "beat-driven",
+    "voice": "spoken-headline"
+   },
+   "transition": "wipe",
+   "text_animation": "rise-mask",
+   "energy": "brisk",
+   "notes": "Three surfaces (coral fire, ink black, warm cream), Bebas Neue tracked uppercase, a 45-degree hatch, zero radius; the card and terminal moments sit on the coral region.",
+   "palette": {
+    "bg": "#F5F0E8",
+    "ink": "#1A1A1A",
+    "accent": "#E85D5D"
+   },
+   "style": "coral/style.json",
+   "frame": "coral/frame.html",
+   "strip": "coral/strip/",
+   "preview": "coral/preview.mp4",
+   "poster": "coral/poster.jpg",
+   "poster_card": "coral/poster-card.jpg",
+   "duration_s": 10,
+   "size": [
+    1280,
+    720
+   ],
+   "fps": 30,
+   "render_s": 18
+  },
+  {
+   "id": "cream-serif",
+   "name": "Cream Serif",
+   "canvas": "light",
+   "mood": [
+    "warm",
+    "friendly",
+    "credible"
+   ],
+   "suits": [
+    "developer-tool launches",
+    "comparisons",
+    "warm SaaS"
+   ],
+   "fonts": {
+    "display": "Fraunces",
+    "body": "Inter",
+    "mono": "JetBrains Mono",
+    "label": "Inter"
+   },
+   "font_substitutions": {},
+   "direction_settings": {
+    "energy": "steady",
+    "density": "balanced",
+    "ground": "light",
+    "depth": "layered",
+    "camera": "locked",
+    "type": "editorial",
+    "texture": "clean",
+    "colour": "one-accent",
+    "product_presence": "illustrated",
+    "sound": "scored",
+    "voice": "narrated"
+   },
+   "transition": "cut",
+   "text_animation": "blur-in",
+   "energy": "steady",
+   "notes": "Cream ground, Fraunces 800 with one coral italic word per line, headlines resolve from blur, hard cuts; the stat lands with a back-out overshoot.",
+   "palette": {
+    "bg": "#f3ede2",
+    "ink": "#1d1b18",
+    "accent": "#ec5b3c"
+   },
+   "style": "cream-serif/style.json",
+   "frame": "cream-serif/frame.html",
+   "strip": "cream-serif/strip/",
+   "preview": "cream-serif/preview.mp4",
+   "poster": "cream-serif/poster.jpg",
+   "poster_card": "cream-serif/poster-card.jpg",
+   "duration_s": 10,
+   "size": [
+    1280,
+    720
+   ],
+   "fps": 30,
+   "render_s": 18
+  },
+  {
+   "id": "creative-mode",
+   "name": "Creative Mode",
+   "canvas": "light",
+   "mood": [
+    "workshop",
+    "bold",
+    "colourful"
+   ],
+   "suits": [
+    "creator tools",
+    "design products",
+    "maker communities"
+   ],
+   "fonts": {
+    "display": "Archivo Black",
+    "body": "Space Grotesk",
+    "mono": "JetBrains Mono",
+    "label": "JetBrains Mono"
+   },
+   "font_substitutions": {},
+   "direction_settings": {
+    "energy": "high",
+    "density": "dense",
+    "ground": "light",
+    "depth": "flat",
+    "camera": "locked",
+    "type": "loud",
+    "texture": "clean",
+    "colour": "full-palette",
+    "product_presence": "illustrated",
+    "sound": "beat-driven",
+    "voice": "spoken-headline"
+   },
+   "transition": "push",
+   "text_animation": "slam",
+   "energy": "high",
+   "notes": "Cream canvas, 4 px ink borders with hard offset shadows, Archivo Black uppercase at 0.92 line height, JetBrains Mono taxonomy, four accents.",
+   "palette": {
+    "bg": "#EFE9D9",
+    "ink": "#0F0F0F",
+    "accent": "#E85A1F"
+   },
+   "style": "creative-mode/style.json",
+   "frame": "creative-mode/frame.html",
+   "strip": "creative-mode/strip/",
+   "preview": "creative-mode/preview.mp4",
+   "poster": "creative-mode/poster.jpg",
+   "poster_card": "creative-mode/poster-card.jpg",
+   "duration_s": 10,
+   "size": [
+    1280,
+    720
+   ],
+   "fps": 30,
+   "render_s": 17
+  },
+  {
+   "id": "cyanotype-mac",
+   "name": "Cyanotype Mac",
+   "canvas": "dark",
+   "mood": [
+    "nostalgic",
+    "precise",
+    "dreamy"
+   ],
+   "suits": [
+    "retro product demos",
+    "developer tools",
+    "1-bit UI stories"
+   ],
+   "fonts": {
+    "display": "Pixelify Sans",
+    "body": "Pixelify Sans",
+    "mono": "Pixelify Sans",
+    "label": "Silkscreen"
+   },
+   "font_substitutions": {},
+   "direction_settings": {
+    "energy": "steady",
+    "density": "balanced",
+    "ground": "dark",
+    "depth": "flat",
+    "camera": "push",
+    "type": "display",
+    "texture": "textured",
+    "colour": "mono",
+    "product_presence": "framed",
+    "sound": "ambient",
+    "voice": "narrated"
+   },
+   "transition": "cut",
+   "text_animation": "stepped",
+   "energy": "steady",
+   "notes": "Full-bleed cobalt cyanotype with dither tones, Pixelify Sans and Silkscreen, stepped eases instead of smooth fades, a slow creeping push; the Mac itself is left out and the terminal is a 1-bit screen.",
+   "palette": {
+    "bg": "#1d1dd3",
+    "ink": "#dcdcff",
+    "accent": "#e4dbc4"
+   },
+   "style": "cyanotype-mac/style.json",
+   "frame": "cyanotype-mac/frame.html",
+   "strip": "cyanotype-mac/strip/",
+   "preview": "cyanotype-mac/preview.mp4",
+   "poster": "cyanotype-mac/poster.jpg",
+   "poster_card": "cyanotype-mac/poster-card.jpg",
+   "duration_s": 10,
+   "size": [
+    1280,
+    720
+   ],
+   "fps": 30,
+   "render_s": 18
+  },
+  {
+   "id": "daisy-days",
+   "name": "Daisy Days",
+   "canvas": "light",
+   "mood": [
+    "sunny",
+    "rounded",
+    "cheerful"
+   ],
+   "suits": [
+    "consumer apps",
+    "kids and family products",
+    "wellness"
+   ],
+   "fonts": {
+    "display": "Fredoka",
+    "body": "Quicksand",
+    "mono": "Quicksand",
+    "label": "Quicksand"
+   },
+   "font_substitutions": {
+    "Fredoka One": "Fredoka"
+   },
+   "direction_settings": {
+    "energy": "high",
+    "density": "dense",
+    "ground": "light",
+    "depth": "flat",
+    "camera": "locked",
+    "type": "display",
+    "texture": "clean",
+    "colour": "full-palette",
+    "product_presence": "illustrated",
+    "sound": "scored",
+    "voice": "spoken-headline"
+   },
+   "transition": "iris",
+   "text_animation": "letters",
+   "energy": "high",
+   "notes": "Sunny-garden pastels with charcoal 3 px outlines and hard offset shadows, Fredoka against Quicksand, bouncy letters and iris cuts.",
+   "palette": {
+    "bg": "#F5F0E6",
+    "ink": "#2D2D2D",
+    "accent": "#F8635F"
+   },
+   "style": "daisy-days/style.json",
+   "frame": "daisy-days/frame.html",
+   "strip": "daisy-days/strip/",
+   "preview": "daisy-days/preview.mp4",
+   "poster": "daisy-days/poster.jpg",
+   "poster_card": "daisy-days/poster-card.jpg",
+   "duration_s": 10,
+   "size": [
+    1280,
+    720
+   ],
+   "fps": 30,
+   "render_s": 18
+  },
+  {
+   "id": "data-drift",
+   "name": "Data Drift",
+   "canvas": "dark",
+   "mood": [
+    "futuristic",
+    "immersive"
+   ],
+   "suits": [
+    "AI products",
+    "ML platforms",
+    "data companies",
+    "speculative tech"
+   ],
+   "fonts": {
+    "display": "Inter",
+    "body": "Inter",
+    "mono": "JetBrains Mono",
+    "label": "Inter"
+   },
+   "font_substitutions": {},
+   "direction_settings": {
+    "energy": "calm",
+    "density": "sparse",
+    "ground": "dark",
+    "depth": "deep",
+    "camera": "drift",
+    "type": "quiet",
+    "texture": "clean",
+    "colour": "two-accent",
+    "product_presence": "illustrated",
+    "sound": "ambient",
+    "voice": "narrated"
+   },
+   "transition": "zoom",
+   "text_animation": "blur-in",
+   "energy": "calm",
+   "notes": "Thin weightless Inter, purple and cyan light pools that drift, everything resolves through blur and scale; the particle field is a faint dot grid.",
+   "palette": {
+    "bg": "#0a0a0a",
+    "ink": "#e0e0e0",
+    "accent": "#7c3aed"
+   },
+   "style": "data-drift/style.json",
+   "frame": "data-drift/frame.html",
+   "strip": "data-drift/strip/",
+   "preview": "data-drift/preview.mp4",
+   "poster": "data-drift/poster.jpg",
+   "poster_card": "data-drift/poster-card.jpg",
+   "duration_s": 10,
+   "size": [
+    1280,
+    720
+   ],
+   "fps": 30,
+   "render_s": 18
+  },
+  {
+   "id": "deconstructed",
+   "name": "Deconstructed",
+   "canvas": "dark",
+   "mood": [
+    "industrial",
+    "raw"
+   ],
+   "suits": [
+    "tech news",
+    "developer launches",
+    "security products",
+    "punk-energy reveals"
+   ],
+   "fonts": {
+    "display": "Space Grotesk",
+    "body": "Space Grotesk",
+    "mono": "Space Mono",
+    "label": "Space Mono"
+   },
+   "font_substitutions": {},
+   "direction_settings": {
+    "energy": "high",
+    "density": "dense",
+    "ground": "dark",
+    "depth": "flat",
+    "camera": "handheld",
+    "type": "loud",
+    "texture": "textured",
+    "colour": "one-accent",
+    "product_presence": "illustrated",
+    "sound": "beat-driven",
+    "voice": "spoken-headline"
+   },
+   "transition": "glitch",
+   "text_animation": "scramble",
+   "energy": "high",
+   "notes": "Letters scramble then snap, stepped exits, scan lines and grain; glitch cuts between moments.",
+   "palette": {
+    "bg": "#1a1a1a",
+    "ink": "#f0f0f0",
+    "accent": "#D4501E"
+   },
+   "style": "deconstructed/style.json",
+   "frame": "deconstructed/frame.html",
+   "strip": "deconstructed/strip/",
+   "preview": "deconstructed/preview.mp4",
+   "poster": "deconstructed/poster.jpg",
+   "poster_card": "deconstructed/poster-card.jpg",
+   "duration_s": 10,
+   "size": [
+    1280,
+    720
+   ],
+   "fps": 30,
+   "render_s": 22
+  },
+  {
+   "id": "dither-serif",
+   "name": "Dither Serif",
+   "canvas": "light",
+   "mood": [
+    "crisp",
+    "playful",
+    "premium"
+   ],
+   "suits": [
+    "product UI launches",
+    "commerce",
+    "mascot brands"
+   ],
+   "fonts": {
+    "display": "DM Serif Display",
+    "body": "Inter",
+    "mono": "Inter",
+    "label": "Inter"
+   },
+   "font_substitutions": {},
+   "direction_settings": {
+    "energy": "brisk",
+    "density": "dense",
+    "ground": "alternating",
+    "depth": "flat",
+    "camera": "locked",
+    "type": "display",
+    "texture": "clean",
+    "colour": "one-accent",
+    "product_presence": "illustrated",
+    "sound": "beat-driven",
+    "voice": "spoken-headline"
+   },
+   "transition": "iris",
+   "text_animation": "slam",
+   "energy": "brisk",
+   "notes": "White, cobalt and black scenes alternating, DM Serif Display with one handwritten accent word in cobalt, iris cuts; the ordered dithering of the subject is left out.",
+   "palette": {
+    "bg": "#ffffff",
+    "ink": "#0b0d14",
+    "accent": "#0f4cff"
+   },
+   "style": "dither-serif/style.json",
+   "frame": "dither-serif/frame.html",
+   "strip": "dither-serif/strip/",
+   "preview": "dither-serif/preview.mp4",
+   "poster": "dither-serif/poster.jpg",
+   "poster_card": "dither-serif/poster-card.jpg",
+   "duration_s": 10,
+   "size": [
+    1280,
+    720
+   ],
+   "fps": 30,
+   "render_s": 18
+  },
+  {
+   "id": "dot-field",
+   "name": "Dot Field",
+   "canvas": "dark",
+   "mood": [
+    "energetic",
+    "crafted",
+    "showy"
+   ],
+   "suits": [
+    "showreels",
+    "portfolio pieces",
+    "kinetic launches"
+   ],
+   "fonts": {
+    "display": "Archivo Black",
+    "body": "JetBrains Mono",
+    "mono": "JetBrains Mono",
+    "label": "JetBrains Mono"
+   },
+   "font_substitutions": {},
+   "direction_settings": {
+    "energy": "high",
+    "density": "dense",
+    "ground": "alternating",
+    "depth": "flat",
+    "camera": "handheld",
+    "type": "loud",
+    "texture": "textured",
+    "colour": "full-palette",
+    "product_presence": "illustrated",
+    "sound": "beat-driven",
+    "voice": "spoken-headline"
+   },
+   "transition": "cut",
+   "text_animation": "drop",
+   "energy": "high",
+   "notes": "Viewfinder HUD over everything, hard cuts that switch the whole background colour, Archivo Black letters tumbling in, an Instrument Serif italic accent word, a dot field.",
+   "palette": {
+    "bg": "#0c0c0d",
+    "ink": "#f4f4f0",
+    "accent": "#ff5a1f"
+   },
+   "style": "dot-field/style.json",
+   "frame": "dot-field/frame.html",
+   "strip": "dot-field/strip/",
+   "preview": "dot-field/preview.mp4",
+   "poster": "dot-field/poster.jpg",
+   "poster_card": "dot-field/poster-card.jpg",
+   "duration_s": 10,
+   "size": [
+    1280,
+    720
+   ],
+   "fps": 30,
+   "render_s": 19
+  },
+  {
+   "id": "dot-matrix",
+   "name": "Dot Matrix",
+   "canvas": "light",
+   "mood": [
+    "precise",
+    "technical",
+    "confident"
+   ],
+   "suits": [
+    "stats",
+    "status boards",
+    "numbers-led launches"
+   ],
+   "fonts": {
+    "display": "Silkscreen",
+    "body": "JetBrains Mono",
+    "mono": "JetBrains Mono",
+    "label": "JetBrains Mono"
+   },
+   "font_substitutions": {},
+   "direction_settings": {
+    "energy": "steady",
+    "density": "balanced",
+    "ground": "alternating",
+    "depth": "flat",
+    "camera": "locked",
+    "type": "display",
+    "texture": "textured",
+    "colour": "one-accent",
+    "product_presence": "illustrated",
+    "sound": "beat-driven",
+    "voice": "caption"
+   },
+   "transition": "cut",
+   "text_animation": "letters",
+   "energy": "steady",
+   "notes": "A board of round dots with hot pink captions; the source draws its own 5x7 bitmap letters from divs, here the pixel face Silkscreen stands in, letters pop in with back.out(3), cream and black cut on the scan line.",
+   "palette": {
+    "bg": "#f1ede4",
+    "ink": "#161616",
+    "accent": "#ff2e88"
+   },
+   "style": "dot-matrix/style.json",
+   "frame": "dot-matrix/frame.html",
+   "strip": "dot-matrix/strip/",
+   "preview": "dot-matrix/preview.mp4",
+   "poster": "dot-matrix/poster.jpg",
+   "poster_card": "dot-matrix/poster-card.jpg",
+   "duration_s": 10,
+   "size": [
+    1280,
+    720
+   ],
+   "fps": 30,
+   "render_s": 18
+  },
+  {
+   "id": "editorial-forest",
+   "name": "Editorial Forest",
+   "canvas": "dark",
+   "mood": [
+    "editorial",
+    "calm",
+    "deep-green"
+   ],
+   "suits": [
+    "sustainability brands",
+    "editorial products",
+    "premium services"
+   ],
+   "fonts": {
+    "display": "Source Serif 4",
+    "body": "Source Serif 4",
+    "mono": "JetBrains Mono",
+    "label": "JetBrains Mono"
+   },
+   "font_substitutions": {},
+   "direction_settings": {
+    "energy": "calm",
+    "density": "balanced",
+    "ground": "dark",
+    "depth": "flat",
+    "camera": "locked",
+    "type": "editorial",
+    "texture": "clean",
+    "colour": "one-accent",
+    "product_presence": "illustrated",
+    "sound": "ambient",
+    "voice": "narrated"
+   },
+   "transition": "crossfade",
+   "text_animation": "fade-up",
+   "energy": "calm",
+   "notes": "Deep green ground, cream type, one pink accent, Source Serif 4 at weight 500 with JetBrains Mono uppercase chrome, flat paper depth with 2 px rules.",
+   "palette": {
+    "bg": "#2e4a2a",
+    "ink": "#efe7d4",
+    "accent": "#e89cb1"
+   },
+   "style": "editorial-forest/style.json",
+   "frame": "editorial-forest/frame.html",
+   "strip": "editorial-forest/strip/",
+   "preview": "editorial-forest/preview.mp4",
+   "poster": "editorial-forest/poster.jpg",
+   "poster_card": "editorial-forest/poster-card.jpg",
+   "duration_s": 10,
+   "size": [
+    1280,
+    720
+   ],
+   "fps": 30,
+   "render_s": 18
+  },
+  {
+   "id": "folk-frequency",
+   "name": "Folk Frequency",
+   "canvas": "light",
+   "mood": [
+    "cultural",
+    "vivid"
+   ],
+   "suits": [
+    "consumer apps",
+    "food platforms",
+    "community products",
+    "festive launches"
+   ],
+   "fonts": {
+    "display": "Fredoka",
+    "body": "Nunito",
+    "mono": "Nunito",
+    "label": "Nunito"
+   },
+   "font_substitutions": {
+    "Fredoka One": "Fredoka"
+   },
+   "direction_settings": {
+    "energy": "high",
+    "density": "dense",
+    "ground": "alternating",
+    "depth": "flat",
+    "camera": "locked",
+    "type": "display",
+    "texture": "textured",
+    "colour": "full-palette",
+    "product_presence": "illustrated",
+    "sound": "scored",
+    "voice": "spoken-headline"
+   },
+   "transition": "iris",
+   "text_animation": "letters",
+   "energy": "high",
+   "notes": "Rounded Fredoka (Fredoka One is now shipped as Fredoka), bouncing letters, bold outlines, iris cuts; the card and terminal sit on a yellow block.",
+   "palette": {
+    "bg": "#ffffff",
+    "ink": "#1a1a1a",
+    "accent": "#FF1493"
+   },
+   "style": "folk-frequency/style.json",
+   "frame": "folk-frequency/frame.html",
+   "strip": "folk-frequency/strip/",
+   "preview": "folk-frequency/preview.mp4",
+   "poster": "folk-frequency/poster.jpg",
+   "poster_card": "folk-frequency/poster-card.jpg",
+   "duration_s": 10,
+   "size": [
+    1280,
+    720
+   ],
+   "fps": 30,
+   "render_s": 18
+  },
+  {
+   "id": "label-collage",
+   "name": "Label Collage",
+   "canvas": "light",
+   "mood": [
+    "tactile",
+    "tender",
+    "playful"
+   ],
+   "suits": [
+    "journaling apps",
+    "personal tools",
+    "tactile brands"
+   ],
+   "fonts": {
+    "display": "Space Mono",
+    "body": "Space Mono",
+    "mono": "Space Mono",
+    "label": "Caveat"
+   },
+   "font_substitutions": {},
+   "direction_settings": {
+    "energy": "brisk",
+    "density": "dense",
+    "ground": "alternating",
+    "depth": "layered",
+    "camera": "locked",
+    "type": "display",
+    "texture": "grain",
+    "colour": "two-accent",
+    "product_presence": "illustrated",
+    "sound": "scored",
+    "voice": "narrated"
+   },
+   "transition": "cut",
+   "text_animation": "slam",
+   "energy": "brisk",
+   "notes": "Cream paper and indigo night paper cut against each other, Space Mono label-tape type slapping in with back.out(2.2), coral Caveat handwriting for the accent word, grain over everything.",
+   "palette": {
+    "bg": "#ece3cd",
+    "ink": "#263a6c",
+    "accent": "#e5735b"
+   },
+   "style": "label-collage/style.json",
+   "frame": "label-collage/frame.html",
+   "strip": "label-collage/strip/",
+   "preview": "label-collage/preview.mp4",
+   "poster": "label-collage/poster.jpg",
+   "poster_card": "label-collage/poster-card.jpg",
+   "duration_s": 10,
+   "size": [
+    1280,
+    720
+   ],
+   "fps": 30,
+   "render_s": 18
+  },
+  {
+   "id": "maximalist-type",
+   "name": "Maximalist Type",
+   "canvas": "dark",
+   "mood": [
+    "loud",
+    "kinetic"
+   ],
+   "suits": [
+    "big product launches",
+    "milestone announcements",
+    "hype videos"
+   ],
+   "fonts": {
+    "display": "Anton",
+    "body": "Space Grotesk",
+    "mono": "Space Grotesk",
+    "label": "Space Grotesk"
+   },
+   "font_substitutions": {},
+   "direction_settings": {
+    "energy": "high",
+    "density": "dense",
+    "ground": "alternating",
+    "depth": "flat",
+    "camera": "locked",
+    "type": "loud",
+    "texture": "clean",
+    "colour": "two-accent",
+    "product_presence": "illustrated",
+    "sound": "beat-driven",
+    "voice": "spoken-headline"
+   },
+   "transition": "cut",
+   "text_animation": "slam",
+   "energy": "high",
+   "notes": "Anton at poster size, hard cuts with a flash, the project card and terminal land on a yellow colour block.",
+   "palette": {
+    "bg": "#0a0a0a",
+    "ink": "#ffffff",
+    "accent": "#E63946"
+   },
+   "style": "maximalist-type/style.json",
+   "frame": "maximalist-type/frame.html",
+   "strip": "maximalist-type/strip/",
+   "preview": "maximalist-type/preview.mp4",
+   "poster": "maximalist-type/poster.jpg",
+   "poster_card": "maximalist-type/poster-card.jpg",
+   "duration_s": 10,
+   "size": [
+    1280,
+    720
+   ],
+   "fps": 30,
+   "render_s": 16
+  },
+  {
+   "id": "midnight-glow",
+   "name": "Midnight Glow",
+   "canvas": "dark",
+   "mood": [
+    "sleek",
+    "premium",
+    "calm"
+   ],
+   "suits": [
+    "AI product launches",
+    "dark-mode apps",
+    "app reveals"
+   ],
+   "fonts": {
+    "display": "Inter",
+    "body": "Inter",
+    "mono": "JetBrains Mono",
+    "label": "Inter"
+   },
+   "font_substitutions": {},
+   "direction_settings": {
+    "energy": "steady",
+    "density": "sparse",
+    "ground": "dark",
+    "depth": "layered",
+    "camera": "locked",
+    "type": "display",
+    "texture": "clean",
+    "colour": "one-accent",
+    "product_presence": "illustrated",
+    "sound": "scored",
+    "voice": "narrated"
+   },
+   "transition": "blur",
+   "text_animation": "blur-in",
+   "energy": "steady",
+   "notes": "Near-black with a faint purple glow at the centre, Inter 600 centred lines that resolve through blur and opacity; no hard cuts.",
+   "palette": {
+    "bg": "#0a0a0b",
+    "ink": "#f2f2f3",
+    "accent": "#ff5b3a"
+   },
+   "style": "midnight-glow/style.json",
+   "frame": "midnight-glow/frame.html",
+   "strip": "midnight-glow/strip/",
+   "preview": "midnight-glow/preview.mp4",
+   "poster": "midnight-glow/poster.jpg",
+   "poster_card": "midnight-glow/poster-card.jpg",
+   "duration_s": 10,
+   "size": [
+    1280,
+    720
+   ],
+   "fps": 30,
+   "render_s": 17
+  },
+  {
+   "id": "mono-plex",
+   "name": "Mono Plex",
+   "canvas": "light",
+   "mood": [
+    "minimal",
+    "calm",
+    "technical"
+   ],
+   "suits": [
+    "changelogs",
+    "release notes",
+    "minimal product updates"
+   ],
+   "fonts": {
+    "display": "IBM Plex Sans",
+    "body": "IBM Plex Sans",
+    "mono": "IBM Plex Mono",
+    "label": "IBM Plex Mono"
+   },
+   "font_substitutions": {},
+   "direction_settings": {
+    "energy": "calm",
+    "density": "sparse",
+    "ground": "light",
+    "depth": "flat",
+    "camera": "locked",
+    "type": "quiet",
+    "texture": "clean",
+    "colour": "mono",
+    "product_presence": "illustrated",
+    "sound": "none",
+    "voice": "caption"
+   },
+   "transition": "crossfade",
+   "text_animation": "fade-up",
+   "energy": "calm",
+   "notes": "Black, white and two greys only, IBM Plex Sans statements with IBM Plex Mono labels, a strict left column, fades and a blinking caret.",
+   "palette": {
+    "bg": "#fafafa",
+    "ink": "#0a0a0a",
+    "accent": "#0a0a0a"
+   },
+   "style": "mono-plex/style.json",
+   "frame": "mono-plex/frame.html",
+   "strip": "mono-plex/strip/",
+   "preview": "mono-plex/preview.mp4",
+   "poster": "mono-plex/poster.jpg",
+   "poster_card": "mono-plex/poster-card.jpg",
+   "duration_s": 10,
+   "size": [
+    1280,
+    720
+   ],
+   "fps": 30,
+   "render_s": 18
+  },
+  {
+   "id": "motion-principles",
+   "name": "Motion Principles",
+   "canvas": "light",
+   "mood": [
+    "precise",
+    "playful",
+    "craft-obsessed"
+   ],
+   "suits": [
+    "motion-design showreels",
+    "craft-led launches",
+    "annotated explainers"
+   ],
+   "fonts": {
+    "display": "Inter Tight",
+    "body": "Inter Tight",
+    "mono": "JetBrains Mono",
+    "label": "JetBrains Mono"
+   },
+   "font_substitutions": {},
+   "direction_settings": {
+    "energy": "high",
+    "density": "sparse",
+    "ground": "alternating",
+    "depth": "flat",
+    "camera": "locked",
+    "type": "loud",
+    "texture": "clean",
+    "colour": "one-accent",
+    "product_presence": "illustrated",
+    "sound": "beat-driven",
+    "voice": "spoken-headline"
+   },
+   "transition": "cut",
+   "text_animation": "squash",
+   "energy": "high",
+   "notes": "White and ink-black scenes hard-cut against each other, Inter Tight 900 statements stretched in with an elastic squash, a blue Caveat handwritten accent word, tiny mono labels.",
+   "palette": {
+    "bg": "#ffffff",
+    "ink": "#0a0a0a",
+    "accent": "#2540ff"
+   },
+   "style": "motion-principles/style.json",
+   "frame": "motion-principles/frame.html",
+   "strip": "motion-principles/strip/",
+   "preview": "motion-principles/preview.mp4",
+   "poster": "motion-principles/poster.jpg",
+   "poster_card": "motion-principles/poster-card.jpg",
+   "duration_s": 10,
+   "size": [
+    1280,
+    720
+   ],
+   "fps": 30,
+   "render_s": 18
+  },
+  {
+   "id": "navy-teal",
+   "name": "Navy Teal",
+   "canvas": "dark",
+   "mood": [
+    "clear",
+    "trustworthy",
+    "analytical"
+   ],
+   "suits": [
+    "metrics",
+    "reports",
+    "data explainers"
+   ],
+   "fonts": {
+    "display": "Space Grotesk",
+    "body": "Space Grotesk",
+    "mono": "Space Grotesk",
+    "label": "Space Grotesk"
+   },
+   "font_substitutions": {},
+   "direction_settings": {
+    "energy": "steady",
+    "density": "balanced",
+    "ground": "dark",
+    "depth": "flat",
+    "camera": "locked",
+    "type": "display",
+    "texture": "clean",
+    "colour": "one-accent",
+    "product_presence": "illustrated",
+    "sound": "scored",
+    "voice": "narrated"
+   },
+   "transition": "crossfade",
+   "text_animation": "fade-up",
+   "energy": "steady",
+   "notes": "Deep navy, one teal highlight, Space Grotesk throughout; counters via onUpdate, fade-up exits.",
+   "palette": {
+    "bg": "#0b1730",
+    "ink": "#e8f1ff",
+    "accent": "#2ee6c5"
+   },
+   "style": "navy-teal/style.json",
+   "frame": "navy-teal/frame.html",
+   "strip": "navy-teal/strip/",
+   "preview": "navy-teal/preview.mp4",
+   "poster": "navy-teal/poster.jpg",
+   "poster_card": "navy-teal/poster-card.jpg",
+   "duration_s": 10,
+   "size": [
+    1280,
+    720
+   ],
+   "fps": 30,
+   "render_s": 17
+  },
+  {
+   "id": "neon-terminal",
+   "name": "Neon Terminal",
+   "canvas": "dark",
+   "mood": [
+    "technical",
+    "energetic",
+    "dark"
+   ],
+   "suits": [
+    "devtools",
+    "CLI launches",
+    "terminal-first products"
+   ],
+   "fonts": {
+    "display": "JetBrains Mono",
+    "body": "JetBrains Mono",
+    "mono": "JetBrains Mono",
+    "label": "JetBrains Mono"
+   },
+   "font_substitutions": {},
+   "direction_settings": {
+    "energy": "brisk",
+    "density": "dense",
+    "ground": "dark",
+    "depth": "flat",
+    "camera": "locked",
+    "type": "display",
+    "texture": "textured",
+    "colour": "one-accent",
+    "product_presence": "framed",
+    "sound": "beat-driven",
+    "voice": "caption"
+   },
+   "transition": "glitch",
+   "text_animation": "type",
+   "energy": "brisk",
+   "notes": "Green phosphor on black with a scanline overlay, JetBrains Mono for everything, typed text, glitch cuts.",
+   "palette": {
+    "bg": "#050806",
+    "ink": "#c8ffd9",
+    "accent": "#3dff8f"
+   },
+   "style": "neon-terminal/style.json",
+   "frame": "neon-terminal/frame.html",
+   "strip": "neon-terminal/strip/",
+   "preview": "neon-terminal/preview.mp4",
+   "poster": "neon-terminal/poster.jpg",
+   "poster_card": "neon-terminal/poster-card.jpg",
+   "duration_s": 10,
+   "size": [
+    1280,
+    720
+   ],
+   "fps": 30,
+   "render_s": 18
+  },
+  {
+   "id": "noir-quote",
+   "name": "Noir Quote",
+   "canvas": "dark",
+   "mood": [
+    "cinematic",
+    "moody",
+    "elegant"
+   ],
+   "suits": [
+    "trailers",
+    "brand films",
+    "quote-led reveals"
+   ],
+   "fonts": {
+    "display": "Playfair Display",
+    "body": "Cormorant Garamond",
+    "mono": "Cormorant Garamond",
+    "label": "Cormorant Garamond"
+   },
+   "font_substitutions": {},
+   "direction_settings": {
+    "energy": "calm",
+    "density": "sparse",
+    "ground": "dark",
+    "depth": "deep",
+    "camera": "drift",
+    "type": "editorial",
+    "texture": "grain",
+    "colour": "mono",
+    "product_presence": "illustrated",
+    "sound": "scored",
+    "voice": "narrated"
+   },
+   "transition": "crossfade",
+   "text_animation": "word-blur",
+   "energy": "calm",
+   "notes": "Letterbox bars and film grain over near-black, Playfair italic that fades in word by word through blur, nothing faster than a second; the source has no accent colour, so the warm muted tone serves as one.",
+   "palette": {
+    "bg": "#0b0a09",
+    "ink": "#ede6d8",
+    "accent": "#a89c86"
+   },
+   "style": "noir-quote/style.json",
+   "frame": "noir-quote/frame.html",
+   "strip": "noir-quote/strip/",
+   "preview": "noir-quote/preview.mp4",
+   "poster": "noir-quote/poster.jpg",
+   "poster_card": "noir-quote/poster-card.jpg",
+   "duration_s": 10,
+   "size": [
+    1280,
+    720
+   ],
+   "fps": 30,
+   "render_s": 22
+  },
+  {
+   "id": "paper-marker",
+   "name": "Paper Marker",
+   "canvas": "light",
+   "mood": [
+    "smart",
+    "hand-made",
+    "punchy"
+   ],
+   "suits": [
+    "explainers",
+    "launches",
+    "hand-annotated product stories"
+   ],
+   "fonts": {
+    "display": "Archivo Black",
+    "body": "Archivo",
+    "mono": "JetBrains Mono",
+    "label": "Caveat"
+   },
+   "font_substitutions": {},
+   "direction_settings": {
+    "energy": "high",
+    "density": "balanced",
+    "ground": "alternating",
+    "depth": "flat",
+    "camera": "locked",
+    "type": "loud",
+    "texture": "textured",
+    "colour": "two-accent",
+    "product_presence": "illustrated",
+    "sound": "beat-driven",
+    "voice": "spoken-headline"
+   },
+   "transition": "cut",
+   "text_animation": "slam",
+   "energy": "high",
+   "notes": "Warm paper and ink-black cut hard against each other, Archivo Black lines that slam in, a yellow highlighter behind the accent word, Caveat marker notes.",
+   "palette": {
+    "bg": "#f4efe4",
+    "ink": "#1c1a17",
+    "accent": "#e2412b"
+   },
+   "style": "paper-marker/style.json",
+   "frame": "paper-marker/frame.html",
+   "strip": "paper-marker/strip/",
+   "preview": "paper-marker/preview.mp4",
+   "poster": "paper-marker/poster.jpg",
+   "poster_card": "paper-marker/poster-card.jpg",
+   "duration_s": 10,
+   "size": [
+    1280,
+    720
+   ],
+   "fps": 30,
+   "render_s": 19
+  },
+  {
+   "id": "parchment-epic",
+   "name": "Parchment Epic",
+   "canvas": "light",
+   "mood": [
+    "epic",
+    "scholarly",
+    "warm"
+   ],
+   "suits": [
+    "documentary framing",
+    "history-led explainers",
+    "heritage brands"
+   ],
+   "fonts": {
+    "display": "Cinzel",
+    "body": "Cormorant Garamond",
+    "mono": "IBM Plex Mono",
+    "label": "IBM Plex Mono"
+   },
+   "font_substitutions": {},
+   "direction_settings": {
+    "energy": "calm",
+    "density": "balanced",
+    "ground": "light",
+    "depth": "layered",
+    "camera": "locked",
+    "type": "display",
+    "texture": "grain",
+    "colour": "one-accent",
+    "product_presence": "illustrated",
+    "sound": "scored",
+    "voice": "narrated"
+   },
+   "transition": "cut",
+   "text_animation": "fade-up",
+   "energy": "calm",
+   "notes": "Parchment plates with grain and a brown vignette, Cinzel uppercase headlines, a persistent HUD, hard cuts between plates; the engraving illustrations are left out.",
+   "palette": {
+    "bg": "#e4d5b4",
+    "ink": "#2a1d12",
+    "accent": "#a3221b"
+   },
+   "style": "parchment-epic/style.json",
+   "frame": "parchment-epic/frame.html",
+   "strip": "parchment-epic/strip/",
+   "preview": "parchment-epic/preview.mp4",
+   "poster": "parchment-epic/poster.jpg",
+   "poster_card": "parchment-epic/poster-card.jpg",
+   "duration_s": 10,
+   "size": [
+    1280,
+    720
+   ],
+   "fps": 30,
+   "render_s": 20
+  },
+  {
+   "id": "pop-zine",
+   "name": "Pop Zine",
+   "canvas": "light",
+   "mood": [
+    "loud",
+    "playful",
+    "editorial"
+   ],
+   "suits": [
+    "podcasts",
+    "zine-style launches",
+    "countdowns"
+   ],
+   "fonts": {
+    "display": "Anton",
+    "body": "Space Grotesk",
+    "mono": "Share Tech Mono",
+    "label": "Share Tech Mono"
+   },
+   "font_substitutions": {},
+   "direction_settings": {
+    "energy": "high",
+    "density": "dense",
+    "ground": "alternating",
+    "depth": "layered",
+    "camera": "locked",
+    "type": "loud",
+    "texture": "grain",
+    "colour": "full-palette",
+    "product_presence": "illustrated",
+    "sound": "beat-driven",
+    "voice": "spoken-headline"
+   },
+   "transition": "cut",
+   "text_animation": "slam",
+   "energy": "high",
+   "notes": "Cream paper, navy halftone and a slowly rotating pink sunburst, Anton punch words with a hard navy offset shadow, hard cuts every moment, Share Tech Mono stamps.",
+   "palette": {
+    "bg": "#efe6d2",
+    "ink": "#232b52",
+    "accent": "#ff4f9a"
+   },
+   "style": "pop-zine/style.json",
+   "frame": "pop-zine/frame.html",
+   "strip": "pop-zine/strip/",
+   "preview": "pop-zine/preview.mp4",
+   "poster": "pop-zine/poster.jpg",
+   "poster_card": "pop-zine/poster-card.jpg",
+   "duration_s": 10,
+   "size": [
+    1280,
+    720
+   ],
+   "fps": 30,
+   "render_s": 20
+  },
+  {
+   "id": "red-band-title",
+   "name": "Red Band Title",
+   "canvas": "dark",
+   "mood": [
+    "dramatic",
+    "hype",
+    "cinematic"
+   ],
+   "suits": [
+    "title cards",
+    "trailer-style intros",
+    "dramatic launches"
+   ],
+   "fonts": {
+    "display": "Dela Gothic One",
+    "body": "Oswald",
+    "mono": "Oswald",
+    "label": "Oswald"
+   },
+   "font_substitutions": {},
+   "direction_settings": {
+    "energy": "high",
+    "density": "sparse",
+    "ground": "alternating",
+    "depth": "flat",
+    "camera": "handheld",
+    "type": "loud",
+    "texture": "clean",
+    "colour": "one-accent",
+    "product_presence": "illustrated",
+    "sound": "beat-driven",
+    "voice": "spoken-headline"
+   },
+   "transition": "cut",
+   "text_animation": "drop",
+   "energy": "high",
+   "notes": "Charcoal, crimson and off-white, Dela Gothic One letters dropping in with back.out, Oswald tracked sublines, hard cuts with a crimson flash; the card and terminal sit on the cream hit card.",
+   "palette": {
+    "bg": "#1b1b1d",
+    "ink": "#f7f5f2",
+    "accent": "#e5173f"
+   },
+   "style": "red-band-title/style.json",
+   "frame": "red-band-title/frame.html",
+   "strip": "red-band-title/strip/",
+   "preview": "red-band-title/preview.mp4",
+   "poster": "red-band-title/poster.jpg",
+   "poster_card": "red-band-title/poster-card.jpg",
+   "duration_s": 10,
+   "size": [
+    1280,
+    720
+   ],
+   "fps": 30,
+   "render_s": 17
+  },
+  {
+   "id": "shadow-cut",
+   "name": "Shadow Cut",
+   "canvas": "dark",
+   "mood": [
+    "dark",
+    "cinematic"
+   ],
+   "suits": [
+    "security products",
+    "dramatic reveals",
+    "investigative content",
+    "intense launches"
+   ],
+   "fonts": {
+    "display": "Oswald",
+    "body": "Inter",
+    "mono": "JetBrains Mono",
+    "label": "Inter"
+   },
+   "font_substitutions": {},
+   "direction_settings": {
+    "energy": "steady",
+    "density": "sparse",
+    "ground": "dark",
+    "depth": "deep",
+    "camera": "push",
+    "type": "display",
+    "texture": "grain",
+    "colour": "one-accent",
+    "product_presence": "illustrated",
+    "sound": "scored",
+    "voice": "narrated"
+   },
+   "transition": "blur",
+   "text_animation": "blur-in",
+   "energy": "steady",
+   "notes": "Near-monochrome with one blood accent, Oswald uppercase, elements emerge from darkness through blur, vignette and grain.",
+   "palette": {
+    "bg": "#0a0a0a",
+    "ink": "#f0f0f0",
+    "accent": "#C1121F"
+   },
+   "style": "shadow-cut/style.json",
+   "frame": "shadow-cut/frame.html",
+   "strip": "shadow-cut/strip/",
+   "preview": "shadow-cut/preview.mp4",
+   "poster": "shadow-cut/poster.jpg",
+   "poster_card": "shadow-cut/poster-card.jpg",
+   "duration_s": 10,
+   "size": [
+    1280,
+    720
+   ],
+   "fps": 30,
+   "render_s": 21
+  },
+  {
+   "id": "soft-signal",
+   "name": "Soft Signal",
+   "canvas": "light",
+   "mood": [
+    "intimate",
+    "warm"
+   ],
+   "suits": [
+    "wellness brands",
+    "personal stories",
+    "lifestyle products",
+    "human-centred apps"
+   ],
+   "fonts": {
+    "display": "Playfair Display",
+    "body": "Inter",
+    "mono": "JetBrains Mono",
+    "label": "Inter"
+   },
+   "font_substitutions": {},
+   "direction_settings": {
+    "energy": "calm",
+    "density": "sparse",
+    "ground": "light",
+    "depth": "layered",
+    "camera": "drift",
+    "type": "editorial",
+    "texture": "grain",
+    "colour": "one-accent",
+    "product_presence": "illustrated",
+    "sound": "ambient",
+    "voice": "narrated"
+   },
+   "transition": "blur",
+   "text_animation": "word-blur",
+   "energy": "calm",
+   "notes": "Playfair italic, warm cream, slow word-by-word blur; nothing snaps.",
+   "palette": {
+    "bg": "#FFF8EC",
+    "ink": "#2a2a2a",
+    "accent": "#F5A623"
+   },
+   "style": "soft-signal/style.json",
+   "frame": "soft-signal/frame.html",
+   "strip": "soft-signal/strip/",
+   "preview": "soft-signal/preview.mp4",
+   "poster": "soft-signal/poster.jpg",
+   "poster_card": "soft-signal/poster-card.jpg",
+   "duration_s": 10,
+   "size": [
+    1280,
+    720
+   ],
+   "fps": 30,
+   "render_s": 19
+  },
+  {
+   "id": "split-flap",
+   "name": "Split Flap",
+   "canvas": "dark",
+   "mood": [
+    "mechanical",
+    "nostalgic",
+    "precise"
+   ],
+   "suits": [
+    "launch countdowns",
+    "schedule-like products",
+    "typographic reveals"
+   ],
+   "fonts": {
+    "display": "Barlow Condensed",
+    "body": "Barlow Condensed",
+    "mono": "Barlow Condensed",
+    "label": "Barlow Condensed"
+   },
+   "font_substitutions": {},
+   "direction_settings": {
+    "energy": "steady",
+    "density": "dense",
+    "ground": "dark",
+    "depth": "layered",
+    "camera": "locked",
+    "type": "display",
+    "texture": "clean",
+    "colour": "two-accent",
+    "product_presence": "illustrated",
+    "sound": "ambient",
+    "voice": "caption"
+   },
+   "transition": "wipe-up",
+   "text_animation": "flip",
+   "energy": "steady",
+   "notes": "Dark wall, black housing with a bezel, amber and green status colours, Barlow Condensed; characters flip in on a stepped rotation and moments re-flip top to bottom.",
+   "palette": {
+    "bg": "#15171a",
+    "ink": "#efece4",
+    "accent": "#ffb000"
+   },
+   "style": "split-flap/style.json",
+   "frame": "split-flap/frame.html",
+   "strip": "split-flap/strip/",
+   "preview": "split-flap/preview.mp4",
+   "poster": "split-flap/poster.jpg",
+   "poster_card": "split-flap/poster-card.jpg",
+   "duration_s": 10,
+   "size": [
+    1280,
+    720
+   ],
+   "fps": 30,
+   "render_s": 17
+  },
+  {
+   "id": "swiss-pulse",
+   "name": "Swiss Pulse",
+   "canvas": "light",
+   "mood": [
+    "clinical",
+    "precise"
+   ],
+   "suits": [
+    "SaaS dashboards",
+    "developer tools",
+    "APIs",
+    "metrics"
+   ],
+   "fonts": {
+    "display": "Inter",
+    "body": "Inter",
+    "mono": "Inter",
+    "label": "Inter"
+   },
+   "font_substitutions": {
+    "Helvetica Neue": "Inter"
+   },
+   "direction_settings": {
+    "energy": "high",
+    "density": "sparse",
+    "ground": "light",
+    "depth": "flat",
+    "camera": "locked",
+    "type": "display",
+    "texture": "clean",
+    "colour": "one-accent",
+    "product_presence": "illustrated",
+    "sound": "beat-driven",
+    "voice": "spoken-headline"
+   },
+   "transition": "zoom",
+   "text_animation": "rise-mask",
+   "energy": "high",
+   "notes": "Grid-locked, numbers dominate, hard entrances. Helvetica Neue is not an open font; Inter stands in.",
+   "palette": {
+    "bg": "#ffffff",
+    "ink": "#1a1a1a",
+    "accent": "#0066FF"
+   },
+   "style": "swiss-pulse/style.json",
+   "frame": "swiss-pulse/frame.html",
+   "strip": "swiss-pulse/strip/",
+   "preview": "swiss-pulse/preview.mp4",
+   "poster": "swiss-pulse/poster.jpg",
+   "poster_card": "swiss-pulse/poster-card.jpg",
+   "duration_s": 10,
+   "size": [
+    1280,
+    720
+   ],
+   "fps": 30,
+   "render_s": 18
+  },
+  {
+   "id": "topo-credits",
+   "name": "Topo Credits",
+   "canvas": "dark",
+   "mood": [
+    "cinematic",
+    "brooding",
+    "elegant"
+   ],
+   "suits": [
+    "title sequences",
+    "film-like brand pieces",
+    "credits"
+   ],
+   "fonts": {
+    "display": "Cormorant Garamond",
+    "body": "Cormorant Garamond",
+    "mono": "Cormorant Garamond",
+    "label": "Cormorant Garamond"
+   },
+   "font_substitutions": {},
+   "direction_settings": {
+    "energy": "calm",
+    "density": "sparse",
+    "ground": "dark",
+    "depth": "layered",
+    "camera": "drift",
+    "type": "editorial",
+    "texture": "grain",
+    "colour": "one-accent",
+    "product_presence": "illustrated",
+    "sound": "scored",
+    "voice": "narrated"
+   },
+   "transition": "blur",
+   "text_animation": "blur-in",
+   "energy": "calm",
+   "notes": "Black with permanent letterbox bars, pale contour rings, one red rule, Cormorant Garamond tracked uppercase that resolves from blur.",
+   "palette": {
+    "bg": "#070707",
+    "ink": "#e9e4da",
+    "accent": "#c4161c"
+   },
+   "style": "topo-credits/style.json",
+   "frame": "topo-credits/frame.html",
+   "strip": "topo-credits/strip/",
+   "preview": "topo-credits/preview.mp4",
+   "poster": "topo-credits/poster.jpg",
+   "poster_card": "topo-credits/poster-card.jpg",
+   "duration_s": 10,
+   "size": [
+    1280,
+    720
+   ],
+   "fps": 30,
+   "render_s": 21
+  },
+  {
+   "id": "ui-microstudy",
+   "name": "UI Microstudy",
+   "canvas": "dark",
+   "mood": [
+    "crisp",
+    "playful",
+    "precise"
+   ],
+   "suits": [
+    "component tours",
+    "product UI studies",
+    "design-system launches"
+   ],
+   "fonts": {
+    "display": "Inter",
+    "body": "Inter",
+    "mono": "JetBrains Mono",
+    "label": "Inter"
+   },
+   "font_substitutions": {},
+   "direction_settings": {
+    "energy": "brisk",
+    "density": "sparse",
+    "ground": "alternating",
+    "depth": "flat",
+    "camera": "locked",
+    "type": "display",
+    "texture": "clean",
+    "colour": "full-palette",
+    "product_presence": "framed",
+    "sound": "scored",
+    "voice": "spoken-headline"
+   },
+   "transition": "iris",
+   "text_animation": "letters",
+   "energy": "brisk",
+   "notes": "One element on a flat saturated field (purple, then teal for the card and agent moments), white cards with ink text, Inter 800 numbers, letters that rise with back.out, a circular wipe from the centre.",
+   "palette": {
+    "bg": "#7c4dff",
+    "ink": "#ffffff",
+    "accent": "#ffc82e"
+   },
+   "style": "ui-microstudy/style.json",
+   "frame": "ui-microstudy/frame.html",
+   "strip": "ui-microstudy/strip/",
+   "preview": "ui-microstudy/preview.mp4",
+   "poster": "ui-microstudy/poster.jpg",
+   "poster_card": "ui-microstudy/poster-card.jpg",
+   "duration_s": 10,
+   "size": [
+    1280,
+    720
+   ],
+   "fps": 30,
+   "render_s": 18
+  },
+  {
+   "id": "velvet-standard",
+   "name": "Velvet Standard",
+   "canvas": "dark",
+   "mood": [
+    "premium",
+    "timeless"
+   ],
+   "suits": [
+    "luxury products",
+    "enterprise software",
+    "keynotes",
+    "investor decks"
+   ],
+   "fonts": {
+    "display": "Inter",
+    "body": "Inter",
+    "mono": "Inter",
+    "label": "Inter"
+   },
+   "font_substitutions": {},
+   "direction_settings": {
+    "energy": "calm",
+    "density": "sparse",
+    "ground": "dark",
+    "depth": "flat",
+    "camera": "locked",
+    "type": "quiet",
+    "texture": "grain",
+    "colour": "mono",
+    "product_presence": "illustrated",
+    "sound": "scored",
+    "voice": "narrated"
+   },
+   "transition": "blur",
+   "text_animation": "fade-up",
+   "energy": "calm",
+   "notes": "Thin uppercase Inter, wide tracking, long glides. The indigo accent is dark on black, so the number stays white and the accent is kept to rules and the button.",
+   "palette": {
+    "bg": "#0a0a0a",
+    "ink": "#ffffff",
+    "accent": "#3949ab"
+   },
+   "style": "velvet-standard/style.json",
+   "frame": "velvet-standard/frame.html",
+   "strip": "velvet-standard/strip/",
+   "preview": "velvet-standard/preview.mp4",
+   "poster": "velvet-standard/poster.jpg",
+   "poster_card": "velvet-standard/poster-card.jpg",
+   "duration_s": 10,
+   "size": [
+    1280,
+    720
+   ],
+   "fps": 30,
+   "render_s": 19
+  }
+ ],
+ "failed": []
+}

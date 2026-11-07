@@ -1,0 +1,22 @@
+{
+  "name": "Giant mask reveal",
+  "family": "Camera",
+  "purpose": [
+    "Attention",
+    "Transition",
+    "Branding"
+  ],
+  "energy": "high",
+  "tier": 2,
+  "runtime": "svg",
+  "tags": [
+    "type mask zoom",
+    "zoom through letter",
+    "knockout reveal",
+    "camera",
+    "clip-path",
+    "mask",
+    "dive"
+  ],
+  "one_line": "A stage-filling numeral 3 is a window onto a plate behind it; the camera dives into its thickest stroke, the glyph window growing exponentially until the whole plate is revealed and a yellow bar draws."
+}

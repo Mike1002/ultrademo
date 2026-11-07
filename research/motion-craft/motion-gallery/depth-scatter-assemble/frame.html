@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>depth-scatter-assemble</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #scene { display: grid; place-items: center; perspective: 1400px; }   /* REQUIRED */
+  .cloud-stage { position: relative; width: 1280px; height: 720px; transform-style: preserve-3d; will-change: transform; }
+  /* each fragment: a letter tile centred on the stage centre; GSAP owns the transform */
+  .frag { position: absolute; top: 50%; left: 50%; width: 96px; height: 120px; border-radius: 18px; background: #fffdf8;
+    border: 2px solid #1d1c1a; display: grid; place-items: center; font-size: 76px; font-weight: 800; letter-spacing: -0.02em;
+    transform-style: preserve-3d; backface-visibility: hidden; will-change: transform, opacity; }
+  .frag.accent { background: #f2c200; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div class="cloud-stage" id="cloud-stage">
+      <div class="frag" id="f0" data-target-x="-468" data-target-y="-70">E</div>
+      <div class="frag" id="f1" data-target-x="-364" data-target-y="-70">V</div>
+      <div class="frag" id="f2" data-target-x="-260" data-target-y="-70">E</div>
+      <div class="frag" id="f3" data-target-x="-156" data-target-y="-70">R</div>
+      <div class="frag" id="f4" data-target-x="-52" data-target-y="-70">Y</div>
+      <div class="frag accent" id="f5" data-target-x="104" data-target-y="-70">F</div>
+      <div class="frag accent" id="f6" data-target-x="208" data-target-y="-70">R</div>
+      <div class="frag accent" id="f7" data-target-x="312" data-target-y="-70">A</div>
+      <div class="frag accent" id="f8" data-target-x="416" data-target-y="-70">M</div>
+      <div class="frag accent" id="f9" data-target-x="520" data-target-y="-70">E</div>
+    </div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true });
+  const RADIUS = 330, Z_NEAR = 300, Z_FAR = -320, TUMBLE = 80;
+  const ASSEMBLE_DUR = 1.1, ASSEMBLE_EASE = "power3.out", STAGGER = 0.05, ASSEMBLE_AT = 0.2;   // 10 x 0.05 = 0.5 < 1.1
+  const CLOUD_SPIN_DEG = 30, CLOUD_SPIN_DUR = 1.9;
+  const frags = Array.from(document.querySelectorAll(".frag"));
+  const n = frags.length;
+  const GOLDEN = Math.PI * (3 - Math.sqrt(5));
+  // 1) park every fragment in the index-derived cloud BEFORE any tween
+  const scatter = frags.map((el, i) => {
+    const a = i * GOLDEN, depthT = n > 1 ? i / (n - 1) : 0;
+    return { x: Math.cos(a) * RADIUS, y: Math.sin(a) * RADIUS * 0.7, z: Z_NEAR - depthT * (Z_NEAR - Z_FAR),
+      rotationX: Math.sin(a) * TUMBLE, rotationY: Math.cos(a) * TUMBLE };
+  });
+  frags.forEach((el, i) => gsap.set(el, { xPercent: -50, yPercent: -50, ...scatter[i], opacity: 0 }));
+  // 2) the cloud rotates while assembling and ends flat
+  tl.fromTo("#cloud-stage", { rotationY: -CLOUD_SPIN_DEG }, { rotationY: 0, duration: CLOUD_SPIN_DUR, ease: "power1.out" }, 0);
+  // 3) assemble: cloud point -> flat target, z 0, rotations 0
+  frags.forEach((el, i) => {
+    tl.fromTo(el, { ...scatter[i], opacity: 0 },
+      { x: Number(el.dataset.targetX), y: Number(el.dataset.targetY), z: 0, rotationX: 0, rotationY: 0, opacity: 1, duration: ASSEMBLE_DUR, ease: ASSEMBLE_EASE },
+      ASSEMBLE_AT + i * STAGGER);
+  });
+  // settled life: the locked word breathes once
+  tl.to("#cloud-stage", { scale: 1.03, duration: 0.6, ease: "sine.inOut", yoyo: true, repeat: 1 }, 1.8);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

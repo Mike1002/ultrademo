@@ -1,0 +1,22 @@
+{
+  "name": "Camera fly-through",
+  "family": "3D & Depth",
+  "purpose": [
+    "Attention",
+    "Sequence",
+    "Transition"
+  ],
+  "energy": "high",
+  "tier": 2,
+  "runtime": "gsap",
+  "tags": [
+    "z camera travel",
+    "depth",
+    "translatez",
+    "planes",
+    "fly-through",
+    "tunnel",
+    "dark"
+  ],
+  "one_line": "The camera flies forward through seven planes spaced 900px apart in depth, each fading in from far away and passing the lens, and stops on the final yellow line."
+}

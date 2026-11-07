@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-ribbon-particle-transition</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  #chart { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  #chart text { font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .node { fill: #1d1c1a; }
+  .nl { font-size: 22px; font-weight: 600; fill: #1d1c1a; }
+  .small { font-size: 16px; fill: #6d6a63; }
+  .ribbon { fill: #f2c200; }
+  .dot { fill: #f2c200; stroke: #1d1c1a; stroke-width: 2; }
+  .heading { position: absolute; left: 32px; top: 16px; font-size: 34px; font-weight: 700; }
+  .sub { position: absolute; left: 34px; top: 64px; font-size: 18px; color: #6d6a63; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div class="heading">Invites → accepted</div>
+      <div class="sub">The same flow as a band, then as the 40 invites inside it</div>
+      <svg id="chart" viewBox="0 0 1168 580" xmlns="http://www.w3.org/2000/svg">
+        <path id="ribbon" class="ribbon" d="M224 170 C584 170 584 200 944 200 L944 500 C584 500 584 470 224 470 Z" opacity="1"/>
+        <g id="dots"></g>
+        <rect class="node" x="200" y="170" width="24" height="300"/>
+        <rect class="node" x="944" y="200" width="24" height="300"/>
+        <text class="nl" x="200" y="150">Invites 400</text>
+        <text class="nl" x="968" y="180" text-anchor="end">Accepted 400</text>
+        <text class="small" x="584" y="548" text-anchor="middle">1 dot = 10 invites</text>
+      </svg>
+    </div>
+    <div id="label"><span class="l-name">Ribbon-to-particle transition</span><span class="l-sep">·</span><span>Data</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const NS = "http://www.w3.org/2000/svg";
+  const N = 40, SPEED = 0.42;   // 40 dots of 10 invites each; a dot crosses the band in about 2.4 s
+  const bez = (a, b, c, d, s) => { const m = 1 - s; return m * m * m * a + 3 * m * m * s * b + 3 * m * s * s * c + s * s * s * d; };
+  const pr = i => ((i * 9301 + 49297) % 233280) / 233280;
+  const lanes = [], phases = [];
+  for (let i = 0; i < N; i++) { lanes.push(0.08 + 0.84 * ((i * 0.618034) % 1)); phases.push(pr(i)); }
+  const g = document.getElementById("dots"), dots = [];
+  for (let i = 0; i < N; i++) {
+    const c = document.createElementNS(NS, "circle"); c.id = "d" + i; c.setAttribute("class", "dot"); c.setAttribute("r", 7);
+    c.setAttribute("cx", 224); c.setAttribute("cy", 320); c.setAttribute("opacity", 0); g.appendChild(c); dots.push(c);
+  }
+  const ribbon = document.getElementById("ribbon");
+  const clamp = x => Math.max(0, Math.min(1, x));
+  function renderAt(t) {
+    // Cross-fade: the band dissolves 0.5-0.9 s as the dots appear 0.5-1.0 s; the band re-forms 2.2-2.6 s as the dots fade 2.2-2.7 s.
+    const dissolve = clamp((t - 0.5) / 0.4), reform = clamp((t - 2.2) / 0.4);
+    ribbon.setAttribute("opacity", (1 - 0.85 * dissolve + 0.85 * reform).toFixed(3));
+    const dotIn = clamp((t - 0.5) / 0.5), dotOut = clamp((t - 2.2) / 0.5);
+    const dotA = dotIn * (1 - dotOut);
+    for (let i = 0; i < N; i++) {
+      const s = (phases[i] + t * SPEED) % 1;        // position along the flow, linear
+      const x = bez(224, 584, 584, 944, s);
+      const top = bez(170, 170, 200, 200, s), bot = bez(470, 470, 500, 500, s);
+      const y = top + lanes[i] * (bot - top);
+      dots[i].setAttribute("cx", x.toFixed(1)); dots[i].setAttribute("cy", y.toFixed(1));
+      dots[i].setAttribute("opacity", dotA.toFixed(3));
+    }
+  }
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "none", duration: 0.6 } });
+  renderAt(0);
+  tl.to({ k: 0 }, { k: 1, duration: 3, ease: "none", onUpdate: () => renderAt(tl.time()) }, 0);
+  const baseRender = tl.render; tl.render = function () { const r = baseRender.apply(this, arguments); renderAt(this.time()); return r; };
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

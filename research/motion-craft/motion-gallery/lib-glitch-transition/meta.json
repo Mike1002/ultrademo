@@ -1,0 +1,22 @@
+{
+  "name": "Glitch transition",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Attention"
+  ],
+  "energy": "high",
+  "tier": 2,
+  "runtime": "webgl",
+  "tags": [
+    "glitch displacement",
+    "block rgb glitch",
+    "parametric glitch",
+    "flicker ghost glitch",
+    "transitions",
+    "slices",
+    "stepped",
+    "dark"
+  ],
+  "one_line": "Horizontal slices of the first scene jump sideways and skew in stepped, seeded jolts while a faint ghost copy lags behind; halfway through the jolts the scene underneath is already the next one, and the slices snap away."
+}

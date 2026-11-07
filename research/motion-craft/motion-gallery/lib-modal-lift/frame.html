@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-modal-lift</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; overflow: hidden; }
+  .headline { position: absolute; left: 48px; top: 50px; font-size: 42px; font-weight: 700; }
+  .workspace { position: absolute; left: 110px; top: 142px; width: 950px; height: 345px; padding: 30px; background: #fffdf8; border: 2px solid #1d1c1a; border-radius: 20px; }
+  .workspace .lab { font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  .mockline { height: 12px; background: #e3ded2; margin: 23px 0; width: 65%; border-radius: 6px; }
+  .button { display: inline-block; background: #1d1c1a; color: #f6f3ec; padding: 14px 28px; font-size: 20px; border-radius: 12px; }
+  .open { position: absolute; right: 35px; bottom: 30px; }
+  .pointer { position: absolute; left: 945px; top: 450px; width: 28px; height: 35px; }
+  .backdrop { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; background: #1d1c1a; opacity: 0; }
+  .modal { position: absolute; left: 344px; top: 130px; width: 480px; height: 306px; padding: 34px; background: #fffdf8; border: 2px solid #1d1c1a; border-radius: 24px; opacity: 0; will-change: transform; }
+  .modal .lab { font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  .modal h2 { font-size: 36px; font-weight: 700; margin: 10px 0 18px; }
+  .modal p { font-size: 22px; line-height: 1.5; color: #6d6a63; width: 400px; }
+  .modal .cta { position: absolute; right: 34px; bottom: 30px; background: #f2c200; color: #1d1c1a; border: 2px solid #1d1c1a; font-weight: 700; will-change: transform; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div class="headline">Invite your team</div>
+      <div class="workspace"><span class="lab">Draft invite</span><div class="mockline"></div><div class="mockline" style="width:80%"></div><div class="mockline" style="width:55%"></div><span class="button open">Save</span></div>
+      <svg class="pointer" id="pointer" data-layout-allow-overlap viewBox="0 0 28 35"><path d="M2 2L3 28L10 21L16 33L21 30L15 19L25 18Z" fill="#1d1c1a" stroke="#f6f3ec" stroke-width="2"/></svg>
+      <div class="backdrop" id="backdrop" data-layout-allow-overlap></div>
+      <div class="modal" id="modal" data-layout-allow-overlap><span class="lab">Confirm</span><h2>Save this invite?</h2><p>3 seats left. Jamie Dalton, Sam Kim and Morgan Lee will get an email.</p><span class="button cta" id="cta">Continue</span></div>
+    </div>
+    <div id="label"><span class="l-name">Modal lift</span><span class="l-sep">·</span><span>UI Demo</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+  // The pointer presses Save, then the dialog rises 32 px into focus while the backdrop dims to 45%.
+  tl.fromTo("#pointer", { x: 0, y: 0 }, { x: 10, y: -8, duration: 0.3, ease: "power2.out" }, 0.3);
+  tl.fromTo("#pointer", { scale: 1, transformOrigin: "0% 0%" }, { scale: 0.85, duration: 0.08, yoyo: true, repeat: 1, ease: "power1.inOut", immediateRender: false }, 0.6);
+  tl.fromTo("#modal", { opacity: 0, y: 32, scale: 0.96, transformOrigin: "50% 50%" }, { opacity: 1, y: 0, scale: 1, duration: 0.4 }, 0.8);
+  tl.fromTo("#backdrop", { opacity: 0 }, { opacity: 0.45, duration: 0.25, ease: "power2.out" }, 0.8);
+  tl.fromTo("#pointer", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 0.8);
+  // Second beat: the primary button in the dialog gives one small pulse while the state holds.
+  tl.fromTo("#cta", { scale: 1, transformOrigin: "50% 50%" }, { scale: 1.06, duration: 0.3, ease: "sine.inOut", yoyo: true, repeat: 1 }, 2.0);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

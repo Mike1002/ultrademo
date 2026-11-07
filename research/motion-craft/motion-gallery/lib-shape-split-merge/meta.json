@@ -1,0 +1,21 @@
+{
+  "name": "Shape split and merge",
+  "family": "Shape & Path",
+  "purpose": [
+    "Explanation",
+    "Comparison"
+  ],
+  "energy": "steady",
+  "tier": 2,
+  "runtime": "svg",
+  "tags": [
+    "svg shape split and merge",
+    "one-to-many morph",
+    "many-to-one morph",
+    "shape",
+    "sectors",
+    "slide apart",
+    "rejoin"
+  ],
+  "one_line": "A disc cut into three equal sectors, one of them yellow, slides apart along the cuts, holds as three separate pieces, then slides back together into one whole."
+}

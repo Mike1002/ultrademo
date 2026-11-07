@@ -1,0 +1,23 @@
+{
+  "name": "Line chart race",
+  "family": "Data",
+  "purpose": [
+    "Explanation",
+    "Comparison"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "svg",
+  "tags": [
+    "line chart race",
+    "horserace chart",
+    "data",
+    "chart",
+    "lines",
+    "endpoints",
+    "labels",
+    "leader",
+    "svg"
+  ],
+  "one_line": "Three members' invite lines extend week by week while their endpoint dots and name tags ride the current values; whoever leads has the yellow tag, and the lead changes hands midway."
+}

@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-screen-shake</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  /* The camera wrapper: everything inside it shakes together. */
+  #cam { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; will-change: transform; }
+  .card { position: absolute; left: 184px; top: 50px; width: 800px; height: 480px; background: #fffdf8; border: 2px solid #1d1c1a; border-radius: 24px; }
+  .card .title { position: absolute; left: 48px; top: 44px; font-size: 40px; font-weight: 700; letter-spacing: -0.01em; }
+  .card .sub { position: absolute; left: 48px; top: 100px; font-size: 20px; color: #6d6a63; }
+  .row { position: absolute; left: 48px; width: 500px; height: 48px; font-size: 20px; line-height: 48px; border-bottom: 2px solid #e3ded2; }
+  .row b { font-weight: 600; }
+  .row span { position: absolute; right: 0; color: #6d6a63; }
+  .btn { position: absolute; left: 48px; top: 380px; width: 200px; height: 60px; border-radius: 14px; background: #1d1c1a; color: #fffdf8; font-size: 20px; font-weight: 600; line-height: 60px; text-align: center; }
+  #num { position: absolute; left: 596px; top: 150px; width: 170px; text-align: right; font-size: 44px; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; will-change: transform; }
+  #numlab { position: absolute; left: 596px; top: 206px; width: 170px; text-align: right; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  #stamp { position: absolute; left: 500px; top: 300px; width: 260px; height: 110px; border: 6px solid #f2c200; border-radius: 18px; background: #fbf3cf;
+    font-size: 56px; font-weight: 800; letter-spacing: 0.04em; line-height: 98px; text-align: center; color: #1d1c1a; will-change: transform, opacity; }
+  #chip { position: absolute; left: 686px; top: 96px; width: 80px; height: 36px; border-radius: 18px; background: #f2c200; border: 2px solid #1d1c1a; font-size: 18px; font-weight: 700; line-height: 32px; text-align: center; will-change: transform, opacity; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div id="cam">
+        <div class="card">
+          <div class="title">Invite your team</div>
+          <div class="sub">Orbit · 3 seats left</div>
+          <div class="row" style="top:150px"><b>Jamie Dalton</b><span>Design</span></div>
+          <div class="row" style="top:206px"><b>Sam Kim</b><span>Engineering</span></div>
+          <div class="row" style="top:262px"><b>Morgan Lee</b><span>Product</span></div>
+          <div class="btn">Continue</div>
+          <div id="num">12,480</div>
+          <div id="numlab">Invites sent</div>
+          <div id="chip" data-layout-allow-overlap>+3</div>
+          <div id="stamp" data-layout-allow-overlap>SENT</div>
+        </div>
+      </div>
+    </div>
+    <div id="label"><span class="l-name">Screen shake</span><span class="l-sep">·</span><span>Camera</span><span class="l-sep">·</span><span>high</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "none", duration: 0.6 } });
+  // Params: 250 ms, 4 round trips, amplitude decays 0.6x each step, ease none, y only +/-2, exact return to rest.
+  // Amplitude raised from the card's 9 px (1920 wide) to 12 px, the top of its range, so it reads in a 1280 frame.
+  const AMP = [12, -7.2, 4.3, -2.6, 0];
+  function shake(at, k) {
+    AMP.forEach((x, i) => tl.to("#cam", { x: x * k, y: (i % 2 ? 2 : -2) * k, duration: 0.05, ease: "none" }, at + i * 0.05));
+    tl.set("#cam", { x: 0, y: 0 }, at + AMP.length * 0.05);
+  }
+  gsap.set("#cam", { x: 0, y: 0 });
+  gsap.set("#stamp", { scale: 2.2, opacity: 0, rotation: -8, transformOrigin: "50% 50%" });
+  gsap.set("#chip", { scale: 0.6, opacity: 0, transformOrigin: "50% 50%" });
+  gsap.set("#num", { scale: 1, transformOrigin: "100% 50%" });
+  // Impact 1: the SENT stamp slams down at 1.05 s and the whole camera shakes at 1.1 s (poster lands mid-shake).
+  tl.fromTo("#stamp", { scale: 2.2, opacity: 0, rotation: -8 }, { scale: 1, opacity: 1, rotation: -8, duration: 0.14, ease: "power3.in" }, 0.95);
+  shake(1.1, 1);
+  // Settle: the stamp eases a touch, then a lighter second hit when the +3 chip lands on the counter.
+  tl.to("#stamp", { rotation: -6, duration: 0.5, ease: "power2.out" }, 1.4);
+  tl.fromTo("#chip", { scale: 0.6, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.12, ease: "power3.in" }, 2.15);
+  tl.fromTo("#num", { scale: 1 }, { scale: 1.12, duration: 0.08, ease: "power2.out" }, 2.25);
+  tl.to("#num", { scale: 1, duration: 0.3, ease: "power2.out" }, 2.33);
+  shake(2.27, 0.6);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

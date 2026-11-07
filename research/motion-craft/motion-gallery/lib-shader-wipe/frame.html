@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-shader-wipe</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; overflow: hidden; }
+  .panel { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  .art { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  .art.a { background: #ece7da; }
+  .art.b { background: #f6f3ec; }
+  .card { position: absolute; left: 204px; top: 100px; width: 760px; height: 380px; background: #fffdf8;
+    border: 2px solid #1d1c1a; border-radius: 24px; }
+  .card .eyebrow { position: absolute; left: 56px; top: 44px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  .card .h1 { position: absolute; left: 56px; top: 84px; font-size: 56px; font-weight: 700; line-height: 1.1; white-space: nowrap; }
+  .card .sub { position: absolute; left: 56px; top: 164px; font-size: 22px; color: #6d6a63; }
+  .card .btn { position: absolute; left: 56px; top: 254px; width: 200px; height: 60px; background: #f2c200; border: 2px solid #1d1c1a;
+    border-radius: 14px; font-size: 20px; font-weight: 700; line-height: 56px; text-align: center; color: #1d1c1a; }
+  .card .av { position: absolute; top: 44px; width: 64px; height: 64px; border-radius: 50%; border: 2px solid #1d1c1a; background: #ece7da;
+    font-size: 20px; font-weight: 700; line-height: 60px; text-align: center; }
+  .card .av.v1 { left: 540px; } .card .av.v2 { left: 592px; } .card .av.v3 { left: 644px; }
+  .art.b .num { position: absolute; left: 92px; top: 86px; font-size: 136px; font-weight: 700; line-height: 1; letter-spacing: -.02em;
+    font-variant-numeric: tabular-nums; }
+  .art.b .cap { position: absolute; left: 100px; top: 236px; font-size: 22px; color: #6d6a63; }
+  .art.b .row { position: absolute; left: 96px; width: 520px; height: 60px; border-top: 2px solid #e3ded2; font-size: 22px; line-height: 58px;
+    padding-left: 30px; will-change: transform; }
+  .art.b .row .dot { position: absolute; left: 0; top: 24px; width: 12px; height: 12px; border-radius: 50%; background: #f2c200; }
+  .art.b .row.r1 { top: 320px; } .art.b .row.r2 { top: 384px; } .art.b .row.r3 { top: 448px; }
+  .art.b .disc { will-change: transform; position: absolute; left: 780px; top: 150px; width: 280px; height: 280px; border-radius: 50%; background: #f2c200;
+    border: 2px solid #1d1c1a; text-align: center; color: #1d1c1a; }
+  .art.b .disc .pct { position: absolute; left: 0; width: 276px; top: 86px; font-size: 72px; font-weight: 700; line-height: 1; }
+  .art.b .disc .pl { position: absolute; left: 0; width: 276px; top: 166px; font-size: 18px; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+
+  #cv { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <canvas id="cv" width="1168" height="580" data-layout-allow-overlap></canvas>
+    </div>
+    <div id="label"><span class="l-name">Shader directional warp wipe</span><span class="l-sep">·</span><span>Transitions</span><span class="l-sep">·</span><span>high</span></div>
+  </section>
+</div>
+<script>
+  const W = 1168, H = 580, S2 = Math.SQRT1_2;
+  const FONT = '-apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif';
+  const cv = document.getElementById("cv"), ctx = cv.getContext("2d");
+  function plate() { const c = document.createElement("canvas"); c.width = W; c.height = H; return c; }
+  // Plate A: the light card scene, drawn once.
+  const PA = plate(); { const o = PA.getContext("2d");
+    o.fillStyle = "#ece7da"; o.fillRect(0, 0, W, H);
+    o.fillStyle = "#fffdf8"; o.strokeStyle = "#1d1c1a"; o.lineWidth = 2; o.beginPath(); o.roundRect(205, 101, 758, 378, 24); o.fill(); o.stroke();
+    o.fillStyle = "#6d6a63"; o.font = "13px " + FONT; o.fillText("O R B I T", 260, 156);
+    o.fillStyle = "#1d1c1a"; o.font = "700 56px " + FONT; o.fillText("Invite your team", 258, 236);
+    o.fillStyle = "#6d6a63"; o.font = "22px " + FONT; o.fillText("3 seats left", 260, 288);
+    o.fillStyle = "#f2c200"; o.beginPath(); o.roundRect(261, 356, 200, 60, 14); o.fill(); o.stroke();
+    o.fillStyle = "#1d1c1a"; o.font = "700 20px " + FONT; o.textAlign = "center"; o.fillText("Continue", 361, 393);
+    o.fillStyle = "#ece7da"; [744, 796, 848].forEach(x => { o.beginPath(); o.arc(x + 32, 177, 31, 0, Math.PI * 2); o.fill(); o.stroke(); });
+    o.fillStyle = "#1d1c1a"; ["JD", "SK", "ML"].forEach((s, i) => o.fillText(s, 776 + i * 52, 184)); o.textAlign = "left"; }
+  // Plate B: the dark number scene, drawn per frame (the number counts up during the hold).
+  const PB = plate(); const ob = PB.getContext("2d");
+  function drawB(n) {
+    ob.fillStyle = "#1d1c1a"; ob.fillRect(0, 0, W, H);
+    ob.fillStyle = "#a19d93"; ob.font = "13px " + FONT; ob.fillText("I N V I T E S", 100, 92);
+    ob.fillStyle = "#f2c200"; ob.font = "700 220px " + FONT; ob.fillText(n.toLocaleString("en-US"), 92, 330);
+    ob.fillStyle = "#f6f3ec"; ob.font = "700 44px " + FONT; ob.fillText("invites sent", 100, 420);
+    ob.fillStyle = "rgba(246,243,236,0.18)"; ob.fillRect(100, 468, 968, 2);
+    ob.fillStyle = "#a19d93"; ob.font = "22px " + FONT; ob.fillText("Jamie Dalton   ·   Sam Kim   ·   Morgan Lee", 100, 516);
+  }
+  // Rotated coordinates: u along the 45-degree travel direction, v across it.
+  const LO = 0, HI = (W + H) * S2;
+  const VMIN = -W * S2, VMAX = H * S2;
+  const toXY = (u, v) => [(u - v) * S2, (u + v) * S2];
+  function edgeU(v, p) {
+    const t = v / H;
+    const bend = (0.08 * Math.sin(t * 2.2 + 1.3) + 0.03 * Math.sin(t * 6.1 + p * 4)) * (HI - LO);
+    return LO + (-0.16 + 1.32 * p) * (HI - LO) + bend;
+  }
+  function region(p, uMinOff, uMaxOff) {
+    // polygon between u = edge + uMinOff and u = edge + uMaxOff (null = unbounded)
+    ctx.beginPath();
+    const N = 40;
+    for (let i = 0; i <= N; i++) { const v = VMIN + (VMAX - VMIN) * i / N; const u = uMaxOff === null ? 4000 : edgeU(v, p) + uMaxOff; const q = toXY(u, v); i ? ctx.lineTo(q[0], q[1]) : ctx.moveTo(q[0], q[1]); }
+    for (let i = N; i >= 0; i--) { const v = VMIN + (VMAX - VMIN) * i / N; const u = uMinOff === null ? -4000 : edgeU(v, p) + uMinOff; const q = toXY(u, v); ctx.lineTo(q[0], q[1]); }
+    ctx.closePath();
+  }
+  const DX = 7 * S2, DY = 7 * S2, BAND = 72;
+  function draw(p, n) {
+    drawB(n);
+    ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 1;
+    ctx.drawImage(PB, 0, 0);
+    // B smears forward inside the edge band
+    ctx.save(); region(p, -BAND, BAND); ctx.clip(); ctx.globalAlpha = 0.1;
+    for (let i = 1; i <= 8; i++) ctx.drawImage(PB, DX * i, DY * i); ctx.restore();
+    // A (ahead of the edge, u > edge) with a feathered edge
+    [[14, 1], [0, 0.5], [-14, 0.25]].forEach(([off, a]) => { ctx.save(); region(p, off, null); ctx.clip(); ctx.globalAlpha = a; ctx.drawImage(PA, 0, 0); ctx.restore(); });
+    // A smears backward inside the edge band
+    ctx.save(); region(p, -BAND, BAND); ctx.clip(); ctx.globalAlpha = 0.1;
+    for (let i = 1; i <= 8; i++) ctx.drawImage(PA, -DX * i, -DY * i); ctx.restore();
+    // a soft shadow along the edge
+    ctx.save(); region(p, -22, 22); ctx.clip(); ctx.globalAlpha = 1; ctx.fillStyle = "rgba(29,28,26,0.14)"; ctx.fillRect(0, 0, W, H); ctx.restore();
+  }
+  const T0 = 0.25, DUR = 1.7, easeP = gsap.parseEase("sine.inOut"), easeN = gsap.parseEase("power2.out");
+  let last = "";
+  function renderAt(t) {
+    const p = easeP(Math.max(0, Math.min(1, (t - T0) / DUR)));
+    const n = Math.round(12480 * easeN(Math.max(0, Math.min(1, (t - 1.0) / 1.7))));
+    const key = p + ":" + n; if (key === last) return; last = key; draw(p, n);
+  }
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+  renderAt(0);
+  tl.to({ k: 0 }, { k: 1, duration: 3, ease: "none", onUpdate: () => renderAt(tl.time()) }, 0);
+  const baseRender = tl.render; tl.render = function () { const r = baseRender.apply(this, arguments); renderAt(this.time()); return r; };
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

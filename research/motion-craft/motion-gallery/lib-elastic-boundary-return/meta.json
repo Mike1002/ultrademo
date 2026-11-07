@@ -1,0 +1,21 @@
+{
+  "name": "Elastic boundary return",
+  "family": "UI Demo",
+  "purpose": [
+    "Feedback",
+    "Emphasis"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "gsap",
+  "tags": [
+    "elastic boundary return",
+    "ui",
+    "drag",
+    "rubber band",
+    "boundary",
+    "resistance",
+    "spring back"
+  ],
+  "one_line": "A pointer drags a member card past the list's dashed edge; beyond it the card moves at half the pointer's speed while a yellow band stretches between them, and on release the card springs back inside, then it happens once more."
+}

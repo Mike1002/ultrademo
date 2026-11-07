@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-temporal-network</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; overflow: hidden; }
+  #cv { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage"><canvas id="cv" width="1168" height="580"></canvas></div>
+    <div id="label"><span class="l-name">Temporal network transition</span><span class="l-sep">·</span><span>Data</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const cv = document.getElementById("cv"), ctx = cv.getContext("2d");
+  const W = 1168, H = 580, INK = "#1d1c1a", ACC = "#f2c200", MUTED = "#6d6a63", RULE = "#e3ded2", CARD = "#fffdf8";
+  const SANS = '-apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif';
+  // Three baked snapshots. Each node keeps its id and initials; null = not present in that month.
+  const nodes = {
+    A: { ini: "JD", p: [[440, 300], [490, 270], [540, 260]] },
+    B: { ini: "SK", p: [[640, 200], [680, 210], [720, 180]] },
+    C: { ini: "ML", p: [[660, 400], [710, 380], [760, 370]] },
+    D: { ini: "AR", p: [[300, 190], [330, 170], null] },
+    E: { ini: "PT", p: [null, [870, 270], [910, 260]] },
+    F: { ini: "LN", p: [[300, 440], [340, 460], [360, 480]] },
+    G: { ini: "KO", p: [null, null, [600, 500]] },
+    H: { ini: "RB", p: [[850, 440], null, null] }
+  };
+  const links = [["AB","AC","AD","AF","BH","CH","BC","FH"], ["AB","AC","AD","AF","BE","CE","BC","DF"], ["AB","AC","AF","BE","CE","BC","CG","FG","EG"]];
+  const months = ["Jan", "Feb", "Mar"];
+  const SEG = [[0.3, 1.3], [1.7, 2.7]];       // the two 1.0 s transitions; holds before, between and after
+  const FADE = 0.3;                            // entry/exit fade inside a transition
+  const inOut = x => x < 0.5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2;
+  const clamp = x => Math.max(0, Math.min(1, x));
+  function state(t) {                          // from-snapshot, to-snapshot, raw progress 0..1
+    if (t < SEG[0][0]) return [0, 1, 0]; if (t < SEG[0][1]) return [0, 1, (t - SEG[0][0]) / (SEG[0][1] - SEG[0][0])];
+    if (t < SEG[1][0]) return [1, 2, 0]; if (t < SEG[1][1]) return [1, 2, (t - SEG[1][0]) / (SEG[1][1] - SEG[1][0])];
+    return [1, 2, 1];
+  }
+  function renderAt(t) {
+    ctx.clearRect(0, 0, W, H);
+    const [a, b, raw] = state(t), p = inOut(raw);
+    const cur = raw < 0.5 ? a : b;
+    ctx.font = "700 34px " + SANS; ctx.fillStyle = INK; ctx.textAlign = "left"; ctx.fillText("Team graph · Jan → Mar", 60, 62);
+    // Snapshot label and count on the right.
+    ctx.textAlign = "right"; ctx.font = "700 56px " + SANS; ctx.fillStyle = INK; ctx.fillText(months[cur], 1108, 70);
+    const nCount = Object.values(nodes).filter(n => n.p[cur]).length, lCount = links[cur].length;
+    ctx.font = "18px " + SANS; ctx.fillStyle = MUTED; ctx.fillText(nCount + " members · " + lCount + " links", 1108, 100);
+    // Month track at the bottom with a marker that follows the clip.
+    const TX0 = 60, TX1 = 1108, TY = 548;
+    ctx.strokeStyle = RULE; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(TX0, TY); ctx.lineTo(TX1, TY); ctx.stroke();
+    ctx.textAlign = "center"; ctx.font = "13px " + SANS; ctx.fillStyle = MUTED;
+    months.forEach((m, i) => { const x = TX0 + (TX1 - TX0) * i / 2; ctx.fillStyle = RULE; ctx.fillRect(x - 1, TY - 8, 2, 16); ctx.fillStyle = MUTED; ctx.fillText(m.toUpperCase(), x, TY - 16); });
+    const prog = (a + p) / 2; const mx = TX0 + (TX1 - TX0) * prog;
+    ctx.beginPath(); ctx.arc(mx, TY, 7, 0, Math.PI * 2); ctx.fillStyle = ACC; ctx.fill(); ctx.strokeStyle = INK; ctx.lineWidth = 2; ctx.stroke();
+    // Node positions and alphas for this instant.
+    const pos = {}, alpha = {}, fresh = {};
+    for (const id in nodes) { const pa = nodes[id].p[a], pb = nodes[id].p[b];
+      if (pa && pb) { pos[id] = [pa[0] + (pb[0] - pa[0]) * p, pa[1] + (pb[1] - pa[1]) * p]; alpha[id] = 1; fresh[id] = false; }
+      else if (pa) { pos[id] = pa; alpha[id] = 1 - clamp(raw / FADE); fresh[id] = false; }
+      else if (pb) { pos[id] = pb; alpha[id] = clamp((raw - (1 - FADE)) / FADE); fresh[id] = true; }
+    }
+    // Links: present in both stay; leaving fade in the first 300 ms, arriving fade in the last 300 ms.
+    const all = new Set([...links[a], ...links[b]]);
+    ctx.lineWidth = 3; ctx.lineCap = "round";
+    all.forEach(l => { const inA = links[a].includes(l), inB = links[b].includes(l);
+      let al = inA && inB ? 1 : inA ? 1 - clamp(raw / FADE) : clamp((raw - (1 - FADE)) / FADE);
+      const u = pos[l[0]], v = pos[l[1]]; if (!u || !v) return;
+      al = Math.min(al, alpha[l[0]], alpha[l[1]]); if (al <= 0) return;
+      ctx.globalAlpha = al; ctx.strokeStyle = (!inA && inB) ? ACC : INK; ctx.beginPath(); ctx.moveTo(u[0], u[1]); ctx.lineTo(v[0], v[1]); ctx.stroke(); });
+    ctx.globalAlpha = 1;
+    // Nodes with initials; a node that is new this month is yellow.
+    for (const id in pos) { const al = alpha[id]; if (al <= 0) continue; const [x, y] = pos[id];
+      ctx.globalAlpha = al; ctx.beginPath(); ctx.arc(x, y, 28, 0, Math.PI * 2); ctx.fillStyle = fresh[id] ? ACC : CARD; ctx.fill();
+      ctx.lineWidth = 2.5; ctx.strokeStyle = INK; ctx.stroke();
+      ctx.fillStyle = INK; ctx.font = "700 18px " + SANS; ctx.textAlign = "center"; ctx.fillText(nodes[id].ini, x, y + 6); }
+    ctx.globalAlpha = 1;
+  }
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power2.inOut", duration: 1.2 } });
+  renderAt(0);
+  tl.to({ k: 0 }, { k: 1, duration: 3, ease: "none", onUpdate: () => renderAt(tl.time()) }, 0);
+  const baseRender = tl.render; tl.render = function () { const r = baseRender.apply(this, arguments); renderAt(this.time()); return r; };
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

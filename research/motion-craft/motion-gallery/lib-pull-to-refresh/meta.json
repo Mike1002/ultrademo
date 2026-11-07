@@ -1,0 +1,22 @@
+{
+  "name": "Pull to refresh",
+  "family": "UI Demo",
+  "purpose": [
+    "Feedback"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "gsap",
+  "tags": [
+    "pull to refresh",
+    "ui",
+    "pull",
+    "resistance",
+    "threshold",
+    "spinner",
+    "loading",
+    "return",
+    "list"
+  ],
+  "one_line": "A member list is pulled down with resistance until a loader arc fills and spins at the threshold; the list springs back and a new member row appears at the top."
+}

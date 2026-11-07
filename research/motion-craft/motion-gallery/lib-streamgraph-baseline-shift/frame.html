@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-streamgraph-baseline-shift</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  #chart { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  #chart text { font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .layer { stroke: #f6f3ec; stroke-width: 2; }
+  .axis { stroke: #1d1c1a; stroke-width: 2; }
+  .mid { stroke: #a19d93; stroke-width: 2; stroke-dasharray: 6 8; }
+  .tick { font-size: 16px; fill: #6d6a63; }
+  .mode { font-size: 20px; font-weight: 700; fill: #1d1c1a; }
+  .heading { position: absolute; left: 32px; top: 16px; font-size: 34px; font-weight: 700; }
+  .legend { position: absolute; left: 34px; top: 64px; font-size: 15px; color: #6d6a63; display: flex; gap: 22px; align-items: center; }
+  .legend i { display: inline-block; width: 14px; height: 14px; border-radius: 3px; margin-right: 7px; vertical-align: -2px; border: 2px solid #1d1c1a; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div class="heading">Activity by team</div>
+      <div class="legend"><span><i style="background:#1d1c1a"></i>Design</span><span><i style="background:#6d6a63"></i>Sales</span><span><i style="background:#cfcabd"></i>Support</span><span><i style="background:#f2c200"></i>Partners</span></div>
+      <svg id="chart" viewBox="0 0 1168 580" xmlns="http://www.w3.org/2000/svg">
+        <line id="midline" class="mid" x1="160" y1="310" x2="1100" y2="310" opacity="1"/>
+        <path id="l0" class="layer" fill="#f2c200" d=""/>
+        <path id="l1" class="layer" fill="#cfcabd" d=""/>
+        <path id="l2" class="layer" fill="#6d6a63" d=""/>
+        <path id="l3" class="layer" fill="#1d1c1a" d=""/>
+        <line id="zeroline" class="axis" x1="160" y1="500" x2="1100" y2="500" opacity="0"/>
+        <text class="tick" x="160" y="528" text-anchor="middle">W1</text>
+        <text class="tick" x="630" y="528" text-anchor="middle">W5</text>
+        <text class="tick" x="1100" y="528" text-anchor="middle">W10</text>
+        <text id="mA" class="mode" x="1136" y="40" text-anchor="end" data-layout-allow-overlap="" opacity="1">Centred baseline</text>
+        <text id="mB" class="mode" x="1136" y="40" text-anchor="end" data-layout-allow-overlap="" opacity="0">Zero baseline</text>
+      </svg>
+    </div>
+    <div id="label"><span class="l-name">Streamgraph baseline shift</span><span class="l-sep">·</span><span>Data</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const X0 = 160, XW = 940, N = 10, MID = 310, BASE = 500;
+  const L = [
+    [20, 30, 25, 40, 50, 45, 60, 70, 65, 75],   // Partners (bottom)
+    [30, 25, 35, 40, 35, 45, 40, 50, 45, 55],   // Support
+    [40, 45, 40, 55, 60, 55, 70, 65, 75, 80],   // Sales
+    [50, 60, 70, 65, 80, 90, 85, 95, 100, 90]]; // Design (top)
+  const xs = Array.from({ length: N }, (_, i) => X0 + (i / (N - 1)) * XW);
+  const total = xs.map((_, i) => L.reduce((s, l) => s + l[i], 0));
+  const io = k => k < 0.5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;
+  const clamp = x => Math.max(0, Math.min(1, x));
+  const $ = id => document.getElementById(id);
+  function area(lo, up) {
+    const seg = (ys, rev) => {
+      const idx = rev ? [...Array(N).keys()].reverse() : [...Array(N).keys()];
+      let d = "";
+      for (let k = 1; k < N; k++) {
+        const a = idx[k - 1], b = idx[k], mx = (xs[a] + xs[b]) / 2;
+        d += ` C${mx.toFixed(1)} ${ys[a].toFixed(1)} ${mx.toFixed(1)} ${ys[b].toFixed(1)} ${xs[b].toFixed(1)} ${ys[b].toFixed(1)}`;
+      }
+      return d;
+    };
+    return `M${xs[0].toFixed(1)} ${up[0].toFixed(1)}` + seg(up, false) + ` L${xs[N - 1].toFixed(1)} ${lo[N - 1].toFixed(1)}` + seg(lo, true) + " Z";
+  }
+  function renderAt(t) {
+    // 0.4-1.3 s: centred (silhouette) baseline to zero baseline; 2.0-2.9 s: back again. One shared offset per sample moves every boundary.
+    const p = io(clamp((t - 0.4) / 0.9)) * (1 - io(clamp((t - 2.0) / 0.9)));
+    const off = xs.map((_, i) => (MID + total[i] / 2) * (1 - p) + BASE * p);
+    let lo = off;
+    L.forEach((vals, k) => {
+      const up = lo.map((y, i) => y - vals[i]);
+      $("l" + k).setAttribute("d", area(lo, up));
+      lo = up;
+    });
+    $("zeroline").setAttribute("opacity", p.toFixed(3));
+    $("midline").setAttribute("opacity", (1 - p).toFixed(3));
+    $("mA").setAttribute("opacity", (1 - p).toFixed(3));
+    $("mB").setAttribute("opacity", p.toFixed(3));
+  }
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power2.inOut", duration: 0.9 } });
+  renderAt(0);
+  tl.to({ k: 0 }, { k: 1, duration: 3, ease: "none", onUpdate: () => renderAt(tl.time()) }, 0);
+  const baseRender = tl.render; tl.render = function () { const r = baseRender.apply(this, arguments); renderAt(this.time()); return r; };
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

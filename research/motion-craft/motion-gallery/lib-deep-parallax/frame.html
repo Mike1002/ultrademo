@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-deep-parallax</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #171a21; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #171a21; color: #ece8df;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; overflow: hidden; }
+  .lab { font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #a7adbb; white-space: nowrap; }
+  .num { font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1; white-space: nowrap; }
+  .t-xl { font-size: 84px; font-weight: 700; line-height: 1.05; white-space: nowrap; }
+  .t-l { font-size: 56px; font-weight: 700; line-height: 1.1; white-space: nowrap; }
+  .t-m { font-size: 34px; font-weight: 700; line-height: 1.15; white-space: nowrap; }
+  .t-body { font-size: 22px; line-height: 1.4; }
+  .hair { height: 1px; background: #2a2f3a; }
+  .dot { border-radius: 50%; background: #ece8df; }
+  .dot.v { background: #f2c200; border: 2px solid #ece8df; }
+
+  .world, .layer { position: absolute; inset: 0; }
+  .world { will-change: transform; }
+  .layer { width: 2400px; will-change: transform; }
+  .far { position: absolute; left: 140px; top: 44px; font-size: 390px; color: #6d7380; opacity: .25; filter: blur(3px); }
+  .grid { position: absolute; left: 80px; top: 55px; width: 1380px; height: 450px; background: repeating-linear-gradient(90deg, transparent 0, transparent 229px, #2a2f3a 229px, #2a2f3a 230px); opacity: .9; }
+  .diagram { position: absolute; left: 400px; top: 105px; width: 1000px; height: 70px; border-top: 1px solid #6d7380; border-bottom: 1px solid #2a2f3a; }
+  .diagram span { position: absolute; top: 22px; font-size: 20px; color: #a7adbb; white-space: nowrap; }
+  .blocks { position: absolute; left: 570px; top: 230px; display: flex; align-items: flex-end; gap: 30px; height: 115px; }
+  .blocks i { display: block; width: 76px; background: #a7adbb; border-radius: 8px; }
+  .value { position: absolute; left: 1400px; top: 202px; font-size: 152px; color: #f2c200; }
+  .value small { font-size: 32px; }
+  .caption { position: absolute; left: 1400px; top: 350px; }
+  .midword { position: absolute; left: 1000px; top: 353px; font-weight: 700; font-size: 66px; filter: blur(.6px); color: #a7adbb; white-space: nowrap; }
+  .nearword { position: absolute; left: 1260px; top: 436px; font-weight: 700; font-size: 115px; line-height: 1; filter: blur(2px); white-space: nowrap; }
+  .tag { position: absolute; left: 30px; top: 26px; }
+
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #a7adbb; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #ece8df; font-weight: 700; }
+  #label .l-sep { color: #6d7380; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+
+      <div class="world" data-layout-allow-overflow data-layout-allow-overlap>
+        <div class="layer" data-ratio="0.1" data-layout-allow-overflow data-layout-allow-overlap><div class="num far" data-layout-allow-occlusion data-layout-allow-overlap>12,480</div></div>
+        <div class="layer" data-ratio="0.25" data-layout-allow-overflow data-layout-allow-overlap><div class="grid"></div></div>
+        <div class="layer" data-ratio="0.45" data-layout-allow-overflow data-layout-allow-overlap><div class="diagram"><span style="left:0">Invite</span><span style="left:280px">→ Accept</span><span style="left:660px">→ Join</span></div></div>
+        <div class="layer" data-ratio="0.7" data-layout-allow-overflow data-layout-allow-overlap><div class="blocks"><i style="height:40px"></i><i style="height:115px"></i><i style="height:72px"></i><i style="height:26px"></i></div></div>
+        <div class="layer" data-ratio="0.95" data-layout-allow-overflow data-layout-allow-overlap><div class="num value" data-layout-allow-overlap>98<small>%</small></div><div class="lab caption">Accepted · Invite your team</div></div>
+        <div class="layer" data-ratio="1.3" data-layout-allow-overflow data-layout-allow-overlap><div class="midword" data-layout-allow-overlap data-layout-allow-occlusion>your team</div></div>
+        <div class="layer" data-ratio="1.8" data-layout-allow-overflow data-layout-allow-overlap><div class="nearword" data-layout-allow-overlap data-layout-allow-occlusion>Invite</div></div>
+      </div>
+      <div class="lab tag">Depth / 07 planes</div>
+
+    </div>
+    <div id="label"><span class="l-name">Deep multi-layer parallax</span><span class="l-sep">·</span><span>3D & Depth</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+
+  // Deep multi-layer parallax: one 600px camera move; the world carries every layer and each layer adds its own offset so it travels 600 * ratio.
+  // Far layers are blurred and faint, the nearest word is big and soft (depth of field).
+  tl.fromTo(".world", { x: 0 }, { x: -600, duration: 2.6, ease: "sine.inOut" }, 0.2);
+  document.querySelectorAll(".layer").forEach(layer => {
+    const ratio = Number(layer.dataset.ratio);
+    tl.fromTo(layer, { x: 0 }, { x: -600 * (ratio - 1), duration: 2.6, ease: "sine.inOut" }, 0.2);
+  });
+
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

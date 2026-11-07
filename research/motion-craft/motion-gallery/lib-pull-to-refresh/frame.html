@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-pull-to-refresh</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  #panel { position: absolute; left: 364px; top: 40px; width: 440px; height: 500px; background: #fffdf8; border: 2px solid #1d1c1a; border-radius: 24px; overflow: hidden; }
+  #hdr { position: absolute; left: 0; top: 0; width: 436px; height: 64px; background: #fffdf8; border-bottom: 2px solid #1d1c1a; z-index: 3; }
+  #hdr .t { position: absolute; left: 28px; top: 18px; font-size: 22px; font-weight: 700; }
+  #hdr .c { position: absolute; right: 28px; top: 22px; font-size: 15px; color: #6d6a63; font-variant-numeric: tabular-nums; }
+  #spin { position: absolute; left: 198px; top: 92px; width: 40px; height: 40px; z-index: 2; will-change: transform; }
+  #list { position: absolute; left: 0; top: 64px; width: 436px; height: 440px; will-change: transform; z-index: 1; }
+  .row { position: absolute; left: 0; width: 436px; height: 64px; border-bottom: 2px solid #e3ded2; background: #fffdf8; }
+  .row .av { position: absolute; left: 28px; top: 12px; width: 40px; height: 40px; border-radius: 50%; background: #ece7da; border: 2px solid #1d1c1a; }
+  .row .nm { position: absolute; left: 84px; top: 11px; font-size: 19px; font-weight: 600; white-space: nowrap; }
+  .row .rl { position: absolute; left: 84px; top: 36px; font-size: 14px; color: #6d6a63; }
+  .row .b1 { position: absolute; left: 84px; top: 16px; width: 150px; height: 12px; border-radius: 6px; background: #e3ded2; }
+  .row .b2 { position: absolute; left: 84px; top: 38px; width: 90px; height: 10px; border-radius: 5px; background: #ece7da; }
+  #new .pill { position: absolute; right: 28px; top: 18px; width: 64px; height: 28px; border-radius: 14px; background: #f2c200; border: 2px solid #1d1c1a;
+    font-size: 13px; font-weight: 700; line-height: 24px; text-align: center; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div id="panel">
+        <div id="hdr" data-layout-allow-overlap><div class="t">Members</div><div class="c" id="cnt">2 of 5 seats</div></div>
+        <svg id="spin" viewBox="0 0 40 40" data-layout-allow-overlap><circle id="arc" cx="20" cy="20" r="15" fill="none" stroke="#1d1c1a" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="94.2 114.2" stroke-dashoffset="104.2" transform="rotate(-90 20 20)"/></svg>
+        <div id="list" data-layout-allow-overlap data-layout-allow-occlusion>
+          <div class="row" id="new" style="top:0" data-layout-allow-overlap data-layout-allow-occlusion><div class="av" style="background:#f2c200"></div><div class="nm" data-layout-allow-occlusion>Morgan Lee</div><div class="rl" data-layout-allow-occlusion>Editor · just joined</div><div class="pill" data-layout-allow-occlusion>New</div></div>
+          <div class="row" style="top:64px" data-layout-allow-occlusion><div class="av"></div><div class="nm" data-layout-allow-occlusion>Jamie Dalton</div><div class="rl" data-layout-allow-occlusion>Owner</div></div>
+          <div class="row" style="top:128px" data-layout-allow-occlusion><div class="av"></div><div class="nm" data-layout-allow-occlusion>Sam Kim</div><div class="rl" data-layout-allow-occlusion>Editor</div></div>
+          <div class="row" style="top:192px"><div class="av"></div><div class="b1"></div><div class="b2"></div></div>
+          <div class="row" style="top:256px"><div class="av"></div><div class="b1" style="width:120px"></div><div class="b2"></div></div>
+          <div class="row" style="top:320px"><div class="av"></div><div class="b1" style="width:170px"></div><div class="b2"></div></div>
+          <div class="row" style="top:384px"><div class="av"></div><div class="b1" style="width:110px"></div><div class="b2"></div></div>
+        </div>
+      </div>
+    </div>
+    <div id="label"><span class="l-name">Pull to refresh</span><span class="l-sep">·</span><span>UI Demo</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power2.out", duration: 0.5 } });
+  // Params: pull 800 ms with resistance (power2.out) to a 100 px threshold, loader 800 ms, return 500 ms back.out(1.2).
+  // The list starts one row up so the new row sits hidden under the header until the refresh completes.
+  tl.fromTo("#list", { y: -64 }, { y: 36, duration: 0.8, ease: "power2.out" }, 0.2);
+  tl.fromTo("#new", { opacity: 0 }, { opacity: 0, duration: 0.01, ease: "none" }, 0);
+  // Loader: the arc fills with the pull, then spins at the threshold.
+  tl.fromTo("#arc", { strokeDashoffset: 104.2 }, { strokeDashoffset: 24, duration: 0.8, ease: "power2.out" }, 0.2);
+  tl.fromTo("#spin", { rotation: 0, opacity: 1 }, { rotation: 360, duration: 0.8, ease: "none" }, 1.0);
+  tl.to("#spin", { opacity: 0, duration: 0.1, ease: "none" }, 1.75);
+  // Return: the list settles one row lower than it started, revealing the refreshed row at the top.
+  tl.to("#list", { y: 0, duration: 0.5, ease: "back.out(1.2)" }, 1.8);
+  tl.to("#new", { opacity: 1, duration: 0.25, ease: "none" }, 1.95);
+  tl.fromTo("#new", { backgroundColor: "#fbf3cf" }, { backgroundColor: "#fffdf8", duration: 0.7, ease: "power2.out", immediateRender: false }, 2.3);
+  // Header count: a discrete text swap, written from a pure function of time and re-applied on every render.
+  const cnt = document.getElementById("cnt");
+  function renderAt(t) { cnt.textContent = t < 2.0 ? "2 of 5 seats" : "3 of 5 seats"; }
+  renderAt(0);
+  tl.to({ k: 0 }, { k: 1, duration: 3, ease: "none", onUpdate: () => renderAt(tl.time()) }, 0);
+  const baseRender = tl.render; tl.render = function () { const r = baseRender.apply(this, arguments); renderAt(this.time()); return r; };
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

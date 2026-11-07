@@ -1,0 +1,20 @@
+{
+  "name": "Wipe",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Sequence"
+  ],
+  "energy": "steady",
+  "tier": 2,
+  "runtime": "gsap",
+  "tags": [
+    "diagonal split",
+    "cover wipe",
+    "shutter",
+    "clip-path",
+    "boundary",
+    "transitions"
+  ],
+  "one_line": "A boundary line moves left to right and progressively reveals the number scene over the card scene behind it."
+}

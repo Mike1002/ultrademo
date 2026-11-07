@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>{{id}} · style strip</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+{{fontfaces}}
+  :root {
+    --bg: {{bg}}; --bg-alt: {{bg_alt}}; --surface: {{surface}}; --surface-2: {{surface_2}};
+    --ink: {{ink}}; --muted: {{muted}}; --line: {{line}}; --accent: {{accent}}; --accent-2: {{accent_2}}; --on-accent: {{on_accent}};
+    --card-fill: {{card_fill}}; --card-border: {{card_border}}; --pill-bg: {{pill_bg}}; --pill-ink: {{pill_ink}};
+    --button-bg: {{button_bg}}; --button-ink: {{button_ink}}; --thumb: {{thumb}};
+    --term-bg: {{term_bg}}; --term-ink: {{term_ink}}; --term-muted: {{term_muted}}; --term-prompt: {{term_prompt}}; --term-ok: {{term_ok}}; --term-line: {{term_line}};
+    --stat: {{stat_colour}}; --card-ink: {{card_ink}}; --card-muted: {{card_muted}}; --card-line: {{card_line}}; --hi: {{hi_colour}};
+    --f-display: {{f_display}}; --f-body: {{f_body}}; --f-mono: {{f_mono}}; --f-label: {{f_label}};
+    --w-display: {{w_display}}; --w-body: {{w_body}}; --w-mono: {{w_mono}}; --w-label: {{w_label}};
+    --r-card: {{r_card}}px; --r-button: {{r_button}}px; --r-pill: {{r_pill}}px; --r-thumb: {{r_thumb}}px;
+    --border-px: {{border_px}}px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: var(--bg); }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: var(--bg); color: var(--ink);
+    font-family: var(--f-body); font-weight: var(--w-body); -webkit-font-smoothing: antialiased; }
+  .clip { position: absolute; inset: 0; }
+  .stage { position: absolute; inset: 0; overflow: hidden; background: var(--bg); will-change: transform, opacity, filter; }
+  .display { font-family: var(--f-display); font-weight: var(--w-display); font-style: {{display_style}}; text-transform: {{display_transform}}; letter-spacing: {{display_tracking}}; line-height: {{display_line_height}}; }
+  .label { font-family: var(--f-label); font-weight: var(--w-label); text-transform: {{label_transform}}; letter-spacing: {{label_tracking}}; font-size: {{label_px}}px; font-style: {{label_style}}; color: var(--muted); }
+  .mono { font-family: var(--f-mono); font-weight: var(--w-mono); }
+  .w { display: inline-block; will-change: transform, opacity, filter; }
+  .mask { display: inline-block; overflow: hidden; vertical-align: top; padding: 0.08em 0.02em 0.12em; margin: -0.08em -0.02em -0.12em; }
+  .mask .w { display: block; }
+  .ch { display: inline-block; will-change: transform, opacity; white-space: pre; }
+  .atm { position: absolute; inset: 0; pointer-events: none; }
+{{atmosphere_css}}
+{{scene_css}}
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="10" data-width="1280" data-height="720" data-fps="30">
+{{scene_html}}
+{{overlay_html}}
+</div>
+<script>
+  const S = {{style_js}};
+  const tl = gsap.timeline({ paused: true });
+  const EASE = S.easing;
+  // Moment windows (seconds) and the transition each boundary uses; the strip is identical for every style.
+  const M = S.moments; // [[start,end],...]
+  const TD = S.transition.duration;
+  // ---- shared text animation (hook line, close wordmark): one choice per style, all seek-safe fromTo at absolute times
+  function splitWords(el, accentIndex) {
+    const words = el.textContent.split(" ");
+    el.textContent = "";
+    return words.map((w, i) => {
+      const mask = document.createElement("span"); mask.className = "mask";
+      const span = document.createElement("span"); span.className = "w" + (i === accentIndex ? " accent-word" : ""); span.textContent = w;
+      mask.appendChild(span); el.appendChild(mask);
+      if (i < words.length - 1) el.appendChild(document.createTextNode(" "));
+      return span;
+    });
+  }
+  function splitChars(span) {
+    const t = span.textContent; span.textContent = "";
+    return t.split("").map(c => { const s = document.createElement("span"); s.className = "ch"; s.textContent = c; span.appendChild(s); return s; });
+  }
+  const SCR = "AXZ#%&@/*+=KQW"; // deterministic scramble glyphs
+  function textIn(targets, t0, opts) {
+    // targets: array of word spans; animates by S.text_animation. opts: {stagger, dur, chars}
+    const o = Object.assign({ stagger: S.rhythm.stagger, dur: S.rhythm.entrance }, opts || {});
+    const kind = S.text_animation;
+    targets.forEach((w, i) => {
+      const at = t0 + i * o.stagger;
+      switch (kind) {
+        case "rise-mask":
+          tl.fromTo(w, { yPercent: 110, opacity: 1 }, { yPercent: 0, duration: o.dur, ease: EASE.entry }, at); break;
+        case "fade-up":
+          tl.fromTo(w, { y: 26, opacity: 0 }, { y: 0, opacity: 1, duration: o.dur, ease: EASE.entry }, at); break;
+        case "slam":
+          tl.fromTo(w, { scale: 1.35, opacity: 0, y: 40 }, { scale: 1, opacity: 1, y: 0, duration: Math.max(0.25, o.dur * 0.7), ease: EASE.entry }, at); break;
+        case "blur-in":
+          tl.fromTo(w, { filter: "blur(18px)", opacity: 0, scale: 1.06 }, { filter: "blur(0px)", opacity: 1, scale: 1, duration: o.dur, ease: EASE.entry }, at); break;
+        case "scale-in":
+          tl.fromTo(w, { scale: 0.6, opacity: 0 }, { scale: 1, opacity: 1, duration: o.dur, ease: EASE.entry }, at); break;
+        case "squash":
+          tl.fromTo(w, { scaleX: 1.7, scaleY: 0.6, opacity: 0 }, { scaleX: 1, scaleY: 1, opacity: 1, duration: o.dur, ease: EASE.entry }, at); break;
+        case "write-on":
+          tl.fromTo(w, { clipPath: "inset(-10% 100% -15% 0)", opacity: 1 }, { clipPath: "inset(-10% 0% -15% 0)", duration: o.dur * 1.3, ease: "power1.inOut" }, at); break;
+        case "stepped":
+          tl.fromTo(w, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: o.dur, ease: "steps(4)" }, at); break;
+        case "word-blur":
+          tl.fromTo(w, { filter: "blur(10px)", opacity: 0 }, { filter: "blur(0px)", opacity: 1, duration: o.dur * 1.6, ease: EASE.entry }, at); break;
+        case "letters": case "drop": case "scramble": case "type": case "flip": {
+          const chars = splitChars(w);
+          chars.forEach((c, j) => {
+            const cat = at + j * (o.chars || 0.035);
+            if (kind === "letters") tl.fromTo(c, { y: 50, opacity: 0, rotation: (j % 2 ? 14 : -14) }, { y: 0, opacity: 1, rotation: 0, duration: o.dur, ease: EASE.entry }, cat);
+            else if (kind === "drop") tl.fromTo(c, { y: -90, opacity: 0, rotation: (j % 2 ? 28 : -28) }, { y: 0, opacity: 1, rotation: 0, duration: o.dur, ease: EASE.entry }, cat);
+            else if (kind === "flip") tl.fromTo(c, { rotationX: 90, opacity: 0, transformOrigin: "50% 100%" }, { rotationX: 0, opacity: 1, duration: o.dur, ease: EASE.entry }, cat);
+            else if (kind === "type") { tl.fromTo(c, { opacity: 0 }, { opacity: 1, duration: 0.01, ease: "none" }, cat); }
+            else { // scramble: a ghost glyph shows first, the real one snaps in
+              const g = document.createElement("span"); g.className = "ch ghost"; g.textContent = c.textContent === " " ? " " : SCR[(i * 7 + j * 3) % SCR.length];
+              g.style.position = "absolute"; g.style.left = "0"; g.style.top = "0"; c.style.position = "relative"; c.appendChild(g);
+              const gi = c.firstChild; // text node
+              tl.fromTo(c, { opacity: 0 }, { opacity: 1, duration: 0.01, ease: "none" }, cat);
+              tl.fromTo(g, { opacity: 1 }, { opacity: 0, duration: 0.01, ease: "none" }, cat + 0.12 + (j % 3) * 0.05);
+              c.classList.add("has-ghost");
+            }
+          });
+          break; }
+        default:
+          tl.fromTo(w, { y: 26, opacity: 0 }, { y: 0, opacity: 1, duration: o.dur, ease: EASE.entry }, at);
+      }
+    });
+  }
+  // ---- transitions between moments: in-stage sits above out-stage (later in DOM)
+  function transition(outStage, inStage, tb) {
+    const k = S.transition.kind, d = TD;
+    if (d <= 0 || k === "cut") {
+      if (S.transition.flash) tl.fromTo("#flash", { opacity: 0.9 }, { opacity: 0, duration: 0.22, ease: "power2.out", immediateRender: false }, tb);
+      return;
+    }
+    const a = tb - d / 2;
+    switch (k) {
+      case "crossfade":
+        tl.fromTo(inStage, { opacity: 0 }, { opacity: 1, duration: d, ease: "power2.inOut" }, a);
+        tl.to(outStage, { opacity: 0, duration: d, ease: "power2.inOut", immediateRender: false }, a); break;
+      case "blur":
+        tl.fromTo(inStage, { opacity: 0, filter: "blur(18px)" }, { opacity: 1, filter: "blur(0px)", duration: d, ease: EASE.entry }, a);
+        tl.to(outStage, { opacity: 0, filter: "blur(14px)", duration: d * 0.7, ease: "power2.in", immediateRender: false }, a); break;
+      case "wipe":
+        tl.fromTo(inStage, { clipPath: "inset(0 100% 0 0)" }, { clipPath: "inset(0 0% 0 0)", duration: d, ease: EASE.wipe || "power3.inOut" }, a);
+        if (S.transition.band) tl.fromTo("#band", { xPercent: -100 }, { xPercent: 100, duration: d, ease: EASE.wipe || "power3.inOut" }, a - d * 0.08);
+        break;
+      case "wipe-up":
+        tl.fromTo(inStage, { clipPath: "inset(100% 0 0 0)" }, { clipPath: "inset(0% 0 0 0)", duration: d, ease: EASE.wipe || "expo.inOut" }, a); break;
+      case "iris":
+        tl.fromTo(inStage, { clipPath: "circle(0% at 50% 50%)" }, { clipPath: "circle(80% at 50% 50%)", duration: d, ease: EASE.wipe || "power2.in" }, a); break;
+      case "push":
+        tl.fromTo(inStage, { x: 1280 }, { x: 0, duration: d, ease: EASE.wipe || "power3.inOut" }, a);
+        tl.to(outStage, { x: -1280, duration: d, ease: EASE.wipe || "power3.inOut", immediateRender: false }, a); break;
+      case "zoom":
+        tl.fromTo(inStage, { scale: 0.82, opacity: 0 }, { scale: 1, opacity: 1, duration: d, ease: EASE.entry }, a);
+        tl.to(outStage, { scale: 1.25, opacity: 0, duration: d, ease: "power3.in", immediateRender: false }, a); break;
+      case "glitch": {
+        const j = [[-18, 3], [14, -2], [-7, 1], [0, 0]];
+        j.forEach((v, i) => tl.set(outStage, { x: v[0], skewX: v[1] }, a + i * 0.035));
+        tl.set(inStage, { x: 16, skewX: -3 }, tb); tl.set(inStage, { x: -10, skewX: 2 }, tb + 0.035); tl.set(inStage, { x: 0, skewX: 0 }, tb + 0.07);
+        if (S.transition.flash) tl.fromTo("#flash", { opacity: 0.55 }, { opacity: 0, duration: 0.1, ease: "none", immediateRender: false }, tb);
+        break; }
+      case "slide-down":
+        tl.fromTo(inStage, { y: -720 }, { y: 0, duration: d, ease: EASE.wipe || "power4.out" }, a); break;
+      default:
+        tl.fromTo(inStage, { opacity: 0 }, { opacity: 1, duration: d, ease: "power2.inOut" }, a);
+        tl.to(outStage, { opacity: 0, duration: d, ease: "power2.inOut", immediateRender: false }, a);
+    }
+  }
+  // ---- time-driven content (counter, typing, caret, timecode): pure functions of t, written on every render
+  const R = []; // renderers: fn(t)
+  function renderAt(t) { for (const f of R) f(t); }
+{{scene_js}}
+  // transitions at each boundary
+  const stages = ["#st1", "#st2", "#st3", "#st4", "#st5"];
+  for (let i = 0; i < 4; i++) transition(stages[i], stages[i + 1], M[i][1]);
+{{overlay_js}}
+  tl.to({}, { duration: 10 }, 0); // full-span anchor
+  // the time-driven writers run on update and on every seek
+  tl.to({ k: 0 }, { k: 1, duration: 10, ease: "none", onUpdate: () => renderAt(tl.time()) }, 0);
+  const baseRender = tl.render; tl.render = function () { const r = baseRender.apply(this, arguments); renderAt(this.time()); return r; };
+  renderAt(0);
+  window.__timelines = window.__timelines || {};
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

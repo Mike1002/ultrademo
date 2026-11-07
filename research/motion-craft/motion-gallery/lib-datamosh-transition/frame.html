@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-datamosh-transition</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; overflow: hidden; }
+  .art { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; will-change: transform, opacity; }
+  .art.a { background: #ece7da; }
+  .art.b { background: #f6f3ec; }
+  .card { position: absolute; left: 264px; top: 110px; width: 640px; height: 360px; background: #fffdf8; border: 2px solid #1d1c1a; border-radius: 24px; }
+  .card .lab { position: absolute; left: 56px; top: 48px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  .card .h1 { position: absolute; left: 56px; top: 80px; font-size: 56px; font-weight: 700; line-height: 64px; white-space: nowrap; }
+  .card .sub { position: absolute; left: 56px; top: 160px; font-size: 22px; color: #6d6a63; }
+  .card .btn { position: absolute; left: 56px; top: 240px; width: 200px; height: 60px; border-radius: 14px; background: #f2c200; border: 2px solid #1d1c1a;
+    font-size: 20px; font-weight: 700; line-height: 56px; text-align: center; }
+  .card.b .h1 { font-size: 96px; line-height: 104px; top: 74px; font-variant-numeric: tabular-nums; }
+  .card.b .sub { top: 190px; }
+  .strip, .slit, .residue { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; will-change: transform, opacity; }
+  .residue { filter: blur(2px); }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage"></div>
+    <div id="label"><span class="l-name">Datamosh transition</span><span class="l-sep">·</span><span>Transitions</span><span class="l-sep">·</span><span>high</span></div>
+  </section>
+</div>
+<script>
+  const AT = ' data-layout-allow-overlap data-layout-allow-occlusion';
+  const A_HTML = '<div class="art a"' + AT + '><div class="card"' + AT + '><div class="lab"' + AT + '>Orbit</div><div class="h1"' + AT + '>Invite your team</div><div class="sub"' + AT + '>3 seats left on this plan</div><div class="btn"' + AT + '>Continue</div></div></div>';
+  const B_HTML = '<div class="art b" id="B"' + AT + '><div class="card b"' + AT + '><div class="lab"' + AT + '>This month</div><div class="h1"' + AT + '>12,480</div><div class="sub"' + AT + '>invites sent</div></div></div>';
+  const STRIPS = 24, SLITS = 8, H = 580, W = 1168;
+  const h = i => Math.abs(Math.sin(i * 91.7 + 3) * 43758.5) % 1;   // the card's seeded hash
+  let html = B_HTML;
+  // residue: two blurred, stretched copies of A that linger after the tear
+  html += '<div class="residue" id="res0"' + AT + '>' + A_HTML + '</div>';
+  html += '<div class="residue" id="res1"' + AT + '>' + A_HTML + '</div>';
+  // horizontal strips of A
+  for (let i = 0; i < STRIPS; i++) {
+    const top = (i * H / STRIPS).toFixed(2), bottom = (H - (i + 1) * H / STRIPS).toFixed(2);
+    html += '<div class="strip" id="st' + i + '"' + AT + ' style="clip-path:inset(' + top + 'px 0 ' + bottom + 'px 0)">' + A_HTML + '</div>';
+  }
+  // vertical slits of A, each 3.2% of the width, at hashed columns
+  for (let j = 0; j < SLITS; j++) {
+    const sw = W * 0.032, left = Math.round(h(100 + j) * (W - sw));
+    html += '<div class="slit" id="sl' + j + '"' + AT + ' style="clip-path:inset(0 ' + (W - left - sw).toFixed(1) + 'px 0 ' + left + 'px)">' + A_HTML + '</div>';
+  }
+  document.getElementById("stage").innerHTML = html;
+
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "none", duration: 0.6 } });
+  const T0 = 0.7, D = 0.6;
+  tl.fromTo("#B", { opacity: 0, scale: 1 }, { opacity: 0, duration: 0.01 }, 0);
+  // Strips: each pushed sideways by a hashed offset between -150 and +150 px over 0.6 s, linear; each fades over 0.2 s from +0.4 s.
+  for (let i = 0; i < STRIPS; i++) {
+    tl.fromTo("#st" + i, { x: 0, opacity: 1 }, { x: Math.round((h(i) - 0.5) * 300), duration: D, ease: "none" }, T0);
+    tl.to("#st" + i, { opacity: 0, duration: 0.2, ease: "none" }, T0 + 0.4 + h(i + 50) * 0.08);
+  }
+  // Slits: narrow columns shift up or down and slide, lingering a little longer than the strips.
+  for (let j = 0; j < SLITS; j++) {
+    tl.fromTo("#sl" + j, { x: 0, y: 0, opacity: 0 }, { opacity: 1, duration: 0.034, ease: "none" }, T0 + 0.05);
+    tl.to("#sl" + j, { y: Math.round((h(200 + j) - 0.5) * 120), x: Math.round((h(300 + j) - 0.5) * 60), duration: D, ease: "none" }, T0 + 0.05);
+    tl.to("#sl" + j, { opacity: 0, duration: 0.25, ease: "none" }, T0 + 0.55 + h(400 + j) * 0.1);
+  }
+  // Residue: smeared copies rise to 0.62 as the strips go, drift sideways, and fade out slowly after B has taken over.
+  tl.fromTo("#res0", { opacity: 0, x: 0, scaleX: 1, transformOrigin: "50% 50%" }, { opacity: 0.62, duration: 0.3, ease: "none" }, T0);
+  tl.fromTo("#res1", { opacity: 0, x: 0, scaleX: 1, transformOrigin: "50% 50%" }, { opacity: 0.4, duration: 0.3, ease: "none" }, T0 + 0.1);
+  tl.to("#res0", { x: 90, scaleX: 1.06, duration: 1.4, ease: "power1.out" }, T0 + 0.2);
+  tl.to("#res1", { x: -120, scaleX: 1.1, duration: 1.4, ease: "power1.out" }, T0 + 0.2);
+  tl.to("#res0", { opacity: 0, duration: 0.9, ease: "power1.in" }, 1.5);
+  tl.to("#res1", { opacity: 0, duration: 0.9, ease: "power1.in" }, 1.6);
+  // B takes over under the tear and locks in.
+  tl.to("#B", { opacity: 1, duration: 0.034, ease: "none" }, T0 + 0.4);
+  tl.fromTo("#B .card", { x: 12 }, { x: 0, duration: 0.7, ease: "power2.out" }, 2.3);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+{
+  "name": "Channel phase dissolve",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Attention"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "webgl",
+  "tags": [
+    "channel phase dissolve",
+    "transitions",
+    "rgb",
+    "channels",
+    "crossfade",
+    "colour fringe",
+    "screen blend",
+    "dark"
+  ],
+  "one_line": "An invite card dissolves into a stats card one colour channel at a time: the red copy swaps first, then green, then blue, so the edges fringe in colour mid-way before the three line up again."
+}

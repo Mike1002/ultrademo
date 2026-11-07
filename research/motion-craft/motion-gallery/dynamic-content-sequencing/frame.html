@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>dynamic-content-sequencing</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  /* card 800x340 centred at (240,190) */
+  .card { position: absolute; left: 240px; top: 190px; width: 800px; height: 340px; background: #fffdf8;
+    border: 2px solid #1d1c1a; border-radius: 24px; }
+  .eyebrow { position: absolute; left: 48px; top: 44px; height: 26px; font-size: 20px; color: #6d6a63; letter-spacing: 0.1em; text-transform: uppercase; }
+  .title { position: absolute; left: 48px; top: 84px; width: 704px; height: 70px; font-size: 60px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.1; white-space: nowrap; }
+  .body { position: absolute; left: 48px; top: 170px; width: 704px; min-height: 60px; font-size: 22px; line-height: 1.4; color: #6d6a63; }
+  /* progress: hairline track, yellow fill scaled from the left (never width) */
+  .progress-bar { position: absolute; left: 48px; top: 276px; width: 704px; height: 8px; background: #e3ded2; border-radius: 4px; overflow: hidden; }
+  .progress-fill { width: 704px; height: 8px; background: #f2c200; transform-origin: left center; will-change: transform; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div class="card" id="card">
+      <div class="eyebrow" id="eyebrow"></div>
+      <div class="title" id="title"></div>
+      <div class="body" id="body"></div>
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+    </div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true });
+  // Each entry's screen time = BASE + body length x SEC_PER_CHAR + hold; the final entry holds longest.
+  // Pacing is compressed to fit the 3 s preview (the rule's own ranges assume a longer scene).
+  const BASE_DURATION = 0.3, SEC_PER_CHAR = 0.03, HOLD_MID = 0.1, HOLD_FINAL = 0.7, TAIL_PAD = 0.06;
+  const CONTENT = [
+    { eyebrow: "Step 1", title: "Record", body: "Capture once.",     hold: HOLD_MID },   // 0.79 s
+    { eyebrow: "Step 2", title: "Edit",   body: "Trim and caption.", hold: HOLD_MID },   // 0.91 s
+    { eyebrow: "Step 3", title: "Ship",   body: "Ship it.",          hold: HOLD_FINAL }, // 1.24 s
+  ];
+  let cumulative = 0;
+  const TIMELINE = CONTENT.map((entry) => {
+    const dur = BASE_DURATION + entry.body.length * SEC_PER_CHAR + entry.hold;
+    const start = cumulative;
+    cumulative += dur;
+    return { ...entry, start, end: cumulative };
+  });
+  const TOTAL_DURATION = cumulative + TAIL_PAD;
+  function entryAt(time) {
+    for (let i = TIMELINE.length - 1; i >= 0; i--) { if (time >= TIMELINE[i].start) return TIMELINE[i]; }
+    return TIMELINE[0];
+  }
+  const eyebrowEl = document.getElementById("eyebrow");
+  const titleEl = document.getElementById("title");
+  const bodyEl = document.getElementById("body");
+  const progressEl = document.getElementById("progress-fill");
+  // Pure function of timeline time; the DOM swap is guarded by what is already on screen (no mutable tracker).
+  function renderAt(t) {
+    const entry = entryAt(t);
+    if (titleEl.textContent !== entry.title) {
+      eyebrowEl.textContent = entry.eyebrow;
+      titleEl.textContent = entry.title;
+      bodyEl.textContent = entry.body;
+    }
+    const p = Math.max(0, Math.min(1, t / TOTAL_DURATION));
+    progressEl.style.transform = `scaleX(${p})`;
+  }
+  renderAt(0);
+  tl.to({ k: 0 }, { k: 1, duration: 3, ease: "none", onUpdate: () => renderAt(tl.time()) }, 0);
+  const baseRender = tl.render;
+  tl.render = function () { const r = baseRender.apply(this, arguments); renderAt(this.time()); return r; };
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+{
+  "name": "Uncertainty needle motion",
+  "family": "Data",
+  "purpose": [
+    "Data evidence",
+    "Comparison"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "svg",
+  "tags": [
+    "forecast uncertainty needle motion",
+    "data",
+    "gauge",
+    "needle",
+    "forecast",
+    "samples",
+    "svg"
+  ],
+  "one_line": "A forecast gauge needle hops every 0.4 s between sampled outcomes on either side of the 62 percent estimate, inside a pale band of plausible values with the central tick in yellow."
+}

@@ -1,0 +1,21 @@
+{
+  "name": "Crane tilt",
+  "family": "Camera",
+  "purpose": [
+    "Explanation",
+    "Sequence"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "gsap",
+  "tags": [
+    "crane-pedestal-tilt",
+    "camera",
+    "3d",
+    "pedestal",
+    "tilt",
+    "descend",
+    "perspective"
+  ],
+  "one_line": "A tall members page is first seen from above, leaning away; the viewpoint descends and levels out until the member list sits square in front, then a yellow highlight lands on the invite row as the view eases closer."
+}

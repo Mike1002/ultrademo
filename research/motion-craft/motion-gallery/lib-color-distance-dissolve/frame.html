@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-color-distance-dissolve</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; overflow: hidden; }
+  .art { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  .art.a { background: #ece7da; }
+  .art.b { background: #f6f3ec; }
+  .tile { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; will-change: opacity; }
+  .card { position: absolute; left: 264px; top: 110px; width: 640px; height: 360px; background: #fffdf8; border: 2px solid #1d1c1a; border-radius: 24px; }
+  .card .lab { position: absolute; left: 56px; top: 48px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  .card .h1 { position: absolute; left: 56px; top: 80px; font-size: 56px; font-weight: 700; line-height: 64px; white-space: nowrap; }
+  .card .sub { position: absolute; left: 56px; top: 160px; font-size: 22px; color: #6d6a63; }
+  .card .btn { position: absolute; left: 56px; top: 240px; width: 200px; height: 60px; border-radius: 14px; background: #f2c200; border: 2px solid #1d1c1a;
+    font-size: 20px; font-weight: 700; line-height: 56px; text-align: center; }
+  .card.b .h1 { font-size: 96px; line-height: 104px; top: 74px; font-variant-numeric: tabular-nums; }
+  .card.b .sub { top: 190px; }
+  #tiles { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; will-change: transform; }
+  #grid { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; pointer-events: none; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div class="art a" id="A" data-layout-allow-overlap>
+        <div class="card" data-layout-allow-overlap>
+          <div class="lab" data-layout-allow-overlap data-layout-allow-occlusion>Orbit</div>
+          <div class="h1" data-layout-allow-overlap data-layout-allow-occlusion>Invite your team</div>
+          <div class="sub" data-layout-allow-overlap data-layout-allow-occlusion>3 seats left on this plan</div>
+          <div class="btn" data-layout-allow-overlap data-layout-allow-occlusion>Continue</div>
+        </div>
+      </div>
+      <div id="tiles"></div>
+      <svg id="grid" viewBox="0 0 1168 580" data-layout-allow-overlap></svg>
+    </div>
+    <div id="label"><span class="l-name">Colour distance dissolve</span><span class="l-sep">·</span><span>Transitions</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const COLS = 16, ROWS = 9, W = 1168, H = 580, TW = W / COLS, TH = H / ROWS;
+  const AT = ' data-layout-allow-overlap data-layout-allow-occlusion';
+  const B_HTML = '<div class="art b"' + AT + '><div class="card b"' + AT + '><div class="lab"' + AT + '>This month</div><div class="h1"' + AT + '>12,480</div><div class="sub"' + AT + '>invites sent</div></div></div>';
+  // One clipped copy of scene B per tile.
+  let html = '', grid = '';
+  for (let r = 0; r < ROWS; r++) for (let c = 0; c < COLS; c++) {
+    const i = r * COLS + c;
+    const ins = (r * TH).toFixed(2) + 'px ' + ((COLS - 1 - c) * TW).toFixed(2) + 'px ' + ((ROWS - 1 - r) * TH).toFixed(2) + 'px ' + (c * TW).toFixed(2) + 'px';
+    html += '<div class="tile" id="t' + i + '"' + AT + ' style="clip-path:inset(' + ins + ')">' + B_HTML + '</div>';
+  }
+  document.getElementById("tiles").innerHTML = html;
+  for (let c = 1; c < COLS; c++) grid += '<line x1="' + (c * TW).toFixed(1) + '" y1="0" x2="' + (c * TW).toFixed(1) + '" y2="580" stroke="#1d1c1a" stroke-width="1"/>';
+  for (let r = 1; r < ROWS; r++) grid += '<line x1="0" y1="' + (r * TH).toFixed(1) + '" x2="1168" y2="' + (r * TH).toFixed(1) + '" stroke="#1d1c1a" stroke-width="1"/>';
+  document.getElementById("grid").innerHTML = grid;
+
+  // Colour model of both scenes as painted rectangles (later entries on top); text boxes carry an effective colour
+  // (surface mixed with ink by the glyph coverage). The per-tile colour distance is the mean over a 4x4 sample grid.
+  const mix = (a, b, k) => a.map((v, j) => v + (b[j] - v) * k);
+  const INK = [29, 28, 26], SURF = [255, 253, 248], YEL = [242, 194, 0], MUT = [109, 106, 99];
+  const CX = 264, CY = 110;
+  const SCENE_A = [
+    [0, 0, W, H, [236, 231, 218]], [CX, CY, 640, 360, SURF],
+    [CX + 56, CY + 48, 60, 16, mix(SURF, MUT, 0.3)], [CX + 56, CY + 88, 440, 50, mix(SURF, INK, 0.5)],
+    [CX + 56, CY + 162, 250, 24, mix(SURF, MUT, 0.3)], [CX + 56, CY + 240, 200, 60, YEL]
+  ];
+  const SCENE_B = [
+    [0, 0, W, H, [246, 243, 236]], [CX, CY, 640, 360, SURF],
+    [CX + 56, CY + 48, 90, 16, mix(SURF, MUT, 0.3)], [CX + 56, CY + 84, 340, 86, mix(SURF, INK, 0.55)],
+    [CX + 56, CY + 192, 120, 24, mix(SURF, MUT, 0.3)]
+  ];
+  function colourAt(scene, x, y) { let c = scene[0][4]; for (const r of scene) if (x >= r[0] && x < r[0] + r[2] && y >= r[1] && y < r[1] + r[3]) c = r[4]; return c; }
+  const dist = [];
+  let dmax = 0;
+  for (let r = 0; r < ROWS; r++) for (let c = 0; c < COLS; c++) {
+    let d = 0;
+    for (let sy = 0; sy < 4; sy++) for (let sx = 0; sx < 4; sx++) {
+      const x = c * TW + (sx + 0.5) * TW / 4, y = r * TH + (sy + 0.5) * TH / 4;
+      const a = colourAt(SCENE_A, x, y), b = colourAt(SCENE_B, x, y);
+      d += Math.hypot(a[0] - b[0], a[1] - b[1], a[2] - b[2]) / 441;
+    }
+    d /= 16; dist.push(d); if (d > dmax) dmax = d;
+  }
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "none", duration: 0.6 } });
+  // Progress p runs 0 to 1 over 1.0 s from 0.6 s. A tile with normalised distance d mixes over p in [d * 0.9, d * 0.9 + 0.1]:
+  // matching areas (the shared card surface, the near-identical grounds) melt across first; the yellow button, where the
+  // scenes differ most, goes last.
+  const T0 = 0.6, D = 1.0;
+  for (let i = 0; i < ROWS * COLS; i++) {
+    const dn = dist[i] / dmax;
+    tl.fromTo("#t" + i, { opacity: 0 }, { opacity: 1, duration: 0.1 * D, ease: "power1.inOut" }, T0 + dn * 0.9 * D);
+  }
+  // A faint tile grid shows the grain of the change while it runs, then fades.
+  tl.fromTo("#grid", { opacity: 0 }, { opacity: 0.22, duration: 0.3, ease: "power1.out" }, T0 - 0.2);
+  tl.to("#grid", { opacity: 0, duration: 0.6, ease: "power1.inOut" }, T0 + D + 0.2);
+  // Settle: the new scene breathes very slightly so the frame keeps moving.
+  tl.fromTo("#tiles", { scale: 1, transformOrigin: "50% 50%" }, { scale: 1.012, duration: 1.1, ease: "sine.inOut" }, T0 + D + 0.2);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

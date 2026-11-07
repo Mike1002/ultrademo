@@ -1,0 +1,22 @@
+{
+  "name": "Radial menu fanout",
+  "family": "UI Demo",
+  "purpose": [
+    "Feedback",
+    "Emphasis"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "gsap",
+  "tags": [
+    "radial menu fanout",
+    "ui",
+    "radial",
+    "arc",
+    "fan",
+    "icons",
+    "stagger",
+    "fold back"
+  ],
+  "one_line": "Six icon discs fan out from a yellow plus button along a 120-degree arc with a short stagger while the plus turns into a close mark; after a hold they fold back into the button."
+}

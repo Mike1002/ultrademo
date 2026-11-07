@@ -1,0 +1,20 @@
+{
+  "name": "Split tilt cards",
+  "family": "Layout & Network",
+  "purpose": [
+    "comparison",
+    "entrance",
+    "before and after"
+  ],
+  "energy": "steady",
+  "tags": [
+    "3d",
+    "cards",
+    "split",
+    "tilt",
+    "comparison",
+    "symmetric",
+    "layout"
+  ],
+  "one_line": "Two cards slide in from opposite sides and pivot to face each other like an open book, their copy rising as they settle, then bob gently out of step."
+}

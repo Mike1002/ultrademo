@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-donut-ring-staging</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  #chart { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  text { font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .cap { font-size: 13px; letter-spacing: .06em; text-transform: uppercase; fill: #6d6a63; }
+  .big { font-size: 56px; font-weight: 700; fill: #1d1c1a; font-variant-numeric: tabular-nums; }
+  .sub { font-size: 18px; fill: #6d6a63; }
+  .lg { font-size: 22px; fill: #1d1c1a; }
+  .lgn { font-size: 22px; font-weight: 700; fill: #1d1c1a; font-variant-numeric: tabular-nums; }
+  .stg { font-size: 16px; fill: #a19d93; }
+  .slice { stroke: #f6f3ec; stroke-width: 3; stroke-linejoin: round; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <svg id="chart" viewBox="0 0 1168 580" width="1168" height="580">
+        <text class="cap" x="120" y="40">Seats · Orbit</text>
+        <path class="slice" id="s2" d="" fill="#ece7da"/>
+        <path class="slice" id="s1" d="" fill="#1d1c1a"/>
+        <path class="slice" id="s0" d="" fill="#f2c200"/>
+        <text class="big" id="num" x="400" y="318" text-anchor="middle">3 of 12</text>
+        <text class="sub" id="subt" x="400" y="350" text-anchor="middle">seats used</text>
+        <g id="legend">
+          <rect x="760" y="196" width="28" height="28" rx="8" fill="#f2c200" stroke="#1d1c1a" stroke-width="2"/><text class="lg" x="808" y="218">Used</text><text class="lgn" id="n0" x="1040" y="218" text-anchor="end">3</text>
+          <rect x="760" y="256" width="28" height="28" rx="8" fill="#1d1c1a"/><text class="lg" x="808" y="278">Pending</text><text class="lgn" id="n1" x="1040" y="278" text-anchor="end">4</text>
+          <rect x="760" y="316" width="28" height="28" rx="8" fill="#ece7da" stroke="#a19d93" stroke-width="2"/><text class="lg" x="808" y="338">Open</text><text class="lgn" id="n2" x="1040" y="338" text-anchor="end">5</text>
+          <text class="stg" id="stg" x="760" y="400">1 Separate · 2 Align · 3 Share · 4 Reunite</text>
+        </g>
+      </svg>
+    </div>
+    <div id="label"><span class="l-name">Donut ring staging</span><span class="l-sep">·</span><span>Data</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const CX = 400, CY = 300, TAU = Math.PI * 2;
+  const ease = gsap.parseEase("power2.inOut");
+  const A = [3, 4, 5], B = [6, 3, 3];                   // seats before and after, of 12
+  const RING_OUT = [200, 142, 84], RING_T = 40;          // separated rings: 18 px gap between rings
+  const DONUT_OUT = 190, DONUT_T = 56;
+  const T0 = 0.3, ST = 0.4;                               // stages start at 0.3 s, 400 ms each: separate, align, share, reunite
+  const lerp = (a, b, p) => a + (b - a) * p;
+  function sector(rOut, rIn, a0, sweep, push) {
+    const mid = a0 + sweep / 2, ox = Math.cos(mid) * push, oy = Math.sin(mid) * push;
+    const a1 = a0 + Math.min(sweep, TAU - 0.0001), big = sweep > Math.PI ? 1 : 0;
+    const p = (r, a) => (CX + ox + Math.cos(a) * r).toFixed(2) + " " + (CY + oy + Math.sin(a) * r).toFixed(2);
+    return "M" + p(rOut, a0) + " A" + rOut + " " + rOut + " 0 " + big + " 1 " + p(rOut, a1) + " L" + p(rIn, a1) + " A" + rIn + " " + rIn + " 0 " + big + " 0 " + p(rIn, a0) + " Z";
+  }
+  function stageP(t, i) { return ease(Math.max(0, Math.min(1, (t - T0 - i * ST) / ST))); }
+  function packed(vals) { const out = []; let a = -Math.PI / 2; vals.forEach(v => { out.push(a); a += v / 12 * TAU; }); return out; }
+  const el = id => document.getElementById(id);
+  function renderAt(t) {
+    const p1 = stageP(t, 0), p2 = stageP(t, 1), p3 = stageP(t, 2), p4 = stageP(t, 3);
+    const vals = A.map((v, i) => lerp(v, B[i], p3));
+    const startA = packed(A), startB = packed(vals.map(v => v));
+    const pushUsed = t > 2.3 ? Math.sin(Math.PI * Math.max(0, Math.min(1, (t - 2.3) / 0.5))) * 14 : 0;
+    for (let i = 0; i < 3; i++) {
+      const sep = Math.min(p1, 1 - p4);                               // 0 = one donut, 1 = separated rings
+      const rOut = lerp(DONUT_OUT, RING_OUT[i], sep), thick = lerp(DONUT_T, RING_T, sep);
+      // Align stage turns every ring to start at the top; reunite packs them back in sequence with the new shares.
+      let a0 = lerp(startA[i], -Math.PI / 2, p2);
+      a0 = lerp(a0, startB[i], p4);
+      el("s" + i).setAttribute("d", sector(rOut, rOut - thick, a0, vals[i] / 12 * TAU, i === 0 ? pushUsed : 0));
+      el("n" + i).textContent = Math.round(vals[i]);
+    }
+    el("num").textContent = Math.round(vals[0]) + " of 12";
+    const sepAll = Math.min(p1, 1 - p4);                                   // centre text steps aside while the rings are apart
+    el("num").setAttribute("opacity", (1 - sepAll).toFixed(3));
+    el("subt").setAttribute("opacity", (1 - sepAll).toFixed(3));
+    const stage = t < T0 ? 0 : Math.min(4, Math.floor((t - T0) / ST) + 1);
+    el("stg").textContent = ["Three slices, one donut", "1 Separate into rings", "2 Align starts at the top", "3 Shares change", "4 Reunite"][stage];
+  }
+  renderAt(0);
+  const tl = gsap.timeline({ paused: true });
+  tl.fromTo({ k: 0 }, { k: 0 }, { k: 1, duration: 3, ease: "none", onUpdate: () => renderAt(tl.time()) }, 0);
+  const baseRender = tl.render; tl.render = function () { const r = baseRender.apply(this, arguments); renderAt(this.time()); return r; };
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

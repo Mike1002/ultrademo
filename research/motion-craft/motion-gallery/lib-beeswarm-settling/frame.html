@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-beeswarm-settling</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  #chart { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  #cap { position: absolute; left: 160px; top: 8px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  text { font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .axis { stroke: #1d1c1a; stroke-width: 2; }
+  .tick { stroke: #e3ded2; stroke-width: 2; }
+  .tx { font-size: 18px; fill: #6d6a63; }
+  .dot { fill: #ece7da; stroke: #1d1c1a; stroke-width: 2; }
+  #topdot { fill: #f2c200; stroke: #1d1c1a; stroke-width: 3; }
+  #ring { fill: none; stroke: #f2c200; stroke-width: 3; }
+  #note { font-size: 22px; font-weight: 700; fill: #1d1c1a; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div id="cap">Invites per member</div>
+      <svg id="chart" viewBox="0 0 1168 580" width="1168" height="580">
+        <g id="ticks"></g>
+        <line class="axis" x1="160" y1="500" x2="1080" y2="500"/>
+        <g id="dots"></g>
+        <circle id="ring" cx="0" cy="0" r="18"/>
+        <text id="note" x="0" y="0" text-anchor="middle">Jamie Dalton · 58</text>
+      </svg>
+    </div>
+    <div id="label"><span class="l-name">Beeswarm settling</span><span class="l-sep">·</span><span>Data</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  function rand(seed){ let a = seed >>> 0 || 1; return function(){ a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+  const SVG = "http://www.w3.org/2000/svg";
+  // 40 observations (invites per member, 0-60) with a seeded, right-skewed spread; the top value is the yellow dot.
+  const r = rand(41), N = 40, R = 12, PAD = 2, X = v => 160 + v * (920 / 60), MID = 300;
+  const vals = [];
+  for (let i = 0; i < N - 1; i++) { const a = r(), b = r(), c = r(); vals.push(Math.round(6 + 44 * Math.pow((a + b + c) / 3, 1.4))); }
+  vals.push(58);
+  // Fixed-tick beeswarm solve at build time: in value order, each dot takes the smallest vertical offset with no overlap.
+  const order = vals.map((v, i) => i).sort((a, b) => vals[a] - vals[b]);
+  const placed = [], ys = new Array(N);
+  order.forEach(i => {
+    const x = X(vals[i]), minD = 2 * R + PAD;
+    let best = null;
+    for (let step = 0; step < 40 && best === null; step++) {
+      for (const sgn of step === 0 ? [1] : [1, -1]) {
+        const y = MID + sgn * step * (minD * 0.5);
+        if (placed.every(p => Math.hypot(p.x - x, p.y - y) >= minD)) { best = y; break; }
+      }
+    }
+    ys[i] = best === null ? MID : best; placed.push({ x, y: ys[i] });
+  });
+  // Build the marks: gridlines, then every dot parked on the axis line at its own value.
+  const ticks = document.getElementById("ticks");
+  [0, 10, 20, 30, 40, 50, 60].forEach(v => {
+    const l = document.createElementNS(SVG, "line"); l.setAttribute("class", "tick"); l.setAttribute("x1", X(v)); l.setAttribute("x2", X(v)); l.setAttribute("y1", 80); l.setAttribute("y2", 500); ticks.appendChild(l);
+    const t = document.createElementNS(SVG, "text"); t.setAttribute("class", "tx"); t.setAttribute("x", X(v)); t.setAttribute("y", 532); t.setAttribute("text-anchor", "middle"); t.textContent = v; ticks.appendChild(t);
+  });
+  const dots = document.getElementById("dots"), els = [];
+  for (let i = 0; i < N; i++) {
+    const c = document.createElementNS(SVG, "circle"); c.setAttribute("class", "dot"); if (i === N - 1) c.id = "topdot";
+    c.setAttribute("cx", X(vals[i])); c.setAttribute("cy", 500); c.setAttribute("r", R); dots.appendChild(c); els.push(c);
+  }
+  const topDot = els[N - 1], tx = X(58), ty = ys[N - 1];
+  document.getElementById("ring").setAttribute("cx", tx); document.getElementById("ring").setAttribute("cy", ty);
+  document.getElementById("note").setAttribute("x", tx - 40); document.getElementById("note").setAttribute("y", ty - 36);
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power2.out", duration: 1 } });
+  // Settle: the raw marks lift off the axis line and spread into the non-overlapping band, lowest value first; the x position never changes.
+  order.forEach((i, k) => {
+    if (i === N - 1) return;
+    tl.fromTo(els[i], { attr: { cy: 500 } }, { attr: { cy: ys[i] }, duration: 1 }, 0.2 + k * 0.018);
+  });
+  // The yellow dot settles last, then its ring and note arrive.
+  tl.fromTo(topDot, { attr: { cy: 500 } }, { attr: { cy: ty }, duration: 0.9, ease: "power2.out" }, 1.35);
+  tl.fromTo("#ring", { attr: { r: 14 }, opacity: 0 }, { attr: { r: 26 }, opacity: 1, duration: 0.45, ease: "power2.out" }, 2.15);
+  tl.fromTo("#ring", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in", immediateRender: false }, 2.6);
+  tl.fromTo("#note", { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.35, ease: "power2.out" }, 2.25);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

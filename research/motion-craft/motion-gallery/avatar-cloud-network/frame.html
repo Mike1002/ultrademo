@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>avatar-cloud-network</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  /* three layers: lines (1) under avatars (2) under hub (5) */
+  .lines { position: absolute; inset: 0; z-index: 1; pointer-events: none; width: 1280px; height: 720px; }
+  /* hub: 240x120 centred on (640,360) -> left 520, top 300 */
+  .hub { position: absolute; left: 520px; top: 300px; width: 240px; height: 120px; z-index: 5;
+    background: #f2c200; border: 2px solid #1d1c1a; border-radius: 24px; display: grid; place-items: center;
+    align-content: center; row-gap: 2px; will-change: transform; }
+  .hub .num { font-size: 48px; font-weight: 800; letter-spacing: -0.02em; line-height: 1; }
+  .hub .lbl { font-size: 18px; color: #1d1c1a; font-weight: 600; }
+  /* avatars: 64px circles, positioned by the script with left/top minus half size; GSAP owns the transform */
+  .avatar { position: absolute; z-index: 2; width: 72px; height: 72px; border-radius: 50%; background: #fffdf8;
+    border: 2px solid #1d1c1a; display: grid; place-items: center; font-size: 22px; font-weight: 700;
+    will-change: transform, opacity; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <svg class="lines" id="lines" viewBox="0 0 1280 720"><defs id="linedefs"></defs></svg>
+    <div class="hub" id="hub"><div class="num">1,284</div><div class="lbl">members</div></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true });
+  const C = { x: 640, y: 360 };                 // hub rendered centre (520+120, 300+60)
+  const AVATAR_COUNT = 8, RADIUS_X = 400, RADIUS_Y = 170, AV = 72;   // X/Y ratio 2.35 reads as perspective
+  const HUB_DUR = 0.5, HUB_BOUNCE = 1.6;
+  const AVATAR_AT = 0.35, AVATAR_DUR = 0.5, AVATAR_BOUNCE = 1.6, AVATAR_STAGGER = 0.06;  // 8 x 0.06 = 0.48 s, one beat
+  const LINES_AT = 1.05, LINE_DUR = 0.5, LINE_STAGGER = 0.03;                           // starts just before the last avatar settles
+  const BREATH_AT = 1.8, BREATH_CYCLES = 1.0, BREATH_AMP = 0.04;
+  const INITIALS = ["JD", "SK", "ML"];
+  const scene = document.getElementById("scene");
+  const svg = document.getElementById("lines");
+  const defs = document.getElementById("linedefs");
+  const NS = "http://www.w3.org/2000/svg";
+  const avatars = [], maskLines = [];
+  for (let i = 0; i < AVATAR_COUNT; i++) {
+    const a = (i / AVATAR_COUNT) * Math.PI * 2 - Math.PI / 2;
+    const x = C.x + Math.cos(a) * RADIUS_X, y = C.y + Math.sin(a) * RADIUS_Y;
+    const av = document.createElement("div");
+    av.className = "avatar"; av.id = "av" + i; av.textContent = INITIALS[i % 3];
+    av.style.left = (x - AV / 2) + "px"; av.style.top = (y - AV / 2) + "px";
+    scene.appendChild(av); avatars.push(av);
+    // the dashed line draws outward through a mask whose solid line unrolls hub -> avatar
+    const len = Math.hypot(x - C.x, y - C.y);
+    const mask = document.createElementNS(NS, "mask"); mask.id = "m" + i;
+    [["maskUnits", "userSpaceOnUse"], ["x", 0], ["y", 0], ["width", 1280], ["height", 720]].forEach(([k, v]) => mask.setAttribute(k, String(v)));  // bbox units collapse on axis-aligned lines
+    const ml = document.createElementNS(NS, "line");
+    [["x1", C.x], ["y1", C.y], ["x2", x], ["y2", y], ["stroke", "#fff"], ["stroke-width", 8],
+     ["stroke-dasharray", len], ["stroke-dashoffset", len]].forEach(([k, v]) => ml.setAttribute(k, String(v)));
+    mask.appendChild(ml); defs.appendChild(mask); maskLines.push(ml);
+    const line = document.createElementNS(NS, "line");
+    [["x1", C.x], ["y1", C.y], ["x2", x], ["y2", y], ["stroke", "#1d1c1a"], ["stroke-width", 3],
+     ["stroke-dasharray", "6 8"], ["mask", "url(#m" + i + ")"]].forEach(([k, v]) => line.setAttribute(k, String(v)));
+    svg.appendChild(line);
+  }
+  // hub fade -> avatar cascade -> outward line draw -> breathing dwell
+  tl.fromTo("#hub", { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: HUB_DUR, ease: "back.out(" + HUB_BOUNCE + ")" }, 0);
+  avatars.forEach((av, i) => {
+    tl.fromTo(av, { opacity: 0, scale: 0 }, { opacity: 1, scale: 1, duration: AVATAR_DUR, ease: "back.out(" + AVATAR_BOUNCE + ")" }, AVATAR_AT + i * AVATAR_STAGGER);
+  });
+  maskLines.forEach((ml, i) => {
+    tl.fromTo(ml, { strokeDashoffset: Number(ml.getAttribute("stroke-dasharray")) }, { strokeDashoffset: 0, duration: LINE_DUR, ease: "power2.out" }, LINES_AT + i * LINE_STAGGER);
+  });
+  // out-of-phase breathing: one phase proxy, each avatar scaled by 1 + sin(p + i/n*2pi) * amp
+  const breath = { p: 0 };
+  tl.fromTo(breath, { p: 0 }, { p: Math.PI * 2 * BREATH_CYCLES, duration: 3 - BREATH_AT, ease: "none", onUpdate: () => {
+    avatars.forEach((av, i) => gsap.set(av, { scale: 1 + Math.sin(breath.p + (i / AVATAR_COUNT) * Math.PI * 2) * BREATH_AMP }));
+  } }, BREATH_AT);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

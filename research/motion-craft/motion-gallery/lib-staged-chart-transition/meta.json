@@ -1,0 +1,21 @@
+{
+  "name": "Staged chart transition",
+  "family": "Data",
+  "purpose": [
+    "Explanation",
+    "Data evidence",
+    "Sequence"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "gsap",
+  "tags": [
+    "staged chart transition",
+    "data",
+    "chart",
+    "bars to scatter",
+    "stages",
+    "svg"
+  ],
+  "one_line": "A quarterly bar chart turns into a scatter plot in three separate stages: first the axis changes, then the dots move to their new positions, then the dots change size."
+}

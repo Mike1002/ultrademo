@@ -1,0 +1,22 @@
+{
+  "name": "Halftone dissolve",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Mood"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "canvas",
+  "tags": [
+    "halftone dissolve",
+    "polka dot curtain",
+    "transitions",
+    "halftone",
+    "dots",
+    "grid",
+    "mask",
+    "radial"
+  ],
+  "one_line": "Round holes on a 48 px grid open in the invite scene, growing in a wave from the top-left corner until they merge, and the stats scene shows through the holes."
+}

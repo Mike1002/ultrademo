@@ -1,0 +1,21 @@
+{
+  "name": "Squash & stretch",
+  "family": "Principles",
+  "purpose": [
+    "Explanation",
+    "Emphasis",
+    "Feedback"
+  ],
+  "energy": "high",
+  "tier": 2,
+  "runtime": "gsap",
+  "tags": [
+    "text squash stretch",
+    "squash and stretch",
+    "principles",
+    "bounce",
+    "impact",
+    "elastic"
+  ],
+  "one_line": "A yellow ball drops 340 px, stretching tall as it speeds up, squashes flat on the floor at impact, and bounces back twice more with smaller squashes, its width and height always trading off so the volume reads constant."
+}

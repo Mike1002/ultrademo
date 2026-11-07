@@ -1,0 +1,22 @@
+{
+  "name": "Clone wall wipe",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Emphasis"
+  ],
+  "energy": "high",
+  "tier": 3,
+  "runtime": "css",
+  "tags": [
+    "clone wall cover",
+    "transitions",
+    "tiles",
+    "grid",
+    "repetition",
+    "typography",
+    "invert",
+    "wipe"
+  ],
+  "one_line": "A wall of 24 tiles each repeating the word Orbit fills the frame row by row over an invite card, snaps from yellow-on-ink to ink-on-yellow, then clears in the same order to reveal a stats card."
+}

@@ -1,0 +1,21 @@
+{
+  "name": "Blur reveal",
+  "family": "Entrance & Exit",
+  "purpose": [
+    "Attention",
+    "Transition"
+  ],
+  "energy": "calm",
+  "tier": 2,
+  "runtime": "gsap",
+  "tags": [
+    "blur resolve",
+    "blur-dissolve-in",
+    "etch",
+    "blur to focus entrance",
+    "entrance",
+    "filter",
+    "focus"
+  ],
+  "one_line": "A headline, then a big number, emerge from a soft 12 px blur and fade up into sharp focus without moving, as if coming out of mist; a caption resolves last."
+}

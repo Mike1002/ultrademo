@@ -1,0 +1,126 @@
+{
+  "id": "parchment-epic",
+  "name": "Parchment Epic",
+  "canvas": "light",
+  "mood": [
+    "epic",
+    "scholarly",
+    "warm"
+  ],
+  "suits": [
+    "documentary framing",
+    "history-led explainers",
+    "heritage brands"
+  ],
+  "palette": {
+    "bg": "#e4d5b4",
+    "bg_alt": "#140d06",
+    "surface": "#eee3c8",
+    "surface_2": "#d9c8a2",
+    "ink": "#2a1d12",
+    "muted": "#5b4630",
+    "line": "rgba(42,29,18,0.35)",
+    "accent": "#a3221b",
+    "accent_2": "#2f4a76",
+    "on_accent": "#eee3c8",
+    "pill_bg": "#eee3c8",
+    "pill_ink": "#2a1d12",
+    "pill_dot": "#a3221b",
+    "thumb": "#d9c8a2",
+    "term_bg": "#140d06",
+    "term_ink": "#f6d38a",
+    "term_muted": "#8a7250",
+    "term_line": "#2a1d12",
+    "term_prompt": "#f6d38a",
+    "term_ok": "#f6d38a"
+  },
+  "type": {
+    "display": {
+      "family": "Cinzel",
+      "weight": 700,
+      "hook_px": 72,
+      "stat_px": 220,
+      "mark_px": 110,
+      "transform": "uppercase",
+      "tracking": "0.1em",
+      "line_height": "1.15",
+      "style": "normal",
+      "generic": "serif",
+      "card_title_px": 24,
+      "card_title_tracking": "0.08em"
+    },
+    "body": {
+      "family": "Cormorant Garamond",
+      "weight": 500,
+      "generic": "serif"
+    },
+    "mono": {
+      "family": "IBM Plex Mono",
+      "weight": 400
+    },
+    "label": {
+      "family": "IBM Plex Mono",
+      "weight": 500,
+      "transform": "uppercase",
+      "tracking": "0.3em",
+      "generic": "sans",
+      "px": 12
+    }
+  },
+  "easing": {
+    "entry": "power3.out",
+    "exit": "power2.in",
+    "ambient": "none",
+    "pop": "power3.out",
+    "counter": "power2.inOut",
+    "wipe": null
+  },
+  "rhythm": {
+    "energy": "calm",
+    "entrance": 0.9,
+    "stagger": 0.22
+  },
+  "transition": {
+    "kind": "cut",
+    "duration": 0,
+    "flash": false,
+    "band": false
+  },
+  "text_animation": "fade-up",
+  "accent_word": "none",
+  "layout": "center",
+  "atmosphere": [
+    "grain:0.14",
+    "vignette:0.35",
+    "hud"
+  ],
+  "shape": {
+    "radius_card": 2,
+    "radius_button": 2,
+    "radius_pill": 2,
+    "border": "hairline",
+    "border_px": 1,
+    "shadow": "none",
+    "rule_px": 2
+  },
+  "stat_colour": "accent",
+  "direction_settings": {
+    "energy": "calm",
+    "density": "balanced",
+    "ground": "light",
+    "depth": "layered",
+    "camera": "locked",
+    "type": "display",
+    "texture": "grain",
+    "colour": "one-accent",
+    "product_presence": "illustrated",
+    "sound": "scored",
+    "voice": "narrated"
+  },
+  "notes": "Parchment plates with grain and a brown vignette, Cinzel uppercase headlines, a persistent HUD, hard cuts between plates; the engraving illustrations are left out.",
+  "transitions": {
+    "between_moments": "cut",
+    "duration_s": 0,
+    "text": "fade-up"
+  }
+}

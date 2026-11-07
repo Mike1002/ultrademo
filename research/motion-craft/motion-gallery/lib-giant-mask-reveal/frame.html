@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-giant-mask-reveal</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; overflow: hidden; }
+  .lab { font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; white-space: nowrap; }
+  .num { font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1; white-space: nowrap; }
+  .t-xl { font-size: 84px; font-weight: 700; line-height: 1.05; white-space: nowrap; }
+  .t-l { font-size: 56px; font-weight: 700; line-height: 1.1; white-space: nowrap; }
+  .t-m { font-size: 34px; font-weight: 700; line-height: 1.15; white-space: nowrap; }
+  .t-body { font-size: 22px; line-height: 1.4; }
+  .hair { height: 1px; background: #e3ded2; }
+  .dot { border-radius: 50%; background: #1d1c1a; }
+  .dot.v { background: #f2c200; border: 2px solid #1d1c1a; }
+
+  #svg { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; display: block; }
+  .glyph { font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; font-weight: 900; font-size: 700px; }
+  #mo { fill: none; stroke: #1d1c1a; stroke-width: 2px; }
+  .w-bg { fill: #ece7da; }
+  .w-grid { stroke: #e3ded2; stroke-width: 1px; }
+  .w-txt { font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; fill: #1d1c1a; font-weight: 700; }
+  .w-lab { font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; font-size: 14px; letter-spacing: .08em; fill: #6d6a63; }
+  .w-ink { fill: #1d1c1a; } .w-verm { fill: #f2c200; stroke: #1d1c1a; stroke-width: 2px; }
+  .w-rule { stroke: #1d1c1a; stroke-width: 2px; }
+  .w-hair { stroke: #e3ded2; stroke-width: 1px; }
+  .w-circ { fill: none; stroke: #a19d93; stroke-width: 1.5px; }
+
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+
+      <svg id="svg" viewBox="0 0 1168 580" data-layout-allow-overlap data-layout-allow-overflow>
+        <defs>
+          <clipPath id="m" clipPathUnits="userSpaceOnUse">
+            <text id="mt" class="glyph" x="584" y="556" text-anchor="middle">3</text>
+          </clipPath>
+        </defs>
+        <g id="win" clip-path="url(#m)"><g class="wcam" id="W1"></g></g>
+        <g id="full" opacity="0"><g class="wcam" id="W2"></g></g>
+        <text id="mo" class="glyph" x="584" y="556" text-anchor="middle" vector-effect="non-scaling-stroke">3</text>
+      </svg>
+
+    </div>
+    <div id="label"><span class="l-name">Giant mask reveal</span><span class="l-sep">·</span><span>Camera</span><span class="l-sep">·</span><span>high</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+
+  // The "world" is one editorial plate, drawn twice: inside the glyph window (W1) and as the full plate (W2) that takes over once covered.
+  let g = '<rect class="w-bg" x="-640" y="-420" width="2560" height="1420"/>';
+  for (let x = -576; x <= 1856; x += 64) g += '<line class="w-grid" x1="' + x + '" y1="-420" x2="' + x + '" y2="1000"/>';
+  for (let y = -384; y <= 960; y += 64) g += '<line class="w-grid" x1="-640" y1="' + y + '" x2="1920" y2="' + y + '"/>';
+  g += '<circle class="w-circ" cx="300" cy="240" r="200"/>';
+  g += '<text class="w-lab" x="72" y="74">ORBIT · INVITE YOUR TEAM</text>';
+  g += '<text class="w-txt" x="60" y="336" font-size="300">98<tspan font-size="96" dx="10">%</tspan></text>';
+  g += '<text class="w-txt" x="72" y="430" font-size="52">Invites accepted</text>';
+  g += '<text class="w-lab" x="72" y="478">12,480 INVITES SENT · 3 SEATS LEFT</text>';
+  g += '<line class="w-rule" x1="652" y1="64" x2="652" y2="516"/>';
+  [["Jamie Dalton", 62], ["Sam Kim", 21], ["Morgan Lee", 9], ["Everyone else", 8]].forEach(([w, p], i) => {
+    const y = 104 + i * 100;
+    g += '<text class="w-txt" x="700" y="' + (y + 30) + '" font-size="30">' + w + '</text>';
+    g += '<text class="w-lab" x="1120" y="' + (y + 30) + '" text-anchor="end">' + p + '%</text>';
+    g += '<rect class="' + (i ? 'w-ink' : 'w-verm vbar') + '" x="700" y="' + (y + 46) + '" width="' + Math.round(p / 62 * 420) + '" height="' + (i ? 12 : 20) + '" rx="4"/>';
+    g += '<line class="w-hair" x1="700" y1="' + (y + 80) + '" x2="1120" y2="' + (y + 80) + '"/>';
+  });
+  document.getElementById("W1").innerHTML = g;
+  document.getElementById("W2").innerHTML = g;
+
+  // Build-time measure: find the point inside the thickest stroke of the glyph (largest inscribed circle) by a
+  // chamfer distance transform on a downsampled canvas of the same text. Deterministic for a given font.
+  function thickest() {
+    const k = 4, W = 292, H = 145, c = document.createElement("canvas"); c.width = W; c.height = H;
+    const ctx = c.getContext("2d"); ctx.scale(1 / k, 1 / k);
+    ctx.font = '900 700px -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif';
+    ctx.textAlign = "center"; ctx.fillStyle = "#000"; ctx.fillText("3", 584, 556);
+    const d = ctx.getImageData(0, 0, W, H).data, D = new Float32Array(W * H), BIG = 1e5;
+    for (let i = 0; i < W * H; i++) D[i] = d[i * 4 + 3] > 127 ? BIG : 0;
+    for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) { const i = y * W + x; if (!D[i]) continue;
+      if (x === 0 || y === 0 || x === W - 1) { D[i] = 0.5; continue; }
+      D[i] = Math.min(D[i], D[i - 1] + 1, D[i - W] + 1, D[i - W - 1] + 1.414, D[i - W + 1] + 1.414); }
+    for (let y = H - 1; y >= 0; y--) for (let x = W - 1; x >= 0; x--) { const i = y * W + x; if (!D[i]) continue;
+      if (y === H - 1) { D[i] = Math.min(D[i], 0.5); continue; }
+      D[i] = Math.min(D[i], D[i + 1] + 1, D[i + W] + 1, D[i + W - 1] + 1.414, D[i + W + 1] + 1.414); }
+    let best = 0, bx = W / 2, by = H / 2;
+    for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) { const v = D[y * W + x]; if (v > best) { best = v; bx = x; by = y; } }
+    return { x: (bx + 0.5) * k, y: (by + 0.5) * k, r: Math.max(8, best * k) };
+  }
+  const o = thickest();
+  const far = Math.max(Math.hypot(o.x, o.y), Math.hypot(1168 - o.x, o.y), Math.hypot(o.x, 580 - o.y), Math.hypot(1168 - o.x, 580 - o.y));
+  const S = Math.min(40, Math.max(8, Math.ceil(far / o.r * 1.25)));
+  const P = o.x + " " + o.y;
+  gsap.set("#mt, #mo, .wcam", { svgOrigin: P, smoothOrigin: false });
+  // Exponential zoom: the glyph window grows by the same ratio every instant (S^p, with p eased power1.in), so the dive feels constant.
+  const pin = gsap.parseEase("power1.in");
+  const expo = t => (Math.pow(S, pin(t)) - 1) / (S - 1);
+  tl.fromTo("#mt, #mo", { scale: 1 }, { scale: S, duration: 2.2, ease: expo }, 0.15);
+  // The world behind is the far layer: it eases from 0.72 to 1 about the same point.
+  tl.fromTo(".wcam", { scale: 0.72, x: 36 }, { scale: 1, x: 0, duration: 2.2, ease: "power3.inOut" }, 0.15);
+  tl.fromTo("#mo", { opacity: 1 }, { opacity: 0, duration: 0.4, ease: "none" }, 1.2);
+  tl.fromTo("#full", { opacity: 0 }, { opacity: 1, duration: 0.02, ease: "none" }, 2.37);
+  tl.fromTo(".vbar", { scaleX: 0, transformOrigin: "0% 50%" }, { scaleX: 1, duration: 0.5, ease: "power3.out" }, 2.4);
+
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

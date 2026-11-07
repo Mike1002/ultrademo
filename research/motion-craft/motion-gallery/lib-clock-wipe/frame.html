@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-clock-wipe</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; overflow: hidden; }
+  .panel { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  .panel.pa { background: #ece7da; }
+  .panel.pb { background: #f6f3ec; }
+  .card { position: absolute; left: 264px; top: 110px; width: 640px; height: 360px; background: #fffdf8; border: 2px solid #1d1c1a; border-radius: 24px; }
+  .card .lab { position: absolute; left: 56px; top: 48px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  .card .h1 { position: absolute; left: 56px; top: 80px; font-size: 56px; font-weight: 700; line-height: 64px; white-space: nowrap; }
+  .card .sub { position: absolute; left: 56px; top: 160px; font-size: 22px; color: #6d6a63; white-space: nowrap; }
+  .card .btn { position: absolute; left: 56px; top: 240px; width: 200px; height: 60px; border-radius: 14px; background: #f2c200; border: 2px solid #1d1c1a;
+    font-size: 20px; font-weight: 700; line-height: 56px; text-align: center; color: #1d1c1a; }
+  .card.b .h1 { font-size: 96px; line-height: 104px; top: 74px; font-variant-numeric: tabular-nums; }
+  .card.b .sub { top: 190px; }
+  .card .av { position: absolute; top: 44px; width: 56px; height: 56px; border-radius: 50%; border: 2px solid #1d1c1a; background: #ece7da;
+    font-size: 18px; font-weight: 700; line-height: 52px; text-align: center; will-change: transform; }
+  .card .av.v1 { left: 396px; } .card .av.v2 { left: 456px; } .card .av.v3 { left: 516px; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+
+  #hand { position: absolute; left: 582px; top: 0; width: 4px; height: 290px; background: #1d1c1a; border-radius: 2px; will-change: transform; opacity: 0; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div class="panel pa" id="A" data-layout-allow-overlap data-layout-allow-overflow><div class="card a" data-layout-allow-overlap data-layout-allow-occlusion><div class="lab" data-layout-allow-overlap data-layout-allow-occlusion>Orbit</div><div class="h1" data-layout-allow-overlap data-layout-allow-occlusion>Invite your team</div><div class="sub" data-layout-allow-overlap data-layout-allow-occlusion>3 seats left on this plan</div><div class="btn" data-layout-allow-overlap data-layout-allow-occlusion>Continue</div></div></div>
+      <div class="panel pb" id="B" data-layout-allow-overlap data-layout-allow-overflow><div class="card b" data-layout-allow-overlap data-layout-allow-occlusion><div class="lab" data-layout-allow-overlap data-layout-allow-occlusion>This month</div><div class="h1" data-layout-allow-overlap data-layout-allow-occlusion>12,480</div><div class="sub" data-layout-allow-overlap data-layout-allow-occlusion>invites sent</div><div class="av v1" data-layout-allow-overlap data-layout-allow-occlusion>JD</div><div class="av v2" data-layout-allow-overlap data-layout-allow-occlusion>SK</div><div class="av v3" data-layout-allow-overlap data-layout-allow-occlusion>ML</div></div></div>
+      <div id="hand" data-layout-allow-overlap></div>
+    </div>
+    <div id="label"><span class="l-name">Clock wipe</span><span class="l-sep">·</span><span>Transitions</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const A_HTML = "<div class=\"card a\" data-layout-allow-overlap data-layout-allow-occlusion><div class=\"lab\" data-layout-allow-overlap data-layout-allow-occlusion>Orbit</div><div class=\"h1\" data-layout-allow-overlap data-layout-allow-occlusion>Invite your team</div><div class=\"sub\" data-layout-allow-overlap data-layout-allow-occlusion>3 seats left on this plan</div><div class=\"btn\" data-layout-allow-overlap data-layout-allow-occlusion>Continue</div></div>";
+  const B_HTML = "<div class=\"card b\" data-layout-allow-overlap data-layout-allow-occlusion><div class=\"lab\" data-layout-allow-overlap data-layout-allow-occlusion>This month</div><div class=\"h1\" data-layout-allow-overlap data-layout-allow-occlusion>12,480</div><div class=\"sub\" data-layout-allow-overlap data-layout-allow-occlusion>invites sent</div><div class=\"av v1\" data-layout-allow-overlap data-layout-allow-occlusion>JD</div><div class=\"av v2\" data-layout-allow-overlap data-layout-allow-occlusion>SK</div><div class=\"av v3\" data-layout-allow-overlap data-layout-allow-occlusion>ML</div></div>";
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+  // Second beat: the three avatars on the new card pop in so the clip keeps moving after the transition.
+  function avatars(at) {
+    tl.fromTo(".av.v1", { scale: 0.4, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.5, ease: "back.out(1.8)" }, at);
+    tl.fromTo(".av.v2", { scale: 0.4, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.5, ease: "back.out(1.8)" }, at + 0.1);
+    tl.fromTo(".av.v3", { scale: 0.4, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.5, ease: "back.out(1.8)" }, at + 0.2);
+  }
+
+  // Clock wipe: the new scene's clip-path is a pie polygon from the stage centre, written from a pure function of time;
+  // the hand is a GSAP rotation tween that follows the same angle function. 0.9 s for the full sweep (ease none).
+  const T0 = 0.5, SWEEP = 0.9, R0 = 2.0, R1 = 2.3, RD = 0.3, BACK = 40;
+  const eio = gsap.parseEase("power2.inOut");
+  function angleAt(t) {
+    if (t < T0) return 0;
+    if (t < T0 + SWEEP) return 360 * (t - T0) / SWEEP;
+    if (t < R0) return 360;
+    if (t < R0 + RD) return 360 - BACK * eio((t - R0) / RD);
+    if (t < R1 + RD) return 360 - BACK + BACK * eio((t - R1) / RD);
+    return 360;
+  }
+  const CX = 584, CY = 290, RR = 990, bEl = document.getElementById("B");
+  function pie(a) {
+    if (a <= 0) return "polygon(584px 290px, 584px 290px, 584px 290px)";
+    if (a >= 360) return "none";
+    const pts = [CX + "px " + CY + "px"];
+    for (let d = 0; d < a; d += 4) pts.push((CX + RR * Math.sin(d * Math.PI / 180)).toFixed(1) + "px " + (CY - RR * Math.cos(d * Math.PI / 180)).toFixed(1) + "px");
+    pts.push((CX + RR * Math.sin(a * Math.PI / 180)).toFixed(1) + "px " + (CY - RR * Math.cos(a * Math.PI / 180)).toFixed(1) + "px");
+    return "polygon(" + pts.join(", ") + ")";
+  }
+  let last = "";
+  function renderAt(t) {
+    const v = pie(angleAt(t)); if (v === last) return; last = v; bEl.style.clipPath = v;
+  }
+  renderAt(0);
+  tl.to({ k: 0 }, { k: 1, duration: 3, ease: "none", onUpdate: () => renderAt(tl.time()) }, 0);
+  const baseRender = tl.render; tl.render = function () { const r = baseRender.apply(this, arguments); renderAt(this.time()); return r; };
+  tl.fromTo("#hand", { rotation: 0, transformOrigin: "50% 100%" }, { rotation: 360, duration: SWEEP, ease: "none" }, T0);
+  tl.to("#hand", { rotation: 360 - BACK, duration: RD, ease: "power2.inOut" }, R0);
+  tl.to("#hand", { rotation: 360, duration: RD, ease: "power2.inOut" }, R1);
+  tl.fromTo("#hand", { opacity: 0 }, { opacity: 1, duration: 0.1, ease: "none" }, T0 - 0.1);
+  tl.to("#hand", { opacity: 0, duration: 0.25, ease: "power1.in" }, R1 + RD + 0.05);
+  avatars(1.5);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

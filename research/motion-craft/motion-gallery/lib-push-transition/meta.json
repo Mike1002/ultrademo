@@ -1,0 +1,18 @@
+{
+  "name": "Push",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Sequence"
+  ],
+  "energy": "steady",
+  "tier": 2,
+  "runtime": "gsap",
+  "tags": [
+    "push transition",
+    "slide",
+    "rail",
+    "transitions"
+  ],
+  "one_line": "An incoming scene slides in from the right and pushes the card scene out by the same amount in the same direction."
+}

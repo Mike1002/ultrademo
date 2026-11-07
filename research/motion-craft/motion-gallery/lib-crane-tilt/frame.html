@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-crane-tilt</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; overflow: hidden; }
+  #cam { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; perspective: 1000px; perspective-origin: 50% 40%; }
+  #world { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; transform-style: preserve-3d; transform-origin: 584px 290px; will-change: transform; }
+  #panel { position: absolute; left: 224px; top: -262px; width: 720px; height: 1060px; background: #fffdf8; border: 2px solid #1d1c1a; border-radius: 24px; }
+  #panel .top { position: absolute; left: 0; top: 0; width: 716px; height: 240px; border-bottom: 2px solid #e3ded2; background: #fbf3cf; border-radius: 22px 22px 0 0; }
+  #panel .brand { position: absolute; left: 48px; top: 48px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; white-space: nowrap; }
+  #panel h1 { position: absolute; left: 48px; top: 80px; font-size: 56px; font-weight: 700; line-height: 64px; white-space: nowrap; }
+  #panel .sub { position: absolute; left: 48px; top: 160px; font-size: 22px; color: #6d6a63; white-space: nowrap; }
+  #panel .sec { position: absolute; left: 48px; top: 290px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; white-space: nowrap; }
+  .row { position: absolute; left: 48px; width: 624px; height: 84px; }
+  .row .av { position: absolute; left: 0; top: 14px; width: 56px; height: 56px; border-radius: 50%; background: #e3ded2; border: 2px solid #1d1c1a;
+    font-size: 20px; font-weight: 700; line-height: 52px; text-align: center; }
+  .row .nm { position: absolute; left: 76px; top: 16px; font-size: 24px; font-weight: 600; white-space: nowrap; }
+  .row .rl { position: absolute; left: 76px; top: 48px; font-size: 16px; color: #6d6a63; white-space: nowrap; }
+  .row .hr { position: absolute; left: 0; top: 82px; width: 624px; height: 2px; background: #e3ded2; }
+  .row .pill { position: absolute; left: 500px; top: 26px; width: 124px; height: 32px; border-radius: 16px; background: #fffdf8; border: 2px solid #e3ded2;
+    font-size: 14px; font-weight: 600; line-height: 28px; text-align: center; color: #6d6a63; }
+  #hl { position: absolute; left: 36px; top: 600px; width: 648px; height: 84px; border-radius: 14px; background: #f2c200; opacity: 0.35; will-change: transform, opacity; }
+  #panel .btn { position: absolute; left: 48px; top: 940px; width: 200px; height: 60px; border-radius: 14px; background: #f2c200; border: 2px solid #1d1c1a;
+    font-size: 20px; font-weight: 700; line-height: 56px; text-align: center; }
+  #panel .seats { position: absolute; left: 272px; top: 958px; font-size: 18px; color: #6d6a63; white-space: nowrap; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div id="cam" data-layout-allow-overflow><div id="world" data-layout-allow-overflow data-layout-allow-overlap>
+        <div id="panel" data-layout-allow-overflow data-layout-allow-overlap>
+          <div class="top"></div>
+          <div class="brand" data-layout-allow-overlap>Orbit · Members</div>
+          <h1 data-layout-allow-overlap>Invite your team</h1>
+          <div class="sub" data-layout-allow-overlap>3 seats left on this plan</div>
+          <div class="sec">Members</div>
+          <div id="hl" data-layout-allow-overlap></div>
+          <div class="row" style="top:330px"><div class="av">JD</div><div class="nm">Jamie Dalton</div><div class="rl">Owner</div><div class="pill">Admin</div><div class="hr"></div></div>
+          <div class="row" style="top:430px"><div class="av">SK</div><div class="nm">Sam Kim</div><div class="rl">Design</div><div class="pill">Member</div><div class="hr"></div></div>
+          <div class="row" style="top:530px"><div class="av">ML</div><div class="nm">Morgan Lee</div><div class="rl">Engineering</div><div class="pill">Member</div><div class="hr"></div></div>
+          <div class="row" style="top:630px" data-layout-allow-overlap><div class="av" data-layout-allow-overlap>+</div><div class="nm" data-layout-allow-overlap>Invite someone</div><div class="rl" data-layout-allow-overlap>Send a link or an email</div><div class="pill" data-layout-allow-overlap>Pending</div><div class="hr" data-layout-allow-overlap></div></div>
+          <div class="btn">Continue</div>
+          <div class="seats">12,480 invites sent this month</div>
+        </div>
+      </div></div>
+    </div>
+    <div id="label"><span class="l-name">Crane tilt</span><span class="l-sep">·</span><span>Camera</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power2.inOut", duration: 0.6 } });
+  // Crane: under a 1000 px perspective the whole page starts seen from above (rotationX 18) with the header in view, 250 px below its rest;
+  // over 1.6 s the viewpoint descends and levels out, landing on the members list. A highlight then lands on the invite row.
+  tl.fromTo("#world", { y: 250, rotationX: 18 }, { y: 0, rotationX: 0, duration: 1.6, ease: "power2.inOut" }, 0.15);
+  tl.fromTo("#hl", { scaleX: 0, opacity: 0.35, transformOrigin: "0% 50%" }, { scaleX: 1, duration: 0.45, ease: "power3.out" }, 1.95);
+  tl.to("#hl", { opacity: 0.55, duration: 0.3, ease: "sine.inOut", yoyo: true, repeat: 1 }, 2.4);
+  tl.to("#world", { z: 36, duration: 1.0, ease: "sine.inOut" }, 2.0);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

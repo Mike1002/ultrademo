@@ -1,0 +1,22 @@
+{
+  "name": "Zoom flash",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Attention"
+  ],
+  "energy": "high",
+  "tier": 3,
+  "runtime": "gsap",
+  "tags": [
+    "hyperzoom flash",
+    "dreamy zoom flash",
+    "dreamy-zoom()",
+    "punch flash cut",
+    "transitions",
+    "zoom",
+    "flash",
+    "cut"
+  ],
+  "one_line": "An invite card zooms in hard and blurs bright, a white flash fills the frame at the peak, and a stats card settles in from large to its place as the flash fades; then the same punch cuts back."
+}

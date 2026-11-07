@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-character-input-response</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  #panel { position: absolute; left: 304px; top: 36px; width: 560px; height: 508px; background: #fffdf8; border: 2px solid #1d1c1a; border-radius: 24px; }
+  #head { position: absolute; left: 228px; top: 36px; width: 100px; height: 100px; border-radius: 50%; background: #f2c200; border: 2px solid #1d1c1a; }
+  .eye { position: absolute; top: 69px; width: 26px; height: 26px; border-radius: 50%; background: #fffdf8; border: 2px solid #1d1c1a; }
+  #eyeL { left: 245px; } #eyeR { left: 285px; }
+  .pupil { position: absolute; top: 76px; width: 12px; height: 12px; border-radius: 50%; background: #1d1c1a; will-change: transform; }
+  #pupL { left: 252px; } #pupR { left: 292px; }
+  #mouth { position: absolute; left: 266px; top: 104px; width: 24px; height: 10px; border-bottom: 3px solid #1d1c1a; border-radius: 0 0 12px 12px; }
+  .hand { position: absolute; top: 114px; width: 44px; height: 44px; border-radius: 50%; background: #ece7da; border: 2px solid #1d1c1a; will-change: transform; }
+  #handL { left: 194px; } #handR { left: 318px; }
+  #ttl { position: absolute; left: 48px; top: 164px; font-size: 28px; font-weight: 700; }
+  #sub { position: absolute; left: 48px; top: 200px; font-size: 16px; color: #6d6a63; }
+  .flab { position: absolute; left: 48px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  .ring { position: absolute; left: 42px; width: 476px; height: 68px; border-radius: 16px; background: #fbf3cf; opacity: 0; }
+  .field { position: absolute; left: 48px; width: 464px; height: 56px; border-radius: 12px; border: 2px solid #1d1c1a; background: #fffdf8;
+    font-size: 20px; line-height: 52px; padding-left: 18px; white-space: nowrap; overflow: hidden; }
+  .field .car { display: inline-block; width: 2px; height: 24px; background: #1d1c1a; vertical-align: middle; margin-left: 2px; opacity: 0; }
+  .field .ph { color: #a19d93; }
+  #btn { position: absolute; left: 48px; top: 424px; width: 464px; height: 56px; border-radius: 12px; background: #f2c200; border: 2px solid #1d1c1a;
+    font-size: 20px; font-weight: 700; line-height: 52px; text-align: center; will-change: transform; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div id="panel">
+        <div id="head"></div>
+        <div class="eye" id="eyeL"></div><div class="eye" id="eyeR"></div>
+        <div class="pupil" id="pupL" data-layout-allow-overlap></div><div class="pupil" id="pupR" data-layout-allow-overlap></div>
+        <div id="mouth"></div>
+        <div class="hand" id="handL" data-layout-allow-overlap></div><div class="hand" id="handR" data-layout-allow-overlap></div>
+        <div id="ttl">Sign in</div>
+        <div id="sub">Orbit · Invite your team</div>
+        <div class="flab" style="top:232px">Email</div>
+        <div class="ring" id="ringE" style="top:246px"></div>
+        <div class="field" style="top:252px"><span id="emTxt"></span><span class="car" id="emCar"></span></div>
+        <div class="flab" style="top:326px">Password</div>
+        <div class="ring" id="ringP" style="top:340px"></div>
+        <div class="field" style="top:346px"><span id="pwTxt"></span><span class="car" id="pwCar"></span></div>
+        <div id="btn">Continue</div>
+      </div>
+    </div>
+    <div id="label"><span class="l-name">Character input response</span><span class="l-sep">·</span><span>UI Demo</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power2.out", duration: 0.4 } });
+  // Params: 0.4 s moves, 700 ms eye-cover, power2.out. The face tracks the caret while the email types (0.15 to 0.85 s),
+  // the hands rise over the eyes while the password dots type, then drop again when the caret moves to the button.
+  const EMAIL = "jamie.dalton@example.com";
+  const emTxt = document.getElementById("emTxt"), pwTxt = document.getElementById("pwTxt");
+  const emCar = document.getElementById("emCar"), pwCar = document.getElementById("pwCar");
+  const T_EM = 0.15, EM_DT = 0.03, T_PW = 1.05, PW_DT = 0.11, PW_N = 10;
+  function renderAt(t) {
+    const n = Math.max(0, Math.min(EMAIL.length, Math.floor((t - T_EM) / EM_DT)));
+    const m = Math.max(0, Math.min(PW_N, Math.floor((t - T_PW) / PW_DT)));
+    emTxt.textContent = EMAIL.slice(0, n);
+    pwTxt.textContent = "•".repeat(m);
+    emCar.style.opacity = (t >= 0.05 && t < 0.9) ? 1 : 0;
+    pwCar.style.opacity = (t >= 0.9 && t < 2.3) ? 1 : 0;
+  }
+  renderAt(0);
+  tl.to({ k: 0 }, { k: 1, duration: 3, ease: "none", onUpdate: () => renderAt(tl.time()) }, 0);
+  // Eyes follow the caret along the email field, slightly down and from left to right.
+  tl.fromTo(["#pupL", "#pupR"], { x: -5, y: 3 }, { x: 7, y: 3, duration: EMAIL.length * EM_DT, ease: "none" }, T_EM);
+  tl.fromTo("#ringE", { opacity: 0 }, { opacity: 1, duration: 0.2 }, 0.05);
+  tl.to("#ringE", { opacity: 0, duration: 0.2 }, 0.9);
+  // Caret moves to the password field: eyes glance down, then the hands come up and cover them.
+  tl.to(["#pupL", "#pupR"], { x: 1, y: 6, duration: 0.2 }, 0.88);
+  tl.fromTo("#ringP", { opacity: 0 }, { opacity: 1, duration: 0.2, immediateRender: false }, 0.9);
+  tl.fromTo("#handL", { x: 0, y: 0 }, { x: 42, y: -54, duration: 0.7, ease: "power2.out" }, 0.88);
+  tl.fromTo("#handR", { x: 0, y: 0 }, { x: -42, y: -54, duration: 0.7, ease: "power2.out" }, 0.88);
+  // Password done: caret leaves the field, the hands drop, the eyes look at the button, the button presses.
+  tl.to("#ringP", { opacity: 0, duration: 0.2 }, 2.3);
+  tl.to("#handL", { x: 0, y: 0, duration: 0.45, ease: "power2.inOut" }, 2.35);
+  tl.to("#handR", { x: 0, y: 0, duration: 0.45, ease: "power2.inOut" }, 2.35);
+  tl.to(["#pupL", "#pupR"], { x: 0, y: 7, duration: 0.3 }, 2.5);
+  tl.fromTo("#btn", { scale: 1 }, { scale: 0.97, duration: 0.12, ease: "power2.in", yoyo: true, repeat: 1, immediateRender: false }, 2.72);
+  const baseRender = tl.render; tl.render = function () { const r = baseRender.apply(this, arguments); renderAt(this.time()); return r; };
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

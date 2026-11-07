@@ -1,0 +1,45 @@
+{
+  "name": "Neon Terminal",
+  "fonts": {
+    "display": "JetBrains Mono",
+    "body": "JetBrains Mono",
+    "mono": "JetBrains Mono",
+    "label": "JetBrains Mono"
+  },
+  "font_families": [
+    "JetBrains Mono"
+  ],
+  "font_substitutions": {},
+  "canvas": "dark",
+  "mood": [
+    "technical",
+    "energetic",
+    "dark"
+  ],
+  "suits": [
+    "devtools",
+    "CLI launches",
+    "terminal-first products"
+  ],
+  "direction_settings": {
+    "energy": "brisk",
+    "density": "dense",
+    "ground": "dark",
+    "depth": "flat",
+    "camera": "locked",
+    "type": "display",
+    "texture": "textured",
+    "colour": "one-accent",
+    "product_presence": "framed",
+    "sound": "beat-driven",
+    "voice": "caption"
+  },
+  "duration_s": 10,
+  "size": [
+    1280,
+    720
+  ],
+  "fps": 30,
+  "strip": "D-58 style strip: hook · project card · number · agent · close",
+  "one_line": ""
+}

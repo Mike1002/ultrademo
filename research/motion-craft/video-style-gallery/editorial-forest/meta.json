@@ -1,0 +1,46 @@
+{
+  "name": "Editorial Forest",
+  "fonts": {
+    "display": "Source Serif 4",
+    "body": "Source Serif 4",
+    "mono": "JetBrains Mono",
+    "label": "JetBrains Mono"
+  },
+  "font_families": [
+    "JetBrains Mono",
+    "Source Serif 4"
+  ],
+  "font_substitutions": {},
+  "canvas": "dark",
+  "mood": [
+    "editorial",
+    "calm",
+    "deep-green"
+  ],
+  "suits": [
+    "sustainability brands",
+    "editorial products",
+    "premium services"
+  ],
+  "direction_settings": {
+    "energy": "calm",
+    "density": "balanced",
+    "ground": "dark",
+    "depth": "flat",
+    "camera": "locked",
+    "type": "editorial",
+    "texture": "clean",
+    "colour": "one-accent",
+    "product_presence": "illustrated",
+    "sound": "ambient",
+    "voice": "narrated"
+  },
+  "duration_s": 10,
+  "size": [
+    1280,
+    720
+  ],
+  "fps": 30,
+  "strip": "D-58 style strip: hook · project card · number · agent · close",
+  "one_line": ""
+}

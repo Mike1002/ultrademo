@@ -1,0 +1,21 @@
+{
+  "name": "Circumscribe",
+  "family": "Emphasis",
+  "purpose": [
+    "Emphasis",
+    "Explanation"
+  ],
+  "energy": "steady",
+  "tier": 2,
+  "runtime": "svg",
+  "tags": [
+    "temporary circumscription",
+    "circleindicate",
+    "showcreationthendestructionaround",
+    "showcreationthenfadearound",
+    "emphasis",
+    "stroke draw",
+    "box"
+  ],
+  "one_line": "A yellow rectangle draws itself around the big number, holds, fades away, then draws around the line of text beside it: one item picked out at a time, then released."
+}

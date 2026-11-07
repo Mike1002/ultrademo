@@ -1,0 +1,20 @@
+{
+  "name": "Hard cut",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Sequence"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "gsap",
+  "tags": [
+    "hard cut",
+    "semantic boundary",
+    "transitions",
+    "cut",
+    "sequence",
+    "no overlap"
+  ],
+  "one_line": "The invite card with its drifting cursor switches straight to the stats card at one second with no overlap, the number ticks up and the bar fills, then it cuts straight back and the cursor presses Continue."
+}

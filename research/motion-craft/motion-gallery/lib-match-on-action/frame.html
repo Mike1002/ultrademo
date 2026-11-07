@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-match-on-action</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; overflow: hidden; }
+  .panel { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  #A { background: #ece7da; }
+  #B { background: #f6f3ec; }
+  .card { position: absolute; left: 264px; top: 110px; width: 640px; height: 360px; background: #fffdf8; border: 2px solid #1d1c1a; border-radius: 24px; }
+  .card .lab { position: absolute; left: 56px; top: 48px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  .card h1 { position: absolute; left: 56px; top: 80px; font-size: 56px; font-weight: 700; line-height: 64px; white-space: nowrap; }
+  .card .sub { position: absolute; left: 56px; top: 160px; font-size: 22px; color: #6d6a63; }
+  .card .btn { position: absolute; left: 56px; top: 240px; width: 200px; height: 60px; border-radius: 14px; background: #f2c200; border: 2px solid #1d1c1a;
+    font-size: 20px; font-weight: 700; line-height: 56px; text-align: center; }
+  #B h1 { font-size: 96px; line-height: 104px; top: 74px; font-variant-numeric: tabular-nums; will-change: transform; }
+  #B .sub { top: 190px; }
+  /* Scene A mover: the arrow cursor with a growing streak behind it. */
+  #cur { position: absolute; left: 0; top: 0; width: 28px; height: 38px; will-change: transform; }
+  #cur svg { width: 28px; height: 38px; display: block; }
+  #cstreak { position: absolute; left: -170px; top: 10px; width: 170px; height: 6px; border-radius: 3px; background: #1d1c1a; opacity: .35; transform-origin: 100% 50%; will-change: transform; }
+  /* Scene B mover: a yellow dot on the same line, same direction, same speed, with a streak that shortens as it slows. */
+  #dotw { position: absolute; left: 0; top: 0; width: 28px; height: 28px; will-change: transform; }
+  #dot { position: absolute; left: 0; top: 0; width: 28px; height: 28px; border-radius: 50%; background: #f2c200; border: 2px solid #1d1c1a; }
+  #dstreak { position: absolute; left: -190px; top: 11px; width: 190px; height: 6px; border-radius: 3px; background: #f2c200; transform-origin: 100% 50%; will-change: transform; }
+  #ring { position: absolute; left: 0; top: 0; width: 28px; height: 28px; border-radius: 50%; border: 2px solid #1d1c1a; will-change: transform; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div class="panel" id="A">
+        <div class="card"><div class="lab">Orbit</div><h1 data-layout-allow-overlap data-layout-allow-occlusion>Invite your team</h1><div class="sub">3 seats left on this plan</div><div class="btn">Continue</div></div>
+        <div id="cur" data-layout-allow-overlap><div id="cstreak" data-layout-allow-overlap></div><svg viewBox="0 0 28 38"><path d="M2.5 2.5 L2.5 29.5 L9.6 23 L14.4 33.6 L19 31.6 L14.3 21.4 L23.8 21.4 Z" fill="#ffffff" stroke="#1d1c1a" stroke-width="2" stroke-linejoin="round"/></svg></div>
+      </div>
+      <div class="panel" id="B" data-layout-allow-overlap>
+        <div class="card"><div class="lab">This month</div><h1 id="num" data-layout-allow-overlap data-layout-allow-occlusion>12,480</h1><div class="sub" id="bsub" data-layout-allow-overlap data-layout-allow-occlusion>invites sent</div></div>
+        <div id="dotw" data-layout-allow-overlap><div id="dstreak" data-layout-allow-overlap></div><div id="ring" data-layout-allow-overlap></div><div id="dot" data-layout-allow-overlap></div></div>
+      </div>
+    </div>
+    <div id="label"><span class="l-name">Match on action</span><span class="l-sep">·</span><span>Transitions</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+  // Scene A: the cursor rests, then accelerates right across the headline (power2.in) and leaves the stage. Cut at 1.0 s while it is off screen.
+  // Both moves cover 1180 px of travel; A ends at the speed B starts with (2 * distance / duration is identical), so the dot inherits the vector.
+  const Y = 236, CUT = 1.0, D = 0.65, DIST = 1180;
+  tl.fromTo("#cur", { x: 120, y: Y - 8 }, { x: 120 + DIST, duration: D, ease: "power2.in" }, CUT - D);
+  tl.fromTo("#cstreak", { scaleX: 0, opacity: 0 }, { scaleX: 1, opacity: 0.35, duration: D, ease: "power2.in" }, CUT - D);
+  tl.fromTo("#A", { opacity: 1 }, { opacity: 0, duration: 0.02, ease: "none" }, CUT - 0.03);
+  tl.fromTo("#B", { opacity: 0 }, { opacity: 1, duration: 0.02, ease: "none" }, CUT - 0.03);
+  // Scene B: a yellow dot enters from the left on the same line, same speed, and decelerates (power2.out) to a stop after the number.
+  tl.fromTo("#dotw", { x: 680 - DIST, y: Y - 14 }, { x: 680, duration: D, ease: "power2.out" }, CUT);
+  tl.fromTo("#dstreak", { scaleX: 1, opacity: 1 }, { scaleX: 0, opacity: 0.2, duration: D, ease: "power2.out" }, CUT);
+  tl.fromTo("#ring", { scale: 1, opacity: 0 }, { scale: 1, opacity: 0, duration: 0.01, ease: "none" }, 0);
+  tl.fromTo("#num", { scale: 1, transformOrigin: "0% 50%" }, { scale: 1, duration: 0.01, ease: "none" }, 0);
+  tl.fromTo("#bsub", { opacity: 0, x: -16 }, { opacity: 0, x: -16, duration: 0.01, ease: "none" }, 0);
+  // Landing beat: the number nudges as the dot arrives; then a ring and the caption settle in so the clip keeps moving.
+  tl.to("#num", { scale: 1.04, duration: 0.16, ease: "power2.out" }, CUT + D - 0.1);
+  tl.to("#num", { scale: 1, duration: 0.45, ease: "power3.out" }, CUT + D + 0.06);
+  tl.to("#bsub", { opacity: 1, x: 0, duration: 0.5, ease: "power3.out", immediateRender: false }, 1.9);
+  tl.fromTo("#ring", { scale: 1, opacity: 0.7 }, { scale: 3.4, opacity: 0, duration: 0.7, ease: "power2.out", immediateRender: false }, 2.15);
+  tl.to("#dotw", { x: 700, duration: 0.6, ease: "sine.inOut" }, 2.3);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

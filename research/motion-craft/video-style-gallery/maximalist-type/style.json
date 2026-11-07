@@ -1,0 +1,117 @@
+{
+  "id": "maximalist-type",
+  "name": "Maximalist Type",
+  "canvas": "dark",
+  "mood": [
+    "loud",
+    "kinetic"
+  ],
+  "suits": [
+    "big product launches",
+    "milestone announcements",
+    "hype videos"
+  ],
+  "palette": {
+    "bg": "#0a0a0a",
+    "bg_alt": "#FFD60A",
+    "surface": "#161616",
+    "surface_2": "#222222",
+    "ink": "#ffffff",
+    "muted": "#9a9a9a",
+    "line": "#ffffff",
+    "accent": "#E63946",
+    "accent_2": "#FFD60A",
+    "on_accent": "#ffffff",
+    "button_bg": "#FFD60A",
+    "button_ink": "#0a0a0a",
+    "pill_bg": "#E63946",
+    "pill_ink": "#ffffff",
+    "pill_dot": "#ffffff"
+  },
+  "type": {
+    "display": {
+      "family": "Anton",
+      "weight": 400,
+      "hook_px": 136,
+      "stat_px": 280,
+      "mark_px": 160,
+      "transform": "uppercase",
+      "tracking": "0.01em",
+      "line_height": "0.92",
+      "style": "normal",
+      "generic": "sans",
+      "card_title_px": 30,
+      "card_title_tracking": "0.02em"
+    },
+    "body": {
+      "family": "Space Grotesk",
+      "weight": 700,
+      "generic": "sans"
+    },
+    "mono": {
+      "family": "Space Grotesk",
+      "weight": 700
+    },
+    "label": {
+      "family": "Space Grotesk",
+      "weight": 700,
+      "transform": "uppercase",
+      "tracking": "0.08em",
+      "generic": "sans",
+      "px": 15
+    }
+  },
+  "easing": {
+    "entry": "expo.out",
+    "exit": "back.out(1.8)",
+    "ambient": "none",
+    "pop": "back.out(1.8)",
+    "counter": "power4.out",
+    "wipe": null
+  },
+  "rhythm": {
+    "energy": "high",
+    "entrance": 0.3,
+    "stagger": 0.06
+  },
+  "transition": {
+    "kind": "cut",
+    "duration": 0,
+    "flash": true,
+    "band": false,
+    "flash_colour": "#E63946"
+  },
+  "text_animation": "slam",
+  "accent_word": "none",
+  "layout": "left",
+  "atmosphere": [],
+  "shape": {
+    "radius_card": 0,
+    "radius_button": 0,
+    "radius_pill": 0,
+    "border": "none",
+    "border_px": 0,
+    "shadow": "none",
+    "rule_px": 10
+  },
+  "stat_colour": "accent",
+  "direction_settings": {
+    "energy": "high",
+    "density": "dense",
+    "ground": "alternating",
+    "depth": "flat",
+    "camera": "locked",
+    "type": "loud",
+    "texture": "clean",
+    "colour": "two-accent",
+    "product_presence": "illustrated",
+    "sound": "beat-driven",
+    "voice": "spoken-headline"
+  },
+  "notes": "Anton at poster size, hard cuts with a flash, the project card and terminal land on a yellow colour block.",
+  "transitions": {
+    "between_moments": "cut",
+    "duration_s": 0,
+    "text": "slam"
+  }
+}

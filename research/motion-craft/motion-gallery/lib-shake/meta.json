@@ -1,0 +1,24 @@
+{
+  "name": "Shake",
+  "family": "Emphasis",
+  "purpose": [
+    "Attention",
+    "Feedback"
+  ],
+  "energy": "high",
+  "tier": 2,
+  "runtime": "gsap",
+  "tags": [
+    "wiggle oscillation",
+    "customwiggle",
+    "wobble",
+    "shake and vibrate",
+    "wiggle indication",
+    "wiggle",
+    "wiggleoutthenin",
+    "emphasis",
+    "error",
+    "damped"
+  ],
+  "one_line": "An invite-code field with a yellow exclamation mark shakes left and right with shrinking swings and lands back on its rest position; the error line fades in under it, then a second smaller shake follows."
+}

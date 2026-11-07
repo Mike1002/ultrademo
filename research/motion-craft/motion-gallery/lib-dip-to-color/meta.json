@@ -1,0 +1,22 @@
+{
+  "name": "Dip to color",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Sequence"
+  ],
+  "energy": "calm",
+  "tier": 3,
+  "runtime": "css",
+  "tags": [
+    "color dip",
+    "dip to color",
+    "blur to solid color",
+    "transitions",
+    "dip",
+    "fade",
+    "solid colour",
+    "chapter break"
+  ],
+  "one_line": "The invite scene softens and sinks into a flat ink field, the field holds for a beat, and the stats scene rises out of the same colour and sharpens."
+}

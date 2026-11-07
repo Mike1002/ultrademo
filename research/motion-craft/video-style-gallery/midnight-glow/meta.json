@@ -1,0 +1,46 @@
+{
+  "name": "Midnight Glow",
+  "fonts": {
+    "display": "Inter",
+    "body": "Inter",
+    "mono": "JetBrains Mono",
+    "label": "Inter"
+  },
+  "font_families": [
+    "Inter",
+    "JetBrains Mono"
+  ],
+  "font_substitutions": {},
+  "canvas": "dark",
+  "mood": [
+    "sleek",
+    "premium",
+    "calm"
+  ],
+  "suits": [
+    "AI product launches",
+    "dark-mode apps",
+    "app reveals"
+  ],
+  "direction_settings": {
+    "energy": "steady",
+    "density": "sparse",
+    "ground": "dark",
+    "depth": "layered",
+    "camera": "locked",
+    "type": "display",
+    "texture": "clean",
+    "colour": "one-accent",
+    "product_presence": "illustrated",
+    "sound": "scored",
+    "voice": "narrated"
+  },
+  "duration_s": 10,
+  "size": [
+    1280,
+    720
+  ],
+  "fps": 30,
+  "strip": "D-58 style strip: hook · project card · number · agent · close",
+  "one_line": ""
+}

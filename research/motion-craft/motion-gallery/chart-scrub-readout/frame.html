@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>chart-scrub-readout</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  /* card 880x440 at (200,140) */
+  .card { position: absolute; left: 200px; top: 140px; width: 880px; height: 440px; background: #fffdf8;
+    border: 2px solid #1d1c1a; border-radius: 24px; }
+  .label { position: absolute; left: 48px; top: 40px; font-size: 20px; color: #6d6a63; }
+  .title { position: absolute; left: 48px; top: 68px; font-size: 40px; font-weight: 700; letter-spacing: -0.01em; }
+  /* chart-wrap: viewBox units === CSS px, 760x260 at (60,140) inside the card */
+  .chart-wrap { position: absolute; left: 60px; top: 140px; width: 760px; height: 260px; }
+  .chart { display: block; width: 760px; height: 260px; }
+  .tooltip { position: absolute; top: 0; left: 0; min-width: 190px; height: 56px; padding: 0 16px; background: #1d1c1a; color: #fffdf8;
+    border-radius: 12px; display: flex; align-items: center; gap: 12px; font-size: 20px; white-space: nowrap;
+    transform-origin: left bottom; will-change: transform; }
+  #tip-date { color: #c9c4b8; }
+  #tip-value { font-variant-numeric: tabular-nums; font-weight: 700; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div class="card" id="card">
+      <div class="label">Every frame is code</div>
+      <div class="title">Renders per day</div>
+      <div class="chart-wrap" id="chart-wrap">
+        <svg class="chart" viewBox="0 0 760 260" width="760" height="260">
+          <line x1="24" y1="236" x2="736" y2="236" stroke="#e3ded2" stroke-width="2" />
+          <line x1="24" y1="130" x2="736" y2="130" stroke="#e3ded2" stroke-width="2" stroke-dasharray="4 8" />
+          <polyline id="series-a" fill="none" stroke="#1d1c1a" stroke-width="4" stroke-linejoin="round" stroke-linecap="round" />
+          <line id="track-line" y1="12" y2="248" stroke="#6d6a63" stroke-width="2" stroke-dasharray="6 6" />
+          <circle id="marker" r="10" fill="#f2c200" stroke="#1d1c1a" stroke-width="3" />
+        </svg>
+        <div class="tooltip" id="tooltip"><span id="tip-date">Jan 1</span><span id="tip-value">0 renders</span></div>
+      </div>
+    </div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true });
+  // Data baked at setup — one source of truth for the polyline and the readout.
+  const DATA = [
+    { d: "Jan 1", v: 312 }, { d: "Jan 2", v: 348 }, { d: "Jan 3", v: 330 }, { d: "Jan 4", v: 402 },
+    { d: "Jan 5", v: 388 }, { d: "Jan 6", v: 455 }, { d: "Jan 7", v: 470 }, { d: "Jan 8", v: 441 },
+    { d: "Jan 9", v: 512 }, { d: "Jan 10", v: 560 }, { d: "Jan 11", v: 538 }, { d: "Jan 12", v: 604 },
+    { d: "Jan 13", v: 651 }, { d: "Jan 14", v: 628 }, { d: "Jan 15", v: 702 }, { d: "Jan 16", v: 745 },
+    { d: "Jan 17", v: 718 }, { d: "Jan 18", v: 803 }, { d: "Jan 19", v: 867 }, { d: "Jan 20", v: 1284 }
+  ];
+  const CHART_W = 760, CHART_H = 260, PAD = 24;
+  const PLOT_W = CHART_W - PAD * 2, PLOT_H = CHART_H - PAD * 2;
+  const vals = DATA.map((p) => p.v);
+  const V_MIN = Math.min(...vals), V_MAX = Math.max(...vals);
+  const X = (i) => PAD + (i / (DATA.length - 1)) * PLOT_W;
+  const Y = (v) => PAD + PLOT_H * (1 - (v - V_MIN) / (V_MAX - V_MIN));
+  document.getElementById("series-a").setAttribute("points", DATA.map((p, i) => `${X(i)},${Y(p.v)}`).join(" "));
+
+  const line = document.getElementById("track-line");
+  const marker = document.getElementById("marker");
+  const tooltip = document.getElementById("tooltip");
+  const tipDate = document.getElementById("tip-date");
+  const tipValue = document.getElementById("tip-value");
+
+  const SCRUB_AT = 0.3, SCRUB_DUR = 1.9, TIP_DX = 24, TIP_DY = 28;
+  const scrubEase = gsap.parseEase("power1.inOut");
+  let lastIdx = -1;
+  // Every scrub output is a pure function of p; text steps only on index change.
+  function applyScrub(p) {
+    const f = p * (DATA.length - 1);
+    const i = Math.min(DATA.length - 2, Math.floor(f));
+    const t = f - i;
+    const x = X(i) + (X(i + 1) - X(i)) * t;
+    const y = Y(DATA[i].v) + (Y(DATA[i + 1].v) - Y(DATA[i].v)) * t;
+    line.setAttribute("x1", x); line.setAttribute("x2", x);
+    marker.setAttribute("cx", x); marker.setAttribute("cy", y);
+    // flip the tooltip to the left near the right edge so it never leaves the frame
+    const flip = x > CHART_W - 230;
+    tooltip.style.transform = `translate(${flip ? x - TIP_DX - 190 : x + TIP_DX}px, ${y - TIP_DY - 56}px)`;
+    const idx = Math.round(f);
+    if (idx !== lastIdx) {
+      tipDate.textContent = DATA[idx].d;
+      tipValue.textContent = `${DATA[idx].v.toLocaleString("en-US")} renders`;
+      lastIdx = idx;
+    }
+  }
+  const pAt = (time) => Math.max(0, Math.min(1, scrubEase(Math.max(0, Math.min(1, (time - SCRUB_AT) / SCRUB_DUR)))));
+  applyScrub(0); // seed at setup
+  // ONE driver — line, marker and tooltip are all projections of p.
+  const scrub = { p: 0 };
+  tl.to(scrub, { p: 1, duration: SCRUB_DUR, ease: "power1.inOut", onUpdate: () => applyScrub(scrub.p) }, SCRUB_AT);
+  // Tooltip pops in as the scrub begins. (scale only; position is set by applyScrub through a CSS transform
+  // string, so we scale the inner box via a wrapper-free trick: opacity + the marker pop carry the beat.)
+  tl.fromTo("#tooltip", { opacity: 0 }, { opacity: 1, duration: 0.25, ease: "power2.out" }, SCRUB_AT);
+  // Landing: the marker pops on the final (peak) point, then settles — the read holds for the last 0.8 s.
+  tl.fromTo("#marker", { attr: { r: 10 } }, { attr: { r: 16 }, duration: 0.18, ease: "back.out(2)", yoyo: true, repeat: 1, immediateRender: false }, SCRUB_AT + SCRUB_DUR);
+  // Seek safety for the DOM writes: re-apply from timeline time on every render.
+  const baseRender = tl.render; tl.render = function () { const r = baseRender.apply(this, arguments); applyScrub(pAt(this.time())); return r; };
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

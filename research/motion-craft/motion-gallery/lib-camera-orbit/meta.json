@@ -1,0 +1,23 @@
+{
+  "name": "Camera orbit",
+  "family": "Camera",
+  "purpose": [
+    "Explanation",
+    "Sequence"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "webgl",
+  "tags": [
+    "turntable orbit",
+    "camera-orbit-turntable",
+    "orbital camera",
+    "globe destination rotation",
+    "camera",
+    "3d",
+    "orbit",
+    "turntable",
+    "dark"
+  ],
+  "one_line": "An invite card stands on a floor grid as a solid object; the camera swings 60 degrees around it from slightly above, holds on the three-quarter view and swings back, while dots at different depths shift their positions against it."
+}

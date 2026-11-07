@@ -1,0 +1,22 @@
+{
+  "name": "Map to bar chart",
+  "family": "Data",
+  "purpose": [
+    "Data evidence",
+    "Explanation"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "webgl",
+  "tags": [
+    "map tilt to chart",
+    "data",
+    "map",
+    "hex",
+    "bar chart",
+    "3d",
+    "prisms",
+    "dark"
+  ],
+  "one_line": "A flat seven-region hex map tilts into a height map, each region rises as a prism to its value, then the prisms slide into a row sorted along a baseline so the map becomes a bar chart."
+}

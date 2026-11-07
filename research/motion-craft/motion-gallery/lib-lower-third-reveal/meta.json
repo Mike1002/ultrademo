@@ -1,0 +1,22 @@
+{
+  "name": "Lower third reveal",
+  "family": "Captions",
+  "purpose": [
+    "Explanation",
+    "Branding"
+  ],
+  "energy": "steady",
+  "tier": 2,
+  "runtime": "gsap",
+  "tags": [
+    "lower third speaker caption",
+    "lower third bar reveal",
+    "name strap",
+    "aston",
+    "super",
+    "lower third reverse exit",
+    "caption",
+    "name tag"
+  ],
+  "one_line": "A name strap wipes in from the left at the bottom of the frame, the name and role slide onto it one after the other, it holds, then the whole strap slides out and fades."
+}

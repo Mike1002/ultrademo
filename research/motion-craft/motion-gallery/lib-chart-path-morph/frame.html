@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-chart-path-morph</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  #chart { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  #cap { position: absolute; left: 160px; top: 8px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  text { font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .grid { stroke: #e3ded2; stroke-width: 2; }
+  .axis { stroke: #1d1c1a; stroke-width: 2; }
+  .tx { font-size: 16px; fill: #6d6a63; }
+  #area { fill: #f2c200; fill-opacity: 0.55; }
+  #line { fill: none; stroke: #1d1c1a; stroke-width: 4; stroke-linejoin: round; }
+  .pt { fill: #fffdf8; stroke: #1d1c1a; stroke-width: 3; }
+  .period { font-size: 34px; font-weight: 700; fill: #1d1c1a; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div id="cap">Invites per week</div>
+      <svg id="chart" viewBox="0 0 1168 580" width="1168" height="580">
+        <g id="grid"></g>
+        <path id="area" d=""/>
+        <path id="line" d=""/>
+        <line class="axis" x1="160" y1="100" x2="160" y2="500"/>
+        <line class="axis" x1="160" y1="500" x2="1080" y2="500"/>
+        <g id="pts"></g>
+        <text class="period" id="p0" x="1080" y="70" text-anchor="end">Last quarter</text>
+        <text class="period" id="p1" x="1080" y="70" text-anchor="end">This quarter</text>
+        <text class="period" id="p2" x="1080" y="70" text-anchor="end">Forecast</text>
+      </svg>
+    </div>
+    <div id="label"><span class="l-name">Chart path morph</span><span class="l-sep">·</span><span>Data</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const SVG = "http://www.w3.org/2000/svg";
+  // Three datasets with the same eight sample points on a fixed x scale; only the y values differ.
+  const sets = [
+    [32, 48, 41, 66, 58, 74, 62, 80],
+    [50, 42, 70, 56, 88, 76, 96, 90],
+    [60, 66, 72, 80, 84, 92, 98, 106]
+  ];
+  const X = i => 200 + i * (880 / 7), Y = v => 500 - v * 3.4;
+  const lineD = s => s.map((v, i) => (i ? "L" : "M") + X(i) + "," + Y(v)).join(" ");
+  const areaD = s => lineD(s) + " L" + X(7) + "," + Y(0) + " L" + X(0) + "," + Y(0) + " Z";
+  const grid = document.getElementById("grid"), pts = document.getElementById("pts");
+  const mk = (tag, cls, a, parent) => { const e = document.createElementNS(SVG, tag); if (cls) e.setAttribute("class", cls); for (const k in a) e.setAttribute(k, a[k]); parent.appendChild(e); return e; };
+  [25, 50, 75, 100].forEach(v => { mk("line", "grid", { x1: 160, x2: 1080, y1: Y(v), y2: Y(v) }, grid); const t = mk("text", "tx", { x: 140, y: Y(v) + 5, "text-anchor": "end" }, grid); t.textContent = v; });
+  for (let i = 0; i < 8; i++) { const t = mk("text", "tx", { x: X(i), y: 528, "text-anchor": "middle" }, grid); t.textContent = "W" + (i + 1); }
+  const dots = sets[0].map((v, i) => mk("circle", "pt", { cx: X(i), cy: Y(v), r: 8 }, pts));
+  const area = document.getElementById("area"), line = document.getElementById("line");
+  area.setAttribute("d", areaD(sets[0])); line.setAttribute("d", lineD(sets[0]));
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power2.inOut", duration: 0.9 } });
+  const M = [0.4, 1.8];
+  M.forEach((t0, k) => {
+    const a = sets[k], b = sets[k + 1];
+    // The path reshapes continuously: the same point count on both sides, values interpolated at fixed x positions.
+    tl.fromTo(area, { attr: { d: areaD(a) } }, { attr: { d: areaD(b) }, duration: 0.9, immediateRender: false }, t0);
+    tl.fromTo(line, { attr: { d: lineD(a) } }, { attr: { d: lineD(b) }, duration: 0.9, immediateRender: false }, t0);
+    dots.forEach((d, i) => tl.fromTo(d, { attr: { cy: Y(a[i]) } }, { attr: { cy: Y(b[i]) }, duration: 0.9, immediateRender: false }, t0));
+    tl.fromTo("#p" + k, { opacity: 1 }, { opacity: 0, duration: 0.25, ease: "none", immediateRender: false }, t0);
+    tl.fromTo("#p" + (k + 1), { opacity: 0 }, { opacity: 1, duration: 0.25, ease: "none", immediateRender: false }, t0 + 0.3);
+  });
+  tl.fromTo("#p1", { opacity: 0 }, { opacity: 0, duration: 0.01 }, 0);
+  tl.fromTo("#p2", { opacity: 0 }, { opacity: 0, duration: 0.01 }, 0);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+{
+  "name": "Burn transition",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Attention"
+  ],
+  "energy": "high",
+  "tier": 3,
+  "runtime": "webgl",
+  "tags": [
+    "page burn",
+    "noise burn edge",
+    "dissolve()",
+    "undulating burn out",
+    "transitions",
+    "burn",
+    "noise edge",
+    "glow",
+    "canvas",
+    "dark"
+  ],
+  "one_line": "An irregular burning edge spreads out from the invite card's button, eating the dark scene away with a hot yellow-to-orange rim, and leaves the stats card behind it."
+}

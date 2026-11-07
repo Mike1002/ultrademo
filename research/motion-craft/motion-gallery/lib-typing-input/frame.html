@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-typing-input</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  .head { position: absolute; left: 110px; top: 100px; font-size: 56px; font-weight: 700; }
+  .lab { position: absolute; left: 110px; top: 240px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  .input { position: absolute; left: 110px; top: 290px; width: 948px; height: 100px; border-top: 1px solid #e3ded2; border-bottom: 2px solid #1d1c1a;
+    font-size: 38px; display: flex; align-items: center; }
+  .ph { color: #a19d93; }
+  .char { display: none; }
+  .caret { display: inline-block; width: 3px; height: 43px; background: #f2c200; margin-left: 5px; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div class="head">Invite your team</div>
+      <div class="lab">Search</div>
+      <div class="input"><span class="ph" id="ph">Type a command</span><span id="text"></span><span class="caret" id="caret"></span></div>
+    </div>
+    <div id="label"><span class="l-name">Typing input</span><span class="l-sep">·</span><span>UI Demo</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+  // Characters land at fixed irregular gaps (0.07 to 0.17 s) from 0.3 s; the caret blinks on a 0.24 s half period and holds from 2.4 s.
+  const chars = Array.from("Invite my team");
+  const gaps = [.08, .11, .07, .14, .09, .12, .17, .08, .1, .07, .15, .09, .11, .13, .1, .08];
+  const times = []; let at = 0.3; chars.forEach((c, i) => { at += gaps[i % gaps.length]; times.push(at); });
+  const host = document.getElementById("text");
+  const spans = chars.map((c) => { const el = document.createElement("span"); el.className = "char"; el.innerHTML = c === " " ? "&nbsp;" : c; host.appendChild(el); return el; });
+  const ph = document.getElementById("ph"), caret = document.getElementById("caret");
+  function renderAt(t) {
+    spans.forEach((el, i) => { el.style.display = t >= times[i] ? "inline" : "none"; });
+    ph.style.display = t >= times[0] ? "none" : "inline";
+    caret.style.opacity = (t >= 2.4 || Math.floor(t / 0.24) % 2 === 0) ? "1" : "0";
+  }
+  renderAt(0);
+  tl.to({ k: 0 }, { k: 1, duration: 3, ease: "none", onUpdate: () => renderAt(tl.time()) }, 0);
+  const baseRender = tl.render; tl.render = function () { const r = baseRender.apply(this, arguments); renderAt(this.time()); return r; };
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-shake</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px;  }
+  .lab { font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  .kicker { position: absolute; left: 64px; top: 40px; }
+  .field { position: absolute; left: 284px; top: 150px; width: 600px; height: 200px; border-bottom: 3px solid #1d1c1a; will-change: transform; }
+  .field .lab { position: absolute; left: 0; top: 0; }
+  .entry { position: absolute; top: 50px; left: 0; font-size: 64px; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: .04em; }
+  .mark { position: absolute; right: 0; top: 60px; width: 56px; height: 56px; background: #f2c200; border: 2px solid #1d1c1a; border-radius: 50%;
+    color: #1d1c1a; font-size: 36px; font-weight: 700; text-align: center; line-height: 52px; }
+  .error { position: absolute; left: 284px; top: 382px; color: #1d1c1a; font-size: 22px; }
+  .error b { background: #f2c200; padding: 2px 8px; border-radius: 6px; }
+  .caption { position: absolute; left: 64px; top: 500px; font-size: 18px; color: #6d6a63; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <span class="lab kicker">Check the input</span>
+      <div class="field" id="field"><span class="lab">Invite code</span><div class="entry">ORB-12 34</div><div class="mark">!</div></div>
+      <div class="error" id="error"><b>Enter a six-character code</b></div>
+      <div class="caption">A short shake, then back to the rest position.</div>
+    </div>
+    <div id="label"><span class="l-name">Shake</span><span class="l-sep">·</span><span>Emphasis</span><span class="l-sep">·</span><span>high</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+  // Damped oscillation: 8, -8, 5, -5, 3, -3, 1.5, 0 px in 0.09 s sine.inOut steps from 0.65 s; ends at exactly x 0.
+  // One explicit baseline fromTo per element; every later step is an absolute "to" (a second fromTo would
+  // immediate-render its from-state and become the resting state before the first tween).
+  const amps = [8, -8, 5, -5, 3, -3, 1.5, 0];
+  tl.fromTo("#field", { x: 0 }, { x: amps[0], duration: 0.09, ease: "sine.inOut" }, 0.65);
+  amps.slice(1).forEach((x, i) => tl.to("#field", { x, duration: 0.09, ease: "sine.inOut" }, 0.65 + (i + 1) * 0.09));
+  tl.fromTo("#error", { opacity: 0 }, { opacity: 1, duration: 0.2, ease: "none" }, 0.65);
+  // Second beat at 2.1 s: a smaller shake, as if the field was tried again.
+  [5, -5, 3, -3, 1.5, 0].forEach((x, i) => tl.to("#field", { x, duration: 0.09, ease: "sine.inOut" }, 2.1 + i * 0.09));
+  tl.to("#error", { opacity: 0.25, duration: 0.08, ease: "none", repeat: 1, yoyo: true }, 2.1);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

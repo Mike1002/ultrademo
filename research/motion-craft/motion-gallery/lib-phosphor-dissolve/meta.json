@@ -1,0 +1,22 @@
+{
+  "name": "Phosphor trail dissolve",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Mood"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "webgl",
+  "tags": [
+    "phosphor trail dissolve",
+    "transitions",
+    "afterglow",
+    "trail",
+    "decay",
+    "glow",
+    "crt",
+    "dark"
+  ],
+  "one_line": "On a dark stage the bright parts of the invite card, the headline, the yellow button and the avatar rings, glow up, the cut lands, and their yellow afterglow lingers over the stats scene and decays frame by frame as the rows settle in."
+}

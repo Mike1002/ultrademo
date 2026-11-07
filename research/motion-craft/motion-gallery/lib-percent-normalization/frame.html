@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-percent-normalization</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  #chart { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  #chart text { font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .name { font-size: 20px; font-weight: 600; fill: #1d1c1a; }
+  .tick { font-size: 16px; fill: #6d6a63; }
+  .grid { stroke: #e3ded2; stroke-width: 2; }
+  .axis { stroke: #1d1c1a; stroke-width: 2; }
+  .pct { font-size: 18px; font-weight: 700; fill: #fffdf8; opacity: 0; }
+  .heading { position: absolute; left: 32px; top: 16px; font-size: 34px; font-weight: 700; }
+  .legend { position: absolute; left: 34px; top: 64px; font-size: 15px; color: #6d6a63; display: flex; gap: 22px; align-items: center; }
+  .legend i { display: inline-block; width: 14px; height: 14px; border-radius: 3px; margin-right: 7px; vertical-align: -2px; border: 2px solid #1d1c1a; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div class="heading">Share of invites</div>
+      <div class="legend"><span><i style="background:#1d1c1a"></i>Joined</span><span><i style="background:#f2c200"></i>Pending</span><span><i style="background:#ece7da"></i>Declined</span></div>
+      <svg id="chart" viewBox="0 0 1168 580" xmlns="http://www.w3.org/2000/svg">
+        <g id="gridA" class="grid">
+          <line x1="392" y1="120" x2="392" y2="500"/><line x1="564" y1="120" x2="564" y2="500"/>
+          <line x1="736" y1="120" x2="736" y2="500"/><line x1="908" y1="120" x2="908" y2="500"/>
+        </g>
+        <g id="gridB" class="grid" opacity="0">
+          <line x1="435" y1="120" x2="435" y2="500"/><line x1="650" y1="120" x2="650" y2="500"/>
+          <line x1="865" y1="120" x2="865" y2="500"/>
+        </g>
+        <line class="axis" x1="220" y1="500" x2="1080" y2="500"/>
+        <g id="axisA">
+          <text class="tick" x="220" y="528" text-anchor="middle">0</text>
+          <text class="tick" x="392" y="528" text-anchor="middle">100</text>
+          <text class="tick" x="564" y="528" text-anchor="middle">200</text>
+          <text class="tick" x="736" y="528" text-anchor="middle">300</text>
+          <text class="tick" x="908" y="528" text-anchor="middle">400</text>
+          <text class="tick" x="1080" y="528" text-anchor="middle">500</text>
+        </g>
+        <g id="axisB" opacity="0">
+          <text class="tick" x="220" y="528" text-anchor="middle">0</text>
+          <text class="tick" x="435" y="528" text-anchor="middle">25%</text>
+          <text class="tick" x="650" y="528" text-anchor="middle">50%</text>
+          <text class="tick" x="865" y="528" text-anchor="middle">75%</text>
+          <text class="tick" x="1080" y="528" text-anchor="middle" font-weight="700" fill="#1d1c1a">100%</text>
+        </g>
+        <line id="rule100" x1="1080" y1="500" x2="1080" y2="120" stroke="#f2c200" stroke-width="4" stroke-linecap="round" stroke-dasharray="380 400" stroke-dashoffset="390"/>
+        <text class="name" x="202" y="182" text-anchor="end">Jamie Dalton</text>
+        <text class="name" x="202" y="302" text-anchor="end">Sam Kim</text>
+        <text class="name" x="202" y="422" text-anchor="end">Morgan Lee</text>
+        <g id="bars"></g>
+        <g id="pcts"></g>
+      </svg>
+    </div>
+    <div id="label"><span class="l-name">Percent normalization</span><span class="l-sep">·</span><span>Data</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const NS = "http://www.w3.org/2000/svg";
+  const X0 = 220, FULL = 860, SCALE = FULL / 500, ROWS = [150, 270, 390], HB = 64;
+  const DATA = [[280, 120, 80], [150, 90, 60], [60, 80, 40]];   // Joined, Pending, Declined per row
+  const FILL = ["#1d1c1a", "#f2c200", "#ece7da"];
+  const gB = document.getElementById("bars"), gP = document.getElementById("pcts");
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power2.inOut", duration: 0.9 } });
+  const T0 = 0.5;
+  DATA.forEach((row, r) => {
+    const total = row[0] + row[1] + row[2];
+    let cumA = 0, cumN = 0;
+    row.forEach((v, s) => {
+      const el = document.createElementNS(NS, "rect");
+      el.id = "seg" + r + s; el.setAttribute("y", ROWS[r]); el.setAttribute("height", HB);
+      el.setAttribute("fill", FILL[s]); el.setAttribute("stroke", "#1d1c1a"); el.setAttribute("stroke-width", 2);
+      const xa = X0 + cumA * SCALE, wa = v * SCALE;                  // absolute layout
+      const xn = X0 + FULL * cumN / total, wn = FULL * v / total;      // normalized layout, same proportions
+      el.setAttribute("x", xa); el.setAttribute("width", wa);
+      gB.appendChild(el);
+      // Each segment's start and width interpolate together (900 ms, power2.inOut), so proportions hold mid-move.
+      tl.fromTo(el, { attr: { x: xa, width: wa } }, { attr: { x: xn, width: wn } }, T0);
+      cumA += v; cumN += v;
+    });
+    const p = document.createElementNS(NS, "text"); p.id = "pct" + r; p.setAttribute("class", "pct");
+    p.setAttribute("x", X0 + 16); p.setAttribute("y", ROWS[r] + 40); p.textContent = Math.round(100 * row[0] / total) + "% joined";
+    gP.appendChild(p);
+  });
+  // The absolute axis gives way to the percent axis (600 ms), slightly after the bars start moving.
+  tl.fromTo(["#axisA", "#gridA"], { opacity: 1 }, { opacity: 0, duration: 0.6, ease: "none" }, T0);
+  tl.fromTo(["#axisB", "#gridB"], { attr: { opacity: 0 } }, { attr: { opacity: 1 }, duration: 0.6, ease: "none" }, T0 + 0.3);
+  // Second beat: the 100% rule draws down and the joined shares are labelled inside the bars.
+  tl.fromTo("#rule100", { attr: { "stroke-dasharray": "380 400", "stroke-dashoffset": 390 } }, { attr: { "stroke-dashoffset": 0 }, duration: 0.5, ease: "power2.out" }, 1.5);
+  tl.fromTo(".pct", { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "none", stagger: 0.12 }, 1.8);
+  tl.fromTo("#rule100", { attr: { "stroke-width": 4 } }, { attr: { "stroke-width": 8 }, duration: 0.25, ease: "power1.inOut", yoyo: true, repeat: 1, immediateRender: false }, 2.4);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

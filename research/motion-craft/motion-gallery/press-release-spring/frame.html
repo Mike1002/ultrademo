@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>press-release-spring</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  /* environmental glow: full stage radial, extends past the edges */
+  .bg-glow { position: absolute; left: -300px; top: -300px; width: 1880px; height: 1320px; opacity: 0; z-index: 0;
+    background: radial-gradient(circle at 50% 50%, rgba(242,194,0,0.9) 0%, rgba(242,194,0,0.35) 22%, rgba(242,194,0,0) 48%); }
+  .line { position: absolute; left: 0; top: 150px; width: 1280px; text-align: center; font-size: 48px; font-weight: 700; letter-spacing: -0.01em; z-index: 3; }
+  .sub { position: absolute; left: 0; top: 215px; width: 1280px; text-align: center; font-size: 20px; color: #6d6a63; z-index: 3; }
+  /* burst: same footprint as the button, behind it (z 1 vs 2), blurred radial, darker+more saturated than the button */
+  .burst { position: absolute; left: 480px; top: 335px; width: 320px; height: 90px; border-radius: 45px; z-index: 1; opacity: 0;
+    background: radial-gradient(ellipse at center, rgba(201,158,0,0.95) 0%, rgba(201,158,0,0.5) 45%, rgba(201,158,0,0) 72%);
+    filter: blur(28px); will-change: transform, opacity; pointer-events: none; }
+  /* button: 320x90 (~3.1% of the canvas), centred at (640,380) */
+  .btn { position: absolute; left: 480px; top: 335px; width: 320px; height: 90px; border-radius: 22px; background: #f2c200;
+    border: 2px solid #1d1c1a; color: #1d1c1a; font-size: 30px; font-weight: 700; display: grid; place-items: center;
+    z-index: 2; transform-origin: 50% 50%; will-change: transform;
+    box-shadow: 0 18px 34px rgba(29,28,26,0.22); }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div class="bg-glow" id="bg-glow"></div>
+    <div class="line">Every frame is code</div>
+    <div class="sub">Linear press in, spring back out</div>
+    <div class="burst" id="burst"></div>
+    <div class="btn" id="btn">Continue</div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true });
+  // Rule defaults: PRESS_SCALE 0.92, PRESS_DUR 0.18 (linear-ish power1.in), RELEASE_DUR 0.6 back.out(2.0),
+  // burst peak scale 6 / opacity 0.7, bg glow 0.25.
+  const REST_SHADOW = "0px 18px 34px rgba(29,28,26,0.22)", PRESSED_SHADOW = "0px 3px 6px rgba(29,28,26,0.30)";
+  const PRESS_SCALE = 0.92, PRESS_DUR = 0.18, RELEASE_DUR = 0.6, BOUNCE_FACTOR = 2.0;
+  const BURST_PEAK_SCALE = 6, BURST_PEAK_OPACITY = 0.7, BURST_GROW_DUR = 0.5, BURST_FADE_DUR = 0.55;
+  const BG_GLOW_PEAK_OPACITY = 0.25, BG_GLOW_FADE_DUR = 0.8;
+
+  function press(PRESS_START, bgPeak) {
+    const RELEASE_START = PRESS_START + PRESS_DUR; // adjacency = state continuity
+    // Phase 1: linear compression, shadow sinks toward the surface
+    tl.fromTo("#btn", { scale: 1, boxShadow: REST_SHADOW },
+      { scale: PRESS_SCALE, boxShadow: PRESSED_SHADOW, duration: PRESS_DUR, ease: "power1.in", immediateRender: false }, PRESS_START);
+    // Phase 2: spring release, overshoot comes from the ease
+    tl.to("#btn", { scale: 1, boxShadow: REST_SHADOW, duration: RELEASE_DUR, ease: `back.out(${BOUNCE_FACTOR})` }, RELEASE_START);
+    // Phase 3: burst pops behind the button, then fades
+    tl.fromTo("#burst", { scale: 1, opacity: 0 },
+      { scale: BURST_PEAK_SCALE, opacity: BURST_PEAK_OPACITY, duration: BURST_GROW_DUR, ease: "power2.out", immediateRender: false }, RELEASE_START);
+    tl.to("#burst", { opacity: 0, duration: BURST_FADE_DUR, ease: "power2.in" }, RELEASE_START + BURST_GROW_DUR);
+    // Phase 4: environmental glow
+    tl.to("#bg-glow", { opacity: bgPeak, duration: BG_GLOW_FADE_DUR, ease: "power2.out" }, RELEASE_START);
+  }
+  tl.set("#bg-glow", { opacity: 0 }, 0);
+  press(0.55, BG_GLOW_PEAK_OPACITY);
+  // Glow settles down, then a second quieter press keeps the last second alive.
+  tl.to("#bg-glow", { opacity: 0.1, duration: 0.5, ease: "power1.inOut" }, 1.7);
+  press(2.25, BG_GLOW_PEAK_OPACITY);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

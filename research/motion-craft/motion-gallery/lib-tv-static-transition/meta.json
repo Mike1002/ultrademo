@@ -1,0 +1,21 @@
+{
+  "name": "TV static transition",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Mood"
+  ],
+  "energy": "high",
+  "tier": 3,
+  "runtime": "webgl",
+  "tags": [
+    "tv static interruption",
+    "static blended fade",
+    "transitions",
+    "noise",
+    "static",
+    "canvas",
+    "channel change"
+  ],
+  "one_line": "Grey TV static rises over an invite card for half a second, the picture changes to a stats card under the noise with a white kick, and the static clears; a shorter signal drop later flips it back."
+}

@@ -1,0 +1,21 @@
+{
+  "name": "Formation transition",
+  "family": "Data",
+  "purpose": [
+    "Data evidence",
+    "Comparison"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "svg",
+  "tags": [
+    "sports formation transition",
+    "data",
+    "pitch",
+    "markers",
+    "trails",
+    "positions",
+    "svg"
+  ],
+  "one_line": "Seven numbered markers on a pitch outline glide from one formation to the next, each dragging a translucent trail of its path that fades once it arrives; then the whole shape presses up the pitch with fresh trails."
+}

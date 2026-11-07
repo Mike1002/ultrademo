@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-track-data-race</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  #chart { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  text { font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .lane { fill: none; stroke: #ece7da; stroke-width: 40; }
+  .edge { fill: none; stroke: #1d1c1a; stroke-width: 2; }
+  .runner { fill: #fffdf8; stroke: #1d1c1a; stroke-width: 3; }
+  .nm { font-size: 18px; font-weight: 700; fill: #1d1c1a; }
+  .title { font-size: 34px; font-weight: 700; fill: #1d1c1a; }
+  .lab { font-size: 13px; letter-spacing: .06em; fill: #6d6a63; }
+  .clock { font-size: 34px; font-weight: 700; fill: #1d1c1a; font-variant-numeric: tabular-nums; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <svg id="chart" viewBox="0 0 1168 580" width="1168" height="580">
+        <text class="title" x="60" y="56">Fastest to 100 invites</text>
+        <text class="lab" x="60" y="84">THREE MEMBERS · RECORDED CHECKPOINT TIMES</text>
+        <text class="clock" id="clock" x="1108" y="60" text-anchor="end">0:00.0</text>
+        <text class="lab" id="lead" x="1108" y="88" text-anchor="end">LEADER · SAM KIM</text>
+        <g id="lanes"></g>
+        <g id="edges"></g>
+        <line id="finish" x1="0" y1="0" x2="0" y2="0" stroke="#1d1c1a" stroke-width="4" stroke-dasharray="8 6"/>
+        <text class="lab" id="finishlab" x="0" y="0" text-anchor="middle">FINISH · 100</text>
+        <g id="runners"></g>
+      </svg>
+    </div>
+    <div id="label"><span class="l-name">Track data race</span><span class="l-sep">·</span><span>Data</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const SVGNS = "http://www.w3.org/2000/svg";
+  const CX = 584, CY = 328, L = 440, R0 = 196, LANE = 46;
+  const runners = [
+    { name: "Jamie Dalton", lane: 0, cp: [0, 2.2, 4.1, 5.9, 7.6] },   // race seconds at 0, 25, 50, 75, 100 invites
+    { name: "Sam Kim",      lane: 1, cp: [0, 1.9, 4.3, 6.4, 8.3] },
+    { name: "Morgan Lee",   lane: 2, cp: [0, 2.4, 4.6, 6.2, 8.0] }
+  ];
+  const RACE = 8.6, T0 = 0.25, T1 = 2.55;     // race seconds mapped linearly onto clip 0.25 s to 2.55 s; then the finish hold
+  const laneR = i => R0 - i * LANE;
+  const lanePath = R => `M ${CX - L / 2} ${CY - R} H ${CX + L / 2} A ${R} ${R} 0 0 1 ${CX + L / 2} ${CY + R} H ${CX - L / 2} A ${R} ${R} 0 0 1 ${CX - L / 2} ${CY - R} Z`;
+  function pointAt(R, f) {                     // f = fraction of one lap, clockwise from the top-left start line
+    const P = 2 * L + 2 * Math.PI * R; let d = ((f % 1) + 1) % 1 * P;
+    if (d < L) return [CX - L / 2 + d, CY - R]; d -= L;
+    if (d < Math.PI * R) { const th = -Math.PI / 2 + d / R; return [CX + L / 2 + R * Math.cos(th), CY + R * Math.sin(th)]; } d -= Math.PI * R;
+    if (d < L) return [CX + L / 2 - d, CY + R]; d -= L;
+    const th = Math.PI / 2 + d / R; return [CX - L / 2 + R * Math.cos(th), CY + R * Math.sin(th)];
+  }
+  function progress(cp, s) {                   // invites fraction at race second s from the checkpoints (piecewise linear)
+    if (s <= 0) return 0; if (s >= cp[4]) return 1;
+    for (let k = 1; k < 5; k++) if (s <= cp[k]) return (k - 1) / 4 + ((s - cp[k - 1]) / (cp[k] - cp[k - 1])) / 4;
+    return 1;
+  }
+  const lanes = document.getElementById("lanes"), edges = document.getElementById("edges"), rg = document.getElementById("runners");
+  const laneEls = runners.map((r, i) => { const p = document.createElementNS(SVGNS, "path"); p.setAttribute("class", "lane"); p.setAttribute("d", lanePath(laneR(i))); lanes.appendChild(p); return p; });
+  [R0 + 20, laneR(2) - 20].forEach(R => { const p = document.createElementNS(SVGNS, "path"); p.setAttribute("class", "edge"); p.setAttribute("d", lanePath(R)); edges.appendChild(p); });
+  const fin = document.getElementById("finish"); fin.setAttribute("x1", CX - L / 2); fin.setAttribute("y1", CY - R0 - 20); fin.setAttribute("x2", CX - L / 2); fin.setAttribute("y2", CY - laneR(2) + 20);
+  const finLab = document.getElementById("finishlab"); finLab.setAttribute("x", CX - L / 2); finLab.setAttribute("y", CY - R0 - 32);
+  const dots = runners.map((r, i) => { const g = document.createElementNS(SVGNS, "g"); const c = document.createElementNS(SVGNS, "circle"); c.setAttribute("class", "runner"); c.setAttribute("r", 14);
+    const t = document.createElementNS(SVGNS, "text"); t.setAttribute("class", "nm"); t.textContent = r.name; g.appendChild(c); g.appendChild(t); rg.appendChild(g); return { c, t }; });
+  const clock = document.getElementById("clock"), lead = document.getElementById("lead");
+  function renderAt(t) {
+    const s = Math.max(0, Math.min(RACE, (t - T0) / (T1 - T0) * RACE));
+    const prog = runners.map(r => progress(r.cp, s));
+    let leader = 0; prog.forEach((p, i) => { if (p > prog[leader] + 1e-9) leader = i; });
+    runners.forEach((r, i) => { const [x, y] = pointAt(laneR(i), prog[i] * 0.999);
+      dots[i].c.setAttribute("cx", x); dots[i].c.setAttribute("cy", y);
+      const below = y > CY; dots[i].t.setAttribute("x", x); dots[i].t.setAttribute("y", below ? y + 36 : y - 24); dots[i].t.setAttribute("text-anchor", "middle");
+      dots[i].c.style.fill = i === leader ? "#f2c200" : "#fffdf8";
+      laneEls[i].style.stroke = i === leader ? "#f2c200" : "#ece7da"; laneEls[i].style.strokeOpacity = i === leader ? "0.55" : "1"; });
+    const m = Math.floor(s / 60), sec = s - m * 60;
+    clock.textContent = m + ":" + (sec < 10 ? "0" : "") + sec.toFixed(1);
+    lead.textContent = (s >= runners[leader].cp[4] ? "WINNER · " : "LEADER · ") + runners[leader].name.toUpperCase();
+  }
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "none", duration: 8 } });
+  renderAt(0);
+  tl.to({ k: 0 }, { k: 1, duration: 3, ease: "none", onUpdate: () => renderAt(tl.time()) }, 0);
+  const baseRender = tl.render; tl.render = function () { const r = baseRender.apply(this, arguments); renderAt(this.time()); return r; };
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

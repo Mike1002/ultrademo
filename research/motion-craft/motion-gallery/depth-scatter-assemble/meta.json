@@ -1,0 +1,27 @@
+{
+  "name": "Depth scatter assemble",
+  "family": "Layout & Network",
+  "purpose": [
+    "entrance",
+    "emphasis",
+    "lockup"
+  ],
+  "energy": "high",
+  "tags": [
+    "3d",
+    "scatter",
+    "assemble",
+    "depth",
+    "cloud",
+    "tumble",
+    "kinetic",
+    "letter",
+    "fragment",
+    "logo",
+    "reassemble"
+  ],
+  "one_line": "Ten letter tiles tumble in from a rotating cloud of depth, each from its own point in space, and lock into the flat words EVERY FRAME.",
+  "aliases": [
+    "awesome-ai-motion:text-scatter-assemble"
+  ]
+}

@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>context-sensitive-cursor</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  /* card 1000x200 centred at (140,260) */
+  .card { position: absolute; left: 140px; top: 260px; width: 1000px; height: 200px; background: #fffdf8;
+    border: 2px solid #1d1c1a; border-radius: 24px; }
+  .terminal { position: absolute; left: 40px; top: 0; height: 196px; display: flex; align-items: center; white-space: pre;
+    font-family: "SF Mono", Menlo, Consolas, "Courier New", monospace; font-size: 48px; font-weight: 600; }
+  .prompt { color: #6d6a63; margin-right: 20px; }
+  .text-wrap { display: inline-flex; align-items: baseline; min-width: 820px; white-space: pre; }
+  .text { white-space: pre; }
+  .cursor { display: inline-block; width: 18px; height: 50px; background: #1d1c1a; margin-left: 4px; vertical-align: -6px; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div class="card" id="card">
+      <div class="terminal">
+        <div class="prompt">&gt;</div>
+        <div class="text-wrap">
+          <span class="text" id="text"></span><span class="cursor" id="cursor"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true });
+  // The cursor is a colored block whose background follows the segment being typed:
+  // ink for plain words, yellow while the keyword is typed, muted grey on the trailing hint, ink again on the check.
+  const DURATION = 3, BLINK_CYCLES_PER_SCENE = 4, TYPING_GRACE = 0.12;
+  const INK = "#1d1c1a", YELLOW = "#f2c200", DIM = "#b9b4a8";
+  const SEQUENCE = [
+    { t: 0.00, text: "",                        segment: "main",    color: INK },
+    { t: 0.20, text: "Ev",                      segment: "main",    color: INK },
+    { t: 0.35, text: "Every",                   segment: "main",    color: INK },
+    { t: 0.60, text: "Every fr",                segment: "main",    color: INK },
+    { t: 0.75, text: "Every frame",             segment: "main",    color: INK },
+    { t: 1.00, text: "Every frame is",          segment: "main",    color: INK },
+    { t: 1.20, text: "Every frame is ",         segment: "brand",   color: YELLOW },
+    { t: 1.40, text: "Every frame is co",       segment: "brand",   color: YELLOW },
+    { t: 1.55, text: "Every frame is code",     segment: "brand",   color: YELLOW },
+    { t: 1.90, text: "Every frame is code  ",   segment: "hint",    color: DIM },
+    { t: 2.10, text: "Every frame is code  # ", segment: "hint",    color: DIM },
+    { t: 2.40, text: "Every frame is code  ✓", segment: "success", color: INK },
+  ];
+  const CHANGE_TIMES = SEQUENCE.filter((e, i) => i > 0 && e.text !== SEQUENCE[i - 1].text).map((e) => e.t);
+  function entryAt(time) {
+    for (let i = SEQUENCE.length - 1; i >= 0; i--) { if (time >= SEQUENCE[i].t) return SEQUENCE[i]; }
+    return SEQUENCE[0];
+  }
+  const textEl = document.getElementById("text");
+  const cursorEl = document.getElementById("cursor");
+  // Pure function of timeline time: text + cursor colour by reverse search; blink by a sin square wave,
+  // held solid for a short grace after every baked typing event.
+  function renderAt(t) {
+    const entry = entryAt(t);
+    textEl.textContent = entry.text;
+    cursorEl.style.background = entry.color;
+    cursorEl.style.height = entry.segment === "brand" ? "58px" : "50px";
+    const isTyping = CHANGE_TIMES.some((c) => c <= t && t - c < TYPING_GRACE);
+    const blinkOn = Math.sin((t / DURATION) * Math.PI * 2 * BLINK_CYCLES_PER_SCENE) > 0;
+    cursorEl.style.opacity = isTyping || blinkOn ? "1" : "0";
+  }
+  renderAt(0);
+  tl.to({ k: 0 }, { k: 1, duration: DURATION, ease: "none", onUpdate: () => renderAt(tl.time()) }, 0);
+  const baseRender = tl.render;
+  tl.render = function () { const r = baseRender.apply(this, arguments); renderAt(this.time()); return r; };
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

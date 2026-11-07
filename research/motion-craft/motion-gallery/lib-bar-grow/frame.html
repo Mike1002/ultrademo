@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-bar-grow</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  .lab { position: absolute; left: 115px; top: 48px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  .row { position: absolute; left: 115px; width: 938px; height: 50px; }
+  .word { position: absolute; left: 0; top: 6px; width: 130px; font-size: 24px; font-weight: 600; }
+  .track { position: absolute; left: 150px; top: 44px; width: 700px; height: 2px; background: #e3ded2; }
+  .bar { position: absolute; left: 150px; top: 4px; height: 32px; background: #1d1c1a; transform-origin: left center; will-change: transform; border-radius: 4px; }
+  .bar.first { background: #f2c200; border: 2px solid #1d1c1a; }
+  .pct { position: absolute; top: 6px; font-size: 22px; font-variant-numeric: tabular-nums; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div class="lab">Next action · share of 12,480 sessions</div>
+      <div class="row" style="top:105px"><div class="word">Invite</div><div class="track"></div><div class="bar first" id="bar1" style="width:620px"></div><div class="pct" id="p1" style="left:787px">62%</div></div>
+      <div class="row" style="top:181px"><div class="word">Share</div><div class="track"></div><div class="bar" id="bar2" style="width:210px"></div><div class="pct" id="p2" style="left:377px">21%</div></div>
+      <div class="row" style="top:257px"><div class="word">Export</div><div class="track"></div><div class="bar" id="bar3" style="width:90px"></div><div class="pct" id="p3" style="left:257px">9%</div></div>
+      <div class="row" style="top:333px"><div class="word">Settings</div><div class="track"></div><div class="bar" id="bar4" style="width:50px"></div><div class="pct" id="p4" style="left:217px">5%</div></div>
+      <div class="row" style="top:409px"><div class="word">Search</div><div class="track"></div><div class="bar" id="bar5" style="width:30px"></div><div class="pct" id="p5" style="left:197px">3%</div></div>
+    </div>
+    <div id="label"><span class="l-name">Bar grow</span><span class="l-sep">·</span><span>Data</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+  // Bars grow from the baseline on a shared scale (10 px per %), top to bottom, 0.08 s apart.
+  tl.fromTo(".bar", { scaleX: 0 }, { scaleX: 1, duration: 1.05, stagger: 0.08, ease: "power2.out" }, 0.3);
+  tl.fromTo(".pct", { opacity: 0, x: -6 }, { opacity: 1, x: 0, duration: 0.25, stagger: 0.08 }, 1.4);
+  // Second beat: the leading bar settles with a small breath so the clip keeps moving.
+  tl.to("#bar1", { scaleX: 0.97, duration: 0.35, ease: "power2.inOut" }, 2.1);
+  tl.to("#bar1", { scaleX: 1, duration: 0.45, ease: "power2.out" }, 2.45);
+  tl.to("#p1", { x: -18, duration: 0.35, ease: "power2.inOut" }, 2.1);
+  tl.to("#p1", { x: 0, duration: 0.45, ease: "power2.out" }, 2.45);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

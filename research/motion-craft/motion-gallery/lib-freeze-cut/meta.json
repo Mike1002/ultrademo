@@ -1,0 +1,21 @@
+{
+  "name": "Freeze cut",
+  "family": "Transitions",
+  "purpose": [
+    "Emphasis",
+    "Transition"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "canvas",
+  "tags": [
+    "freeze punctuated cut",
+    "transitions",
+    "freeze",
+    "hold",
+    "cut",
+    "vignette",
+    "desaturate"
+  ],
+  "one_line": "A cursor crosses an invite card toward Continue and freezes mid-move; the still drains some colour, a vignette closes in and it creeps larger for half a second, then a hard cut lands on the stats card."
+}

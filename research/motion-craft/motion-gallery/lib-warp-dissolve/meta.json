@@ -1,0 +1,25 @@
+{
+  "name": "Warp dissolve",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Mood"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "webgl",
+  "tags": [
+    "cross warp",
+    "displacement image transition",
+    "liquid distortion slideshow",
+    "directional warp",
+    "displacement map dissolve",
+    "color driven morph",
+    "transitions",
+    "warp",
+    "stretch",
+    "skew",
+    "dissolve"
+  ],
+  "one_line": "An invite card stretches, skews and slides to the right as it fades, while a stats card arrives stretched the opposite way and fades in; both relax to flat at the swap, and later the warp runs back."
+}

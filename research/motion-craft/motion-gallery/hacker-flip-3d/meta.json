@@ -1,0 +1,23 @@
+{
+  "name": "Hacker flip 3D",
+  "family": "Text & Typography",
+  "purpose": [
+    "entrance",
+    "reveal",
+    "headline"
+  ],
+  "energy": "high",
+  "tags": [
+    "text",
+    "3d",
+    "reveal",
+    "decode",
+    "hacker",
+    "randomization",
+    "perspective"
+  ],
+  "one_line": "Each letter of the line flips up from flat in 3D while cycling through scrambled glyphs, then clicks into the real character left to right, with a yellow underline filling underneath as it decodes.",
+  "aliases": [
+    "awesome-ai-motion:flip-decode-text"
+  ]
+}

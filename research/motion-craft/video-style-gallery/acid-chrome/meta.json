@@ -1,0 +1,46 @@
+{
+  "name": "Acid Chrome",
+  "fonts": {
+    "display": "Inter Tight",
+    "body": "Inter Tight",
+    "mono": "JetBrains Mono",
+    "label": "JetBrains Mono"
+  },
+  "font_families": [
+    "Inter Tight",
+    "JetBrains Mono"
+  ],
+  "font_substitutions": {},
+  "canvas": "dark",
+  "mood": [
+    "loud",
+    "confident",
+    "glossy"
+  ],
+  "suits": [
+    "brand reels",
+    "portfolio pieces",
+    "hype launches"
+  ],
+  "direction_settings": {
+    "energy": "high",
+    "density": "balanced",
+    "ground": "alternating",
+    "depth": "flat",
+    "camera": "locked",
+    "type": "loud",
+    "texture": "clean",
+    "colour": "one-accent",
+    "product_presence": "illustrated",
+    "sound": "beat-driven",
+    "voice": "spoken-headline"
+  },
+  "duration_s": 10,
+  "size": [
+    1280,
+    720
+  ],
+  "fps": 30,
+  "strip": "D-58 style strip: hook · project card · number · agent · close",
+  "one_line": ""
+}

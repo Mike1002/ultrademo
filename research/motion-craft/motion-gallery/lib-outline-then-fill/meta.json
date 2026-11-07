@@ -1,0 +1,23 @@
+{
+  "name": "Outline then fill",
+  "family": "Shape & Path",
+  "purpose": [
+    "Explanation",
+    "Sequence"
+  ],
+  "energy": "steady",
+  "tier": 2,
+  "runtime": "svg",
+  "tags": [
+    "trace fill",
+    "trace-then-fill",
+    "svg-path-draw",
+    "outline-to-fill",
+    "border then fill",
+    "drawborderthenfill",
+    "shape",
+    "stroke draw",
+    "fill opacity"
+  ],
+  "one_line": "A hexagon, a yellow circle and a triangle each draw their outline first as a travelling stroke, then their interior fills in with colour a moment later."
+}

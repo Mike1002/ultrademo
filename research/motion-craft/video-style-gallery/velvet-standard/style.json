@@ -1,0 +1,116 @@
+{
+  "id": "velvet-standard",
+  "name": "Velvet Standard",
+  "canvas": "dark",
+  "mood": [
+    "premium",
+    "timeless"
+  ],
+  "suits": [
+    "luxury products",
+    "enterprise software",
+    "keynotes",
+    "investor decks"
+  ],
+  "palette": {
+    "bg": "#0a0a0a",
+    "bg_alt": "#0a0a0a",
+    "surface": "#121212",
+    "surface_2": "#1a1a1a",
+    "ink": "#ffffff",
+    "muted": "#9a9a9a",
+    "line": "rgba(255,255,255,0.14)",
+    "accent": "#3949ab",
+    "accent_2": "#1a237e",
+    "on_accent": "#ffffff",
+    "pill_dot": "#ffffff"
+  },
+  "type": {
+    "display": {
+      "family": "Inter",
+      "weight": 300,
+      "hook_px": 60,
+      "stat_px": 180,
+      "mark_px": 92,
+      "transform": "uppercase",
+      "tracking": "0.15em",
+      "line_height": "1.2",
+      "style": "normal",
+      "generic": "sans",
+      "card_title_px": 20,
+      "card_title_tracking": "0.12em"
+    },
+    "body": {
+      "family": "Inter",
+      "weight": 300,
+      "generic": "sans"
+    },
+    "mono": {
+      "family": "Inter",
+      "weight": 300
+    },
+    "label": {
+      "family": "Inter",
+      "weight": 300,
+      "transform": "uppercase",
+      "tracking": "0.3em",
+      "generic": "sans",
+      "px": 15
+    }
+  },
+  "easing": {
+    "entry": "sine.inOut",
+    "exit": "power1.in",
+    "ambient": "sine.inOut",
+    "pop": "sine.inOut",
+    "counter": "sine.inOut",
+    "wipe": null
+  },
+  "rhythm": {
+    "energy": "calm",
+    "entrance": 0.9,
+    "stagger": 0.12
+  },
+  "transition": {
+    "kind": "blur",
+    "duration": 0.8,
+    "flash": false,
+    "band": false
+  },
+  "text_animation": "fade-up",
+  "accent_word": "none",
+  "layout": "center",
+  "atmosphere": [
+    "grain:0.08",
+    "rules"
+  ],
+  "shape": {
+    "radius_card": 0,
+    "radius_button": 0,
+    "radius_pill": 0,
+    "border": "hairline",
+    "border_px": 1,
+    "shadow": "none",
+    "rule_px": 1
+  },
+  "stat_colour": "ink",
+  "direction_settings": {
+    "energy": "calm",
+    "density": "sparse",
+    "ground": "dark",
+    "depth": "flat",
+    "camera": "locked",
+    "type": "quiet",
+    "texture": "grain",
+    "colour": "mono",
+    "product_presence": "illustrated",
+    "sound": "scored",
+    "voice": "narrated"
+  },
+  "notes": "Thin uppercase Inter, wide tracking, long glides. The indigo accent is dark on black, so the number stays white and the accent is kept to rules and the button.",
+  "transitions": {
+    "between_moments": "blur",
+    "duration_s": 0.8,
+    "text": "fade-up"
+  }
+}

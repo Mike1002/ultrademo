@@ -1,0 +1,21 @@
+{
+  "name": "Repeated text wall",
+  "family": "Typography",
+  "purpose": [
+    "Attention",
+    "Mood"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "gsap",
+  "tags": [
+    "repeated text wall build",
+    "repeated text fragment fan",
+    "type",
+    "repetition",
+    "rows",
+    "wall",
+    "texture"
+  ],
+  "one_line": "One short phrase repeats into nine rows that drop in from the top and fill the frame with alternating offsets, the outer rows fading lighter; the rows then drift sideways and the middle one turns yellow."
+}

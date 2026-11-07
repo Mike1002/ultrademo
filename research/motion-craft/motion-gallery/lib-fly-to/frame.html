@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-fly-to</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; overflow: hidden; border: 2px solid #1d1c1a; border-radius: 24px; background: #fffdf8; }
+  #map { position: absolute; left: 0; top: 0; width: 2000px; height: 1000px; will-change: transform;
+    background-image: radial-gradient(#d9d3c4 2px, transparent 2.5px); background-size: 40px 40px; background-position: 20px 20px; }
+  #roads { position: absolute; left: 0; top: 0; width: 2000px; height: 1000px; }
+  .pin { position: absolute; width: 36px; height: 36px; border-radius: 50%; background: #f2c200; border: 3px solid #1d1c1a; }
+  .pin.b { background: #fffdf8; }
+  .ring { position: absolute; width: 36px; height: 36px; border-radius: 50%; border: 3px solid #1d1c1a; will-change: transform, opacity; }
+  .tag { position: absolute; height: 40px; padding: 0 16px; border-radius: 12px; background: #1d1c1a; color: #fffdf8;
+    font-size: 20px; font-weight: 600; line-height: 40px; white-space: nowrap; }
+  .tag.b { background: #fffdf8; color: #1d1c1a; border: 2px solid #1d1c1a; line-height: 36px; }
+  #ro { position: absolute; left: 32px; top: 24px; height: 24px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; line-height: 24px; white-space: nowrap; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div id="map" data-layout-allow-overflow data-layout-allow-overlap>
+        <svg id="roads" viewBox="0 0 2000 1000" data-layout-allow-overlap>
+          <g fill="none" stroke="#e3ded2" stroke-width="6" stroke-linecap="round">
+            <path d="M0 420 C 400 380, 700 520, 1100 460 S 1700 300, 2000 360"/>
+            <path d="M520 0 C 560 300, 420 600, 480 1000"/>
+            <path d="M1400 0 C 1360 400, 1560 700, 1500 1000"/>
+            <path d="M0 760 C 500 720, 900 820, 2000 700"/>
+          </g>
+          <path id="route" d="M500 320 C 760 300, 1120 520, 1500 680" fill="none" stroke="#1d1c1a" stroke-width="5" stroke-dasharray="14 12" stroke-linecap="round"/>
+        </svg>
+        <div class="ring" id="ringA" style="left:482px;top:302px" data-layout-allow-overlap></div>
+        <div class="pin" style="left:482px;top:302px" data-layout-allow-overlap></div>
+        <div class="tag" style="left:530px;top:300px" data-layout-allow-overlap>Jamie Dalton</div>
+        <div class="ring" id="ringB" style="left:1482px;top:662px" data-layout-allow-overlap></div>
+        <div class="pin b" id="pinB" style="left:1482px;top:662px" data-layout-allow-overlap></div>
+        <div class="tag b" style="left:1530px;top:660px" data-layout-allow-overlap>Sam Kim</div>
+      </div>
+      <div id="ro" data-layout-allow-overlap>Invite sent · Jamie Dalton → Sam Kim</div>
+    </div>
+    <div id="label"><span class="l-name">Fly-to</span><span class="l-sep">·</span><span>Camera</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power1.inOut", duration: 0.6 } });
+  // Map origin is its top-left; to centre point (px, py) at scale s: x = 584 - px * s, y = 290 - py * s.
+  const A = { x: 500, y: 320 }, B = { x: 1500, y: 680 };
+  const at = (p, s) => ({ x: 584 - p.x * s, y: 290 - p.y * s, scale: s });
+  gsap.set("#map", { transformOrigin: "0 0" });
+  // Hold 0.3 s on the first pin at 2x, zoom out to 1x (0.5 of the start) in 0.6 s, travel 0.6 s, zoom into the second pin in 0.6 s, hold.
+  tl.fromTo("#map", at(A, 2), { ...at(A, 1), duration: 0.6, ease: "power1.inOut" }, 0.3);
+  tl.to("#map", { ...at(B, 1), duration: 0.6, ease: "power1.inOut" }, 0.9);
+  tl.to("#map", { ...at(B, 2), duration: 0.6, ease: "power1.inOut" }, 1.5);
+  // The route draws during the travel; the destination pin fills yellow and pulses a ring on arrival.
+  const route = document.getElementById("route"), L = route.getTotalLength();
+  route.setAttribute("stroke-dasharray", L + " " + (L + 20));
+  tl.fromTo(route, { strokeDashoffset: L + 10 }, { strokeDashoffset: 0, duration: 0.7, ease: "power1.inOut" }, 0.85);
+  tl.fromTo("#pinB", { backgroundColor: "#fffdf8" }, { backgroundColor: "#f2c200", duration: 0.2, ease: "none" }, 2.1);
+  tl.fromTo("#ringA", { scale: 1, opacity: 0.8 }, { scale: 2.6, opacity: 0, duration: 0.6, ease: "power2.out" }, 0.1);
+  tl.fromTo("#ringB", { scale: 1, opacity: 0.8 }, { scale: 2.6, opacity: 0, duration: 0.6, ease: "power2.out", immediateRender: false }, 2.15);
+  tl.fromTo("#ringB", { scale: 1, opacity: 0.8 }, { scale: 2.6, opacity: 0, duration: 0.6, ease: "power2.out", immediateRender: false }, 2.55);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

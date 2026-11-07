@@ -1,0 +1,23 @@
+{
+  "name": "Scroll lag",
+  "family": "UI Demo",
+  "purpose": [
+    "Mood",
+    "Sequence"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "gsap",
+  "tags": [
+    "smooth scroll lag",
+    "ui",
+    "scroll",
+    "lag",
+    "inertia",
+    "trail",
+    "layers",
+    "depth",
+    "settle"
+  ],
+  "one_line": "The scrollbar jumps up in one step while the member list eases after it and the hero header trails even later, sliding under the list before it settles; then the page scrolls back the same way."
+}

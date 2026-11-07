@@ -1,0 +1,123 @@
+{
+  "id": "editorial-forest",
+  "name": "Editorial Forest",
+  "canvas": "dark",
+  "mood": [
+    "editorial",
+    "calm",
+    "deep-green"
+  ],
+  "suits": [
+    "sustainability brands",
+    "editorial products",
+    "premium services"
+  ],
+  "palette": {
+    "bg": "#2e4a2a",
+    "bg_alt": "#243a21",
+    "surface": "#3a5a36",
+    "surface_2": "#4a6a46",
+    "ink": "#efe7d4",
+    "muted": "#c9c0a8",
+    "line": "rgba(239,231,212,0.35)",
+    "accent": "#e89cb1",
+    "accent_2": "#d27e96",
+    "on_accent": "#243a21",
+    "pill_bg": "#efe7d4",
+    "pill_ink": "#243a21",
+    "pill_dot": "#2e4a2a",
+    "thumb": "#4a6a46",
+    "term_bg": "#243a21",
+    "term_ink": "#efe7d4",
+    "term_muted": "#9fb09a",
+    "term_line": "rgba(239,231,212,0.35)",
+    "term_prompt": "#e89cb1",
+    "term_ok": "#e89cb1"
+  },
+  "type": {
+    "display": {
+      "family": "Source Serif 4",
+      "weight": 500,
+      "hook_px": 92,
+      "stat_px": 250,
+      "mark_px": 136,
+      "transform": "none",
+      "tracking": "-0.02em",
+      "line_height": "1.0",
+      "style": "normal",
+      "generic": "serif",
+      "card_title_px": 30
+    },
+    "body": {
+      "family": "Source Serif 4",
+      "weight": 400,
+      "generic": "serif"
+    },
+    "mono": {
+      "family": "JetBrains Mono",
+      "weight": 500
+    },
+    "label": {
+      "family": "JetBrains Mono",
+      "weight": 500,
+      "transform": "uppercase",
+      "tracking": "0.18em",
+      "generic": "sans",
+      "px": 13
+    }
+  },
+  "easing": {
+    "entry": "power2.out",
+    "exit": "power1.in",
+    "ambient": "none",
+    "pop": "power2.out",
+    "counter": "power2.out",
+    "wipe": null
+  },
+  "rhythm": {
+    "energy": "calm",
+    "entrance": 0.7,
+    "stagger": 0.1
+  },
+  "transition": {
+    "kind": "crossfade",
+    "duration": 0.6,
+    "flash": false,
+    "band": false
+  },
+  "text_animation": "fade-up",
+  "accent_word": "none",
+  "layout": "center",
+  "atmosphere": [
+    "rules"
+  ],
+  "shape": {
+    "radius_card": 8,
+    "radius_button": 6,
+    "radius_pill": 999,
+    "border": "bold",
+    "border_px": 2,
+    "shadow": "none",
+    "rule_px": 2
+  },
+  "stat_colour": "accent",
+  "direction_settings": {
+    "energy": "calm",
+    "density": "balanced",
+    "ground": "dark",
+    "depth": "flat",
+    "camera": "locked",
+    "type": "editorial",
+    "texture": "clean",
+    "colour": "one-accent",
+    "product_presence": "illustrated",
+    "sound": "ambient",
+    "voice": "narrated"
+  },
+  "notes": "Deep green ground, cream type, one pink accent, Source Serif 4 at weight 500 with JetBrains Mono uppercase chrome, flat paper depth with 2 px rules.",
+  "transitions": {
+    "between_moments": "crossfade",
+    "duration_s": 0.6,
+    "text": "fade-up"
+  }
+}

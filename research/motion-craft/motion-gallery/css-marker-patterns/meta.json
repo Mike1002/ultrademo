@@ -1,0 +1,22 @@
+{
+  "name": "Marker highlight",
+  "family": "Effect Recipes",
+  "purpose": [
+    "emphasis",
+    "text",
+    "caption"
+  ],
+  "energy": "calm",
+  "tags": [
+    "marker",
+    "highlight",
+    "text",
+    "emphasis",
+    "caption",
+    "annotation"
+  ],
+  "one_line": "Highlight sweep: a translucent yellow marker bar sweeps left to right behind one word, then another, then a phrase on the line below.",
+  "aliases": [
+    "awesome-ai-motion:highlight-sweep"
+  ]
+}

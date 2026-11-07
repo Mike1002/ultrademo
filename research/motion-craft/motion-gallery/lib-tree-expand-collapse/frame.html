@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-tree-expand-collapse</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  #chart { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  text { font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .link { stroke: #1d1c1a; stroke-width: 2.5; fill: none; }
+  .pill { fill: #fffdf8; stroke: #1d1c1a; stroke-width: 2.5; }
+  .pill.r { fill: #f2c200; }
+  .mem { fill: #fffdf8; stroke: #1d1c1a; stroke-width: 2.5; }
+  .nm { font-size: 20px; font-weight: 700; fill: #1d1c1a; text-anchor: middle; }
+  .ini { font-size: 17px; font-weight: 700; fill: #1d1c1a; text-anchor: middle; }
+  .title { font-size: 34px; font-weight: 700; fill: #1d1c1a; }
+  .lab { font-size: 13px; letter-spacing: .06em; fill: #6d6a63; }
+  .node { will-change: transform; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <svg id="chart" viewBox="0 0 1168 580" width="1168" height="580">
+        <text class="title" x="60" y="56">Orbit → teams → members</text>
+        <text class="lab" x="60" y="84">EXPAND TWO LEVELS, COLLAPSE ONE</text>
+        <g id="links"></g>
+        <g id="nodes"></g>
+      </svg>
+    </div>
+    <div id="label"><span class="l-name">Tree expand and collapse</span><span class="l-sep">·</span><span>Data</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const SVGNS = "http://www.w3.org/2000/svg";
+  const DEPTH = 150;                                                   // 120 px at 1920 wide, scaled to our stage
+  const root = { x: 584, y: 150, name: "Orbit" };
+  const teams = [{ x: 300, name: "Design" }, { x: 584, name: "Sales" }, { x: 868, name: "Support" }].map(t => ({ ...t, y: root.y + DEPTH }));
+  const members = [["JD","SK","ML"], ["AR","PT","LN"], ["KO","RB","EV"]].flatMap((m, ti) => m.map((ini, k) => ({ ini, x: teams[ti].x + (k - 1) * 84, y: teams[ti].y + DEPTH, parent: teams[ti] })));
+  const linksG = document.getElementById("links"), nodesG = document.getElementById("nodes");
+  const el = (tag, attrs, cls) => { const e = document.createElementNS(SVGNS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (cls) e.setAttribute("class", cls); return e; };
+  function pill(n, isRoot) { const g = el("g", {}, "node"); g.appendChild(el("rect", { x: n.x - 70, y: n.y - 26, width: 140, height: 52, rx: 26 }, "pill" + (isRoot ? " r" : "")));
+    const t = el("text", { x: n.x, y: n.y + 7 }, "nm"); t.textContent = n.name; g.appendChild(t); nodesG.appendChild(g); return g; }
+  function link(a, b) { const l = el("line", { x1: a.x, y1: a.y + 26, x2: b.x, y2: b.y - 26 }, "link"); linksG.appendChild(l); return l; }
+  pill(root, true);
+  const teamLinks = teams.map(t => link(root, t)), teamNodes = teams.map(t => pill(t, false));
+  const memLinks = members.map(m => link(m.parent, m));
+  const memNodes = members.map(m => { const g = el("g", {}, "node"); g.appendChild(el("circle", { cx: m.x, cy: m.y, r: 26 }, "mem"));
+    const t = el("text", { x: m.x, y: m.y + 6 }, "ini"); t.textContent = m.ini; g.appendChild(t); nodesG.appendChild(g); return g; });
+
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power2.inOut", duration: 0.65 } });
+  const D = 0.65, FADE = 0.25;
+  // Level 1 unfolds from the root at 0.2 s: each team node starts on the root and its link starts with zero length.
+  teams.forEach((t, i) => {
+    tl.fromTo(teamNodes[i], { x: root.x - t.x, y: root.y - t.y, opacity: 0 }, { x: 0, y: 0, opacity: 1, duration: D }, 0.2);
+    tl.fromTo(teamLinks[i], { attr: { x2: root.x, y2: root.y + 26 }, opacity: 0 }, { attr: { x2: t.x, y2: t.y - 26 }, opacity: 1, duration: D }, 0.2);
+  });
+  // Level 2 unfolds from each team at 1.0 s.
+  members.forEach((m, i) => {
+    tl.fromTo(memNodes[i], { x: m.parent.x - m.x, y: m.parent.y - m.y, opacity: 0 }, { x: 0, y: 0, opacity: 1, duration: D }, 1.0);
+    tl.fromTo(memLinks[i], { attr: { x2: m.parent.x, y2: m.parent.y + 26 }, opacity: 0 }, { attr: { x2: m.x, y2: m.y - 26 }, opacity: 1, duration: D }, 1.0);
+  });
+  // Collapse one level at 2.2 s: members fold back into their team and fade over the last 250 ms.
+  members.forEach((m, i) => {
+    tl.to(memNodes[i], { x: m.parent.x - m.x, y: m.parent.y - m.y, duration: D }, 2.2);
+    tl.to(memNodes[i], { opacity: 0, duration: FADE, ease: "none" }, 2.2 + D - FADE);
+    tl.to(memLinks[i], { attr: { x2: m.parent.x, y2: m.parent.y + 26 }, duration: D }, 2.2);
+    tl.to(memLinks[i], { opacity: 0, duration: FADE, ease: "none" }, 2.2 + D - FADE);
+  });
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

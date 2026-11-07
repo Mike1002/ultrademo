@@ -1,0 +1,21 @@
+{
+  "name": "Connected change arrows",
+  "family": "Data",
+  "purpose": [
+    "Explanation",
+    "Comparison"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "svg",
+  "tags": [
+    "connected change arrows",
+    "data",
+    "dumbbell",
+    "arrows",
+    "change",
+    "before after",
+    "svg"
+  ],
+  "one_line": "For four names an arrow grows from last month's fixed dot to this month's value, one pointing left for a drop, with the biggest change in yellow and singled out at the end."
+}

@@ -1,0 +1,22 @@
+{
+  "name": "Streamgraph baseline shift",
+  "family": "Data",
+  "purpose": [
+    "Explanation",
+    "Comparison"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "svg",
+  "tags": [
+    "streamgraph baseline shift",
+    "data",
+    "streamgraph",
+    "stacked area",
+    "baseline",
+    "silhouette",
+    "offset",
+    "time-driven"
+  ],
+  "one_line": "Four stacked activity layers drift from a centred streamgraph shape down onto a flat zero baseline, every boundary moving by the same per-week offset, hold there, then float back to the centred form."
+}

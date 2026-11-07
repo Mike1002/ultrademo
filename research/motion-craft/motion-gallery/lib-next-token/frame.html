@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-next-token</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  .lab { position: absolute; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  #sentence { position: absolute; left: 155px; top: 140px; height: 70px; line-height: 70px; font-size: 56px; font-weight: 700; white-space: nowrap; }
+  #blank { position: absolute; left: 505px; top: 206px; width: 210px; height: 3px; background: #a19d93; }
+  #base { position: absolute; left: 180px; top: 400px; width: 840px; height: 1px; background: #e3ded2; }
+  .bar { position: absolute; top: 265px; height: 135px; width: 32px; background: #1d1c1a; transform-origin: 50% 100%; will-change: transform; }
+  .choice { position: absolute; top: 430px; height: 56px; line-height: 56px; padding: 0 10px; margin-left: -10px; border-radius: 10px; font-size: 44px; font-weight: 700; white-space: nowrap; transform-origin: 0 0; will-change: transform; }
+  .prob { position: absolute; top: 408px; font-size: 14px; letter-spacing: .04em; color: #6d6a63; font-variant-numeric: tabular-nums; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div class="lab" style="left:155px;top:70px">Probabilities → pick → finished sentence</div>
+      <div id="sentence">Invite your</div>
+      <div id="blank"></div>
+      <div id="base"></div>
+      <div class="bar" id="b1" style="left:270px"></div>
+      <div class="bar" id="b2" style="left:490px"></div>
+      <div class="bar" id="b3" style="left:710px"></div>
+      <div class="bar" id="b4" style="left:930px"></div>
+      <div class="choice" id="pick" style="left:220px">team</div>
+      <div class="choice other" id="c2" style="left:440px">friends</div>
+      <div class="choice other" id="c3" style="left:660px">client</div>
+      <div class="choice other" id="c4" style="left:880px">boss</div>
+      <div class="prob" id="q1" style="left:265px">62%</div>
+      <div class="prob" id="q2" style="left:485px">21%</div>
+      <div class="prob" id="q3" style="left:705px">9%</div>
+      <div class="prob" id="q4" style="left:925px">5%</div>
+      <div class="lab" style="left:940px;top:525px">others 3%</div>
+    </div>
+    <div id="label"><span class="l-name">Next-token pick</span><span class="l-sep">·</span><span>Explainer</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+  // Candidate bars grow, normalised to the top candidate.
+  [1, 21 / 62, 9 / 62, 5 / 62].forEach((v, i) => {
+    tl.fromTo("#b" + (i + 1), { scaleY: 0 }, { scaleY: v, duration: 0.8, ease: "power2.out" }, 0.3 + i * 0.08);
+  });
+  tl.fromTo(["#q1", "#q2", "#q3", "#q4"], { opacity: 0 }, { opacity: 1, duration: 0.25, stagger: 0.08 }, 0.65);
+  // The winner is marked, then travels into the blank, scaling up to the sentence size.
+  tl.fromTo("#pick", { backgroundColor: "rgba(242,194,0,0)" }, { backgroundColor: "rgba(242,194,0,1)", duration: 0.25 }, 1.2);
+  tl.fromTo("#pick", { x: 0, y: 0, scale: 1 }, { x: 295, y: -290, scale: 56 / 44, duration: 0.7, ease: "power3.inOut" }, 1.6);
+  tl.fromTo(["#c2", "#c3", "#c4"], { opacity: 1 }, { opacity: 0.3, duration: 0.3 }, 1.6);
+  tl.fromTo(["#b2", "#b3", "#b4"], { opacity: 1 }, { opacity: 0.3, duration: 0.3 }, 1.6);
+  tl.fromTo("#blank", { opacity: 1 }, { opacity: 0, duration: 0.25 }, 2.05);
+  // Settle: the winner's bar eases down as the sentence completes.
+  tl.to("#b1", { scaleY: 0.85, duration: 0.5, ease: "power2.inOut" }, 2.3);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+{
+  "name": "Scene-integrated title",
+  "family": "Typography",
+  "purpose": [
+    "Branding",
+    "Mood"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "svg",
+  "tags": [
+    "integrated diegetic title",
+    "type",
+    "reveal",
+    "mask",
+    "line",
+    "wipe",
+    "diegetic"
+  ],
+  "one_line": "A thin vertical line with a yellow head sweeps across the frame and a huge title appears only where the line has passed; on the way back the line wipes the title away again."
+}

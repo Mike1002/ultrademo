@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-object-constant-update</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  #chart { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  text { font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .bar { fill: #ece7da; stroke: #a19d93; stroke-width: 2; }
+  .dot { stroke: #1d1c1a; stroke-width: 3; }
+  .nm { font-size: 20px; font-weight: 700; fill: #1d1c1a; }
+  .axis { stroke: #1d1c1a; stroke-width: 2; }
+  .grid { stroke: #e3ded2; stroke-width: 2; }
+  .tick { font-size: 16px; fill: #6d6a63; }
+  .title { font-size: 34px; font-weight: 700; fill: #1d1c1a; }
+  .lab { font-size: 13px; letter-spacing: .06em; fill: #6d6a63; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <svg id="chart" viewBox="0 0 1168 580" width="1168" height="580">
+        <text class="title" x="60" y="56">Same members, new view</text>
+        <text class="lab" id="subA" x="60" y="84">RANKED BY INVITES SENT</text>
+        <text class="lab" id="subB" x="60" y="84">INVITES SENT × REPLY RATE</text>
+        <g id="axesA">
+          <line class="axis" x1="300" y1="120" x2="300" y2="500"/>
+          <text class="tick" x="300" y="528">0</text><text class="tick" x="640" y="528" text-anchor="middle">6,000</text><text class="tick" x="1000" y="528" text-anchor="end">12,000</text>
+        </g>
+        <g id="axesB">
+          <line class="grid" x1="300" y1="140" x2="1050" y2="140"/><line class="grid" x1="300" y1="320" x2="1050" y2="320"/>
+          <line class="axis" x1="300" y1="500" x2="1050" y2="500"/><line class="axis" x1="300" y1="120" x2="300" y2="500"/>
+          <text class="tick" x="300" y="528">0</text><text class="tick" x="650" y="528" text-anchor="middle">6,000 invites</text><text class="tick" x="1000" y="528" text-anchor="end">12,000</text>
+          <text class="tick" x="286" y="146" text-anchor="end">40%</text><text class="tick" x="286" y="326" text-anchor="end">20%</text><text class="tick" x="286" y="506" text-anchor="end">0</text>
+        </g>
+        <g id="bars"></g>
+        <g id="marks"></g>
+      </svg>
+    </div>
+    <div id="label"><span class="l-name">Object-constant update</span><span class="l-sep">·</span><span>Data</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const SVGNS = "http://www.w3.org/2000/svg";
+  const el = (tag, attrs, cls) => { const e = document.createElementNS(SVGNS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (cls) e.setAttribute("class", cls); return e; };
+  // Six members: a fixed colour and name each; invites (bar length and scatter x) and reply rate (scatter y).
+  const M = [
+    { id: "jd", name: "Jamie Dalton", col: "#f2c200", inv: 12480, rep: 0.10 },
+    { id: "sk", name: "Sam Kim",      col: "#1d1c1a", inv: 9860,  rep: 0.31 },
+    { id: "ml", name: "Morgan Lee",   col: "#6d6a63", inv: 7420,  rep: 0.22 },
+    { id: "ar", name: "Alex Rivera",  col: "#a19d93", inv: 5300,  rep: 0.36 },
+    { id: "pt", name: "Priya Tan",    col: "#fffdf8", inv: 3310,  rep: 0.16 },
+    { id: "ln", name: "Lee Nakamura", col: "#ece7da", inv: 1900,  rep: 0.28 }
+  ];
+  const X0 = 300, X1 = 1000, Y0 = 500, Y1 = 140, ROW0 = 150, ROW = 64;
+  const sx = v => X0 + (v / 12000) * (X1 - X0), sy = v => Y0 - (v / 0.4) * (Y0 - Y1);
+  const bars = document.getElementById("bars"), marks = document.getElementById("marks");
+  const items = M.map((m, i) => { const ay = ROW0 + i * ROW;
+    const bar = el("rect", { x: X0, y: ay - 11, width: sx(m.inv) - X0, height: 22, rx: 11 }, "bar"); bars.appendChild(bar);
+    const dot = el("circle", { cx: sx(m.inv), cy: ay, r: 14 }, "dot"); dot.style.fill = m.col; marks.appendChild(dot);
+    const nm = el("text", { x: X0 - 16, y: ay + 7, "text-anchor": "end" }, "nm"); nm.textContent = m.name; marks.appendChild(nm);
+    return { m, bar, dot, nm, A: { cx: sx(m.inv), cy: ay, nx: X0 - 16, ny: ay + 7, anchor: "end" }, B: { cx: sx(m.inv), cy: sy(m.rep), nx: sx(m.inv) + (sx(m.inv) > 900 ? -22 : 22), ny: sy(m.rep) + 7, anchor: sx(m.inv) > 900 ? "end" : "start" } }; });
+
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power2.inOut", duration: 0.75 } });
+  tl.fromTo("#axesB", { opacity: 0 }, { opacity: 0, duration: 0.01 }, 0);
+  tl.fromTo("#subB", { opacity: 0 }, { opacity: 0, duration: 0.01 }, 0);
+  // Ranked bars -> scatter at 0.4 s: every dot is matched by id and glides with its name; colour never changes.
+  function go(to, at, dur, showB) {
+    items.forEach(it => { const p = it[to];
+      tl.to(it.dot, { attr: { cx: p.cx, cy: p.cy }, duration: dur }, at);
+      tl.to(it.nm, { attr: { x: p.nx, y: p.ny }, duration: dur }, at);
+      tl.to(it.nm, { attr: { "text-anchor": p.anchor }, duration: 0.01 }, at + dur / 2);
+      tl.to(it.bar, { opacity: showB ? 0 : 1, duration: 0.35, ease: "none" }, showB ? at : at + dur - 0.35); });
+    tl.to("#axesA", { opacity: showB ? 0 : 1, duration: 0.35, ease: "none" }, at + 0.1);
+    tl.to("#axesB", { opacity: showB ? 1 : 0, duration: 0.35, ease: "none" }, at + 0.1);
+    tl.to("#subA", { opacity: showB ? 0 : 1, duration: 0.3, ease: "none" }, at + dur / 2);
+    tl.to("#subB", { opacity: showB ? 1 : 0, duration: 0.3, ease: "none" }, at + dur / 2);
+  }
+  go("B", 0.4, 0.75, true);
+  go("A", 2.1, 0.75, false);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+{
+  "name": "Blueprint",
+  "fonts": {
+    "display": "STIX Two Text",
+    "body": "IBM Plex Sans",
+    "mono": "IBM Plex Mono",
+    "label": "IBM Plex Mono"
+  },
+  "font_families": [
+    "IBM Plex Mono",
+    "IBM Plex Sans",
+    "STIX Two Text"
+  ],
+  "font_substitutions": {},
+  "canvas": "dark",
+  "mood": [
+    "calm",
+    "curious",
+    "clear"
+  ],
+  "suits": [
+    "explainers",
+    "education",
+    "technical diagrams"
+  ],
+  "direction_settings": {
+    "energy": "calm",
+    "density": "balanced",
+    "ground": "dark",
+    "depth": "flat",
+    "camera": "locked",
+    "type": "editorial",
+    "texture": "clean",
+    "colour": "two-accent",
+    "product_presence": "illustrated",
+    "sound": "ambient",
+    "voice": "narrated"
+  },
+  "duration_s": 10,
+  "size": [
+    1280,
+    720
+  ],
+  "fps": 30,
+  "strip": "D-58 style strip: hook · project card · number · agent · close",
+  "one_line": ""
+}

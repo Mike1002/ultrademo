@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>gsap-effects</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  /* card 880x300 centred; the typed line sits on one row with the cursor flush after it */
+  .card { position: absolute; left: 200px; top: 210px; width: 880px; height: 300px; background: #fffdf8; border: 2px solid #1d1c1a;
+    border-radius: 24px; padding: 0 56px; display: flex; align-items: center; }
+  .row { display: flex; align-items: center; font-size: 64px; font-weight: 800; letter-spacing: -0.02em; white-space: pre; }
+  .cursor { display: block; width: 8px; height: 66px; margin-left: 4px; border-radius: 2px; background: #f2c200; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div class="card">
+      <div class="row"><span id="typed-text"></span><span class="cursor" id="cursor"></span></div>
+    </div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true });
+  const TEXT = "Every frame is code", CPS = 10, TYPE_AT = 0.5, TYPE_DUR = TEXT.length / CPS, BLINK = 0.8;   // natural typing, 1.9 s
+  const typed = document.getElementById("typed-text"), cursor = document.getElementById("cursor");
+  // typed length and cursor state are pure functions of time: blink while idle, solid while typing
+  function renderAt(t) {
+    const n = Math.min(TEXT.length, Math.max(0, Math.floor((t - TYPE_AT) * CPS + 1e-6)));
+    typed.textContent = TEXT.slice(0, n);
+    const typing = t >= TYPE_AT && t < TYPE_AT + TYPE_DUR;
+    cursor.style.opacity = typing ? "1" : ((t % BLINK) < BLINK / 2 ? "1" : "0");
+  }
+  renderAt(0);
+  tl.to({ k: 0 }, { k: 1, duration: 3, ease: "none", onUpdate: () => renderAt(tl.time()) }, 0);
+  const baseRender = tl.render; tl.render = function () { const r = baseRender.apply(this, arguments); renderAt(this.time()); return r; };
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

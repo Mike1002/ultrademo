@@ -1,0 +1,18 @@
+{
+  "name": "Camera cursor tracking",
+  "family": "Camera & Viewport",
+  "purpose": [
+    "camera",
+    "typing",
+    "search"
+  ],
+  "energy": "steady",
+  "tags": [
+    "camera",
+    "tracking",
+    "viewport",
+    "two-phase",
+    "spring"
+  ],
+  "one_line": "A long line types into a search bar with a blinking yellow cursor; the view holds still at first, then slides left to keep the cursor in frame as the text outgrows the screen."
+}

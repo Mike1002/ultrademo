@@ -1,0 +1,22 @@
+{
+  "name": "Lens flare transition",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Mood"
+  ],
+  "energy": "high",
+  "tier": 3,
+  "runtime": "webgl",
+  "tags": [
+    "lens flare bridge",
+    "transitions",
+    "flare",
+    "light",
+    "rings",
+    "streak",
+    "glow",
+    "dark"
+  ],
+  "one_line": "A bright point with a long streak and three optical rings sweeps across the frame on the diagonal, the cut from the invite card to the stats card hides under a warm wash as it passes the centre, and it fades out past the corner; a small glint later catches the end of the bar."
+}

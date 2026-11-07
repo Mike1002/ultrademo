@@ -1,0 +1,21 @@
+{
+  "name": "Push-in",
+  "family": "Camera",
+  "purpose": [
+    "Emphasis",
+    "Explanation"
+  ],
+  "energy": "steady",
+  "tier": 2,
+  "runtime": "gsap",
+  "tags": [
+    "push in",
+    "punch-in",
+    "crash zoom",
+    "multiplane dolly",
+    "camera",
+    "zoom",
+    "key word"
+  ],
+  "one_line": "The sentence \"Every frame is code.\" slowly pushes in to 1.6x around the word \"frame\", the other words sliding toward the edges, then a yellow underline draws under it."
+}

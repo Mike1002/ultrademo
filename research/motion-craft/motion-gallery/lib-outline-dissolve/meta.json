@@ -1,0 +1,21 @@
+{
+  "name": "Outline dissolve",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Mood"
+  ],
+  "energy": "calm",
+  "tier": 3,
+  "runtime": "webgl",
+  "tags": [
+    "edge outline dissolve",
+    "transitions",
+    "outline",
+    "line drawing",
+    "fill",
+    "dissolve",
+    "dark"
+  ],
+  "one_line": "On a dark stage the invite card loses its fills until only thin yellow outlines remain, the outlines cross into the stats scene's outlines, and the stats scene fills back in with colour before its rows settle."
+}

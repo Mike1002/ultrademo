@@ -1,0 +1,23 @@
+{
+  "name": "Rolling digits",
+  "family": "Data",
+  "purpose": [
+    "Data evidence",
+    "Comparison"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "css",
+  "tags": [
+    "rolling digits",
+    "odometer",
+    "number wheel",
+    "odometer reels",
+    "vertical-spring-ticker",
+    "slot-machine-reveal",
+    "data",
+    "reel",
+    "stagger"
+  ],
+  "one_line": "A big count rolls up to 12,480 one digit reel at a time inside a clipped window, the comma holding still, then rolls on again to a higher number."
+}

@@ -1,0 +1,21 @@
+{
+  "name": "TV tracking transition",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Mood"
+  ],
+  "energy": "high",
+  "tier": 3,
+  "runtime": "webgl",
+  "tags": [
+    "lost tv tracking",
+    "transitions",
+    "scan lines",
+    "vhs",
+    "wobble",
+    "canvas",
+    "analog"
+  ],
+  "one_line": "A third of the horizontal scan lines of an invite card slip sideways as if the tape lost tracking, a dark bar rolls down the frame, and a stats card is there when the lines settle; a shorter slip later brings the first card back."
+}

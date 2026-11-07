@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-line-chart-race</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  #chart { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  text { font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .cap { font-size: 13px; letter-spacing: .06em; text-transform: uppercase; fill: #6d6a63; }
+  .ttl { font-size: 34px; font-weight: 700; fill: #1d1c1a; font-variant-numeric: tabular-nums; }
+  .tick { font-size: 18px; fill: #6d6a63; }
+  .grid { stroke: #e3ded2; stroke-width: 2; }
+  .axis { stroke: #1d1c1a; stroke-width: 2; }
+  .ln { fill: none; stroke-width: 4; stroke-linejoin: round; stroke-linecap: round; }
+  .dot { stroke: #1d1c1a; stroke-width: 3; fill: #fffdf8; }
+  .tag rect { fill: #fffdf8; stroke: #1d1c1a; stroke-width: 2; }
+  .tag text { font-size: 18px; font-weight: 700; fill: #1d1c1a; font-variant-numeric: tabular-nums; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <svg id="chart" viewBox="0 0 1168 580" width="1168" height="580">
+        <text class="cap" x="160" y="36">Invites over time · by member</text>
+        <text class="ttl" id="ttl" x="880" y="44" text-anchor="end">Week 1</text>
+        <line class="grid" x1="160" y1="150" x2="880" y2="150"/>
+        <line class="grid" x1="160" y1="260" x2="880" y2="260"/>
+        <line class="grid" x1="160" y1="370" x2="880" y2="370"/>
+        <line class="axis" x1="160" y1="480" x2="880" y2="480"/>
+        <line class="axis" x1="160" y1="60" x2="160" y2="480"/>
+        <text class="tick" x="140" y="156" text-anchor="end">600</text>
+        <text class="tick" x="140" y="266" text-anchor="end">400</text>
+        <text class="tick" x="140" y="376" text-anchor="end">200</text>
+        <text class="tick" x="140" y="486" text-anchor="end">0</text>
+        <text class="tick" x="160" y="514" text-anchor="middle">Week 1</text>
+        <text class="tick" x="520" y="514" text-anchor="middle">Week 6</text>
+        <text class="tick" x="880" y="514" text-anchor="middle">Week 11</text>
+        <g id="lines"></g>
+        <g id="dots"></g>
+        <g id="tags"></g>
+      </svg>
+    </div>
+    <div id="label"><span class="l-name">Line chart race</span><span class="l-sep">·</span><span>Data</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const NS = "http://www.w3.org/2000/svg";
+  const mk = (tag, attrs, parent) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); parent.appendChild(e); return e; };
+  // Cumulative invites per member over 11 weeks. Sam leads early, Jamie overtakes in week 7, Morgan climbs late.
+  const series = [
+    { name: "Jamie Dalton", stroke: "#1d1c1a", v: [0, 20, 45, 80, 130, 190, 270, 360, 440, 520, 590] },
+    { name: "Sam Kim", stroke: "#6d6a63", v: [0, 60, 120, 170, 220, 260, 300, 330, 360, 390, 410] },
+    { name: "Morgan Lee", stroke: "#a19d93", v: [0, 10, 25, 40, 70, 110, 160, 230, 320, 400, 470] }
+  ];
+  const NW = 11, X0 = 160, AW = 720, xs = w => X0 + w * AW / (NW - 1), y = v => 480 - v * 0.55;
+  const built = series.map(s => ({
+    s,
+    line: mk("polyline", { class: "ln", stroke: s.stroke, points: "" }, document.getElementById("lines")),
+    dot: mk("circle", { class: "dot", cx: X0, cy: y(0), r: 10 }, document.getElementById("dots")),
+    tag: (() => { const g = mk("g", { class: "tag" }, document.getElementById("tags")); mk("rect", { x: 0, y: -16, width: 210, height: 32, rx: 16 }, g); const t = mk("text", { x: 16, y: 7 }, g); t.textContent = s.name; return { g, rect: g.firstChild, text: t }; })()
+  }));
+  const T0 = 0.2, T1 = 2.6;                                       // weeks 1..11 play linearly from 0.2 s to 2.6 s, then a short final hold
+  function renderAt(t) {
+    const f = Math.max(0, Math.min(NW - 1, (t - T0) / (T1 - T0) * (NW - 1)));
+    const i = Math.min(NW - 2, Math.floor(f)), q = f - i;
+    const cur = built.map(b => b.s.v[i] + (b.s.v[i + 1] - b.s.v[i]) * q);
+    const leader = cur.indexOf(Math.max(...cur));
+    // Stack the labels so they never overlap: sort by current value, keep 36 px apart.
+    const order = built.map((b, k) => k).sort((a, b) => cur[b] - cur[a]);
+    const ys = {}; let last = -1e9; order.forEach(k => { let yy = y(cur[k]); if (yy < last + 36) yy = last + 36; ys[k] = yy; last = yy; });
+    built.forEach((b, k) => {
+      const pts = []; for (let w = 0; w <= i; w++) pts.push(xs(w) + "," + y(b.s.v[w])); pts.push(xs(f) + "," + y(cur[k]));
+      b.line.setAttribute("points", pts.join(" "));
+      b.dot.setAttribute("cx", xs(f)); b.dot.setAttribute("cy", y(cur[k]));
+      b.dot.setAttribute("fill", k === leader ? "#f2c200" : "#fffdf8");
+      b.tag.g.setAttribute("transform", "translate(" + (xs(f) + 22) + " " + ys[k] + ")");
+      b.tag.rect.setAttribute("fill", k === leader ? "#f2c200" : "#fffdf8");
+      b.tag.text.textContent = b.s.name + " · " + Math.round(cur[k]);
+    });
+    const hold = t > T1 ? Math.sin(Math.PI * Math.min(1, (t - T1) / 0.4)) * 4 : 0;          // final hold: the leader's dot breathes once
+    built[leader].dot.setAttribute("r", 10 + hold);
+    document.getElementById("ttl").textContent = "Week " + (Math.floor(f) + 1);
+  }
+  renderAt(0);
+  const tl = gsap.timeline({ paused: true });
+  tl.fromTo({ k: 0 }, { k: 0 }, { k: 1, duration: 3, ease: "none", onUpdate: () => renderAt(tl.time()) }, 0);
+  const baseRender = tl.render; tl.render = function () { const r = baseRender.apply(this, arguments); renderAt(this.time()); return r; };
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

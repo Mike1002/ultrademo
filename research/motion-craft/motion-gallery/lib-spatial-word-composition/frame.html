@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-spatial-word-composition</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; overflow: hidden; }
+  #comp { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; will-change: transform; }
+  .wd { position: absolute; font-weight: 700; letter-spacing: -0.02em; white-space: nowrap; line-height: 1; will-change: transform, opacity; }
+  #w0 { left: 120px; top: 54px; font-size: 128px; }
+  #w1 { left: 700px; top: 170px; font-size: 68px; color: #6d6a63; }
+  #w2 { left: 560px; top: 300px; font-size: 48px; color: #6d6a63; }
+  #w3 { left: 300px; top: 330px; font-size: 170px; color: #f2c200; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div id="comp">
+        <div class="wd" id="w0" data-layout-allow-overlap>Every</div>
+        <div class="wd" id="w1" data-layout-allow-overlap>frame</div>
+        <div class="wd" id="w2" data-layout-allow-overlap>is</div>
+        <div class="wd" id="w3" data-layout-allow-overlap>code.</div>
+      </div>
+    </div>
+    <div id="label"><span class="l-name">Spatial word composition</span><span class="l-sep">·</span><span>Typography</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  // Params: a baked table of {time, rotation} per word (positions and sizes live in CSS); each word fades in and scales 0.9 -> 1
+  // over 0.3 s power3.out, 300 to 450 ms apart in spoken order; key words are ~1.8x and the last one is the yellow anchor.
+  const words = [
+    { id: "#w0", t: 0.2,  rot: 0 },
+    { id: "#w1", t: 0.55, rot: -8 },
+    { id: "#w2", t: 0.85, rot: 6 },
+    { id: "#w3", t: 1.2,  rot: 0 }
+  ];
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.3 } });
+  words.forEach(w => {
+    tl.fromTo(w.id, { opacity: 0, scale: 0.9, rotation: w.rot * 0.5, transformOrigin: "50% 50%" },
+      { opacity: 1, scale: 1, rotation: w.rot, duration: 0.3, ease: "power3.out" }, w.t);
+  });
+  // the composition settles: a slow push-in on the whole poster and the tilted words relax a degree
+  tl.fromTo("#comp", { scale: 1, transformOrigin: "50% 55%" }, { scale: 1.06, duration: 1.5, ease: "sine.inOut" }, 1.5);
+  tl.to("#w1", { rotation: -6, duration: 0.8, ease: "sine.inOut" }, 2.0);
+  tl.to("#w2", { rotation: 4, duration: 0.8, ease: "sine.inOut" }, 2.0);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

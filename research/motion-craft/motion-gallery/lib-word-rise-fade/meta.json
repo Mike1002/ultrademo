@@ -1,0 +1,23 @@
+{
+  "name": "Word rise fade",
+  "family": "Typography",
+  "purpose": [
+    "Explanation",
+    "Mood"
+  ],
+  "energy": "calm",
+  "tier": 3,
+  "runtime": "gsap",
+  "tags": [
+    "word rise",
+    "word fade",
+    "word-fade-up",
+    "word staggered fade",
+    "wordwise text reveal",
+    "type",
+    "blur",
+    "stagger",
+    "caption"
+  ],
+  "one_line": "A headline builds word by word, each word rising a little as it sheds its blur and fades in; a yellow mark and a smaller caption line follow with the same soft reveal."
+}

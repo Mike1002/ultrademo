@@ -1,0 +1,21 @@
+{
+  "name": "Quote card build",
+  "family": "Typography",
+  "purpose": [
+    "Explanation",
+    "Emphasis"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "gsap",
+  "tags": [
+    "quote card editorial build",
+    "type",
+    "quote",
+    "attribution",
+    "sequence",
+    "rise",
+    "editorial"
+  ],
+  "one_line": "A quote card builds in reading order: the big yellow quotation mark pops, two lines rise in turn, a hairline draws, then the speaker's name slides in and their avatar pops last."
+}

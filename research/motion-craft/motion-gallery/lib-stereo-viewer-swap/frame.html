@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-stereo-viewer-swap</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #171a21; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #171a21; color: #ece8df;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; overflow: hidden; }
+  .panel { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  .panel.pa { background: #2a2f3a; }
+  .panel.pb { background: #171a21; }
+  .card { position: absolute; left: 264px; top: 110px; width: 640px; height: 360px; background: #1f232c; border: 2px solid #ece8df; border-radius: 24px; }
+  .card .lab { position: absolute; left: 56px; top: 48px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #a7adbb; }
+  .card .h1 { position: absolute; left: 56px; top: 80px; font-size: 56px; font-weight: 700; line-height: 64px; white-space: nowrap; }
+  .card .sub { position: absolute; left: 56px; top: 160px; font-size: 22px; color: #a7adbb; white-space: nowrap; }
+  .card .btn { position: absolute; left: 56px; top: 240px; width: 200px; height: 60px; border-radius: 14px; background: #f2c200; border: 2px solid #ece8df;
+    font-size: 20px; font-weight: 700; line-height: 56px; text-align: center; color: #1d1c1a; }
+  .card.b .h1 { font-size: 96px; line-height: 104px; top: 74px; font-variant-numeric: tabular-nums; }
+  .card.b .sub { top: 190px; }
+  .card .av { position: absolute; top: 44px; width: 56px; height: 56px; border-radius: 50%; border: 2px solid #ece8df; background: #2a2f3a;
+    font-size: 18px; font-weight: 700; line-height: 52px; text-align: center; will-change: transform; }
+  .card .av.v1 { left: 396px; } .card .av.v2 { left: 456px; } .card .av.v3 { left: 516px; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #a7adbb; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #ece8df; font-weight: 700; }
+  #label .l-sep { color: #6d7380; }
+
+  #stage { perspective: 1600px; }
+  .win { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; overflow: hidden; will-change: transform, border-radius, opacity; }
+  .half { position: absolute; left: 70px; top: 35px; width: 1028px; height: 510px; border-radius: 128px; overflow: hidden; opacity: 0; will-change: transform, opacity; }
+  .half .panel { transform: scale(0.88); transform-origin: 0 0; }
+  #halfL { clip-path: inset(0 50% 0 0); } #halfR { clip-path: inset(0 0 0 50%); }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div class="win" id="winB" data-layout-allow-overlap><div class="panel pb" id="B" data-layout-allow-overlap data-layout-allow-overflow><div class="card b" data-layout-allow-overlap data-layout-allow-occlusion><div class="lab" data-layout-allow-overlap data-layout-allow-occlusion>This month</div><div class="h1" data-layout-allow-overlap data-layout-allow-occlusion>12,480</div><div class="sub" data-layout-allow-overlap data-layout-allow-occlusion>invites sent</div><div class="av v1" data-layout-allow-overlap data-layout-allow-occlusion>JD</div><div class="av v2" data-layout-allow-overlap data-layout-allow-occlusion>SK</div><div class="av v3" data-layout-allow-overlap data-layout-allow-occlusion>ML</div></div></div></div>
+      <div class="half" id="halfL" data-layout-allow-overlap><div class="panel pa" id="AL" data-layout-allow-overlap data-layout-allow-overflow><div class="card a" data-layout-allow-overlap data-layout-allow-occlusion><div class="lab" data-layout-allow-overlap data-layout-allow-occlusion>Orbit</div><div class="h1" data-layout-allow-overlap data-layout-allow-occlusion>Invite your team</div><div class="sub" data-layout-allow-overlap data-layout-allow-occlusion>3 seats left on this plan</div><div class="btn" data-layout-allow-overlap data-layout-allow-occlusion>Continue</div></div></div></div>
+      <div class="half" id="halfR" data-layout-allow-overlap><div class="panel pa" id="AR" data-layout-allow-overlap data-layout-allow-overflow><div class="card a" data-layout-allow-overlap data-layout-allow-occlusion><div class="lab" data-layout-allow-overlap data-layout-allow-occlusion>Orbit</div><div class="h1" data-layout-allow-overlap data-layout-allow-occlusion>Invite your team</div><div class="sub" data-layout-allow-overlap data-layout-allow-occlusion>3 seats left on this plan</div><div class="btn" data-layout-allow-overlap data-layout-allow-occlusion>Continue</div></div></div></div>
+      <div class="win" id="winA" data-layout-allow-overlap><div class="panel pa" id="A" data-layout-allow-overlap data-layout-allow-overflow><div class="card a" data-layout-allow-overlap data-layout-allow-occlusion><div class="lab" data-layout-allow-overlap data-layout-allow-occlusion>Orbit</div><div class="h1" data-layout-allow-overlap data-layout-allow-occlusion>Invite your team</div><div class="sub" data-layout-allow-overlap data-layout-allow-occlusion>3 seats left on this plan</div><div class="btn" data-layout-allow-overlap data-layout-allow-occlusion>Continue</div></div></div></div>
+    </div>
+    <div id="label"><span class="l-name">Stereo viewer swap</span><span class="l-sep">·</span><span>Transitions</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const A_HTML = "<div class=\"card a\" data-layout-allow-overlap data-layout-allow-occlusion><div class=\"lab\" data-layout-allow-overlap data-layout-allow-occlusion>Orbit</div><div class=\"h1\" data-layout-allow-overlap data-layout-allow-occlusion>Invite your team</div><div class=\"sub\" data-layout-allow-overlap data-layout-allow-occlusion>3 seats left on this plan</div><div class=\"btn\" data-layout-allow-overlap data-layout-allow-occlusion>Continue</div></div>";
+  const B_HTML = "<div class=\"card b\" data-layout-allow-overlap data-layout-allow-occlusion><div class=\"lab\" data-layout-allow-overlap data-layout-allow-occlusion>This month</div><div class=\"h1\" data-layout-allow-overlap data-layout-allow-occlusion>12,480</div><div class=\"sub\" data-layout-allow-overlap data-layout-allow-occlusion>invites sent</div><div class=\"av v1\" data-layout-allow-overlap data-layout-allow-occlusion>JD</div><div class=\"av v2\" data-layout-allow-overlap data-layout-allow-occlusion>SK</div><div class=\"av v3\" data-layout-allow-overlap data-layout-allow-occlusion>ML</div></div>";
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+  // Second beat: the three avatars on the new card pop in so the clip keeps moving after the transition.
+  function avatars(at) {
+    tl.fromTo(".av.v1", { scale: 0.4, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.5, ease: "back.out(1.8)" }, at);
+    tl.fromTo(".av.v2", { scale: 0.4, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.5, ease: "back.out(1.8)" }, at + 0.1);
+    tl.fromTo(".av.v3", { scale: 0.4, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.5, ease: "back.out(1.8)" }, at + 0.2);
+  }
+
+  // Stereo viewer swap, three beats of one paused timeline: (1) A shrinks to 0.88 and rounds to a 128 px window;
+  // (2) it is swapped for two half-window copies (clip-path halves, static 0.88 copies inside) that swing back
+  // 90 degrees about their outer edges; (3) after a dark gap B's window appears at 0.88 and grows back to full, radius to 0.
+  const T0 = 0.6;
+  tl.fromTo("#winA", { scale: 1, borderRadius: "0px", opacity: 1 }, { scale: 0.88, borderRadius: "128px", duration: 0.3, ease: "power2.out" }, T0);
+  tl.to("#winA", { opacity: 0, duration: 0.02, ease: "none" }, T0 + 0.3);
+  tl.fromTo("#halfL", { opacity: 0, rotationY: 0, transformOrigin: "0% 50%" }, { opacity: 1, duration: 0.02, ease: "none" }, T0 + 0.3);
+  tl.fromTo("#halfR", { opacity: 0, rotationY: 0, transformOrigin: "100% 50%" }, { opacity: 1, duration: 0.02, ease: "none" }, T0 + 0.3);
+  tl.to("#halfL", { rotationY: 90, duration: 0.45, ease: "power2.in" }, T0 + 0.32);
+  tl.to("#halfR", { rotationY: -90, duration: 0.45, ease: "power2.in" }, T0 + 0.32);
+  tl.to("#halfL", { opacity: 0, duration: 0.08, ease: "none" }, T0 + 0.7);
+  tl.to("#halfR", { opacity: 0, duration: 0.08, ease: "none" }, T0 + 0.7);
+  tl.fromTo("#winB", { opacity: 0, scale: 0.88, borderRadius: "128px" }, { opacity: 1, duration: 0.02, ease: "none" }, T0 + 0.9);
+  tl.to("#winB", { scale: 1, borderRadius: "0px", duration: 0.4, ease: "power2.out" }, T0 + 0.92);
+  avatars(2.2);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

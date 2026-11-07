@@ -1,0 +1,22 @@
+{
+  "name": "Map event accumulation",
+  "family": "Data",
+  "purpose": [
+    "Data evidence",
+    "Comparison"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "svg",
+  "tags": [
+    "geographic event accumulation",
+    "data",
+    "map",
+    "markers",
+    "time order",
+    "accumulate",
+    "ring pulse",
+    "count"
+  ],
+  "one_line": "On an abstract dotted map, yellow city markers pop in one after another in time order, each with a fading ring, and stay put while a running invite total and city count climb beside them."
+}

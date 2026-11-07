@@ -1,0 +1,21 @@
+{
+  "name": "Split panel handoff",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Sequence"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "gsap",
+  "tags": [
+    "type split panel handoff",
+    "transitions",
+    "title",
+    "split",
+    "clip-path",
+    "panel",
+    "scale"
+  ],
+  "one_line": "The title \"Launch day.\" splits along its middle, the top half rising and the bottom half dropping, while a yellow panel grows from the opening and takes over the stage with the month's number; its rows then settle in."
+}

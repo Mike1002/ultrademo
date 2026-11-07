@@ -1,0 +1,45 @@
+{
+  "name": "Velvet Standard",
+  "fonts": {
+    "display": "Inter",
+    "body": "Inter",
+    "mono": "Inter",
+    "label": "Inter"
+  },
+  "font_families": [
+    "Inter"
+  ],
+  "font_substitutions": {},
+  "canvas": "dark",
+  "mood": [
+    "premium",
+    "timeless"
+  ],
+  "suits": [
+    "luxury products",
+    "enterprise software",
+    "keynotes",
+    "investor decks"
+  ],
+  "direction_settings": {
+    "energy": "calm",
+    "density": "sparse",
+    "ground": "dark",
+    "depth": "flat",
+    "camera": "locked",
+    "type": "quiet",
+    "texture": "grain",
+    "colour": "mono",
+    "product_presence": "illustrated",
+    "sound": "scored",
+    "voice": "narrated"
+  },
+  "duration_s": 10,
+  "size": [
+    1280,
+    720
+  ],
+  "fps": 30,
+  "strip": "D-58 style strip: hook · project card · number · agent · close",
+  "one_line": ""
+}

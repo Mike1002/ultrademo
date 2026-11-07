@@ -1,0 +1,22 @@
+{
+  "name": "Tangent blur spin",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Attention"
+  ],
+  "energy": "high",
+  "tier": 3,
+  "runtime": "webgl",
+  "tags": [
+    "tangent motion blur spin",
+    "transitions",
+    "spin",
+    "rotate",
+    "corner",
+    "motion blur",
+    "skew",
+    "ghost trail"
+  ],
+  "one_line": "An invite card swings out of frame around its bottom-left corner, blurring and smearing along the arc, while a stats card swings up into place around the opposite corner and rocks once as it lands."
+}

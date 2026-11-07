@@ -1,0 +1,22 @@
+{
+  "name": "Linear to log transition",
+  "family": "Data",
+  "purpose": [
+    "Data evidence",
+    "Comparison"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "svg",
+  "tags": [
+    "linear-to-log substrate transition",
+    "data",
+    "chart",
+    "axis",
+    "log scale",
+    "ticks",
+    "marks",
+    "svg"
+  ],
+  "one_line": "Twelve workspace marks piled at the bottom of a linear invites axis glide up to their places on a base-10 log axis while the gridline ticks slide between the two scales and the axis title crosses over; a trend line then draws through the now evenly spread marks."
+}

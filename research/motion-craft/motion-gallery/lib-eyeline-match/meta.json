@@ -1,0 +1,21 @@
+{
+  "name": "Eyeline match",
+  "family": "Transitions",
+  "purpose": [
+    "Explanation",
+    "Sequence"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "gsap",
+  "tags": [
+    "eyeline cut",
+    "transitions",
+    "gaze",
+    "look",
+    "cut",
+    "editing grammar",
+    "avatar"
+  ],
+  "one_line": "A shape avatar's two eye dots glance up to the right, and the picture cuts to the invite card on the right side of the frame; the eyes glance left and the card follows to the left."
+}

@@ -1,0 +1,22 @@
+{
+  "name": "Sankey reflow",
+  "family": "Data",
+  "purpose": [
+    "Explanation",
+    "Comparison"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "svg",
+  "tags": [
+    "sankey value and node reflow",
+    "data",
+    "sankey",
+    "flow",
+    "reflow",
+    "node heights",
+    "ribbon widths",
+    "time-driven"
+  ],
+  "one_line": "A two-stage flow from sent to opened to joined updates its numbers: ribbon widths, node heights and the points where they meet all move together, first as more invites are opened and joined, then again as the figures settle lower."
+}

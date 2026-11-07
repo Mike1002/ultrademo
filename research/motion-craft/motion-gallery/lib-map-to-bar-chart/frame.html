@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-map-to-bar-chart</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #171a21; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #171a21; color: #ece8df;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  .lab { font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #a7adbb; white-space: nowrap; }
+  .t-m { font-size: 34px; font-weight: 700; line-height: 1.15; white-space: nowrap; }
+  .space { position: absolute; inset: 0; perspective: 1200px; }
+  #ground { position: absolute; left: 234px; top: 90px; width: 700px; height: 460px; transform-style: preserve-3d; will-change: transform; }
+  #baseline { position: absolute; left: 30px; top: 436px; width: 640px; height: 3px; background: #ece8df; }
+  .cell { position: absolute; transform-style: preserve-3d; will-change: transform; }
+  .top { position: absolute; inset: 0; clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%); will-change: transform;
+    display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: #171a21; }
+  .top.dim { color: #ece8df; }
+  .wall { position: absolute; width: 52px; height: 200px; will-change: transform; }
+  .wall.l { background: #3a4150; }
+  .wall.r { background: #262b36; }
+  #title { position: absolute; left: 0; top: 0; }
+  #sub { position: absolute; left: 0; top: 46px; }
+  #step { position: absolute; right: 0; top: 8px; text-align: right; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #a7adbb; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #ece8df; font-weight: 700; }
+  #label .l-sep { color: #6d7380; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div class="space"><div id="ground" data-layout-allow-overlap data-layout-allow-occlusion><div id="baseline" data-layout-allow-overlap data-layout-allow-occlusion></div></div></div>
+      <div class="t-m" id="title">Regions → bars</div>
+      <div class="lab" id="sub">Invites per seat by region · sorted</div>
+      <div class="lab" id="step">Tilt · rise · align</div>
+    </div>
+    <div id="label"><span class="l-name">Map to bar chart</span><span class="l-sep">·</span><span>Data</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  // Abstract hex flower of seven regions (pointy-top, circumradius 52). No real geography.
+  const R = 52, W = Math.sqrt(3) * R, HM = 200, GX = 350, GY = 210;
+  const regions = [
+    { name: "Centre", v: 0.95, dx: 0, dy: 0 }, { name: "North", v: 0.55, dx: 0, dy: -2 * 0.75 * R * 2 / 2 }, { name: "Coast", v: 0.8, dx: W / 2, dy: -1.5 * R },
+    { name: "East", v: 0.7, dx: W, dy: 0 }, { name: "South", v: 0.4, dx: W / 2, dy: 1.5 * R }, { name: "West", v: 0.3, dx: -W / 2, dy: 1.5 * R }, { name: "Hills", v: 0.5, dx: -W, dy: 0 }
+  ];
+  regions[1].dx = -W / 2; regions[1].dy = -1.5 * R;                  // North sits upper-left, Coast upper-right
+  const tone = v => v >= 0.85 ? "#f2c200" : v >= 0.6 ? "#a7adbb" : v >= 0.4 ? "#6d7380" : "#3a4150";
+  const ground = document.getElementById("ground");
+  const mark = e => { e.setAttribute("data-layout-allow-overlap", ""); e.setAttribute("data-layout-allow-occlusion", ""); return e; };
+  const cells = regions.map(rg => { const cx = GX + rg.dx, cy = GY + rg.dy;
+    const cell = mark(document.createElement("div")); cell.className = "cell"; cell.style.left = (cx - W / 2) + "px"; cell.style.top = (cy - R) + "px"; cell.style.width = W + "px"; cell.style.height = 2 * R + "px";
+    const top = mark(document.createElement("div")); top.className = "top" + (rg.v < 0.6 ? " dim" : ""); top.style.background = tone(rg.v); top.textContent = rg.name;
+    const wl = mark(document.createElement("div")); wl.className = "wall l"; wl.style.left = (W / 4 - R / 2) + "px"; wl.style.top = (1.75 * R - HM) + "px";
+    const wr = mark(document.createElement("div")); wr.className = "wall r"; wr.style.left = (3 * W / 4 - R / 2) + "px"; wr.style.top = (1.75 * R - HM) + "px";
+    cell.appendChild(wl); cell.appendChild(wr); cell.appendChild(top); ground.appendChild(cell);
+    return { ...rg, cx, cy, cell, top, wl, wr }; });
+
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power2.inOut", duration: 0.6 } });
+  // 1. Tilt: the flat map turns into a height map camera at 45 degrees (0.3 s, 600 ms).
+  tl.fromTo(ground, { rotationX: 0 }, { rotationX: 45, duration: 0.6 }, 0.3);
+  // 2. Rise: each region's walls scale up from the base and its top lifts to value * 200 (0.9 s, 600 ms).
+  cells.forEach(c => { const h = c.v * HM;
+    tl.fromTo(c.wl, { rotationX: -90, rotation: 30, scaleY: 0.001, transformOrigin: "50% 100%" }, { scaleY: h / HM, duration: 0.6, ease: "power2.out" }, 0.9);
+    tl.fromTo(c.wr, { rotationX: -90, rotation: -30, scaleY: 0.001, transformOrigin: "50% 100%" }, { scaleY: h / HM, duration: 0.6, ease: "power2.out" }, 0.9);
+    tl.fromTo(c.top, { z: 0 }, { z: h, duration: 0.6, ease: "power2.out" }, 0.9); });
+  // 3. Align: prisms slide along the ground into a row sorted by value on a baseline (1.6 s, 900 ms); colours stay.
+  const order = cells.map((c, i) => i).sort((a, b) => cells[b].v - cells[a].v);
+  tl.fromTo("#baseline", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "none" }, 1.7);
+  order.forEach((ci, rank) => { const c = cells[ci], bx = 40 + 46 + rank * 88, by = 418 - 0.75 * R;
+    tl.fromTo(c.cell, { x: 0, y: 0 }, { x: bx - c.cx, y: by - c.cy, duration: 0.9 }, 1.6); });
+  // Settle: a last nudge of the camera so the row of bars reads from a little higher.
+  tl.to(ground, { rotationX: 52, duration: 0.5 }, 2.5);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

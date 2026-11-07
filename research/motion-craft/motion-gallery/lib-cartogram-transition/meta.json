@@ -1,0 +1,22 @@
+{
+  "name": "Cartogram transition",
+  "family": "Data",
+  "purpose": [
+    "Data evidence",
+    "Comparison"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "svg",
+  "tags": [
+    "geographic cartogram rearrangement",
+    "data",
+    "map",
+    "regions",
+    "grid",
+    "tiles",
+    "cartogram",
+    "svg"
+  ],
+  "one_line": "Twelve rounded map regions slide into a grid of squares sized by how many invites each sent, their names travelling with them, then settle back into the map."
+}

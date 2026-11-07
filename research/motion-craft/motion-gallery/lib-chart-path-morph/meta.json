@@ -1,0 +1,22 @@
+{
+  "name": "Chart path morph",
+  "family": "Data",
+  "purpose": [
+    "Comparison",
+    "Data evidence"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "svg",
+  "tags": [
+    "data path reshaping",
+    "line and area shape update",
+    "data",
+    "area chart",
+    "line",
+    "morph",
+    "path",
+    "svg"
+  ],
+  "one_line": "A yellow area chart of invites per week reshapes smoothly into this quarter's numbers on the same axis, its line and dots moving with it, then morphs again into the forecast."
+}

@@ -1,0 +1,20 @@
+{
+  "name": "Arc spinner",
+  "family": "Loop & Ambient",
+  "purpose": [
+    "Feedback",
+    "Mood"
+  ],
+  "energy": "steady",
+  "tier": 2,
+  "runtime": "svg",
+  "tags": [
+    "spinner arc loader",
+    "loop",
+    "rotation",
+    "stroke-dasharray",
+    "indeterminate",
+    "waiting"
+  ],
+  "one_line": "A yellow arc spins three times around a ring with a 3 in the middle, lengthening and shortening as it goes, so it reads as work in progress with no end estimate."
+}

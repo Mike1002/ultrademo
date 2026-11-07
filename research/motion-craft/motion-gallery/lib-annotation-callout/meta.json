@@ -1,0 +1,22 @@
+{
+  "name": "Annotation callout",
+  "family": "Data",
+  "purpose": [
+    "Emphasis",
+    "Explanation"
+  ],
+  "energy": "steady",
+  "tier": 2,
+  "runtime": "gsap",
+  "tags": [
+    "chart callout",
+    "bubble pointer reveal",
+    "popover and tooltip",
+    "anchored step tooltip",
+    "data",
+    "leader line",
+    "stroke draw",
+    "annotation"
+  ],
+  "one_line": "A chart line arrives, a yellow dot marks one point, a leader line draws out from it and the annotation text fades in beside it."
+}

@@ -1,0 +1,4 @@
+# Alignment and audit for every local voice: faster-whisper on CPU, all platforms. Pinned 2026-10-11.
+faster-whisper==1.2.1
+ctranslate2==4.8.2
+av==18.1.0

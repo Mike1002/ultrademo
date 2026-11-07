@@ -1,0 +1,21 @@
+{
+  "name": "Parallax",
+  "family": "Camera",
+  "purpose": [
+    "Emphasis",
+    "Explanation"
+  ],
+  "energy": "calm",
+  "tier": 2,
+  "runtime": "gsap",
+  "tags": [
+    "layered word depth drift",
+    "2.5d parallax",
+    "multiplane",
+    "depth parallax",
+    "camera",
+    "layers",
+    "depth"
+  ],
+  "one_line": "Three layers slide left under one camera move at different speeds: a faint far number barely moves, middle blocks move more, a near yellow dot moves fastest, so flat shapes read as depth."
+}

@@ -1,0 +1,19 @@
+{
+  "name": "Ken Burns",
+  "family": "Camera",
+  "purpose": [
+    "Emphasis",
+    "Explanation"
+  ],
+  "energy": "calm",
+  "tier": 2,
+  "runtime": "gsap",
+  "tags": [
+    "ken burns effect",
+    "camera",
+    "slow zoom",
+    "pan",
+    "drift"
+  ],
+  "one_line": "A product card slowly zooms to 1.12x at a constant speed while drifting up and to the left, the classic still-image camera move."
+}

@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>cursor-click-ripple</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  /* card centred: 520x300 at (380,210) */
+  .card { position: absolute; left: 380px; top: 210px; width: 520px; height: 300px; background: #fffdf8;
+    border: 2px solid #1d1c1a; border-radius: 24px; }
+  .line { position: absolute; left: 44px; top: 56px; font-size: 34px; font-weight: 700; letter-spacing: -0.01em; }
+  .sub { position: absolute; left: 44px; top: 110px; font-size: 18px; color: #6d6a63; }
+  /* button: 200x60, centre at (380+44+100, 210+190+30) = (524, 430) */
+  .btn { position: absolute; left: 44px; top: 190px; width: 200px; height: 60px; border-radius: 14px; background: #f2c200;
+    color: #1d1c1a; font-size: 22px; font-weight: 700; display: grid; place-items: center; will-change: transform; }
+  /* ripple rings: 100x100 centred on the click point (524,430) -> left 474, top 380 */
+  .ripple { position: absolute; left: 474px; top: 380px; width: 100px; height: 100px; border-radius: 50%;
+    border: 3px solid #1d1c1a; opacity: 0; pointer-events: none; will-change: transform; }
+  /* cursor: 28x38 arrow, tip at (0,0) of the box; GSAP x/y move it. Rest position = tip on the click point. */
+  .cursor { position: absolute; left: 524px; top: 430px; width: 28px; height: 38px; z-index: 10; pointer-events: none;
+    transform-origin: 2px 2px; will-change: transform; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.25)); }
+  .cursor svg { width: 28px; height: 38px; display: block; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div class="card" id="card">
+      <div class="line">Every frame is code</div>
+      <div class="sub">Invite your team to the workspace</div>
+      <div class="btn" id="btn">Continue</div>
+    </div>
+    <div class="ripple" id="r1"></div>
+    <div class="ripple" id="r2"></div>
+    <div class="ripple" id="r3"></div>
+    <div class="cursor" id="cursor">
+      <svg viewBox="0 0 28 38"><path d="M2.5 2.5 L2.5 29.5 L9.6 23 L14.4 33.6 L19 31.6 L14.3 21.4 L23.8 21.4 Z" fill="#ffffff" stroke="#1d1c1a" stroke-width="2" stroke-linejoin="round"/></svg>
+    </div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true });
+  const MOVE_DUR = 0.7, CLICK_AT = 0.95, PRESS = 0.08, RIPPLE_AT = CLICK_AT + 0.04;
+  // Phase 1: move. Cursor starts off to the lower right, settles on the button with a tiny recoil.
+  tl.fromTo("#cursor", { x: 420, y: 230, scale: 1 }, { x: 0, y: 0, duration: MOVE_DUR, ease: "back.out(1.3)" }, 0.15);
+  // Phase 2: cursor + target depress together, yoyo back.
+  tl.to("#cursor", { scale: 0.85, duration: PRESS, ease: "power2.in", yoyo: true, repeat: 1 }, CLICK_AT);
+  tl.fromTo("#btn", { scale: 1 }, { scale: 0.95, duration: PRESS, ease: "power2.in", yoyo: true, repeat: 1, immediateRender: false }, CLICK_AT);
+  // Phase 3: three rings from the click point, staggered 0.08 s.
+  tl.set(["#r1", "#r2", "#r3"], { scale: 0, opacity: 0 }, 0);
+  tl.set(["#r1", "#r2", "#r3"], { opacity: 1 }, RIPPLE_AT);
+  tl.to(["#r1", "#r2", "#r3"], { scale: 4.5, opacity: 0, duration: 0.8, ease: "power2.out", stagger: 0.08, immediateRender: false }, RIPPLE_AT);
+  // Second, quieter click near the end so the 3 s loop never sits still.
+  tl.to("#cursor", { x: 36, y: 18, duration: 0.5, ease: "power2.inOut" }, 2.0);
+  tl.to("#cursor", { scale: 0.85, duration: PRESS, ease: "power2.in", yoyo: true, repeat: 1 }, 2.6);
+  tl.to("#btn", { scale: 0.95, duration: PRESS, ease: "power2.in", yoyo: true, repeat: 1 }, 2.6);
+  tl.set("#r1", { x: 36, y: 18, scale: 0, opacity: 1 }, 2.64);
+  tl.to("#r1", { scale: 3, opacity: 0, duration: 0.36, ease: "power2.out", immediateRender: false }, 2.64);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

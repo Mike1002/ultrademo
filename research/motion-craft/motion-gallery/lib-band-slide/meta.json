@@ -1,0 +1,19 @@
+{
+  "name": "Band slide",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Sequence"
+  ],
+  "energy": "steady",
+  "tier": 2,
+  "runtime": "gsap",
+  "tags": [
+    "band slide",
+    "transitions",
+    "bands",
+    "stagger",
+    "clip-path"
+  ],
+  "one_line": "The first scene is sliced into eight horizontal bands that slide out to the right one after another, each starting a little later than the one above, so the next scene appears line by line."
+}

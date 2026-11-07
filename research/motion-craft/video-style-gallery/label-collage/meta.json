@@ -1,0 +1,46 @@
+{
+  "name": "Label Collage",
+  "fonts": {
+    "display": "Space Mono",
+    "body": "Space Mono",
+    "mono": "Space Mono",
+    "label": "Caveat"
+  },
+  "font_families": [
+    "Caveat",
+    "Space Mono"
+  ],
+  "font_substitutions": {},
+  "canvas": "light",
+  "mood": [
+    "tactile",
+    "tender",
+    "playful"
+  ],
+  "suits": [
+    "journaling apps",
+    "personal tools",
+    "tactile brands"
+  ],
+  "direction_settings": {
+    "energy": "brisk",
+    "density": "dense",
+    "ground": "alternating",
+    "depth": "layered",
+    "camera": "locked",
+    "type": "display",
+    "texture": "grain",
+    "colour": "two-accent",
+    "product_presence": "illustrated",
+    "sound": "scored",
+    "voice": "narrated"
+  },
+  "duration_s": 10,
+  "size": [
+    1280,
+    720
+  ],
+  "fps": 30,
+  "strip": "D-58 style strip: hook · project card · number · agent · close",
+  "one_line": ""
+}

@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>counting-dynamic-scale</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  /* fixed-width counter row centred: 900x220 at (190,200) */
+  .counter-wrap { position: absolute; left: 190px; top: 200px; width: 900px; height: 220px;
+    display: flex; align-items: baseline; justify-content: center; }
+  .counter { font-variant-numeric: tabular-nums; display: inline-block; font-size: 200px; font-weight: 800;
+    letter-spacing: -0.04em; line-height: 1; transform-origin: center center; will-change: transform; }
+  .counter-suffix { display: inline-block; font-size: 120px; font-weight: 800; line-height: 1; margin-left: 12px;
+    color: #6d6a63; will-change: transform; }
+  /* label: big tracked caps on the one yellow accent */
+  .counter-label { position: absolute; left: 640px; top: 470px; width: 480px; height: 64px; margin-left: -240px;
+    display: grid; place-items: center; background: #f2c200; border-radius: 16px;
+    font-size: 28px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; will-change: transform; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div class="counter-wrap">
+      <span class="counter" id="counter">0</span><span class="counter-suffix" id="suffix">+</span>
+    </div>
+    <div class="counter-label" id="label">Teams invited</div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true });
+  // Values: TARGET 1,284; START_SCALE 0.5 (100px -> 200px); COUNT_DUR 1.6 power3.out; suffix after the count; label early.
+  const TARGET_VALUE = 1284, START_SCALE = 0.5, COUNT_DUR = 1.6, SUFFIX_DUR = 0.45, LABEL_AT = 0.3, LABEL_DUR = 0.6;
+  const counter = document.getElementById("counter");
+  const countEase = gsap.parseEase("power3.out");
+  // Count value as a pure function of timeline time; onUpdate sets text only.
+  function renderAt(t) {
+    const raw = t / COUNT_DUR;
+    const p = raw <= 0 ? 0 : raw >= 1 ? 1 : countEase(raw);
+    counter.textContent = Math.round(TARGET_VALUE * p).toLocaleString("en-US");
+  }
+  renderAt(0);
+  tl.to({ k: 0 }, { k: 1, duration: COUNT_DUR, ease: "none", onUpdate: () => renderAt(tl.time()) }, 0);
+  // Visual growth shares the count's timing and ease (scale, never font-size).
+  tl.fromTo("#counter", { scale: START_SCALE }, { scale: 1, duration: COUNT_DUR, ease: "power3.out" }, 0);
+  // Suffix slides in after the count lands.
+  tl.fromTo("#suffix", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: SUFFIX_DUR, ease: "back.out(1.7)" }, COUNT_DUR);
+  // Label arrives before the count peaks.
+  tl.fromTo("#label", { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: LABEL_DUR, ease: "power2.out" }, LABEL_AT);
+  const baseRender = tl.render;
+  tl.render = function () { const r = baseRender.apply(this, arguments); renderAt(this.time()); return r; };
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-push-transition</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; overflow: hidden; }
+  .shot { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; will-change: transform; }
+  .shot.a { background: #f6f3ec; }
+  .shot.b { background: #ece7da; }
+  .card { position: absolute; left: 324px; top: 120px; width: 520px; height: 330px; background: #fffdf8;
+    border: 2px solid #1d1c1a; border-radius: 22px; }
+  .card .h { position: absolute; left: 44px; top: 46px; font-size: 44px; font-weight: 700; letter-spacing: -0.01em; white-space: nowrap; }
+  .card .s { position: absolute; left: 44px; top: 112px; font-size: 20px; color: #6d6a63; white-space: nowrap; }
+  .card .btn { position: absolute; left: 44px; top: 204px; width: 200px; height: 60px; background: #f2c200;
+    border: 2px solid #1d1c1a; border-radius: 14px; font-size: 20px; font-weight: 700; line-height: 56px; text-align: center; }
+  .big { position: absolute; left: 0; width: 1168px; top: 150px; text-align: center; font-size: 132px; font-weight: 700;
+    font-variant-numeric: tabular-nums; letter-spacing: -0.02em; line-height: 1; will-change: transform; }
+  .big-l { position: absolute; left: 0; width: 1168px; top: 300px; text-align: center; font-size: 22px; color: #6d6a63; }
+  .names { position: absolute; left: 0; width: 1168px; top: 372px; height: 56px; display: flex; justify-content: center; gap: 24px; }
+  .name { width: 190px; height: 50px; line-height: 46px; text-align: center; border: 2px solid #1d1c1a; border-radius: 999px;
+    font-size: 20px; background: #fffdf8; will-change: transform; }
+  .lab { position: absolute; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; white-space: nowrap; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+  .name { opacity: 0; }
+  #rail { position: absolute; left: 0; top: 0; width: 2336px; height: 580px; will-change: transform; }
+  #rail .shot.b { left: 1168px; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div id="rail">
+      <section id="A" class="shot a"><div class="card"><div class="h" data-layout-allow-overlap data-layout-allow-occlusion>Invite your team</div><div class="s" data-layout-allow-overlap data-layout-allow-occlusion>Orbit · 3 seats left</div><div class="btn" data-layout-allow-overlap data-layout-allow-occlusion>Continue</div></div></section>
+      <section id="B" class="shot b" data-layout-allow-overlap><div class="big" id="big" data-layout-allow-overlap data-layout-allow-occlusion>12,480</div><div class="big-l" data-layout-allow-overlap data-layout-allow-occlusion>invites sent</div>
+        <div class="names"><div class="name" id="n1" data-layout-allow-overlap data-layout-allow-occlusion>Jamie Dalton</div><div class="name" id="n2" data-layout-allow-overlap data-layout-allow-occlusion>Sam Kim</div><div class="name" id="n3" data-layout-allow-overlap data-layout-allow-occlusion>Morgan Lee</div></div></section>
+      </div>
+    </div>
+    <div id="label"><span class="l-name">Push</span><span class="l-sep">·</span><span>Transitions</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+  // A and B sit side by side on one rail; only the rail moves, so B pushes A out by exactly one scene width.
+  tl.fromTo("#rail", { x: 0 }, { x: -1168, duration: 1.2, ease: "power2.inOut" }, 0.35);
+  // Quieter second move: the three name rows settle in one after the other.
+  tl.fromTo(".name", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.5, stagger: 0.12 }, 1.7);
+  tl.fromTo("#big", { scale: 1 }, { scale: 1.03, duration: 0.7, ease: "sine.inOut" }, 2.3);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

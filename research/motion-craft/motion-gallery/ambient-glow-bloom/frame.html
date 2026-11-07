@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>ambient-glow-bloom</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #11152a; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #11152a; color: #ece8df;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  /* glow layer behind the hero: 640x340 card at (320,190), halo inset -260px -> 1160x860 at (60,-70) */
+  .bloom-glow { position: absolute; left: 60px; top: -70px; width: 1160px; height: 860px; z-index: 1; border-radius: 50%;
+    background: radial-gradient(closest-side, rgba(242,194,0,0.85) 0%, rgba(242,194,0,0.35) 38%, rgba(242,194,0,0) 72%);
+    opacity: 0; will-change: transform, opacity; }
+  .hero { position: absolute; left: 320px; top: 190px; width: 640px; height: 340px; z-index: 2; background: #1b2142; border: 2px solid #ece8df; border-radius: 24px;
+    overflow: hidden; will-change: transform; }
+  .line { position: absolute; left: 48px; top: 56px; font-size: 52px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.05; }
+  .num { position: absolute; left: 48px; top: 128px; font-size: 96px; font-weight: 800; letter-spacing: -0.03em; line-height: 1; }
+  .btn { position: absolute; left: 392px; top: 232px; width: 200px; height: 60px; border-radius: 14px; background: #f2c200; color: #1d1c1a;
+    font-size: 22px; font-weight: 700; display: grid; place-items: center; }
+  /* traveling sweep: a narrow raked highlight band, 20% of the surface, clipped by the hero's overflow */
+  .sweep { position: absolute; left: 0; top: -60px; width: 140px; height: 460px; z-index: 3; opacity: 0; pointer-events: none;
+    background: linear-gradient(90deg, rgba(236,232,223,0) 0%, rgba(236,232,223,0.9) 50%, rgba(236,232,223,0) 100%); will-change: transform; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div class="bloom-glow" id="bloom-glow"></div>
+    <div class="hero" id="hero-card">
+      <div class="line">Every frame is code</div>
+      <div class="num">1,284</div>
+      <div class="btn">Continue</div>
+      <div class="sweep" id="sweep"></div>
+    </div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true });
+  const GLOW_PEAK_OPACITY = 0.30, GLOW_START_SCALE = 0.84, BLOOM_START = 0.2, BLOOM_DUR = 0.9;
+  const OPACITY_AMP = 0.04, SCALE_AMP = 0.02, BREATHE_PERIOD = 2.6;
+  // Hero settles on the same window the glow blooms, so both resolve as ONE beat ("powering on").
+  tl.fromTo("#hero-card", { opacity: 0, scale: 0.96, y: 18 }, { opacity: 1, scale: 1, y: 0, duration: BLOOM_DUR, ease: "power2.out" }, BLOOM_START);
+  // Form A: hero bloom. Grow into place, never shrink; peak well under the 0.45 ceiling.
+  const glow = document.getElementById("bloom-glow");
+  const breathe = { p: 0 }, bloom = { k: 0 };
+  const bloomEase = gsap.parseEase("power2.out");
+  // One writer for the glow: bloom-in state composed with the bounded breathe (sin(0)=0 at the hand-off).
+  function writeGlow() {
+    const k = bloomEase(bloom.k);
+    const s = Math.sin(breathe.p);
+    const op = GLOW_PEAK_OPACITY * k + s * OPACITY_AMP;
+    const sc = GLOW_START_SCALE + (1 - GLOW_START_SCALE) * k + s * SCALE_AMP;
+    glow.style.opacity = String(Math.max(0, op));
+    glow.style.transform = `scale(${sc})`;
+  }
+  writeGlow();
+  tl.fromTo(bloom, { k: 0 }, { k: 1, duration: BLOOM_DUR, ease: "none", onUpdate: writeGlow }, BLOOM_START);
+  // Bounded breathe during the hold: a finite phase tween, not a yoyo loop.
+  const BREATHE_START = BLOOM_START + BLOOM_DUR, BREATHE_DUR = 3 - BREATHE_START;
+  tl.fromTo(breathe, { p: 0 }, { p: Math.PI * 2 * (BREATHE_DUR / BREATHE_PERIOD), duration: BREATHE_DUR, ease: "none", onUpdate: writeGlow }, BREATHE_START);
+  // Form B: one traveling sweep across the card surface, off-surface to off-surface, constant glide, then fades to 0 as it clears.
+  const SWEEP_START = 1.5, SWEEP_DUR = 1.1, SWEEP_PEAK_OPACITY = 0.22;
+  tl.fromTo("#sweep", { x: -160, rotation: 14 }, { x: 700, rotation: 14, duration: SWEEP_DUR, ease: "none" }, SWEEP_START);
+  tl.fromTo("#sweep", { opacity: 0 }, { opacity: SWEEP_PEAK_OPACITY, duration: 0.3, ease: "power1.out" }, SWEEP_START);
+  tl.to("#sweep", { opacity: 0, duration: 0.3, ease: "power1.in" }, SWEEP_START + SWEEP_DUR - 0.3);
+  const baseRender = tl.render; tl.render = function () { const r = baseRender.apply(this, arguments); writeGlow(); return r; };
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

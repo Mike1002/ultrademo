@@ -1,0 +1,20 @@
+{
+  "name": "Jump cut",
+  "family": "Transitions",
+  "purpose": [
+    "Sequence",
+    "Attention"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "gsap",
+  "tags": [
+    "jump cut",
+    "transitions",
+    "cut",
+    "steps",
+    "state",
+    "sequence"
+  ],
+  "one_line": "Inside the same framing a member list jumps from one row to two to three with no motion between, the cursor landing somewhere new on each cut, then the seats-left tag flips from three to zero and the frame jumps once more."
+}

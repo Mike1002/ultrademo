@@ -1,0 +1,21 @@
+{
+  "name": "Fisheye lens",
+  "family": "Data",
+  "purpose": [
+    "Explanation",
+    "Sequence"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "svg",
+  "tags": [
+    "fisheye chart lens",
+    "data",
+    "lens",
+    "focus",
+    "distortion",
+    "bars",
+    "svg"
+  ],
+  "one_line": "A fisheye focus sweeps across twenty thin daily bars: bars and day ticks near the focus widen and spread while the rest squeeze together, all inside the same chart width, the focused bar yellow with its value."
+}

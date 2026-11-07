@@ -1,0 +1,20 @@
+{
+  "name": "Progressive disclosure",
+  "family": "Explainer",
+  "purpose": [
+    "Explanation",
+    "Sequence"
+  ],
+  "energy": "steady",
+  "tier": 2,
+  "runtime": "gsap",
+  "tags": [
+    "stepwise reveal",
+    "agent status theater",
+    "multi step loader",
+    "explainer",
+    "stages",
+    "dim"
+  ],
+  "one_line": "Three stages, Draft, Review and Live, light up one after another with hairline arrows drawing between them, each earlier stage dimming as the next becomes active."
+}

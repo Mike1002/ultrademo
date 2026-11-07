@@ -1,0 +1,20 @@
+{
+  "name": "Pulse",
+  "family": "Emphasis",
+  "purpose": [
+    "Attention",
+    "Emphasis"
+  ],
+  "energy": "steady",
+  "tier": 2,
+  "runtime": "css",
+  "tags": [
+    "heartbeat",
+    "scale and color indication",
+    "indicate",
+    "emphasis",
+    "scale beat",
+    "button"
+  ],
+  "one_line": "A yellow Continue button beats three times, growing to 1.05 and settling back in place while a soft ring spreads from it; nothing else moves."
+}

@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-map-route-animation</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  #map { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  #map text { font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .blob { fill: url(#dots); stroke: #e3ded2; stroke-width: 2; }
+  .route-ghost { fill: none; stroke: #e3ded2; stroke-width: 4; stroke-linecap: round; }
+  .route { fill: none; stroke: #1d1c1a; stroke-width: 4; stroke-linecap: round; }
+  .pin { fill: #fffdf8; stroke: #1d1c1a; stroke-width: 3; }
+  .pulse { fill: none; stroke: #1d1c1a; stroke-width: 2; opacity: 0; }
+  .marker { fill: #f2c200; stroke: #1d1c1a; stroke-width: 3; }
+  .name { font-size: 20px; font-weight: 600; fill: #1d1c1a; }
+  .lab { font-size: 13px; letter-spacing: .06em; text-transform: uppercase; fill: #6d6a63; }
+  .heading { position: absolute; left: 32px; top: 20px; font-size: 34px; font-weight: 700; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div class="heading">Jamie → Sam → Morgan</div>
+      <svg id="map" viewBox="0 0 1168 580" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <pattern id="dots" x="0" y="0" width="16" height="16" patternUnits="userSpaceOnUse">
+            <circle cx="8" cy="8" r="2" fill="#cfcabd"/>
+          </pattern>
+        </defs>
+        <path class="blob" d="M250 90 C420 50 640 70 820 120 C1000 170 1120 300 1060 420 C1000 530 780 560 560 540 C340 520 160 470 110 360 C60 250 110 120 250 90 Z"/>
+        <path id="ghost" class="route-ghost" d="M200 430 C300 220 420 200 560 300 C700 400 820 440 980 180"/>
+        <path id="route" class="route" d="M200 430 C300 220 420 200 560 300 C700 400 820 440 980 180"/>
+        <circle id="pulseMid" class="pulse" r="10"/>
+        <circle id="pulseEnd" class="pulse" cx="980" cy="180" r="10"/>
+        <circle class="pin" cx="200" cy="430" r="9"/>
+        <circle id="pinMid" class="pin" r="9"/>
+        <circle class="pin" cx="980" cy="180" r="9"/>
+        <text class="name" x="200" y="475" text-anchor="middle">Jamie Dalton</text>
+        <text id="nameMid" class="name" text-anchor="middle">Sam Kim</text>
+        <text class="name" x="980" y="150" text-anchor="middle">Morgan Lee</text>
+        <text class="lab" x="200" y="500" text-anchor="middle">Start</text>
+        <text class="lab" x="980" y="125" text-anchor="middle">Arrival</text>
+        <circle id="marker" class="marker" cx="200" cy="430" r="11"/>
+      </svg>
+    </div>
+    <div id="label"><span class="l-name">Map route animation</span><span class="l-sep">·</span><span>Data</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const route = document.getElementById("route"), marker = document.getElementById("marker");
+  const L = route.getTotalLength();
+  // The middle pin sits exactly half way along the route (measured once at build time).
+  const mid = route.getPointAtLength(L * 0.5);
+  document.getElementById("pinMid").setAttribute("cx", mid.x); document.getElementById("pinMid").setAttribute("cy", mid.y);
+  document.getElementById("pulseMid").setAttribute("cx", mid.x); document.getElementById("pulseMid").setAttribute("cy", mid.y);
+  const nm = document.getElementById("nameMid"); nm.setAttribute("x", mid.x); nm.setAttribute("y", mid.y + 46);
+  const T0 = 0.3, DUR = 2.0; // linear traversal, 2000 ms
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "none", duration: 0.6 } });
+  // Route draws by dash offset in step with the marker; the dash boundary is parked mid-gap so frame 0 shows no cap dot.
+  route.setAttribute("stroke-dasharray", L + " " + (L + 20));
+  tl.fromTo(route, { attr: { "stroke-dashoffset": L + 10 } }, { attr: { "stroke-dashoffset": 0 }, duration: DUR, ease: "none" }, T0);
+  // Arrival pulses: one when the marker passes Sam, one 300 ms at Morgan.
+  [["#pulseMid", T0 + DUR * 0.5], ["#pulseEnd", T0 + DUR]].forEach(([sel, at]) => {
+    tl.fromTo(sel, { opacity: 0 }, { opacity: 0.8, duration: 0.04 }, at);
+    tl.fromTo(sel, { opacity: 0.8 }, { opacity: 0, duration: 0.36, immediateRender: false }, at + 0.04);
+    tl.fromTo(sel, { attr: { r: 10 } }, { attr: { r: 40 }, duration: 0.4, ease: "power2.out" }, at);
+  });
+  tl.fromTo("#marker", { attr: { r: 11 } }, { attr: { r: 16 }, duration: 0.15, ease: "power2.out", yoyo: true, repeat: 1 }, T0 + DUR);
+  // The marker position is a pure function of time.
+  function renderAt(t) {
+    const k = Math.max(0, Math.min(1, (t - T0) / DUR));
+    const q = route.getPointAtLength(k * L);
+    marker.setAttribute("cx", q.x); marker.setAttribute("cy", q.y);
+  }
+  renderAt(0);
+  tl.to({ k: 0 }, { k: 1, duration: 3, ease: "none", onUpdate: () => renderAt(tl.time()) }, 0);
+  const baseRender = tl.render; tl.render = function () { const r = baseRender.apply(this, arguments); renderAt(this.time()); return r; };
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

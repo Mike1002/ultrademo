@@ -1,0 +1,22 @@
+{
+  "name": "Cutaway",
+  "family": "Transitions",
+  "purpose": [
+    "Explanation",
+    "Mood"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "gsap",
+  "tags": [
+    "cutaway shot",
+    "humor reaction insert",
+    "transitions",
+    "insert",
+    "close-up",
+    "hard cut",
+    "editing grammar",
+    "cursor"
+  ],
+  "one_line": "A cursor heads for the Continue button on an invite card, the picture cuts to a close-up of the press for a moment, and cuts back to find the action advanced to the stats card."
+}

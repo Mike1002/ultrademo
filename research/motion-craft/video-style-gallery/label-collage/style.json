@@ -1,0 +1,128 @@
+{
+  "id": "label-collage",
+  "name": "Label Collage",
+  "canvas": "light",
+  "mood": [
+    "tactile",
+    "tender",
+    "playful"
+  ],
+  "suits": [
+    "journaling apps",
+    "personal tools",
+    "tactile brands"
+  ],
+  "palette": {
+    "bg": "#ece3cd",
+    "bg_alt": "#34497f",
+    "surface": "#efe3c8",
+    "surface_2": "#e2d6b8",
+    "ink": "#263a6c",
+    "muted": "#5c6a8f",
+    "line": "rgba(38,58,108,0.3)",
+    "accent": "#e5735b",
+    "accent_2": "#263a6c",
+    "on_accent": "#e8ebf1",
+    "shadow": "rgba(0,0,0,0.2)",
+    "button_bg": "#263a6c",
+    "button_ink": "#e8ebf1",
+    "pill_bg": "#263a6c",
+    "pill_ink": "#e8ebf1",
+    "pill_dot": "#e5735b",
+    "thumb": "#e2d6b8",
+    "term_bg": "#26386a",
+    "term_ink": "#eef0f6",
+    "term_muted": "#9aa6c8",
+    "term_line": "#26386a",
+    "term_prompt": "#e5735b",
+    "term_ok": "#e5735b"
+  },
+  "type": {
+    "display": {
+      "family": "Space Mono",
+      "weight": 700,
+      "hook_px": 70,
+      "stat_px": 200,
+      "mark_px": 120,
+      "transform": "uppercase",
+      "tracking": "0.04em",
+      "line_height": "1.1",
+      "style": "normal",
+      "generic": "sans",
+      "card_title_px": 22,
+      "card_title_tracking": "0.04em"
+    },
+    "body": {
+      "family": "Space Mono",
+      "weight": 400,
+      "generic": "sans"
+    },
+    "mono": {
+      "family": "Space Mono",
+      "weight": 400
+    },
+    "label": {
+      "family": "Caveat",
+      "weight": 600,
+      "transform": "none",
+      "tracking": "0",
+      "generic": "sans",
+      "px": 22
+    }
+  },
+  "easing": {
+    "entry": "back.out(2.2)",
+    "exit": "power2.in",
+    "ambient": "none",
+    "pop": "back.out(2.2)",
+    "counter": "power2.out",
+    "wipe": null
+  },
+  "rhythm": {
+    "energy": "brisk",
+    "entrance": 0.35,
+    "stagger": 0.1
+  },
+  "transition": {
+    "kind": "cut",
+    "duration": 0,
+    "flash": false,
+    "band": false
+  },
+  "text_animation": "slam",
+  "accent_word": "script",
+  "layout": "center",
+  "atmosphere": [
+    "grain:0.16"
+  ],
+  "shape": {
+    "radius_card": 2,
+    "radius_button": 2,
+    "radius_pill": 2,
+    "border": "none",
+    "border_px": 0,
+    "shadow": "hard",
+    "rule_px": 6,
+    "hard_offset": 4
+  },
+  "stat_colour": "accent",
+  "direction_settings": {
+    "energy": "brisk",
+    "density": "dense",
+    "ground": "alternating",
+    "depth": "layered",
+    "camera": "locked",
+    "type": "display",
+    "texture": "grain",
+    "colour": "two-accent",
+    "product_presence": "illustrated",
+    "sound": "scored",
+    "voice": "narrated"
+  },
+  "notes": "Cream paper and indigo night paper cut against each other, Space Mono label-tape type slapping in with back.out(2.2), coral Caveat handwriting for the accent word, grain over everything.",
+  "transitions": {
+    "between_moments": "cut",
+    "duration_s": 0,
+    "text": "slam"
+  }
+}

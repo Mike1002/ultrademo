@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-drawer-slide</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; overflow: hidden; }
+  #page { position: absolute; left: 84px; top: 30px; width: 1000px; height: 520px; background: #fffdf8; border: 2px solid #1d1c1a; border-radius: 24px; will-change: transform; }
+  #page .lab { position: absolute; left: 48px; top: 40px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  #page h1 { position: absolute; left: 48px; top: 66px; font-size: 44px; font-weight: 700; line-height: 52px; white-space: nowrap; }
+  #page .sub { position: absolute; left: 48px; top: 128px; font-size: 20px; color: #6d6a63; white-space: nowrap; }
+  #gear { position: absolute; right: 48px; top: 48px; width: 150px; height: 48px; border-radius: 12px; border: 2px solid #1d1c1a; background: #fffdf8;
+    font-size: 17px; font-weight: 700; line-height: 44px; text-align: center; }
+  .row { position: absolute; left: 48px; width: 904px; height: 72px; border-top: 2px solid #e3ded2; }
+  .row .av { position: absolute; left: 0; top: 16px; width: 40px; height: 40px; border-radius: 50%; background: #ece7da; border: 2px solid #1d1c1a; }
+  .row .nm { position: absolute; left: 60px; top: 22px; font-size: 22px; font-weight: 600; white-space: nowrap; }
+  .row .rl { position: absolute; right: 0; top: 24px; font-size: 17px; color: #6d6a63; white-space: nowrap; }
+  #btn { position: absolute; left: 48px; top: 430px; width: 200px; height: 60px; border-radius: 14px; background: #f2c200; border: 2px solid #1d1c1a;
+    font-size: 20px; font-weight: 700; line-height: 56px; text-align: center; }
+  #dim { position: absolute; left: 84px; top: 30px; width: 1000px; height: 520px; border-radius: 24px; background: #1d1c1a; opacity: 0; pointer-events: none; }
+  #drawer { position: absolute; left: 684px; top: 30px; width: 400px; height: 520px; background: #fffdf8; border: 2px solid #1d1c1a; border-radius: 24px;
+    box-shadow: -16px 0 40px rgba(29,28,26,0.18); will-change: transform; }
+  #drawer h2 { position: absolute; left: 40px; top: 40px; font-size: 32px; font-weight: 700; }
+  #drawer .x { position: absolute; right: 36px; top: 40px; width: 40px; height: 40px; border-radius: 50%; border: 2px solid #1d1c1a; font-size: 22px; line-height: 36px; text-align: center; font-weight: 700; }
+  .opt { position: absolute; left: 40px; width: 320px; height: 76px; border-top: 2px solid #e3ded2; }
+  .opt .t { position: absolute; left: 0; top: 16px; font-size: 19px; font-weight: 600; white-space: nowrap; }
+  .opt .h { position: absolute; left: 0; top: 44px; font-size: 14px; color: #6d6a63; white-space: nowrap; }
+  .sw { position: absolute; right: 0; top: 20px; width: 64px; height: 36px; }
+  .track { position: absolute; left: 0; top: 0; width: 64px; height: 36px; border-radius: 18px; background: #f2c200; border: 2px solid #1d1c1a; }
+  .track.off { background: #e3ded2; }
+  .thumb { position: absolute; left: 3px; top: 3px; width: 30px; height: 30px; border-radius: 50%; background: #fffdf8; border: 2px solid #1d1c1a; will-change: transform; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div id="page">
+        <div class="lab" data-layout-allow-occlusion>Orbit</div>
+        <h1 data-layout-allow-occlusion>Invite your team</h1>
+        <div class="sub" data-layout-allow-occlusion>3 seats left on this plan</div>
+        <div id="gear" data-layout-allow-occlusion>Settings</div>
+        <div class="row" style="top:200px"><div class="av"></div><div class="nm" data-layout-allow-occlusion>Jamie Dalton</div><div class="rl" data-layout-allow-occlusion>Owner</div></div>
+        <div class="row" style="top:272px"><div class="av"></div><div class="nm" data-layout-allow-occlusion>Sam Kim</div><div class="rl" data-layout-allow-occlusion>Admin</div></div>
+        <div class="row" style="top:344px"><div class="av"></div><div class="nm" data-layout-allow-occlusion>Morgan Lee</div><div class="rl" data-layout-allow-occlusion>Member</div></div>
+        <div id="btn" data-layout-allow-occlusion>Continue</div>
+      </div>
+      <div id="dim" data-layout-allow-overlap></div>
+      <div id="drawer" data-layout-allow-overlap data-layout-allow-overflow>
+        <h2>Settings</h2><div class="x">×</div>
+        <div class="opt" style="top:110px"><div class="t">Allow invites</div><div class="h">Members can invite others</div>
+          <div class="sw"><div class="track" id="tr1"></div><div class="thumb" id="th1"></div></div></div>
+        <div class="opt" style="top:186px"><div class="t">Notify on join</div><div class="h">Email when a seat is taken</div>
+          <div class="sw"><div class="track off" id="tr2"></div><div class="thumb" id="th2"></div></div></div>
+        <div class="opt" style="top:262px"><div class="t">Require approval</div><div class="h">Admins confirm each invite</div>
+          <div class="sw"><div class="track off" id="tr3"></div><div class="thumb" id="th3"></div></div></div>
+      </div>
+    </div>
+    <div id="label"><span class="l-name">Drawer slide</span><span class="l-sep">·</span><span>UI Demo</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.45 } });
+  // Params: drawer enters in 450 ms with back.out(1.4) (about 8% overshoot), the page behind recedes to 0.96 and dims to 0.35; closes in 400 ms.
+  tl.fromTo("#drawer", { x: 460 }, { x: 460, duration: 0.01, ease: "none" }, 0);
+  tl.fromTo("#page", { scale: 1, transformOrigin: "50% 50%" }, { scale: 1, duration: 0.01, ease: "none" }, 0);
+  tl.fromTo("#dim", { opacity: 0 }, { opacity: 0, duration: 0.01, ease: "none" }, 0);
+  tl.fromTo("#th1", { x: 28 }, { x: 28, duration: 0.01, ease: "none" }, 0);
+  tl.fromTo("#th2", { x: 0 }, { x: 0, duration: 0.01, ease: "none" }, 0);
+  tl.fromTo("#tr2", { backgroundColor: "#e3ded2" }, { backgroundColor: "#e3ded2", duration: 0.01, ease: "none" }, 0);
+  // Open at 0.4 s.
+  tl.to("#drawer", { x: 0, duration: 0.45, ease: "back.out(1.4)" }, 0.4);
+  tl.to("#page", { scale: 0.96, duration: 0.45, ease: "power3.out" }, 0.4);
+  tl.to("#dim", { opacity: 0.35, duration: 0.25, ease: "none" }, 0.4);
+  // A switch flips inside the drawer while it is open.
+  tl.to("#th2", { x: 30, duration: 0.28, ease: "power3.out" }, 1.45);
+  tl.to("#th2", { x: 28, duration: 0.12, ease: "power2.inOut" }, 1.73);
+  tl.to("#tr2", { backgroundColor: "#f2c200", duration: 0.2, ease: "none" }, 1.45);
+  // Close at 2.15 s: the drawer leaves to the right and the page returns.
+  tl.to("#drawer", { x: 460, duration: 0.4, ease: "power3.in" }, 2.15);
+  tl.to("#page", { scale: 1, duration: 0.45, ease: "power3.out" }, 2.3);
+  tl.to("#dim", { opacity: 0, duration: 0.3, ease: "none" }, 2.3);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

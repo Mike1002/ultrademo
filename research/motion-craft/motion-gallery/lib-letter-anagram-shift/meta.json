@@ -1,0 +1,21 @@
+{
+  "name": "Letter anagram shift",
+  "family": "Typography",
+  "purpose": [
+    "Explanation",
+    "Transition"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "gsap",
+  "tags": [
+    "letter shuffle reassembly",
+    "type",
+    "travel",
+    "initials",
+    "list",
+    "reassemble",
+    "continuity"
+  ],
+  "one_line": "The five letters of a big word travel down and shrink into place as the initials of five list items, the rest of each word fades in after its letter, and a yellow bar underlines one item."
+}

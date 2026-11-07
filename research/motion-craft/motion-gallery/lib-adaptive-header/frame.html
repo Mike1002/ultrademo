@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-adaptive-header</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  #panel { position: absolute; left: 184px; top: 20px; width: 800px; height: 540px; background: #fffdf8; border: 2px solid #1d1c1a; border-radius: 24px; overflow: hidden; }
+  #list { position: absolute; left: 0; top: 96px; width: 796px; will-change: transform; }
+  .sec { position: absolute; left: 40px; height: 44px; line-height: 44px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  .row { position: absolute; left: 40px; width: 716px; height: 72px; border-bottom: 2px solid #e3ded2; }
+  .row .av { position: absolute; left: 0; top: 16px; width: 40px; height: 40px; border-radius: 50%; background: #ece7da; border: 2px solid #1d1c1a; }
+  .row .av.open { background: #fffdf8; border-style: dashed; }
+  .row .nm { position: absolute; left: 60px; top: 14px; font-size: 20px; font-weight: 600; white-space: nowrap; }
+  .row .rl { position: absolute; left: 60px; top: 42px; font-size: 14px; color: #6d6a63; white-space: nowrap; }
+  .row .tag { position: absolute; right: 0; top: 22px; height: 28px; line-height: 24px; padding: 0 12px; border-radius: 14px; border: 2px solid #e3ded2; font-size: 13px; color: #6d6a63; }
+  #hdr { position: absolute; left: 0; top: 0; width: 796px; height: 140px; background: #fffdf8; border-bottom: 2px solid #1d1c1a; will-change: transform; }
+  #hdr .lab { position: absolute; left: 40px; top: 16px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  #hdr .btn { position: absolute; right: 40px; top: 8px; width: 120px; height: 32px; border-radius: 10px; background: #f2c200; border: 2px solid #1d1c1a;
+    font-size: 14px; font-weight: 700; line-height: 28px; text-align: center; }
+  #hdr h1 { position: absolute; left: 40px; top: 52px; font-size: 32px; font-weight: 700; line-height: 40px; white-space: nowrap; }
+  #hdr .cnt { position: absolute; left: 40px; top: 100px; font-size: 16px; color: #6d6a63; white-space: nowrap; }
+  #track { position: absolute; left: 776px; top: 148px; width: 8px; height: 380px; border-radius: 4px; background: #ece7da; }
+  #thumb { position: absolute; left: 776px; top: 148px; width: 8px; height: 200px; border-radius: 4px; background: #1d1c1a; will-change: transform; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div id="panel">
+        <div id="list" data-layout-allow-overlap data-layout-allow-overflow>
+          <div class="sec" style="top:60px" data-layout-allow-overlap data-layout-allow-occlusion>Members</div>
+          <div class="row" style="top:104px" data-layout-allow-overlap data-layout-allow-occlusion><div class="av"></div><div class="nm" data-layout-allow-overlap data-layout-allow-occlusion>Jamie Dalton</div><div class="rl" data-layout-allow-overlap data-layout-allow-occlusion>Owner</div><div class="tag" data-layout-allow-overlap data-layout-allow-occlusion>Active</div></div>
+          <div class="row" style="top:176px" data-layout-allow-overlap data-layout-allow-occlusion><div class="av"></div><div class="nm" data-layout-allow-overlap data-layout-allow-occlusion>Sam Kim</div><div class="rl" data-layout-allow-overlap data-layout-allow-occlusion>Admin</div><div class="tag" data-layout-allow-overlap data-layout-allow-occlusion>Active</div></div>
+          <div class="row" style="top:248px" data-layout-allow-overlap data-layout-allow-occlusion><div class="av"></div><div class="nm" data-layout-allow-overlap data-layout-allow-occlusion>Morgan Lee</div><div class="rl" data-layout-allow-overlap data-layout-allow-occlusion>Member</div><div class="tag" data-layout-allow-overlap data-layout-allow-occlusion>Active</div></div>
+          <div class="sec" style="top:332px" data-layout-allow-overlap data-layout-allow-occlusion>Open seats · 3 left</div>
+          <div class="row" style="top:376px" data-layout-allow-overlap data-layout-allow-occlusion><div class="av open"></div><div class="nm" data-layout-allow-overlap data-layout-allow-occlusion>Open seat</div><div class="rl" data-layout-allow-overlap data-layout-allow-occlusion>Invite a teammate</div><div class="tag" data-layout-allow-overlap data-layout-allow-occlusion>Free</div></div>
+          <div class="row" style="top:448px" data-layout-allow-overlap data-layout-allow-occlusion><div class="av open"></div><div class="nm" data-layout-allow-overlap data-layout-allow-occlusion>Open seat</div><div class="rl" data-layout-allow-overlap data-layout-allow-occlusion>Invite a teammate</div><div class="tag" data-layout-allow-overlap data-layout-allow-occlusion>Free</div></div>
+          <div class="row" style="top:520px" data-layout-allow-overlap data-layout-allow-occlusion><div class="av open"></div><div class="nm" data-layout-allow-overlap data-layout-allow-occlusion>Open seat</div><div class="rl" data-layout-allow-overlap data-layout-allow-occlusion>Invite a teammate</div><div class="tag" data-layout-allow-overlap data-layout-allow-occlusion>Free</div></div>
+          <div class="sec" style="top:604px" data-layout-allow-overlap data-layout-allow-occlusion>Activity</div>
+          <div class="row" style="top:648px" data-layout-allow-overlap data-layout-allow-occlusion><div class="av"></div><div class="nm" data-layout-allow-overlap data-layout-allow-occlusion>12,480 invites sent</div><div class="rl" data-layout-allow-overlap data-layout-allow-occlusion>This month</div></div>
+          <div class="row" style="top:720px" data-layout-allow-overlap data-layout-allow-occlusion><div class="av"></div><div class="nm" data-layout-allow-overlap data-layout-allow-occlusion>Jamie Dalton invited Sam Kim</div><div class="rl" data-layout-allow-overlap data-layout-allow-occlusion>2 days ago</div></div>
+        </div>
+        <div id="hdr" data-layout-allow-overlap data-layout-allow-overflow>
+          <div class="lab" data-layout-allow-overlap data-layout-allow-occlusion>Orbit · Workspace</div>
+          <div class="btn" data-layout-allow-overlap data-layout-allow-occlusion>Invite</div>
+          <h1 data-layout-allow-overlap data-layout-allow-occlusion>Members</h1>
+          <div class="cnt" data-layout-allow-overlap data-layout-allow-occlusion>3 members · 3 seats left</div>
+        </div>
+        <div id="track"></div>
+        <div id="thumb" data-layout-allow-overlap data-layout-allow-occlusion></div>
+      </div>
+    </div>
+    <div id="label"><span class="l-name">Adaptive header</span><span class="l-sep">·</span><span>UI Demo</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power2.out", duration: 0.3 } });
+  // Params: header move 0.3 s power2.out; direction threshold 8 px (the header reacts a beat after the list starts moving).
+  // Header rests at y 0 (140 px tall). Scrolling down hides it (y -144). Scrolling back up returns it compact
+  // (y -44: the workspace row stays off-screen, the title row shows). Reaching the top returns it in full.
+  const K = 180 / 320; // scrollbar thumb travel per px of list travel
+  // Scroll down: the list travels 320 px up; the header leaves once the list has passed the threshold.
+  tl.fromTo("#list", { y: 0 }, { y: -320, duration: 0.7, ease: "power2.out" }, 0.25);
+  tl.fromTo("#thumb", { y: 0 }, { y: 320 * K, duration: 0.7, ease: "power2.out" }, 0.25);
+  tl.fromTo("#hdr", { y: 0 }, { y: -144, duration: 0.3, ease: "power2.out" }, 0.33);
+  // Direction change: a short scroll up brings the header back compact.
+  tl.to("#list", { y: -200, duration: 0.5, ease: "power2.out" }, 1.0);
+  tl.to("#thumb", { y: 200 * K, duration: 0.5, ease: "power2.out" }, 1.0);
+  tl.to("#hdr", { y: -44, duration: 0.3, ease: "power2.out" }, 1.06);
+  // Back to the top: the list settles at 0 and the header grows to its full height.
+  tl.to("#list", { y: 0, duration: 0.55, ease: "power2.out" }, 1.95);
+  tl.to("#thumb", { y: 0, duration: 0.55, ease: "power2.out" }, 1.95);
+  tl.to("#hdr", { y: 0, duration: 0.3, ease: "power2.out" }, 2.25);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

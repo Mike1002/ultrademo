@@ -1,0 +1,22 @@
+{
+  "name": "Edge trace transition",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Explanation"
+  ],
+  "energy": "calm",
+  "tier": 3,
+  "runtime": "webgl",
+  "tags": [
+    "find edges",
+    "transitions",
+    "outline",
+    "line drawing",
+    "edges",
+    "blueprint",
+    "sketch",
+    "crossfade"
+  ],
+  "one_line": "The surfaces of an invite card fade away until only its ink outlines remain as a line drawing on white paper; the drawing holds, becomes the outline of a stats card, and that card fills back in."
+}

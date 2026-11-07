@@ -1,0 +1,20 @@
+{
+  "name": "Sankey ribbon growth",
+  "family": "Data",
+  "purpose": [
+    "Explanation",
+    "Sequence"
+  ],
+  "energy": "steady",
+  "tier": 2,
+  "runtime": "svg",
+  "tags": [
+    "sankey ribbon growth",
+    "data",
+    "clip-path reveal",
+    "flow",
+    "stage by stage",
+    "svg attr"
+  ],
+  "one_line": "Two flow ribbons, one ink and one yellow, grow from the source column to the middle nodes and then on to the destination, revealing the split and the merge one stage at a time."
+}

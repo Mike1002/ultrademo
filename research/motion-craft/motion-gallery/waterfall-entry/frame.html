@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>waterfall-entry</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; overflow: hidden; }
+  /* headline row: words as inline-block, start opacity 0; GSAP owns y */
+  .headline { position: absolute; left: 120px; top: 250px; width: 1040px; font-size: 96px; font-weight: 800; letter-spacing: -0.03em;
+    line-height: 1.1; white-space: nowrap; }
+  .headline .w { display: inline-block; opacity: 0; will-change: transform; margin-right: 0.22em; }
+  .headline .frag { display: inline-block; opacity: 0; will-change: transform; }
+  .headline .dot { display: inline-block; opacity: 0; will-change: transform; color: #f2c200; }
+  /* second cascade: three stat chips, same direction (from below) */
+  .chips { position: absolute; left: 120px; top: 420px; white-space: nowrap; }
+  .chip { display: inline-block; opacity: 0; will-change: transform; height: 64px; line-height: 60px; padding: 0 28px; margin-right: 20px;
+    background: #fffdf8; border: 2px solid #1d1c1a; border-radius: 16px; font-size: 26px; font-weight: 700; }
+  .chip b { color: #6d6a63; font-weight: 500; margin-left: 10px; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div class="headline">
+      <span class="w" id="el-1">Every</span><span class="w" id="el-2">frame</span><span class="w" id="el-3">is</span><span class="frag" id="frag-a">co</span><span class="frag" id="frag-b">de</span><span class="dot" id="dot">.</span>
+    </div>
+    <div class="chips">
+      <span class="chip" id="c1">1,284<b>members</b></span><span class="chip" id="c2">98%<b>unchanged</b></span><span class="chip" id="c3">Continue</span>
+    </div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true });
+  // Rule recipe: tl.set (binary reveal + offset) then tl.to (whip to rest) per element; power4.out; one direction (from below);
+  // velocity by weight: anchor 80px/0.18s, words 45px/0.15s, light 40px/0.14s, fragments 70px/0.16s, punctuation 48px/0.12s;
+  // overlaps shrink across the cascade (+2f gap, then -1f, -1f, -1f, -2f). F = one frame at 30 fps.
+  const F = 1 / 30;
+  const t0 = 0.2;
+  tl.set("#el-1", { opacity: 1, y: 80 }, t0);
+  tl.to("#el-1", { y: 0, duration: 0.18, ease: "power4.out" }, t0);
+  const t1 = t0 + 0.18 + 2 * F;
+  tl.set("#el-2", { opacity: 1, y: 45 }, t1);
+  tl.to("#el-2", { y: 0, duration: 0.15, ease: "power4.out" }, t1);
+  const t2 = t1 + 0.15 - F;
+  tl.set("#el-3", { opacity: 1, y: 40 }, t2);
+  tl.to("#el-3", { y: 0, duration: 0.14, ease: "power4.out" }, t2);
+  const t3 = t2 + 0.14 - F;
+  tl.set("#frag-a", { opacity: 1, y: 70 }, t3);
+  tl.to("#frag-a", { y: 0, duration: 0.16, ease: "power4.out" }, t3);
+  const t4 = t3 + 0.14 - F;
+  tl.set("#frag-b", { opacity: 1, y: 70 }, t4);
+  tl.to("#frag-b", { y: 0, duration: 0.15, ease: "power4.out" }, t4);
+  const t5 = t4 + 0.13 - 2 * F;
+  tl.set("#dot", { opacity: 1, y: 48 }, t5);
+  tl.to("#dot", { y: 0, duration: 0.12, ease: "power4.out" }, t5);
+  // Second cascade, same direction, later: three chips whip in (anchor, normal, light).
+  const s0 = 1.6;
+  tl.set("#c1", { opacity: 1, y: 70 }, s0);
+  tl.to("#c1", { y: 0, duration: 0.18, ease: "power4.out" }, s0);
+  const s1 = s0 + 0.18 + F;
+  tl.set("#c2", { opacity: 1, y: 45 }, s1);
+  tl.to("#c2", { y: 0, duration: 0.15, ease: "power4.out" }, s1);
+  const s2 = s1 + 0.15 - F;
+  tl.set("#c3", { opacity: 1, y: 40 }, s2);
+  tl.to("#c3", { y: 0, duration: 0.13, ease: "power4.out" }, s2);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+{
+  "name": "Noise dissolve",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Attention",
+    "Mood"
+  ],
+  "energy": "steady",
+  "tier": 2,
+  "runtime": "canvas",
+  "tags": [
+    "noise dissolve",
+    "perlin cloud dissolve",
+    "pixel noise dissolve",
+    "burn dissolve",
+    "pixel dissolve",
+    "transitions",
+    "canvas",
+    "threshold"
+  ],
+  "one_line": "Blotchy holes with a thin yellow rim open in a dark cover scene wherever a baked cloud of noise falls below the progress, spreading until the light scene underneath shows through completely."
+}

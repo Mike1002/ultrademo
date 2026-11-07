@@ -1,0 +1,22 @@
+{
+  "name": "Dot regroup",
+  "family": "Data",
+  "purpose": [
+    "Explanation",
+    "Data evidence"
+  ],
+  "energy": "steady",
+  "tier": 2,
+  "runtime": "gsap",
+  "tags": [
+    "dot clustering",
+    "particle text assembly",
+    "scatter regroup",
+    "scatter regroup and re-encoding",
+    "data",
+    "seeded scatter",
+    "regroup",
+    "stagger"
+  ],
+  "one_line": "Thirty scattered dots glide into two orderly groups, eighteen yellow on the left and twelve ink on the right, and the group counts fade in below."
+}

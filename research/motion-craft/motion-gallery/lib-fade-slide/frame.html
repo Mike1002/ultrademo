@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-fade-slide</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  .lab { font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  .heading { position: absolute; left: 80px; top: 50px; }
+  .hint { position: absolute; left: 80px; top: 520px; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+  .hero { position: absolute; left: 80px; top: 125px; width: 1008px; height: 300px; }
+  .hero .big { position: absolute; left: 0; top: 40px; font-size: 84px; font-weight: 700; line-height: 1.04; letter-spacing: -0.01em; white-space: nowrap; }
+  .hero .num { position: absolute; right: 0; top: 10px; font-size: 220px; font-weight: 700; line-height: 1; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+  .hero .dot { position: absolute; left: 0; top: 178px; width: 56px; height: 56px; border-radius: 50%; background: #f2c200; border: 2px solid #1d1c1a; }
+  .hero .hair { position: absolute; left: 0; width: 1008px; top: 298px; height: 2px; background: #e3ded2; }
+  .hero .cap { position: absolute; left: 76px; top: 198px; font-size: 22px; color: #6d6a63; }
+  .g { position: absolute; left: 0; top: 0; width: 1008px; height: 300px; }
+  #btn { position: absolute; left: 80px; top: 452px; width: 200px; height: 60px; border-radius: 14px; background: #f2c200; border: 2px solid #1d1c1a; font-size: 20px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div class="lab heading">Rises 24 px while fading in · headline, then number, then the rest</div>
+      <div class="hero">
+        <div class="g" id="g1" data-layout-allow-overlap><div class="big">Launch day.</div><div class="dot"></div></div>
+        <div class="g" id="g2" data-layout-allow-overlap><div class="num">98%</div></div>
+        <div class="g" id="g3" data-layout-allow-overlap><div class="cap">Record · Edit · Publish</div><div class="hair"></div></div>
+      </div>
+      <div id="btn">Continue</div>
+    </div>
+    <div id="label"><span class="l-name">Fade slide</span><span class="l-sep">·</span><span>Entrance &amp; Exit</span><span class="l-sep">·</span><span>calm</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+  // Each piece starts 24 px low and transparent, then slides up into place as it fades in.
+  tl.fromTo("#g1", { y: 24, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: "power2.out" }, 0.5);
+  tl.fromTo("#g2", { y: 24, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: "power2.out" }, 0.8);
+  tl.fromTo("#g3", { y: 24, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: "power2.out" }, 1.1);
+  // Second beat: the button arrives the same way.
+  tl.fromTo("#btn", { y: 24, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: "power2.out" }, 2.2);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-active-indicator-glide</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  .card { position: absolute; left: 184px; top: 60px; width: 800px; height: 460px; background: #fffdf8; border: 2px solid #1d1c1a; border-radius: 24px; }
+  .card .title { position: absolute; left: 48px; top: 40px; font-size: 40px; font-weight: 700; letter-spacing: -0.01em; }
+  .card .sub { position: absolute; left: 48px; top: 96px; font-size: 20px; color: #6d6a63; }
+  #tabs { position: absolute; left: 48px; top: 150px; width: 700px; height: 52px; }
+  .tab { position: absolute; top: 0; height: 48px; font-size: 22px; font-weight: 600; line-height: 48px; text-align: center; color: #6d6a63; white-space: nowrap; }
+  #tabs .base { position: absolute; left: 0; top: 50px; width: 700px; height: 2px; background: #e3ded2; }
+  #ind { position: absolute; left: 0; top: 48px; width: 100px; height: 5px; border-radius: 3px; background: #f2c200; will-change: transform; }
+  .panel { position: absolute; left: 48px; top: 230px; width: 700px; height: 180px; will-change: transform, opacity; }
+  .panel .row { position: absolute; left: 0; width: 700px; height: 48px; font-size: 20px; line-height: 48px; border-bottom: 2px solid #e3ded2; }
+  .panel .row b { font-weight: 600; }
+  .panel .row span { position: absolute; right: 0; color: #6d6a63; }
+  .panel .big { position: absolute; left: 0; top: 0; font-size: 56px; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
+  .panel .biglab { position: absolute; left: 0; top: 74px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  .panel .btn { position: absolute; left: 0; top: 112px; width: 200px; height: 60px; border-radius: 14px; background: #1d1c1a; color: #fffdf8; font-size: 20px; font-weight: 600; line-height: 60px; text-align: center; }
+  #cur { position: absolute; left: 110px; top: 170px; width: 28px; height: 36px; will-change: transform; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div class="card">
+        <div class="title">Invite your team</div>
+        <div class="sub">Orbit · 3 seats left</div>
+        <div id="tabs">
+          <div class="tab" id="tab1" style="left:0;width:120px">Members</div>
+          <div class="tab" id="tab2" style="left:180px;width:140px">Invites</div>
+          <div class="tab" id="tab3" style="left:360px;width:130px">Settings</div>
+          <div class="tab" id="tab4" style="left:530px;width:110px">Export</div>
+          <div class="base"></div>
+          <div id="ind" data-layout-allow-overlap></div>
+        </div>
+        <div class="panel" id="pan1" data-layout-allow-overlap>
+          <div class="row" style="top:0"><b>Jamie Dalton</b><span>Design</span></div>
+          <div class="row" style="top:56px"><b>Sam Kim</b><span>Engineering</span></div>
+          <div class="row" style="top:112px"><b>Morgan Lee</b><span>Product</span></div>
+        </div>
+        <div class="panel" id="pan2" data-layout-allow-overlap>
+          <div class="big">12,480</div><div class="biglab">Invites sent</div><div class="btn">Continue</div>
+        </div>
+        <div class="panel" id="pan3" data-layout-allow-overlap>
+          <div class="row" style="top:0"><b>Allow invites</b><span>On</span></div>
+          <div class="row" style="top:56px"><b>Notify on join</b><span>On</span></div>
+          <div class="row" style="top:112px"><b>Require approval</b><span>Off</span></div>
+        </div>
+        <svg id="cur" viewBox="0 0 28 36" data-layout-allow-overlap><path d="M2 2 L2 28 L9 21.5 L14 33 L19 31 L14 19.5 L23 19.5 Z" fill="#1d1c1a" stroke="#fffdf8" stroke-width="2" stroke-linejoin="round"/></svg>
+      </div>
+    </div>
+    <div id="label"><span class="l-name">Active indicator glide</span><span class="l-sep">·</span><span>UI Demo</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+  // Params: glide 300 ms power3.out; tab 2 measured at x 180 px, width 140 px. Width is a scaleX of a 100 px bar.
+  const TABS = [{ x: 0, w: 120 }, { x: 180, w: 140 }, { x: 360, w: 130 }, { x: 530, w: 110 }];
+  const INK = "#1d1c1a", MUTED = "#6d6a63";
+  gsap.set("#ind", { x: 0, scaleX: 1.2, transformOrigin: "left center" });
+  gsap.set("#tab1", { color: INK });
+  gsap.set(["#pan2", "#pan3"], { opacity: 0, y: 8 });
+  gsap.set("#pan1", { opacity: 1, y: 0 });
+  let curTab = 0;
+  function go(to, at) {
+    const from = curTab;
+    tl.fromTo("#ind", { x: TABS[from].x, scaleX: TABS[from].w / 100 }, { x: TABS[to].x, scaleX: TABS[to].w / 100, duration: 0.3, ease: "power3.out", immediateRender: false }, at);
+    tl.to("#tab" + (from + 1), { color: MUTED, duration: 0.3, ease: "none" }, at);
+    tl.to("#tab" + (to + 1), { color: INK, duration: 0.3, ease: "none" }, at);
+    tl.to("#pan" + (from + 1), { opacity: 0, y: -8, duration: 0.2, ease: "power2.in" }, at);
+    tl.fromTo("#pan" + (to + 1), { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.3, ease: "power2.out", immediateRender: false }, at + 0.12);
+    curTab = to;
+  }
+  // Cursor: starts over Members, moves to each tab and clicks.
+  tl.fromTo("#cur", { x: 0, y: 0 }, { x: 180, y: 0, duration: 0.4, ease: "power3.inOut" }, 0.1);
+  tl.to("#cur", { scale: 0.9, duration: 0.06, ease: "none", transformOrigin: "top left" }, 0.52);
+  tl.to("#cur", { scale: 1, duration: 0.08, ease: "none" }, 0.58);
+  go(1, 0.55);                       // Members -> Invites (reads at the 1.2 s poster)
+  tl.to("#cur", { x: 365, y: 0, duration: 0.4, ease: "power3.inOut" }, 1.2);
+  tl.to("#cur", { scale: 0.9, duration: 0.06, ease: "none" }, 1.62);
+  tl.to("#cur", { scale: 1, duration: 0.08, ease: "none" }, 1.68);
+  go(2, 1.65);                       // Invites -> Settings
+  tl.to("#cur", { x: 0, y: 0, duration: 0.45, ease: "power3.inOut" }, 2.05);
+  tl.to("#cur", { scale: 0.9, duration: 0.06, ease: "none" }, 2.52);
+  tl.to("#cur", { scale: 1, duration: 0.08, ease: "none" }, 2.58);
+  go(0, 2.55);                       // Settings -> Members (the long glide back)
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

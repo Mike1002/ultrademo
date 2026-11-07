@@ -1,0 +1,22 @@
+{
+  "name": "Map extrusion",
+  "family": "Data",
+  "purpose": [
+    "Data evidence",
+    "Emphasis"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "webgl",
+  "tags": [
+    "extruded density map rise",
+    "data",
+    "map",
+    "hex grid",
+    "extrusion",
+    "3d",
+    "prisms",
+    "dark"
+  ],
+  "one_line": "A tilted grid of nineteen hexagonal districts rises into prisms, each to a height set by its density and the densest tops in yellow, the tallest rising first while the ground slowly turns."
+}

@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-stagger</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  .lab { font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  .heading { position: absolute; left: 100px; top: 45px; }
+  .grid { position: absolute; left: 100px; top: 126px; width: 968px; height: 400px; }
+  .cell { position: absolute; width: 206px; height: 110px; }
+  .block { width: 206px; height: 74px; background: #1d1c1a; border-radius: 14px; will-change: transform; }
+  .block.last { background: #f2c200; border: 2px solid #1d1c1a; }
+  .order { position: absolute; top: 86px; left: 0; width: 206px; text-align: center; font-size: 13px; letter-spacing: .06em; color: #6d6a63; font-variant-numeric: tabular-nums; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div class="lab heading">12 elements · each starts 0.06 s after the one before</div>
+      <div class="grid" id="grid">
+      <div class="cell" style="left:0px;top:0px"><div class="block"></div><div class="order">01</div></div>
+      <div class="cell" style="left:254px;top:0px"><div class="block"></div><div class="order">02</div></div>
+      <div class="cell" style="left:508px;top:0px"><div class="block"></div><div class="order">03</div></div>
+      <div class="cell" style="left:762px;top:0px"><div class="block"></div><div class="order">04</div></div>
+      <div class="cell" style="left:0px;top:136px"><div class="block"></div><div class="order">05</div></div>
+      <div class="cell" style="left:254px;top:136px"><div class="block"></div><div class="order">06</div></div>
+      <div class="cell" style="left:508px;top:136px"><div class="block"></div><div class="order">07</div></div>
+      <div class="cell" style="left:762px;top:136px"><div class="block"></div><div class="order">08</div></div>
+      <div class="cell" style="left:0px;top:272px"><div class="block"></div><div class="order">09</div></div>
+      <div class="cell" style="left:254px;top:272px"><div class="block"></div><div class="order">10</div></div>
+      <div class="cell" style="left:508px;top:272px"><div class="block"></div><div class="order">11</div></div>
+      <div class="cell" style="left:762px;top:272px"><div class="block last"></div><div class="order">12</div></div>
+      </div>
+    </div>
+    <div id="label"><span class="l-name">Stagger</span><span class="l-sep">·</span><span>Principles</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+  // Row-first order, 0.06 s apart, each rising 24 px while fading in.
+  tl.fromTo(".block", { y: 24, opacity: 0 }, { y: 0, opacity: 1, duration: 0.55, stagger: 0.06, ease: "power3.out" }, 0.3);
+  // Second beat: the same order runs through the grid again as a small ripple.
+  tl.to(".block", { y: -10, duration: 0.22, ease: "power2.out", stagger: 0.045 }, 1.95);
+  tl.to(".block", { y: 0, duration: 0.3, ease: "power2.inOut", stagger: 0.045 }, 2.17);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

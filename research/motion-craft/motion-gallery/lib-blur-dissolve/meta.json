@@ -1,0 +1,19 @@
+{
+  "name": "Blur dissolve",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Mood"
+  ],
+  "energy": "calm",
+  "tier": 2,
+  "runtime": "css",
+  "tags": [
+    "blur dissolve",
+    "blur through",
+    "defocus dissolve",
+    "filter",
+    "transitions"
+  ],
+  "one_line": "The card scene and the number scene overlap while blurred, swap, and the new scene sharpens back into focus."
+}

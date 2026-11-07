@@ -1,0 +1,20 @@
+{
+  "name": "Infinite canvas pan",
+  "family": "Camera",
+  "purpose": [
+    "Attention",
+    "Sequence",
+    "Transition"
+  ],
+  "energy": "high",
+  "tier": 2,
+  "runtime": "gsap",
+  "tags": [
+    "long canvas pan",
+    "camera",
+    "world wrapper",
+    "pan",
+    "plates"
+  ],
+  "one_line": "One continuous 5,400px camera pan across six product plates on a single long canvas, settling on a yellow focus on the last plate."
+}

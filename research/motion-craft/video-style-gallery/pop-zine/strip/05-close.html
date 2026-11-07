@@ -1,0 +1,27 @@
+<!-- pop-zine · 05-close.html · one moment of the style strip (D-58). Assembled into ../frame.html by _tools/gen.py -->
+<style>
+  #closewrap { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+  #mark { font-size: 150px; color: var(--ink); text-transform: uppercase; will-change: transform; }
+  #mark .ghost { color: var(--accent); }
+  #mark .has-ghost > .ghost ~ * { opacity: 0; }
+  #markrule { margin-top: 22px; width: 160px; height: 8px; background: var(--accent); transform-origin: center center; will-change: transform; }
+  #url { margin-top: 22px; font-size: 20px; color: var(--muted); }
+</style>
+  <section id="s5" class="clip" data-start="8.500" data-duration="1.500">
+    <div id="st5" class="stage">
+      <div id="closewrap">
+        <div id="mark" class="display"><span class="mask"><span class="w">Ultrademo</span></span></div>
+        <div id="markrule"></div>
+        <div id="url" class="mono">ultrademo.net</div>
+      </div>
+    </div>
+  </section>
+<script>
+  {
+    const t0 = M[4][0] - TD / 2 + 0.05, e = S.rhythm.entrance;
+    textIn([document.querySelector("#mark .w")], t0, { chars: 0.045 });
+    tl.fromTo("#markrule", { scaleX: 0 }, { scaleX: 1, duration: 0.5, ease: EASE.entry }, t0 + e * 0.8);
+    tl.fromTo("#url", { y: 12, opacity: 0 }, { y: 0, opacity: 1, duration: e, ease: EASE.entry }, t0 + e * 0.8 + 0.15);
+    tl.fromTo("#mark", { scale: 1 }, { scale: 1.025, duration: 1.1, ease: "sine.inOut", immediateRender: false }, 8.9);
+  }
+</script>

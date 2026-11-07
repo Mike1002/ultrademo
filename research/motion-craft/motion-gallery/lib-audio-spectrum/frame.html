@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-audio-spectrum</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  #cv { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <canvas id="cv" width="1168" height="580"></canvas>
+    </div>
+    <div id="label"><span class="l-name">Audio spectrum visualizer</span><span class="l-sep">·</span><span>Data</span><span class="l-sep">·</span><span>high</span></div>
+  </section>
+</div>
+<script>
+  function rand(seed){ let a = seed >>> 0 || 1; return function(){ a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+  const cv = document.getElementById("cv"), ctx = cv.getContext("2d");
+  const W = 1168, H = 580, INK = "#1d1c1a", ACC = "#f2c200", MUTED = "#6d6a63", PALE = "#ece7da", RULE = "#e3ded2";
+  const SANS = '-apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif';
+  // A baked band table standing in for pre-extracted audio: 32 bands x 90 frames at 30 fps.
+  // Low bands carry a slow pulse, high bands a faster shimmer; a seeded table adds the per-frame texture, then 150 ms smoothing.
+  const BANDS = 32, FRAMES = 90;
+  const r = rand(2026);
+  const raw = [];
+  for (let f = 0; f < FRAMES; f++) {
+    const t = f / 30, row = [];
+    for (let b = 0; b < BANDS; b++) {
+      const u = b / (BANDS - 1);
+      const base = 0.95 - 0.7 * u;                                   // energy falls off toward the high bands
+      const beat = Math.pow(0.5 + 0.5 * Math.sin(t * 2 * Math.PI * 1.6 - u * 2.4), 2);   // 96 bpm pulse sweeping upward, sharp peaks
+      const shimmer = 0.5 + 0.5 * Math.sin(t * 19 + b * 2.3);
+      row.push(Math.max(0, Math.min(1, base * (0.3 + 0.7 * beat) + 0.3 * shimmer * (0.2 + u) + (r() - 0.5) * 0.3)));
+    }
+    raw.push(row);
+  }
+  // 100 ms smoothing = a 3-frame moving average per band, applied to the baked array.
+  const frames = raw.map((row, f) => row.map((_, b) => { let s = 0, n = 0; for (let k = -1; k <= 1; k++) { const g = f + k; if (g >= 0 && g < FRAMES) { s += raw[g][b]; n++; } } return s / n; }));
+  const x0 = 104, bw = 22, gap = 9, baseY = 500, maxH = 330;
+  function renderAt(t) {
+    ctx.clearRect(0, 0, W, H);
+    const f = Math.max(0, Math.min(t * 30, FRAMES - 1.001)), i = Math.floor(f), p = f - i;
+    // Title and the playing time, read from the same clock.
+    ctx.fillStyle = INK; ctx.font = "700 34px " + SANS; ctx.textAlign = "left"; ctx.fillText("Now playing · Orbit launch", x0, 86);
+    ctx.fillStyle = MUTED; ctx.font = "22px " + SANS;
+    const sec = 12 + Math.floor(t); ctx.fillText("0:" + (sec < 10 ? "0" : "") + sec + " / 0:48", x0, 122);
+    // Baseline and a faint ceiling rule.
+    ctx.fillStyle = RULE; ctx.fillRect(x0, baseY - maxH, BANDS * (bw + gap) - gap, 2);
+    ctx.fillStyle = INK; ctx.fillRect(x0, baseY, BANDS * (bw + gap) - gap, 2);
+    // Bars: linear blend between the two neighbouring baked frames, 4 px floor; the loudest band wears the yellow cap.
+    let loud = 0, loudV = -1;
+    const vals = [];
+    for (let b = 0; b < BANDS; b++) { const v = frames[i][b] * (1 - p) + frames[i + 1][b] * p; vals.push(v); if (v > loudV) { loudV = v; loud = b; } }
+    for (let b = 0; b < BANDS; b++) {
+      const h = Math.max(4, vals[b] * maxH), x = x0 + b * (bw + gap);
+      ctx.fillStyle = PALE; ctx.fillRect(x, baseY - h, bw, h);
+      ctx.strokeStyle = INK; ctx.lineWidth = 2; ctx.strokeRect(x + 1, baseY - h + 1, bw - 2, h - 2);
+    }
+    const hx = x0 + loud * (bw + gap), hh = Math.max(4, loudV * maxH);
+    ctx.fillStyle = ACC; ctx.fillRect(hx, baseY - hh - 14, bw, 10);
+    ctx.strokeStyle = INK; ctx.lineWidth = 2; ctx.strokeRect(hx + 1, baseY - hh - 13, bw - 2, 8);
+    // Band labels at the ends.
+    ctx.fillStyle = MUTED; ctx.font = "13px " + SANS; ctx.fillText("60 Hz", x0, 530);
+    ctx.textAlign = "right"; ctx.fillText("16 kHz", x0 + BANDS * (bw + gap) - gap, 530); ctx.textAlign = "left";
+  }
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "none", duration: 3 } });
+  renderAt(0);
+  tl.to({ k: 0 }, { k: 1, duration: 3, ease: "none", onUpdate: () => renderAt(tl.time()) }, 0);
+  const baseRender = tl.render; tl.render = function () { const r = baseRender.apply(this, arguments); renderAt(this.time()); return r; };
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

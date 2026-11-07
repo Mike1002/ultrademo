@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-infinite-zoom</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; overflow: hidden; }
+  .lab { font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; white-space: nowrap; }
+  .num { font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1; white-space: nowrap; }
+  .t-xl { font-size: 84px; font-weight: 700; line-height: 1.05; white-space: nowrap; }
+  .t-l { font-size: 56px; font-weight: 700; line-height: 1.1; white-space: nowrap; }
+  .t-m { font-size: 34px; font-weight: 700; line-height: 1.15; white-space: nowrap; }
+  .t-body { font-size: 22px; line-height: 1.4; }
+  .hair { height: 1px; background: #e3ded2; }
+  .dot { border-radius: 50%; background: #1d1c1a; }
+  .dot.v { background: #f2c200; border: 2px solid #1d1c1a; }
+
+  #world, .page { position: absolute; inset: 0; transform-origin: 584px 290px; }
+  .page { background: #f6f3ec; }
+  .page > .lab { position: absolute; left: 80px; top: 48px; }
+  .page .num { position: absolute; left: 70px; top: 160px; font-size: 230px; color: #a19d93; }
+  .page .t-l { position: absolute; left: 700px; top: 150px; font-size: 46px; line-height: 1.4; }
+  .page .hair { position: absolute; left: 80px; right: 80px; top: 105px; }
+  .page .foot { position: absolute; left: 80px; top: 500px; }
+  .portal { position: absolute; left: 542.2857px; top: 248.2857px; width: 83.4286px; height: 83.4286px; border-radius: 50%; background: #f2c200; border: 2px solid #1d1c1a; }
+  #page2 .t-l { color: #1d1c1a; font-size: 120px; left: 250px; top: 200px; line-height: 1.1; }
+  #page2 .num { font-size: 170px; left: 80px; top: 365px; }
+
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div id="world" data-layout-allow-overflow>
+        <section class="page" id="page0" data-layout-allow-overlap data-layout-allow-overflow><span class="lab" data-layout-allow-overlap data-layout-allow-occlusion>01 / Scale 1×</span><div class="hair"></div><div class="num" data-layout-allow-overlap data-layout-allow-occlusion>12,480</div><div class="t-l" data-layout-allow-overlap data-layout-allow-occlusion>Invite your team</div><div class="lab foot" data-layout-allow-overlap data-layout-allow-occlusion>Orbit · 3 seats left</div><div class="portal"></div></section>
+        <section class="page" id="page1" data-layout-allow-overlap data-layout-allow-overflow><span class="lab" data-layout-allow-overlap data-layout-allow-occlusion>02 / Scale 14×</span><div class="hair"></div><div class="num" data-layout-allow-overlap data-layout-allow-occlusion>98%</div><div class="t-l" data-layout-allow-overlap data-layout-allow-occlusion>Invites accepted</div><div class="lab foot" data-layout-allow-overlap data-layout-allow-occlusion>Jamie · Sam · Morgan</div><div class="portal"></div></section>
+        <section class="page" id="page2" data-layout-allow-overlap data-layout-allow-overflow><span class="lab" data-layout-allow-overlap data-layout-allow-occlusion>03 / Output</span><div class="hair"></div><div class="num" data-layout-allow-overlap data-layout-allow-occlusion>3</div><div class="t-l" data-layout-allow-overlap data-layout-allow-occlusion>Launch day.</div><div class="lab foot" data-layout-allow-overlap data-layout-allow-occlusion>Invite → Accept → Join</div></section>
+      </div>
+
+    </div>
+    <div id="label"><span class="l-name">Infinite zoom</span><span class="l-sep">·</span><span>Camera</span><span class="l-sep">·</span><span>high</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+
+  // Infinite zoom, three nested levels: each page holds a yellow portal whose centre is the transform origin of the next page.
+  // The camera scale is kept bounded (1x to 14x) by re-basing: when p crosses a whole number the outer page is dropped and the next takes over at 1x.
+  const world = document.getElementById("world");
+  const pages = [0, 1, 2].map(i => document.getElementById("page" + i));
+  const ease = gsap.parseEase("sine.inOut");
+  const clamp = v => Math.max(0, Math.min(1, v));
+  function renderAt(t) {
+    const p = 2 * ease(clamp((t - 0.15) / 2.75));
+    const stage = Math.min(2, Math.floor(p));
+    gsap.set(world, { scale: Math.pow(14, p - stage) });
+    pages.forEach((el, i) => {
+      const active = i >= stage;
+      gsap.set(el, { scale: active ? Math.pow(14, stage - i) : 1, opacity: !active ? 0 : i === 0 ? 1 : clamp((p - i + 0.82) / 0.48) });
+    });
+  }
+  renderAt(0);
+  tl.to({ k: 0 }, { k: 1, duration: 3, ease: "none", onUpdate: () => renderAt(tl.time()) }, 0);
+  const baseRender = tl.render; tl.render = function () { const r = baseRender.apply(this, arguments); renderAt(this.time()); return r; };
+
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

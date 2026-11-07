@@ -1,0 +1,19 @@
+{
+  "name": "Source-to-result mapping",
+  "family": "Explainer",
+  "purpose": [
+    "Explanation",
+    "Sequence"
+  ],
+  "energy": "steady",
+  "tier": 2,
+  "runtime": "gsap",
+  "tags": [
+    "source-to-compiled representation",
+    "explainer",
+    "connector",
+    "paired tokens",
+    "cards"
+  ],
+  "one_line": "A source card stays put while a result card slides in beside it, then connectors draw across between matching lines, underlining the source token and marking its result token yellow."
+}

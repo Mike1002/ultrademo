@@ -1,0 +1,20 @@
+{
+  "name": "Radar chart morph",
+  "family": "Data",
+  "purpose": [
+    "Comparison",
+    "Data evidence"
+  ],
+  "energy": "steady",
+  "tier": 2,
+  "runtime": "svg",
+  "tags": [
+    "radar grow",
+    "radar profile morph",
+    "data",
+    "polygon points",
+    "vertex interpolation",
+    "spider chart"
+  ],
+  "one_line": "A yellow radar outline grows out from a dashed before-profile as its five vertices slide along fixed axes to the after-values, then settle slightly."
+}

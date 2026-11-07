@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>discrete-text-sequence</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  /* card 1000x200 centred at (140,260) */
+  .card { position: absolute; left: 140px; top: 260px; width: 1000px; height: 200px; background: #fffdf8;
+    border: 2px solid #1d1c1a; border-radius: 24px; }
+  .terminal { position: absolute; left: 40px; top: 0; height: 196px; display: flex; align-items: center;
+    font-family: "SF Mono", Menlo, Consolas, "Courier New", monospace; font-size: 48px; font-weight: 600; }
+  .prompt { color: #6d6a63; margin-right: 20px; }
+  .text-wrap { display: inline-flex; align-items: baseline; min-width: 820px; white-space: pre; }
+  .cursor { display: inline-block; width: 16px; height: 50px; background: #f2c200; margin-left: 4px; vertical-align: -6px; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div class="card" id="card">
+      <div class="terminal">
+        <div class="prompt">$</div>
+        <div class="text-wrap">
+          <span class="text" id="text"></span><span class="cursor" id="cursor"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true });
+  // Sparse state schedule: keystrokes 0.1 s apart, a word-break pause, a typo, backspaces to the fork, a bulk paste, a completion mark.
+  const TOTAL_DURATION = 3, BLINK_CYCLES = 5;
+  const SEQUENCE = [
+    { t: 0.00, text: "" },
+    { t: 0.20, text: "e" },
+    { t: 0.30, text: "ev" },
+    { t: 0.40, text: "eve" },
+    { t: 0.50, text: "ever" },
+    { t: 0.60, text: "every" },
+    { t: 0.95, text: "every f" },
+    { t: 1.05, text: "every fr" },
+    { t: 1.15, text: "every fra" },
+    { t: 1.25, text: "every fran" },
+    { t: 1.35, text: "every frane" },
+    { t: 1.70, text: "every fran" },
+    { t: 1.80, text: "every fra" },
+    { t: 2.05, text: "every frame is code" },
+    { t: 2.35, text: "every frame is code ✓" },
+  ];
+  function textAt(time) {
+    for (let i = SEQUENCE.length - 1; i >= 0; i--) { if (time >= SEQUENCE[i].t) return SEQUENCE[i].text; }
+    return "";
+  }
+  const textEl = document.getElementById("text");
+  const cursorEl = document.getElementById("cursor");
+  // Pure function of timeline time: text state by reverse search, cursor by a sin square wave.
+  function renderAt(t) {
+    textEl.textContent = textAt(t);
+    cursorEl.style.opacity = Math.sin((t / TOTAL_DURATION) * Math.PI * 2 * BLINK_CYCLES) > 0 ? "1" : "0";
+  }
+  renderAt(0);
+  tl.to({ k: 0 }, { k: 1, duration: TOTAL_DURATION, ease: "none", onUpdate: () => renderAt(tl.time()) }, 0);
+  const baseRender = tl.render;
+  tl.render = function () { const r = baseRender.apply(this, arguments); renderAt(this.time()); return r; };
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+{
+  "name": "Whip pan",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Sequence"
+  ],
+  "energy": "high",
+  "tier": 2,
+  "runtime": "gsap",
+  "tags": [
+    "swish pan",
+    "whip pan",
+    "horizontal blur",
+    "directional",
+    "transitions"
+  ],
+  "one_line": "A rapid leftward sweep with horizontal blur and a sharp deceleration carries the card scene off and settles into the number scene."
+}

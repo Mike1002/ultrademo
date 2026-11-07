@@ -1,0 +1,195 @@
+{
+ "status": "Curated tracks. The direction step proposes and the picker offers only these; the other files in this folder stay on disk (earlier videos use them) but are not offered. Every curated track is CC0, so no credit is needed.md for the videos that used them. `loop` is where a track repeats under a longer video, cut on the beat; the mixer crossfades each join. `gain_db` brings each track to -13 LUFS before the mix, so the music sits at the same level under the voice whichever track is chosen.",
+ "sets": {
+  "energetic": "launches, feature showcases, ads; brisk or high energy",
+  "calm": "wellness, quiet products, calm or still energy"
+ },
+ "metrics_basis": "fixtures/music-metrics.json: tempo and beat strength measured on the first 60 s with scripts/lib/music-metrics.mjs",
+ "tracks": [
+  {
+   "file": "angelorizzo-220vpop.mp3",
+   "title": "220V Pop",
+   "set": "energetic",
+   "usable_from_s": 0.56,
+   "bpm": 105.5,
+   "beat_strength": 0.13,
+   "mood": [
+    "upbeat",
+    "pop",
+    "bright",
+    "driving"
+   ],
+   "loop": {
+    "start_s": 0.56,
+    "end_s": 164
+   },
+   "gain_db": 5.3
+  },
+  {
+   "file": "mistermender-upbeat-loop.mp3",
+   "title": "Upbeat Loop",
+   "set": "energetic",
+   "usable_from_s": 0,
+   "bpm": 120.5,
+   "beat_strength": 0.08,
+   "mood": [
+    "upbeat",
+    "bright",
+    "positive",
+    "light"
+   ],
+   "loop": {
+    "start_s": 0,
+    "end_s": 57.64
+   },
+   "gain_db": -5.8
+  },
+  {
+   "file": "enviromaniac2-happyloop.mp3",
+   "title": "Happy Loop",
+   "set": "energetic",
+   "usable_from_s": 0,
+   "bpm": 140,
+   "beat_strength": 0.73,
+   "mood": [
+    "happy",
+    "playful",
+    "bouncy",
+    "bright"
+   ],
+   "loop": {
+    "start_s": 0,
+    "end_s": 13.717
+   },
+   "gain_db": -6
+  },
+  {
+   "file": "loyalty-freak-music-high-technologic-beat-explosion.mp3",
+   "title": "High Technologic Beat Explosion",
+   "set": "energetic",
+   "usable_from_s": 8,
+   "bpm": 178.5,
+   "beat_strength": 0.42,
+   "mood": [
+    "electro",
+    "driving",
+    "building",
+    "modern"
+   ],
+   "gain_db": 4.2
+  },
+  {
+   "file": "loyalty-freak-music-cant-stop-my-feet.mp3",
+   "title": "Can't Stop My Feet",
+   "set": "energetic",
+   "usable_from_s": 0,
+   "bpm": 167,
+   "beat_strength": 0.14,
+   "mood": [
+    "disco",
+    "funky",
+    "playful",
+    "upbeat"
+   ],
+   "gain_db": -1
+  },
+  {
+   "file": "seth-makes-sounds-free-uplifting-music.mp3",
+   "title": "Free Uplifting Music",
+   "set": "calm",
+   "usable_from_s": 0,
+   "bpm": 77.5,
+   "beat_strength": 0.41,
+   "mood": [
+    "uplifting",
+    "calm",
+    "warm",
+    "hopeful"
+   ],
+   "gain_db": 5.6
+  },
+  {
+   "file": "summonhue-04-pollie-soft.mp3",
+   "title": "04 pollie soft",
+   "set": "calm",
+   "usable_from_s": 0,
+   "bpm": 120.5,
+   "beat_strength": 0.15,
+   "mood": [
+    "soft",
+    "calm",
+    "wellness",
+    "gentle"
+   ],
+   "gain_db": 2.8
+  },
+  {
+   "file": "holiznacc0-windows-down.mp3",
+   "title": "Windows Down",
+   "set": "calm",
+   "usable_from_s": 4,
+   "bpm": 73,
+   "beat_strength": 0.32,
+   "mood": [
+    "lo-fi",
+    "summer",
+    "airy",
+    "hopeful"
+   ],
+   "gain_db": 0.8
+  },
+  {
+   "file": "john-bartmann-lofi-jam.mp3",
+   "title": "Lofi Jam",
+   "set": "calm",
+   "usable_from_s": 4,
+   "bpm": 82.5,
+   "beat_strength": 0.49,
+   "mood": [
+    "lo-fi",
+    "mellow",
+    "uplifting",
+    "gentle"
+   ],
+   "gain_db": -0.4
+  },
+  {
+   "file": "deadrobotmusic-city-dreams-full-kit.mp3",
+   "title": "City Dreams",
+   "set": "calm",
+   "usable_from_s": 0,
+   "bpm": 100,
+   "beat_strength": 0.19,
+   "mood": [
+    "steady",
+    "urban",
+    "moody",
+    "warm"
+   ],
+   "loop": {
+    "start_s": 0,
+    "end_s": 19.2
+   },
+   "gain_db": -0.6
+  },
+  {
+   "file": "wi-photos-city-loop.mp3",
+   "title": "City Loop",
+   "set": "calm",
+   "usable_from_s": 0,
+   "bpm": 73.3,
+   "beat_strength": 0.17,
+   "mood": [
+    "relaxed",
+    "urban",
+    "steady",
+    "warm"
+   ],
+   "loop": {
+    "start_s": 0,
+    "end_s": 52.36
+   },
+   "gain_db": -3.7
+  }
+ ]
+}

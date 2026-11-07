@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-fractional-icon-fill</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  #card { position: absolute; left: 134px; top: 90px; width: 900px; height: 400px; background: #fffdf8; border: 2px solid #1d1c1a; border-radius: 24px; }
+  .row { position: absolute; left: 60px; width: 820px; height: 120px; }
+  .row.a { top: 60px; } .row.b { top: 220px; }
+  .row .lab { position: absolute; left: 0; top: 0; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  .stars { position: absolute; left: 0; top: 24px; width: 544px; height: 96px; }
+  .stars svg { position: absolute; left: 0; top: 0; width: 544px; height: 96px; }
+  .outline path { fill: #fffdf8; stroke: #1d1c1a; stroke-width: 1.4; stroke-linejoin: round; }
+  .fill { will-change: clip-path; }
+  .fill path { fill: #f2c200; stroke: #1d1c1a; stroke-width: 1.4; stroke-linejoin: round; }
+  .score { position: absolute; left: 596px; top: 30px; width: 224px; white-space: nowrap; font-size: 64px; font-weight: 700; line-height: 84px; font-variant-numeric: tabular-nums; }
+  .score small { font-size: 22px; font-weight: 400; color: #6d6a63; margin-left: 6px; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div id="card">
+        <div class="row a">
+          <div class="lab">Ease of setup</div>
+          <div class="stars"><svg class="outline" id="oa" viewBox="0 0 544 96"></svg><svg class="fill" id="fa" viewBox="0 0 544 96"></svg></div>
+          <div class="score">4.5<small>out of 5</small></div>
+        </div>
+        <div class="row b">
+          <div class="lab">Support</div>
+          <div class="stars"><svg class="outline" id="ob" viewBox="0 0 544 96"></svg><svg class="fill" id="fb" viewBox="0 0 544 96"></svg></div>
+          <div class="score">3.8<small>out of 5</small></div>
+        </div>
+      </div>
+    </div>
+    <div id="label"><span class="l-name">Fractional icon fill</span><span class="l-sep">·</span><span>Data</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  // Five 96 px stars with 16 px gaps (row width 544). The fill boundary lands on the exact fraction, gaps excluded.
+  const STAR = "M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z";
+  const W = 96, GAP = 16, N = 5, ROW = N * W + (N - 1) * GAP;
+  let stars = "";
+  for (let i = 0; i < N; i++) stars += '<path transform="translate(' + (i * (W + GAP)) + ' 0) scale(4)" d="' + STAR + '"/>';
+  ["#oa", "#fa", "#ob", "#fb"].forEach(s => document.querySelector(s).innerHTML = stars);
+  const inset = rating => { const full = Math.floor(rating), frac = rating - full; const edge = full * (W + GAP) + frac * W; return (100 - edge / ROW * 100).toFixed(2) + "%"; };
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power2.out", duration: 1 } });
+  tl.fromTo("#fa", { clipPath: "inset(0 100% 0 0)" }, { clipPath: "inset(0 " + inset(4.5) + " 0 0)", duration: 1, ease: "power2.out" }, 0.3);
+  tl.fromTo("#fb", { clipPath: "inset(0 100% 0 0)" }, { clipPath: "inset(0 " + inset(3.8) + " 0 0)", duration: 1, ease: "power2.out" }, 1.6);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

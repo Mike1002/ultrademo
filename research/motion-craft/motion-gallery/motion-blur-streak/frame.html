@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>motion-blur-streak</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; overflow: hidden; }
+  /* heavy element on a solid field: 98% at 240px / 900 weight, 560x240 box centred at (640,330) */
+  .streak-el { position: absolute; left: 360px; top: 210px; width: 560px; height: 240px; display: grid; place-items: center;
+    font-size: 240px; font-weight: 900; letter-spacing: -0.05em; line-height: 1; will-change: transform, opacity; filter: url(#streak-a); }
+  /* second arrival: the line, 820x80 centred at (640,520) */
+  .streak-line { position: absolute; left: 230px; top: 480px; width: 820px; height: 80px; display: grid; place-items: center;
+    font-size: 56px; font-weight: 800; letter-spacing: -0.02em; will-change: transform, opacity; filter: url(#streak-b); }
+  .accent { position: absolute; left: 540px; top: 580px; width: 200px; height: 8px; border-radius: 4px; background: #f2c200; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <svg width="0" height="0" aria-hidden="true" style="position: absolute">
+      <filter id="streak-a" x="-50%" y="-50%" width="200%" height="200%">
+        <feGaussianBlur id="streak-blur-a" in="SourceGraphic" stdDeviation="18 0" />
+      </filter>
+      <filter id="streak-b" x="-50%" y="-50%" width="200%" height="200%">
+        <feGaussianBlur id="streak-blur-b" in="SourceGraphic" stdDeviation="14 0" />
+      </filter>
+    </svg>
+    <div class="streak-el" id="streak-el">98%</div>
+    <div class="streak-line" id="streak-line">Every frame is code</div>
+    <div class="accent"></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true });
+  // Rule defaults (Path A, directional SVG blur): MOVE_EASE expo.out, MOVE_DUR 0.5, PEAK_BLUR 18, runway ~100% of width.
+  // Blur proxy and position share the SAME window and ease: peak blur at peak speed, razor sharp at the stop.
+  const MOVE_EASE = "expo.out", MOVE_DUR = 0.5;
+  const A = { start: 0.35, fromX: -600, peak: 18, node: document.getElementById("streak-blur-a"), proxy: { v: 18 } };
+  const B = { start: 1.35, fromX: 820, peak: 14, node: document.getElementById("streak-blur-b"), proxy: { v: 14 } };
+  const writeA = () => A.node.setAttribute("stdDeviation", `${A.proxy.v} 0`);
+  const writeB = () => B.node.setAttribute("stdDeviation", `${B.proxy.v} 0`);
+  writeA(); writeB(); // seed frame 0: a seek to t=0 shows the streaked start
+
+  tl.fromTo("#streak-el", { x: A.fromX, opacity: 0 }, { x: 0, opacity: 1, duration: MOVE_DUR, ease: MOVE_EASE }, A.start);
+  tl.fromTo(A.proxy, { v: A.peak }, { v: 0, duration: MOVE_DUR, ease: MOVE_EASE, onUpdate: writeA }, A.start);
+  // Second element streaks in from the right (mid-shot arrival), on its own filter and proxy.
+  tl.fromTo("#streak-line", { x: B.fromX, opacity: 0 }, { x: 0, opacity: 1, duration: MOVE_DUR, ease: MOVE_EASE }, B.start);
+  tl.fromTo(B.proxy, { v: B.peak }, { v: 0, duration: MOVE_DUR, ease: MOVE_EASE, onUpdate: writeB }, B.start);
+
+  // Seek safety for the SVG attribute (not a DOM style GSAP tracks): recompute both blurs from timeline time on every render.
+  const ease = gsap.parseEase(MOVE_EASE);
+  function renderAt(t) {
+    const pa = Math.min(1, Math.max(0, (t - A.start) / MOVE_DUR)); A.proxy.v = A.peak * (1 - ease(pa)); writeA();
+    const pb = Math.min(1, Math.max(0, (t - B.start) / MOVE_DUR)); B.proxy.v = B.peak * (1 - ease(pb)); writeB();
+  }
+  const baseRender = tl.render;
+  tl.render = function () { const r = baseRender.apply(this, arguments); renderAt(this.time()); return r; };
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

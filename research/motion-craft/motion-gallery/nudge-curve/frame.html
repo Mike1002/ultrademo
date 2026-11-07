@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>nudge-curve</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  /* the composed group: three word rows, left-aligned, centred as a block; GSAP slides the whole group */
+  .group { position: absolute; left: 420px; top: 240px; width: 440px; will-change: transform; }
+  .text-row { font-size: 52px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.15; margin-bottom: 14px; white-space: nowrap; will-change: transform; }
+  .text-row.muted { color: #6d6a63; font-weight: 700; }
+  /* the content the slide makes room for: revealed during the burst phase, to the right of the group */
+  .btn { position: absolute; left: 700px; top: 300px; width: 200px; height: 60px; border-radius: 14px; background: #f2c200; font-size: 22px;
+    font-weight: 700; display: grid; place-items: center; will-change: transform; }
+  .note { position: absolute; left: 150px; top: 470px; width: 600px; font-size: 22px; color: #6d6a63; font-weight: 600; will-change: transform; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div class="group" id="group">
+      <div class="text-row" id="r0">Every frame is code</div>
+      <div class="text-row muted" id="r1">Invite your team</div>
+      <div class="text-row muted" id="r2">Ship it today</div>
+    </div>
+    <div class="btn" id="btn">Continue</div>
+    <div class="note" id="note">3 of 3 ready to render</div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true });
+  // cascade arrival precedes the slide
+  tl.fromTo(["#r0", "#r1", "#r2"], { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out", stagger: 0.1 }, 0.1);
+  // nudge 1: 270 px leftward, three-phase chain on one property (10/65/25 distance, tail >= 3x ramp-in in time)
+  let t = 0.9;
+  tl.fromTo("#group", { x: 0 },    { x: -30,  duration: 0.12, ease: "power3.in" }, t);                                   // ramp-in
+  tl.fromTo("#group", { x: -30 },  { x: -210, duration: 0.10, ease: "none", immediateRender: false }, t + 0.12);         // burst
+  tl.fromTo("#group", { x: -210 }, { x: -270, duration: 0.35, ease: "power4.out", immediateRender: false }, t + 0.22);   // tail
+  // new content appears DURING the burst, where the group made room
+  tl.fromTo("#btn", { opacity: 0, x: 40 }, { opacity: 1, x: 0, duration: 0.3, ease: "power2.out" }, t + 0.12);
+  // nudge 2: the 150 px vertical variant, same time ratios, making room below
+  t = 2.0;
+  tl.fromTo(["#group", "#btn"], { y: 0 },    { y: -15,  duration: 0.12, ease: "power3.in", immediateRender: false }, t);
+  tl.fromTo(["#group", "#btn"], { y: -15 },  { y: -115, duration: 0.10, ease: "none", immediateRender: false }, t + 0.12);
+  tl.fromTo(["#group", "#btn"], { y: -115 }, { y: -150, duration: 0.35, ease: "power4.out", immediateRender: false }, t + 0.22);
+  tl.fromTo("#note", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" }, t + 0.12);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

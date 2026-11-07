@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-choropleth-transition</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  #chart { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  #cap { position: absolute; left: 160px; top: 8px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  text { font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .hex { stroke: #1d1c1a; stroke-width: 2; }
+  .period { font-size: 34px; font-weight: 700; fill: #1d1c1a; }
+  .lg { font-size: 15px; fill: #6d6a63; }
+  #lgbar { stroke: #1d1c1a; stroke-width: 2; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div id="cap">Invites by region</div>
+      <svg id="chart" viewBox="0 0 1168 580" width="1168" height="580">
+        <defs>
+          <linearGradient id="ramp" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stop-color="#fbf3cf"/><stop offset="0.5" stop-color="#f2c200"/><stop offset="1" stop-color="#1d1c1a"/>
+          </linearGradient>
+        </defs>
+        <g id="hexes"></g>
+        <text class="period" id="p0" x="1080" y="70" text-anchor="end">March</text>
+        <text class="period" id="p1" x="1080" y="70" text-anchor="end">April</text>
+        <g id="legend">
+          <rect id="lgbar" x="820" y="500" width="260" height="22" rx="4" fill="url(#ramp)"/>
+          <text class="lg" x="820" y="548">0</text>
+          <text class="lg" x="1080" y="548" text-anchor="end">2,400 invites</text>
+        </g>
+      </svg>
+    </div>
+    <div id="label"><span class="l-name">Choropleth transition</span><span class="l-sep">·</span><span>Data</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  function rand(seed){ let a = seed >>> 0 || 1; return function(){ a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+  const SVG = "http://www.w3.org/2000/svg";
+  // A hex map of 19 regions (rows of 3, 4, 5, 4, 3). The colour domain is fixed: pale paper for no data, then a yellow-to-ink ramp.
+  const R = 54, CX = 560, CY = 300, hexes = [], hexG = document.getElementById("hexes");
+  const ramp = gsap.utils.interpolate(["#fbf3cf", "#f2c200", "#1d1c1a"]);
+  const pts = (cx, cy) => { let s = ""; for (let k = 0; k < 6; k++) { const a = Math.PI / 6 + k * Math.PI / 3; s += (cx + R * Math.cos(a)).toFixed(1) + "," + (cy + R * Math.sin(a)).toFixed(1) + " "; } return s; };
+  [-2, -1, 0, 1, 2].forEach(row => {
+    const n = 5 - Math.abs(row);
+    for (let c = 0; c < n; c++) {
+      const cx = CX + (c - (n - 1) / 2) * Math.sqrt(3) * R, cy = CY + row * 1.5 * R;
+      const el = document.createElementNS(SVG, "polygon"); el.setAttribute("class", "hex"); el.setAttribute("points", pts(cx, cy)); el.setAttribute("fill", "#ece7da"); hexG.appendChild(el);
+      hexes.push({ el, cx, cy });
+    }
+  });
+  // Two periods of values per region: a seeded field with a hot spot that moves from the west to the east side.
+  const r = rand(19);
+  const vA = hexes.map(h => Math.max(0, Math.min(1, 0.9 - Math.hypot(h.cx - 420, h.cy - 260) / 280 + (r() - 0.5) * 0.25)));
+  const vB = hexes.map(h => Math.max(0, Math.min(1, 1.1 - Math.hypot(h.cx - 700, h.cy - 340) / 230 + (r() - 0.5) * 0.25)));
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power1.inOut", duration: 0.5 } });
+  const order = hexes.map((h, i) => i).sort((a, b) => (hexes[a].cx + hexes[a].cy * 0.3) - (hexes[b].cx + hexes[b].cy * 0.3));   // west to east
+  // Period 1: regions take their colour from the ramp, 40 ms apart west to east; the legend reveals over 0.8 s.
+  order.forEach((i, k) => tl.fromTo(hexes[i].el, { attr: { fill: "#ece7da" } }, { attr: { fill: ramp(vA[i]) }, duration: 0.5 }, 0.2 + k * 0.04));
+  tl.fromTo("#legend", { opacity: 0 }, { opacity: 1, duration: 0.8, ease: "none" }, 0.2);
+  // Period 2: the same regions re-colour to the next month's values, same order and timing; the label swaps.
+  order.forEach((i, k) => tl.fromTo(hexes[i].el, { attr: { fill: ramp(vA[i]) } }, { attr: { fill: ramp(vB[i]) }, duration: 0.5, immediateRender: false }, 1.7 + k * 0.04));
+  tl.fromTo("#p1", { opacity: 0 }, { opacity: 0, duration: 0.01 }, 0);
+  tl.fromTo("#p0", { opacity: 1 }, { opacity: 0, duration: 0.25, ease: "none", immediateRender: false }, 1.7);
+  tl.fromTo("#p1", { opacity: 0 }, { opacity: 1, duration: 0.25, ease: "none", immediateRender: false }, 1.95);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

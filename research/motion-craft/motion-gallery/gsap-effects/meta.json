@@ -1,0 +1,21 @@
+{
+  "name": "Typewriter",
+  "family": "Effect Recipes",
+  "purpose": [
+    "typing",
+    "text",
+    "reveal"
+  ],
+  "energy": "calm",
+  "tags": [
+    "typewriter",
+    "cursor",
+    "text",
+    "typing",
+    "effects"
+  ],
+  "one_line": "Typewriter: a yellow cursor blinks, then types out a headline one character at a time at a natural pace and goes back to blinking when it is done.",
+  "aliases": [
+    "awesome-ai-motion:typewriter"
+  ]
+}

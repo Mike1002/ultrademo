@@ -1,0 +1,123 @@
+{
+  "id": "folk-frequency",
+  "name": "Folk Frequency",
+  "canvas": "light",
+  "mood": [
+    "cultural",
+    "vivid"
+  ],
+  "suits": [
+    "consumer apps",
+    "food platforms",
+    "community products",
+    "festive launches"
+  ],
+  "palette": {
+    "bg": "#ffffff",
+    "bg_alt": "#FFE000",
+    "surface": "#ffffff",
+    "surface_2": "#fff5cc",
+    "ink": "#1a1a1a",
+    "muted": "#5a5a5a",
+    "line": "#1a1a1a",
+    "accent": "#FF1493",
+    "accent_2": "#0047AB",
+    "on_accent": "#ffffff",
+    "pill_bg": "#0047AB",
+    "pill_ink": "#ffffff",
+    "pill_dot": "#FFE000",
+    "thumb": "#c9f0e4",
+    "term_bg": "#0047AB",
+    "term_ink": "#ffffff",
+    "term_muted": "#b9c8ea",
+    "term_line": "#1a1a1a",
+    "term_prompt": "#FFE000",
+    "term_ok": "#FFE000"
+  },
+  "type": {
+    "display": {
+      "family": "Fredoka One",
+      "weight": 600,
+      "hook_px": 92,
+      "stat_px": 230,
+      "mark_px": 130,
+      "transform": "none",
+      "tracking": "0",
+      "line_height": "1.05",
+      "style": "normal",
+      "generic": "sans",
+      "card_title_px": 30
+    },
+    "body": {
+      "family": "Nunito",
+      "weight": 600,
+      "generic": "sans"
+    },
+    "mono": {
+      "family": "Nunito",
+      "weight": 700
+    },
+    "label": {
+      "family": "Nunito",
+      "weight": 700,
+      "transform": "uppercase",
+      "tracking": "0.1em",
+      "generic": "sans",
+      "px": 15
+    }
+  },
+  "easing": {
+    "entry": "back.out(1.6)",
+    "exit": "elastic.out(1, 0.5)",
+    "ambient": "sine.inOut",
+    "pop": "back.out(2.2)",
+    "counter": "power2.out",
+    "wipe": null
+  },
+  "rhythm": {
+    "energy": "high",
+    "entrance": 0.5,
+    "stagger": 0.07
+  },
+  "transition": {
+    "kind": "iris",
+    "duration": 0.6,
+    "flash": false,
+    "band": false
+  },
+  "text_animation": "letters",
+  "accent_word": "none",
+  "layout": "center",
+  "atmosphere": [
+    "dots:30"
+  ],
+  "shape": {
+    "radius_card": 32,
+    "radius_button": 999,
+    "radius_pill": 999,
+    "border": "bold",
+    "border_px": 2,
+    "shadow": "none",
+    "rule_px": 8
+  },
+  "stat_colour": "accent",
+  "direction_settings": {
+    "energy": "high",
+    "density": "dense",
+    "ground": "alternating",
+    "depth": "flat",
+    "camera": "locked",
+    "type": "display",
+    "texture": "textured",
+    "colour": "full-palette",
+    "product_presence": "illustrated",
+    "sound": "scored",
+    "voice": "spoken-headline"
+  },
+  "notes": "Rounded Fredoka (Fredoka One is now shipped as Fredoka), bouncing letters, bold outlines, iris cuts; the card and terminal sit on a yellow block.",
+  "transitions": {
+    "between_moments": "iris",
+    "duration_s": 0.6,
+    "text": "letters"
+  }
+}

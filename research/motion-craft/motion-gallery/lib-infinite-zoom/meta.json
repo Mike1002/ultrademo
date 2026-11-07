@@ -1,0 +1,20 @@
+{
+  "name": "Infinite zoom",
+  "family": "Camera",
+  "purpose": [
+    "Attention",
+    "Sequence",
+    "Transition"
+  ],
+  "energy": "high",
+  "tier": 2,
+  "runtime": "gsap",
+  "tags": [
+    "recursive zoom",
+    "camera",
+    "nested",
+    "zoom through",
+    "portal"
+  ],
+  "one_line": "The camera dives into a yellow dot twice: three nested pages expand through a continuous 196x zoom, each page's dot turning out to hold the next page."
+}

@@ -1,0 +1,23 @@
+{
+  "name": "Wave dissolve",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Mood"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "webgl",
+  "tags": [
+    "dreamy wave dissolve",
+    "butterfly wave distortion",
+    "parametric wave distortion",
+    "transitions",
+    "wave",
+    "sine",
+    "strips",
+    "dissolve",
+    "canvas"
+  ],
+  "one_line": "An invite card and a stats card blend while the whole picture sways in three travelling sine waves, as if seen through water; the wave is flat at both ends and relaxes on the new card, then runs back once more."
+}

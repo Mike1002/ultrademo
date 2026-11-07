@@ -1,0 +1,125 @@
+{
+  "id": "bauhaus-grid",
+  "name": "Bauhaus Grid",
+  "canvas": "light",
+  "mood": [
+    "playful",
+    "crafted",
+    "modernist"
+  ],
+  "suits": [
+    "event launches",
+    "design tools",
+    "poster-like announcements"
+  ],
+  "palette": {
+    "bg": "#ece6d6",
+    "bg_alt": "#2f4bf5",
+    "surface": "#f4efe0",
+    "surface_2": "#e2dcc8",
+    "ink": "#121212",
+    "muted": "#4a4a4a",
+    "line": "rgba(18,18,18,0.2)",
+    "accent": "#f2542d",
+    "accent_2": "#2f4bf5",
+    "on_accent": "#ece6d6",
+    "button_bg": "#2f4bf5",
+    "button_ink": "#ece6d6",
+    "pill_bg": "#f2542d",
+    "pill_ink": "#ece6d6",
+    "pill_dot": "#ece6d6",
+    "thumb": "#2f4bf5",
+    "term_bg": "#121212",
+    "term_ink": "#ece6d6",
+    "term_muted": "#8c8c8c",
+    "term_line": "#121212",
+    "term_prompt": "#f2542d",
+    "term_ok": "#2f4bf5"
+  },
+  "type": {
+    "display": {
+      "family": "Outfit",
+      "weight": 800,
+      "hook_px": 104,
+      "stat_px": 260,
+      "mark_px": 150,
+      "transform": "lowercase",
+      "tracking": "-0.04em",
+      "line_height": "0.95",
+      "style": "normal",
+      "generic": "sans",
+      "card_title_px": 30,
+      "mark_transform": "lowercase"
+    },
+    "body": {
+      "family": "Outfit",
+      "weight": 500,
+      "generic": "sans"
+    },
+    "mono": {
+      "family": "JetBrains Mono",
+      "weight": 500
+    },
+    "label": {
+      "family": "Instrument Serif",
+      "weight": 400,
+      "transform": "none",
+      "tracking": "0",
+      "generic": "serif",
+      "px": 22,
+      "style": "italic"
+    }
+  },
+  "easing": {
+    "entry": "back.out(1.8)",
+    "exit": "power3.inOut",
+    "ambient": "none",
+    "pop": "bounce.out",
+    "counter": "power3.inOut",
+    "wipe": "expo.inOut"
+  },
+  "rhythm": {
+    "energy": "steady",
+    "entrance": 0.5,
+    "stagger": 0.08
+  },
+  "transition": {
+    "kind": "wipe-up",
+    "duration": 0.5,
+    "flash": false,
+    "band": false
+  },
+  "text_animation": "letters",
+  "accent_word": "none",
+  "layout": "center",
+  "atmosphere": [],
+  "shape": {
+    "radius_card": 0,
+    "radius_button": 999,
+    "radius_pill": 999,
+    "border": "none",
+    "border_px": 0,
+    "shadow": "none",
+    "rule_px": 8
+  },
+  "stat_colour": "accent",
+  "direction_settings": {
+    "energy": "steady",
+    "density": "balanced",
+    "ground": "light",
+    "depth": "flat",
+    "camera": "locked",
+    "type": "display",
+    "texture": "clean",
+    "colour": "two-accent",
+    "product_presence": "illustrated",
+    "sound": "scored",
+    "voice": "spoken-headline"
+  },
+  "notes": "Only cream, red, blue and black with flat fills; Outfit 800 lowercase, an italic Instrument Serif label, per-letter rise with alternating tilt, a full-frame wipe from the bottom.",
+  "transitions": {
+    "between_moments": "wipe-up",
+    "duration_s": 0.5,
+    "text": "letters"
+  }
+}

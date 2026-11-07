@@ -1,0 +1,120 @@
+{
+  "id": "navy-teal",
+  "name": "Navy Teal",
+  "canvas": "dark",
+  "mood": [
+    "clear",
+    "trustworthy",
+    "analytical"
+  ],
+  "suits": [
+    "metrics",
+    "reports",
+    "data explainers"
+  ],
+  "palette": {
+    "bg": "#0b1730",
+    "bg_alt": "#0b1730",
+    "surface": "#112040",
+    "surface_2": "#284066",
+    "ink": "#e8f1ff",
+    "muted": "#9fb4d6",
+    "line": "rgba(159,180,214,0.18)",
+    "accent": "#2ee6c5",
+    "accent_2": "#2ee6c5",
+    "on_accent": "#0b1730",
+    "pill_bg": "#284066",
+    "pill_ink": "#e8f1ff",
+    "pill_dot": "#2ee6c5",
+    "term_bg": "#081226",
+    "term_ink": "#e8f1ff",
+    "term_muted": "#6f86ad",
+    "term_line": "rgba(159,180,214,0.18)",
+    "term_prompt": "#2ee6c5",
+    "term_ok": "#2ee6c5"
+  },
+  "type": {
+    "display": {
+      "family": "Space Grotesk",
+      "weight": 700,
+      "hook_px": 84,
+      "stat_px": 280,
+      "mark_px": 130,
+      "transform": "none",
+      "tracking": "-0.04em",
+      "line_height": "1.04",
+      "style": "normal",
+      "generic": "sans",
+      "card_title_px": 28
+    },
+    "body": {
+      "family": "Space Grotesk",
+      "weight": 400,
+      "generic": "sans"
+    },
+    "mono": {
+      "family": "Space Grotesk",
+      "weight": 500
+    },
+    "label": {
+      "family": "Space Grotesk",
+      "weight": 500,
+      "transform": "uppercase",
+      "tracking": "0.1em",
+      "generic": "sans",
+      "px": 15
+    }
+  },
+  "easing": {
+    "entry": "power3.out",
+    "exit": "power2.in",
+    "ambient": "none",
+    "pop": "power3.out",
+    "counter": "power2.out",
+    "wipe": null
+  },
+  "rhythm": {
+    "energy": "steady",
+    "entrance": 0.6,
+    "stagger": 0.1
+  },
+  "transition": {
+    "kind": "crossfade",
+    "duration": 0.5,
+    "flash": false,
+    "band": false
+  },
+  "text_animation": "fade-up",
+  "accent_word": "none",
+  "layout": "center",
+  "atmosphere": [],
+  "shape": {
+    "radius_card": 12,
+    "radius_button": 10,
+    "radius_pill": 999,
+    "border": "hairline",
+    "border_px": 1,
+    "shadow": "none",
+    "rule_px": 6
+  },
+  "stat_colour": "accent",
+  "direction_settings": {
+    "energy": "steady",
+    "density": "balanced",
+    "ground": "dark",
+    "depth": "flat",
+    "camera": "locked",
+    "type": "display",
+    "texture": "clean",
+    "colour": "one-accent",
+    "product_presence": "illustrated",
+    "sound": "scored",
+    "voice": "narrated"
+  },
+  "notes": "Deep navy, one teal highlight, Space Grotesk throughout; counters via onUpdate, fade-up exits.",
+  "transitions": {
+    "between_moments": "crossfade",
+    "duration_s": 0.5,
+    "text": "fade-up"
+  }
+}

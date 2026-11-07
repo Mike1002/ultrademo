@@ -1,0 +1,19 @@
+{
+  "name": "Multi-phase camera",
+  "family": "Camera & Viewport",
+  "purpose": [
+    "camera",
+    "cinematic",
+    "entrance"
+  ],
+  "energy": "calm",
+  "tags": [
+    "camera",
+    "zoom",
+    "phase",
+    "drift",
+    "scale",
+    "cinematic"
+  ],
+  "one_line": "The whole scene starts pulled back a little, settles to normal size as the card's text and button fade in, then pushes in slowly, with a gentle wandering drift the entire time so the camera never feels locked."
+}

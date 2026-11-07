@@ -1,0 +1,22 @@
+{
+  "name": "Halftone motion",
+  "family": "Generative",
+  "purpose": [
+    "Mood",
+    "Branding",
+    "Attention"
+  ],
+  "energy": "calm",
+  "tier": 2,
+  "runtime": "canvas",
+  "tags": [
+    "halftone field",
+    "screen-tone animation",
+    "cmyk",
+    "generative",
+    "dot grid",
+    "radius modulation",
+    "wave"
+  ],
+  "one_line": "A grid of ink dots on paper keeps its centres fixed while a diagonal wave rolls through the dot sizes, like a printed halftone coming alive."
+}

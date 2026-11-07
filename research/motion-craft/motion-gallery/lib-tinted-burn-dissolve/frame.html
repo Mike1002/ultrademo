@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-tinted-burn-dissolve</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #171a21; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #171a21; color: #ece8df;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; overflow: hidden; }
+  .card { position: absolute; left: 264px; top: 110px; width: 640px; height: 360px; background: #1f232c; border: 2px solid #a7adbb; border-radius: 24px; will-change: filter, opacity; }
+  .card .lab { position: absolute; left: 56px; top: 48px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #a7adbb; }
+  .card h1 { position: absolute; left: 56px; top: 80px; font-size: 56px; font-weight: 700; line-height: 64px; white-space: nowrap; }
+  .card .sub { position: absolute; left: 56px; top: 160px; font-size: 22px; color: #a7adbb; }
+  .card .btn { position: absolute; left: 56px; top: 240px; width: 200px; height: 60px; border-radius: 14px; background: #f2c200; border: 2px solid #1d1c1a;
+    font-size: 20px; font-weight: 700; line-height: 56px; text-align: center; color: #1d1c1a; }
+  #b h1 { font-size: 96px; line-height: 104px; top: 74px; font-variant-numeric: tabular-nums; }
+  #b .sub { top: 190px; }
+  #tint { position: absolute; inset: 0; opacity: 0; mix-blend-mode: screen; pointer-events: none;
+    background: radial-gradient(ellipse at 50% 50%, #ffd54a 0%, #f2a51b 40%, #e6663a 75%, #7a2a10 100%); }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #a7adbb; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #ece8df; font-weight: 700; }
+  #label .l-sep { color: #6d7380; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div class="card" id="a" data-layout-allow-overlap>
+        <div class="lab" data-layout-allow-overlap data-layout-allow-occlusion>Orbit</div>
+        <h1 data-layout-allow-overlap data-layout-allow-occlusion>Invite your team</h1>
+        <div class="sub" data-layout-allow-overlap data-layout-allow-occlusion>3 seats left on this plan</div>
+        <div class="btn" data-layout-allow-overlap data-layout-allow-occlusion>Continue</div>
+      </div>
+      <div class="card" id="b" data-layout-allow-overlap>
+        <div class="lab" data-layout-allow-overlap data-layout-allow-occlusion>This month</div>
+        <h1 data-layout-allow-overlap data-layout-allow-occlusion>12,480</h1>
+        <div class="sub" data-layout-allow-overlap data-layout-allow-occlusion>invites sent</div>
+      </div>
+      <div id="tint" data-layout-allow-overlap></div>
+    </div>
+    <div id="label"><span class="l-name">Tinted burn dissolve</span><span class="l-sep">·</span><span>Transitions</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const HOT = "sepia(1) saturate(4) hue-rotate(-18deg) brightness(1.5) contrast(1.1)";
+  const CLEAN = "sepia(0) saturate(1) hue-rotate(0deg) brightness(1) contrast(1)";
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "none", duration: 0.6 } });
+  // Resting state: A on top and clean, B hidden, tint clear.
+  tl.fromTo("#a", { opacity: 1, filter: CLEAN }, { opacity: 1, duration: 0.01 }, 0);
+  tl.fromTo("#b", { opacity: 0, filter: CLEAN }, { opacity: 0, duration: 0.01 }, 0);
+  tl.fromTo("#tint", { opacity: 0 }, { opacity: 0, duration: 0.01 }, 0);
+  // Tinted burn from `from` to `to` over `d` seconds: the two cards cross linearly; the outgoing card's colour runs hot
+  // (sepia, saturate, hue-rotate, brightness) over the first half; the warm screen layer rises to 0.5 (sine.in) and falls back (sine.out).
+  function burn(from, to, t, d) {
+    tl.to(from, { opacity: 0, duration: d, ease: "none" }, t);
+    tl.to(from, { filter: HOT, duration: d * 0.5, ease: "sine.in" }, t);
+    tl.fromTo(to, { opacity: 0, filter: CLEAN }, { opacity: 1, duration: d, ease: "none", immediateRender: false }, t);
+    tl.to("#tint", { opacity: 0.5, duration: d * 0.5, ease: "sine.in" }, t);
+    tl.to("#tint", { opacity: 0, duration: d * 0.5, ease: "sine.out" }, t + d * 0.5);
+    // reset the outgoing card's colour quietly once it is invisible
+    tl.to(from, { filter: CLEAN, duration: 0.02, ease: "none" }, t + d + 0.02);
+  }
+  burn("#a", "#b", 0.7, 1.0);
+  burn("#b", "#a", 2.15, 0.8);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

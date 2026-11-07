@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-stack-layer-addition</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  #chart { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  #chart text { font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .layer { stroke: #f6f3ec; stroke-width: 2; }
+  .axis { stroke: #1d1c1a; stroke-width: 2; }
+  .tick { font-size: 16px; fill: #6d6a63; }
+  .callout { font-size: 20px; font-weight: 700; fill: #1d1c1a; }
+  .heading { position: absolute; left: 32px; top: 16px; font-size: 34px; font-weight: 700; }
+  .legend { position: absolute; left: 34px; top: 64px; font-size: 15px; color: #6d6a63; display: flex; gap: 22px; align-items: center; }
+  .legend i { display: inline-block; width: 14px; height: 14px; border-radius: 3px; margin-right: 7px; vertical-align: -2px; border: 2px solid #1d1c1a; }
+  #legNew { opacity: 0; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div class="heading">Invites by team</div>
+      <div class="legend"><span><i style="background:#1d1c1a"></i>Design</span><span><i style="background:#6d6a63"></i>Sales</span><span><i style="background:#cfcabd"></i>Support</span><span id="legNew"><i style="background:#f2c200"></i>Partners (new)</span></div>
+      <svg id="chart" viewBox="0 0 1168 580" xmlns="http://www.w3.org/2000/svg">
+        <path id="lNew" class="layer" fill="#f2c200" d=""/>
+        <path id="lSupport" class="layer" fill="#cfcabd" d=""/>
+        <path id="lSales" class="layer" fill="#6d6a63" d=""/>
+        <path id="lDesign" class="layer" fill="#1d1c1a" d=""/>
+        <line class="axis" x1="160" y1="500" x2="1100" y2="500"/>
+        <line class="axis" x1="160" y1="110" x2="160" y2="500"/>
+        <text class="tick" x="160" y="528" text-anchor="middle">W1</text>
+        <text class="tick" x="630" y="528" text-anchor="middle">W5</text>
+        <text class="tick" x="1100" y="528" text-anchor="middle">W8</text>
+        <text class="tick" x="140" y="116" text-anchor="end">400</text>
+        <text class="tick" x="140" y="505" text-anchor="end">0</text>
+        <text id="callout" class="callout" x="1090" y="0" text-anchor="end" opacity="0">+ Partners</text>
+      </svg>
+    </div>
+    <div id="label"><span class="l-name">Stack layer addition</span><span class="l-sep">·</span><span>Data</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const X0 = 160, XW = 940, BASE = 500, N = 8;
+  const DESIGN = [60, 70, 65, 80, 90, 85, 95, 100], SALES = [40, 50, 55, 50, 60, 70, 65, 75], SUPPORT = [30, 35, 30, 40, 35, 45, 50, 45];
+  const NEW = [20, 30, 45, 50, 70, 80, 95, 110];   // the inserted bottom layer, 0 px thick before 0.4 s, 120 px max at the end
+  const xs = Array.from({ length: N }, (_, i) => X0 + (i / (N - 1)) * XW);
+  const io = k => k < 0.5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;
+  const clamp = x => Math.max(0, Math.min(1, x));
+  const $ = id => document.getElementById(id);
+  // Smooth area between two boundary arrays (lower, upper) using Catmull-Rom style cubic segments.
+  function area(lo, up) {
+    const seg = (ys, rev) => {
+      const idx = rev ? [...Array(N).keys()].reverse() : [...Array(N).keys()];
+      let d = "";
+      for (let k = 1; k < N; k++) {
+        const a = idx[k - 1], b = idx[k], mx = (xs[a] + xs[b]) / 2;
+        d += ` C${mx.toFixed(1)} ${ys[a].toFixed(1)} ${mx.toFixed(1)} ${ys[b].toFixed(1)} ${xs[b].toFixed(1)} ${ys[b].toFixed(1)}`;
+      }
+      return d;
+    };
+    return `M${xs[0].toFixed(1)} ${up[0].toFixed(1)}` + seg(up, false) + ` L${xs[N - 1].toFixed(1)} ${lo[N - 1].toFixed(1)}` + seg(lo, true) + " Z";
+  }
+  function renderAt(t) {
+    // Insertion 0.4-1.1 s (power2.inOut); a second growth beat 2.0-2.6 s makes the new layer thicker again.
+    const p = io(clamp((t - 0.4) / 0.7)), q = io(clamp((t - 2.0) / 0.6));
+    const f = p * (1 + 0.3 * q);
+    const b0 = xs.map(() => BASE);
+    const b1 = NEW.map((v) => BASE - v * f);                       // top of the new layer
+    const b2 = b1.map((y, i) => y - SUPPORT[i]);                   // layers above shift up by exactly the new thickness
+    const b3 = b2.map((y, i) => y - SALES[i]);
+    const b4 = b3.map((y, i) => y - DESIGN[i]);
+    $("lNew").setAttribute("d", area(b0, b1));
+    $("lSupport").setAttribute("d", area(b1, b2));
+    $("lSales").setAttribute("d", area(b2, b3));
+    $("lDesign").setAttribute("d", area(b3, b4));
+    $("legNew").style.opacity = p.toFixed(3);
+    const c = $("callout"); c.setAttribute("opacity", p.toFixed(3)); c.setAttribute("y", ((b0[N - 1] + b1[N - 1]) / 2 + 8).toFixed(1));
+  }
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power2.inOut", duration: 0.7 } });
+  renderAt(0);
+  tl.to({ k: 0 }, { k: 1, duration: 3, ease: "none", onUpdate: () => renderAt(tl.time()) }, 0);
+  const baseRender = tl.render; tl.render = function () { const r = baseRender.apply(this, arguments); renderAt(this.time()); return r; };
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

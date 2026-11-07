@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-carousel-slide</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; overflow: hidden; }
+  #rail { position: absolute; left: 0; top: 120px; width: 1920px; height: 320px; will-change: transform; }
+  .card { position: absolute; top: 10px; width: 360px; height: 300px; background: #fffdf8; border: 2px solid #1d1c1a; border-radius: 24px; will-change: transform; }
+  .card .no { position: absolute; left: 36px; top: 32px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  .card .ic { position: absolute; left: 36px; top: 64px; width: 56px; height: 56px; border-radius: 16px; border: 2px solid #1d1c1a; background: #ece7da; }
+  .card .ic.y { background: #f2c200; }
+  .card h2 { position: absolute; left: 36px; top: 150px; font-size: 40px; font-weight: 700; line-height: 48px; white-space: nowrap; }
+  .card .sub { position: absolute; left: 36px; top: 210px; font-size: 18px; color: #6d6a63; white-space: nowrap; }
+  #dots { position: absolute; left: 524px; top: 476px; width: 120px; height: 12px; }
+  .dot { position: absolute; top: 2px; width: 8px; height: 8px; border-radius: 4px; background: #d8d2c4; }
+  #pill { position: absolute; left: 0; top: 0; width: 24px; height: 12px; border-radius: 6px; background: #f2c200; border: 2px solid #1d1c1a; will-change: transform; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div id="rail" data-layout-allow-overflow>
+        <div class="card" id="k0" style="left:0px" data-layout-allow-overflow><div class="no">Step 1</div><div class="ic"></div><h2>Record</h2><div class="sub">Capture the invite flow</div></div>
+        <div class="card" id="k1" style="left:384px" data-layout-allow-overflow><div class="no">Step 2</div><div class="ic"></div><h2>Edit</h2><div class="sub">Trim and add captions</div></div>
+        <div class="card" id="k2" style="left:768px" data-layout-allow-overflow><div class="no">Step 3</div><div class="ic y"></div><h2>Review</h2><div class="sub">Jamie Dalton approves</div></div>
+        <div class="card" id="k3" style="left:1152px" data-layout-allow-overflow><div class="no">Step 4</div><div class="ic"></div><h2>Ship</h2><div class="sub">Publish to the team</div></div>
+        <div class="card" id="k4" style="left:1536px" data-layout-allow-overflow><div class="no">Step 5</div><div class="ic"></div><h2>Share</h2><div class="sub">12,480 invites sent</div></div>
+      </div>
+      <div id="dots">
+        <div class="dot" style="left:0px"></div><div class="dot" style="left:24px"></div><div class="dot" style="left:48px"></div><div class="dot" style="left:72px"></div><div class="dot" style="left:96px"></div>
+        <div id="pill" data-layout-allow-overlap></div>
+      </div>
+    </div>
+    <div id="label"><span class="l-name">Carousel slide</span><span class="l-sep">·</span><span>UI Demo</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+  // Params: 360 px cards, 24 px gap (384 px step), 600 ms per move, centred card at 1.05, then a read hold.
+  const STEP = 384, CENTRE = 404;              // rail x that centres card i: CENTRE - i * STEP
+  const railX = i => CENTRE - i * STEP;
+  const cards = ["#k0", "#k1", "#k2", "#k3", "#k4"];
+  // Resting state: Edit (card 1) centred and enlarged, the others at 1.
+  tl.fromTo("#rail", { x: railX(1) }, { x: railX(1), duration: 0.01, ease: "none" }, 0);
+  cards.forEach((c, i) => tl.fromTo(c, { scale: i === 1 ? 1.05 : 1 }, { scale: i === 1 ? 1.05 : 1, duration: 0.01, ease: "none" }, 0));
+  tl.fromTo("#pill", { x: 24 * 1 - 8 }, { x: 24 * 1 - 8, duration: 0.01, ease: "none" }, 0);
+  // A throw from card a to card b at time t: the rail decelerates 16 px past the target and eases back, the
+  // outgoing card shrinks to 1 as the incoming card grows to 1.05, the indicator pill glides one step.
+  function throwTo(a, b, t) {
+    tl.to("#rail", { x: railX(b) - 16, duration: 0.5, ease: "power3.out" }, t);
+    tl.to("#rail", { x: railX(b), duration: 0.18, ease: "power2.inOut" }, t + 0.5);
+    tl.to(cards[a], { scale: 1, duration: 0.6, ease: "power3.out" }, t);
+    tl.to(cards[b], { scale: 1.05, duration: 0.6, ease: "power3.out" }, t);
+    tl.to("#pill", { x: 24 * b - 8, duration: 0.5, ease: "power3.out" }, t);
+  }
+  throwTo(1, 2, 0.55);   // Review is centred and settling at 1.2 s (poster)
+  throwTo(2, 3, 1.95);   // second throw: Ship
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

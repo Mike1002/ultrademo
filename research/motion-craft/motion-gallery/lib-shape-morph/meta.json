@@ -1,0 +1,19 @@
+{
+  "name": "Morph",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Sequence"
+  ],
+  "energy": "steady",
+  "tier": 2,
+  "runtime": "gsap",
+  "tags": [
+    "shape morph",
+    "container morph",
+    "card morph anchor",
+    "same element",
+    "transitions"
+  ],
+  "one_line": "The same element turns from an ink square into a yellow circle and then into the first bar of the next scene's chart."
+}

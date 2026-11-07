@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-tracked-redaction</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  #card { position: absolute; left: 284px; top: 60px; width: 600px; height: 500px; background: #fffdf8; border: 2px solid #1d1c1a; border-radius: 24px; overflow: hidden; }
+  #card .ttl { position: absolute; left: 40px; top: 30px; font-size: 24px; font-weight: 700; }
+  .row { position: absolute; left: 40px; width: 516px; height: 56px; }
+  .row .lab { position: absolute; left: 0; top: 18px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  .row .val { position: absolute; left: 150px; top: 12px; font-size: 22px; white-space: nowrap; }
+  .hr { position: absolute; left: 40px; width: 516px; height: 2px; background: #e3ded2; }
+  #note { position: absolute; left: 40px; top: 196px; width: 516px; height: 60px; border-radius: 14px; background: #fbf3cf; border: 2px solid #1d1c1a; will-change: transform, opacity; }
+  #note .n1 { position: absolute; left: 20px; top: 10px; font-size: 17px; font-weight: 700; }
+  #note .n2 { position: absolute; left: 20px; top: 33px; font-size: 14px; color: #6d6a63; }
+  #below { position: absolute; left: 0; top: 0; width: 596px; height: 496px; will-change: transform; }
+  .field { position: absolute; left: 150px; top: 12px; display: inline-block; font-size: 22px; white-space: nowrap; line-height: 28px; }
+  .field .redaction { position: absolute; left: -10px; top: -6px; right: -10px; bottom: -6px; border-radius: 12px;
+    background: rgba(246,243,236,0.35); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 2px dashed #6d6a63; z-index: 2; pointer-events: none; }
+  #btn { position: absolute; left: 40px; top: 350px; width: 160px; height: 52px; border-radius: 14px; background: #f2c200; border: 2px solid #1d1c1a;
+    font-size: 18px; font-weight: 700; line-height: 48px; text-align: center; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div id="card">
+        <div class="ttl">Account</div>
+        <div class="hr" style="top:72px"></div>
+        <div class="row" style="top:76px"><div class="lab">Name</div><div class="val">Jamie Dalton</div></div>
+        <div class="hr" style="top:134px"></div>
+        <div class="row" style="top:138px"><div class="lab">Team</div><div class="val">Orbit · 3 seats left</div></div>
+        <div id="note" data-layout-allow-overlap><div class="n1">Plan almost full</div><div class="n2">Invite your team before the seats run out</div></div>
+        <div id="below" data-layout-allow-overlap>
+          <div class="hr" style="top:196px"></div>
+          <div class="row" style="top:200px"><div class="lab">Email</div>
+            <div class="field" id="field"><span id="email" data-layout-allow-occlusion>jamie@orbit.app</span><div class="redaction" data-layout-allow-overlap></div></div>
+          </div>
+          <div class="hr" style="top:258px"></div>
+          <div class="row" style="top:262px"><div class="lab">Role</div><div class="val">Owner</div></div>
+          <div id="btn">Save</div>
+        </div>
+      </div>
+    </div>
+    <div id="label"><span class="l-name">Tracked redaction</span><span class="l-sep">·</span><span>UI Demo</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.inOut", duration: 0.5 } });
+  // The redaction is a child of the email field with inset edges, so it tracks the field with zero delay: nothing here tweens the redaction.
+  // Beat 1: a note expands under the Team row (paint and transform only) and everything below moves down 72 px; the blur pill rides along.
+  tl.fromTo("#note", { scaleY: 0, opacity: 0, transformOrigin: "50% 0%" }, { scaleY: 1, opacity: 1, duration: 0.5, ease: "power3.out" }, 0.4);
+  tl.fromTo("#below", { y: 0 }, { y: 72, duration: 0.5, ease: "power3.inOut" }, 0.4);
+  // Beat 2: the field's value changes to a longer address; the pill widens with it because it is sized by the field, not by a tween.
+  const email = document.getElementById("email");
+  function renderAt(t) { email.textContent = t < 1.55 ? "jamie@orbit.app" : "jamie.dalton@orbit.app"; }
+  renderAt(0);
+  tl.to({ k: 0 }, { k: 1, duration: 3, ease: "none", onUpdate: () => renderAt(tl.time()) }, 0);
+  // Beat 3: the note collapses and the rows return; the pill follows back up.
+  tl.to("#note", { scaleY: 0, opacity: 0, duration: 0.45, ease: "power3.in" }, 2.1);
+  tl.to("#below", { y: 0, duration: 0.5, ease: "power3.inOut" }, 2.15);
+  const baseRender = tl.render; tl.render = function () { const r = baseRender.apply(this, arguments); renderAt(this.time()); return r; };
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+{
+  "name": "Countdown ticker",
+  "family": "Data",
+  "purpose": [
+    "Data evidence",
+    "Attention",
+    "Feedback"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "css",
+  "tags": [
+    "countdown clock",
+    "numeric countdown beat",
+    "karaoke count in",
+    "data",
+    "timer",
+    "digit swap",
+    "tabular-nums"
+  ],
+  "one_line": "A launch countdown in days, hours, minutes and seconds ticks down once a second, each new seconds pair sliding up into place while a yellow time bar drains."
+}

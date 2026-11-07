@@ -1,0 +1,20 @@
+{
+  "name": "Error shake",
+  "family": "UI Demo",
+  "purpose": [
+    "Feedback"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "css",
+  "tags": [
+    "error shake success",
+    "ui",
+    "form",
+    "shake",
+    "validation",
+    "line draw",
+    "check mark"
+  ],
+  "one_line": "An email field with an incomplete address gets a yellow ring and a short horizontal shake with an error line; the ending is typed in, the ring clears and a check mark draws itself to confirm."
+}

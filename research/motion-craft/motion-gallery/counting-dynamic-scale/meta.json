@@ -1,0 +1,23 @@
+{
+  "name": "Counting with dynamic scale",
+  "family": "Text & Typography",
+  "purpose": [
+    "data",
+    "proof",
+    "emphasis"
+  ],
+  "energy": "steady",
+  "tags": [
+    "counter",
+    "counting",
+    "scale",
+    "transform",
+    "number",
+    "dynamic",
+    "emphasis"
+  ],
+  "one_line": "A big number counts up from zero to 1,284 while growing to full size, then a plus sign pops in beside it and a yellow label sits beneath.",
+  "aliases": [
+    "awesome-ai-motion:count-up"
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "name": "Dock magnification",
+  "family": "UI Demo",
+  "purpose": [
+    "Feedback",
+    "Emphasis"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "gsap",
+  "tags": [
+    "proximity magnification",
+    "ui",
+    "dock",
+    "icons",
+    "pointer",
+    "scale",
+    "proximity"
+  ],
+  "one_line": "A pointer sweeps along a dock of seven app icons; each icon grows as the pointer nears it and shrinks as it passes, then the pointer comes back and rests on Search, which stays enlarged."
+}

@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>gradient-text-sweep</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  .stage { position: absolute; inset: 0; display: grid; place-items: center; }
+  /* Form A: the gradient is 3x wider than the text box and clipped into the glyphs; only its position moves */
+  .headline { font-size: 112px; font-weight: 900; letter-spacing: -0.03em; line-height: 1; white-space: nowrap; padding: 20px 0;
+    background-image: linear-gradient(90deg, #1d1c1a 0%, #1d1c1a 32%, #f2c200 50%, #1d1c1a 68%, #1d1c1a 100%);
+    background-size: 300% 100%; background-position: 100% 50%;
+    -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .sub { position: absolute; left: 0; top: 470px; width: 1280px; text-align: center; font-size: 22px; color: #6d6a63; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div class="stage">
+      <h1 class="headline" id="headline">Every frame is code</h1>
+    </div>
+    <div class="sub">The letters never move. Only the light does.</div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true });
+  // Continuous sweep across the whole hold: 100% -> 0% reads left to right (percent axis is inverted), linear so it reads as light.
+  // First and last gradient stops are equal, so the travel has no seam.
+  const SWEEP_START = 0, SWEEP_DUR = 3;
+  tl.fromTo("#headline", { backgroundPosition: "100% 50%" }, { backgroundPosition: "0% 50%", duration: SWEEP_DUR, ease: "none" }, SWEEP_START);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

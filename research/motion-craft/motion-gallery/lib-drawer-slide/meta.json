@@ -1,0 +1,21 @@
+{
+  "name": "Drawer slide",
+  "family": "UI Demo",
+  "purpose": [
+    "Transition"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "gsap",
+  "tags": [
+    "spring sheet",
+    "drawer and sheet",
+    "ui",
+    "drawer",
+    "panel",
+    "slide in",
+    "recede",
+    "backdrop"
+  ],
+  "one_line": "A settings drawer springs in from the right edge while the page behind shrinks slightly and dims; a switch flips inside it, then the drawer slides back out and the page returns."
+}

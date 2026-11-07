@@ -1,0 +1,20 @@
+{
+  "name": "Sine wave loop",
+  "family": "Idle & Ambient",
+  "purpose": [
+    "idle",
+    "ambient",
+    "hold"
+  ],
+  "energy": "calm",
+  "tags": [
+    "idle",
+    "jitter",
+    "bounded-ambient",
+    "sine",
+    "trigonometry",
+    "low-amplitude",
+    "post-entry"
+  ],
+  "one_line": "A card pops into place and then breathes very slightly, drifting a few pixels up and down and swelling a hair, while the yellow badge on its corner pulses a quarter beat out of step."
+}

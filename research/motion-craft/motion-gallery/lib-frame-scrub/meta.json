@@ -1,0 +1,24 @@
+{
+  "name": "Frame scrub",
+  "family": "Camera",
+  "purpose": [
+    "Explanation",
+    "Sequence"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "canvas",
+  "tags": [
+    "scroll image sequence",
+    "camera",
+    "canvas",
+    "frame sequence",
+    "scrub",
+    "reverse",
+    "progress"
+  ],
+  "one_line": "A baked 24-frame sequence of an invite card sliding open and a check drawing in is scrubbed forward by a progress bar, held, then scrubbed back in reverse, with the current frame number stepping along a tick row.",
+  "aliases": [
+    "awesome-ai-motion:scroll-frame-scrub"
+  ]
+}

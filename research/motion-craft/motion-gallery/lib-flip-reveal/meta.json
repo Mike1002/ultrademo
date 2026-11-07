@@ -1,0 +1,21 @@
+{
+  "name": "Flip reveal",
+  "family": "Entrance & Exit",
+  "purpose": [
+    "Attention",
+    "Emphasis"
+  ],
+  "energy": "steady",
+  "tier": 2,
+  "runtime": "css",
+  "tags": [
+    "flip in and out",
+    "slit reveal",
+    "entrance",
+    "3d",
+    "rotate",
+    "card",
+    "perspective"
+  ],
+  "one_line": "A card starts edge-on and turns around its vertical axis to face the viewer, fading in as it comes; it then turns away and a second card flips in to take its place."
+}

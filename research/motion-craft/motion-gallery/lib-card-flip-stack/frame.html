@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-card-flip-stack</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #171a21; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #171a21; color: #ece8df;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; overflow: hidden; }
+  .lab { font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #a7adbb; white-space: nowrap; }
+  .num { font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1; white-space: nowrap; }
+  .t-xl { font-size: 84px; font-weight: 700; line-height: 1.05; white-space: nowrap; }
+  .t-l { font-size: 56px; font-weight: 700; line-height: 1.1; white-space: nowrap; }
+  .t-m { font-size: 34px; font-weight: 700; line-height: 1.15; white-space: nowrap; }
+  .t-body { font-size: 22px; line-height: 1.4; }
+  .hair { height: 1px; background: #2a2f3a; }
+  .dot { border-radius: 50%; background: #ece8df; }
+  .dot.v { background: #f2c200; border: 2px solid #ece8df; }
+
+  .camera { position: absolute; inset: 0; perspective: 1400px; perspective-origin: 50% 50%; }
+  .stack { position: absolute; inset: 0; transform-style: preserve-3d; }
+  .card { position: absolute; left: 194px; top: 145px; width: 780px; height: 350px; background: #1f232c; border: 2px solid #ece8df; border-radius: 24px; transform-origin: 50% 30%; backface-visibility: hidden; will-change: transform; }
+  .label { position: absolute; left: 36px; top: 26px; }
+  .number { position: absolute; left: 34px; top: 91px; font-size: 156px; }
+  .sentence { position: absolute; left: 276px; top: 141px; font-weight: 700; font-size: 34px; white-space: nowrap; letter-spacing: -.01em; }
+  .line { position: absolute; left: 36px; right: 36px; top: 265px; }
+  .bottom { position: absolute; left: 36px; top: 291px; }
+  #card4 .number { color: #f2c200; }
+  .tag { position: absolute; left: 35px; top: 25px; }
+
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #a7adbb; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #ece8df; font-weight: 700; }
+  #label .l-sep { color: #6d7380; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+
+      <div class="lab tag">Five sheets / one sequence</div>
+      <div class="camera" data-layout-allow-overflow><div class="stack" data-layout-allow-overlap><article class="card" id="card0" data-layout-allow-overlap data-layout-allow-occlusion><div class="lab label" data-layout-allow-overlap data-layout-allow-occlusion>Orbit / 01</div><div class="num number" data-layout-allow-overlap data-layout-allow-occlusion>01</div><div class="sentence" data-layout-allow-overlap data-layout-allow-occlusion>Read the invite</div><div class="hair line"></div><div class="lab bottom" data-layout-allow-overlap data-layout-allow-occlusion>Invite → Accept</div></article><article class="card" id="card1" data-layout-allow-overlap data-layout-allow-occlusion><div class="lab label" data-layout-allow-overlap data-layout-allow-occlusion>Orbit / 02</div><div class="num number" data-layout-allow-overlap data-layout-allow-occlusion>02</div><div class="sentence" data-layout-allow-overlap data-layout-allow-occlusion>Pick a seat</div><div class="hair line"></div><div class="lab bottom" data-layout-allow-overlap data-layout-allow-occlusion>3 seats left</div></article><article class="card" id="card2" data-layout-allow-overlap data-layout-allow-occlusion><div class="lab label" data-layout-allow-overlap data-layout-allow-occlusion>Orbit / 03</div><div class="num number" data-layout-allow-overlap data-layout-allow-occlusion>03</div><div class="sentence" data-layout-allow-overlap data-layout-allow-occlusion>Confirm the email</div><div class="hair line"></div><div class="lab bottom" data-layout-allow-overlap data-layout-allow-occlusion>Jamie Dalton</div></article><article class="card" id="card3" data-layout-allow-overlap data-layout-allow-occlusion><div class="lab label" data-layout-allow-overlap data-layout-allow-occlusion>Orbit / 04</div><div class="num number" data-layout-allow-overlap data-layout-allow-occlusion>04</div><div class="sentence" data-layout-allow-overlap data-layout-allow-occlusion>Join the workspace</div><div class="hair line"></div><div class="lab bottom" data-layout-allow-overlap data-layout-allow-occlusion>Accepted 98%</div></article><article class="card" id="card4" data-layout-allow-overlap data-layout-allow-occlusion><div class="lab label" data-layout-allow-overlap data-layout-allow-occlusion>Orbit / 05</div><div class="num number" data-layout-allow-overlap data-layout-allow-occlusion>05</div><div class="sentence" data-layout-allow-overlap data-layout-allow-occlusion>Invite your team</div><div class="hair line"></div><div class="lab bottom" data-layout-allow-overlap data-layout-allow-occlusion>Invite → Accept → Join</div></article></div></div>
+
+    </div>
+    <div id="label"><span class="l-name">3D card flip stack</span><span class="l-sep">·</span><span>3D & Depth</span><span class="l-sep">·</span><span>high</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+
+  // 3D card flip stack: four sheets flip up around a high pivot (rotateX -115) 0.18 s apart, then settle tilted behind the stack;
+  // the fifth sheet rises to the front. The whole stack yaws slightly and returns.
+  for (let i = 0; i < 5; i++) gsap.set("#card" + i, { z: -i * 65, y: -i * 22, rotationX: -i * 5 });
+  for (let i = 0; i < 4; i++) {
+    const start = 0.25 + i * 0.18;
+    tl.fromTo("#card" + i, { rotationX: -i * 5, y: -i * 22, z: -i * 65 }, { rotationX: -115, y: -145, z: 90, duration: 0.65, ease: "power2.inOut" }, start);
+    tl.to("#card" + i, { rotationX: -22, y: -115 - i * 16, z: -420 - i * 55, duration: 0.75, ease: "power2.out" }, start + 0.65);
+  }
+  tl.fromTo("#card4", { rotationX: -20, y: -88, z: -260 }, { rotationX: 0, y: 0, z: 0, duration: 1.1, ease: "power3.out" }, 1.0);
+  tl.fromTo(".stack", { rotationY: 0 }, { rotationY: -5, duration: 1.4, ease: "sine.inOut" }, 0.2);
+  tl.to(".stack", { rotationY: 0, duration: 0.65, ease: "sine.inOut" }, 2.3);
+
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

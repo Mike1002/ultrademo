@@ -1,0 +1,21 @@
+{
+  "name": "Wind wipe",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Sequence"
+  ],
+  "energy": "high",
+  "tier": 3,
+  "runtime": "webgl",
+  "tags": [
+    "wind streak wipe",
+    "transitions",
+    "wipe",
+    "strips",
+    "streaks",
+    "clip-path",
+    "seeded"
+  ],
+  "one_line": "An invite card is blown off in 24 horizontal streaks, each line's edge racing to the right a little ahead of or behind its neighbours, revealing a stats card underneath; then the same wind blows the first card back in from the left."
+}

@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-word-pop-caption</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px;  }
+  .lab { font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  .diagram { position: absolute; left: 110px; right: 110px; top: 240px; display: flex; align-items: center; gap: 30px; }
+  .diagram i { height: 1px; background: #e3ded2; flex: 1; display: block; }
+  .diagram .dot { width: 38px; height: 38px; border-radius: 50%; background: #f2c200; border: 2px solid #1d1c1a; }
+  .headline { position: absolute; left: 110px; top: 95px; font-size: 56px; font-weight: 700; }
+  .rail { position: absolute; left: 70px; right: 70px; top: 470px; height: 72px; }
+  .page { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: 18px; }
+  #p2 { opacity: 0; }
+  .page span { display: block; white-space: nowrap; font-weight: 700; font-size: 48px; padding: 4px 12px; border-radius: 14px; will-change: transform; }
+  .page span.hot { background: #f2c200; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div class="diagram"><span class="lab">Invite</span><i></i><span class="lab">Accept</span><i></i><span class="dot"></span></div>
+      <div class="headline">Invite your team</div>
+      <div class="rail" id="rail">
+        <div class="page" id="p1" data-layout-allow-overlap><span id="a1">Invite</span><span id="a2">your</span><span id="a3">team</span></div>
+        <div class="page" id="p2" data-layout-allow-overlap><span id="b1">in</span><span id="b2">one</span><span id="b3" class="hot">click.</span></div>
+      </div>
+    </div>
+    <div id="label"><span class="l-name">Word pop caption</span><span class="l-sep">·</span><span>Captions</span><span class="l-sep">·</span><span>high</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+  // Page 2 starts hidden in CSS; the swap at 1.75 s is two instant sets.
+  const groups = [{ sel: ["#a1", "#a2", "#a3"], times: [0.3, 0.65, 1.0] }, { sel: ["#b1", "#b2", "#b3"], times: [1.75, 2.1, 2.45] }];
+  groups.forEach(g => g.sel.forEach((el, i) => {
+    tl.fromTo(el, { scale: 0.85, opacity: 0 }, { scale: 1.08, opacity: 1, duration: 0.1, ease: "power2.out" }, g.times[i]);
+    tl.to(el, { scale: 1, duration: 0.06, ease: "power1.out" }, g.times[i] + 0.1);
+  }));
+  // Page swap: the first group goes at once and the second takes its place.
+  tl.set("#p1", { opacity: 0 }, 1.75);
+  tl.set("#p2", { opacity: 1 }, 1.75);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

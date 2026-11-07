@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-font-shuffle</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  #line { position: absolute; left: 0; top: 236px; width: 1168px; height: 100px; line-height: 100px; text-align: center; font-size: 72px; font-weight: 700; letter-spacing: -0.01em; white-space: nowrap; }
+  #line .w { display: inline-block; height: 100px; line-height: 100px; vertical-align: top; }
+  #kw { position: relative; display: inline-block; width: 300px; height: 100px; vertical-align: top; }
+  #kw .face { position: absolute; left: 0; top: 0; width: 300px; height: 100px; line-height: 100px; text-align: center; white-space: nowrap; opacity: 0; }
+  #kw .f0 { font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; opacity: 1; }
+  #kw .f1 { font-family: Georgia, "Times New Roman", serif; font-style: italic; font-weight: 400; }
+  #kw .f2 { font-family: Menlo, Monaco, "Courier New", monospace; font-weight: 700; letter-spacing: -0.04em; }
+  #kw .f3 { font-family: "Arial Black", "Helvetica Neue", Arial, sans-serif; font-weight: 900; letter-spacing: -0.02em; }
+  #bar { position: absolute; left: 0; top: 0; width: 300px; height: 10px; background: #f2c200; border-radius: 5px; will-change: transform; }
+  #beats { position: absolute; left: 536px; top: 392px; width: 96px; height: 16px; }
+  #beats .dot { position: absolute; top: 4px; width: 8px; height: 8px; border-radius: 50%; background: #1d1c1a; will-change: transform, opacity; }
+  #sub { position: absolute; left: 0; top: 440px; width: 1168px; text-align: center; font-size: 18px; color: #6d6a63; letter-spacing: .06em; text-transform: uppercase; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div id="line"><span class="w">Your product, in&nbsp;</span><span id="kw"><span class="face f0" data-layout-allow-overlap>motion</span><span class="face f1" data-layout-allow-overlap>motion</span><span class="face f2" data-layout-allow-overlap>motion</span><span class="face f3" data-layout-allow-overlap>motion</span></span><span class="w">.</span></div>
+      <div id="beats"><div class="dot" id="d0" style="left:0"></div><div class="dot" id="d1" style="left:28px"></div><div class="dot" id="d2" style="left:56px"></div><div class="dot" id="d3" style="left:84px"></div></div>
+      <div id="sub">one word, four faces, on the beat</div>
+    </div>
+    <div id="label"><span class="l-name">Font shuffle</span><span class="l-sep">·</span><span>Typography</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  // Params: beat 300 ms, 4 faces (system sans, Georgia italic, Menlo, Arial Black), last face held ~0.75 s.
+  // The key word sits in a fixed 300 px slot sized for the widest face, so the sentence never shifts.
+  // Faces are stacked copies cut with one-frame opacity steps (seek-safe) instead of tl.set on fontFamily.
+  const faces = [".f0", ".f1", ".f2", ".f3"].map(s => document.querySelector("#kw " + s));
+  const dots = ["#d0", "#d1", "#d2", "#d3"];
+  const order = [1, 2, 3, 1, 2, 3, 0];       // face index per beat
+  const BEAT = 0.3, T0 = 0.45;
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "none", duration: 0.02 } });
+  faces.forEach((f, i) => tl.fromTo(f, { opacity: i === 0 ? 1 : 0 }, { opacity: i === 0 ? 1 : 0, duration: 0.01 }, 0));
+  dots.forEach(d => tl.fromTo(d, { scale: 1, opacity: 0.35 }, { scale: 1, opacity: 0.35, duration: 0.01 }, 0));
+  let current = 0;
+  order.forEach((idx, b) => {
+    const t = T0 + b * BEAT;
+    tl.to(faces[current], { opacity: 0, duration: 0.02, immediateRender: false }, t);
+    tl.to(faces[idx], { opacity: 1, duration: 0.02, immediateRender: false }, t);
+    const d = dots[b % 4];
+    tl.fromTo(d, { scale: 1, opacity: 0.35 }, { scale: 2.2, opacity: 1, duration: 0.06, ease: "power2.out", immediateRender: false }, t);
+    tl.to(d, { scale: 1, opacity: 0.35, duration: 0.22, ease: "power2.out" }, t + 0.06);
+    current = idx;
+  });
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

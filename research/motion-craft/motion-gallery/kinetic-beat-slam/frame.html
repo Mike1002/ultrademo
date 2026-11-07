@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>kinetic-beat-slam</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #11152a; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #11152a; color: #ece8df;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  .kbs-stage { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center;
+    padding: 100px 140px; will-change: transform; }
+  .kbs-line { font-size: 128px; font-weight: 900; line-height: 0.98; letter-spacing: -0.03em; color: #ece8df; will-change: transform; }
+  .kbs-line .verb { color: #f2c200; }
+  /* metronome: centred with left/margin, GSAP only touches the ticks' opacity */
+  .kbs-metronome { position: absolute; bottom: 56px; left: 640px; width: 86px; margin-left: -43px; display: flex; gap: 14px; }
+  .kbs-metronome i { display: block; width: 6px; height: 28px; background: #f2c200; opacity: 0.25; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div class="kbs-stage" id="stage">
+      <div class="kbs-line" id="p1"><span class="verb">Record</span> once.</div>
+      <div class="kbs-line" id="p2"><span class="verb">Edit</span> fast.</div>
+      <div class="kbs-line" id="p3"><span class="verb">Ship</span> now.</div>
+    </div>
+    <div class="kbs-metronome" id="metronome" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true });
+  // ONE tempo grid drives everything: PULSE per sub-beat, phrases on BEATS, metronome ticks on every pulse.
+  const SCENE_DURATION = 3, PULSE = 0.3;
+  const BEATS = [PULSE * 1, PULSE * 4, PULSE * 7]; // 0.3, 1.2, 2.1
+  // Distinct entrance per phrase: scale+blur slam, side snap, rise+rotate.
+  tl.fromTo("#p1", { scale: 1.5, filter: "blur(16px)", opacity: 0 },
+    { scale: 1, filter: "blur(0px)", opacity: 1, duration: 0.5, ease: "power4.out" }, BEATS[0]);
+  tl.fromTo("#p2", { x: -320, opacity: 0 }, { x: 0, opacity: 1, duration: 0.45, ease: "expo.out" }, BEATS[1]);
+  tl.fromTo("#p3", { y: 90, rotation: 6, opacity: 0 }, { y: 0, rotation: 0, opacity: 1, duration: 0.55, ease: "circ.out" }, BEATS[2]);
+  // Rhythm chrome: each tick flashes on its pulse, twice round the grid (10 pulses in 3 s).
+  const ticks = gsap.utils.toArray("#metronome i");
+  ticks.forEach((tick, i) => {
+    tl.fromTo(tick, { opacity: 0.25 }, { opacity: 1, duration: 0.08, yoyo: true, repeat: 1, ease: "none", immediateRender: false }, PULSE * (i + 1));
+    tl.fromTo(tick, { opacity: 0.25 }, { opacity: 1, duration: 0.08, yoyo: true, repeat: 1, ease: "none", immediateRender: false }, PULSE * (i + 6));
+  });
+  // Finale hold: low-amplitude breath, finite, floor so the repeat never overshoots the scene.
+  const holdStart = BEATS[2] + 0.6, cycle = 0.6, holdDur = SCENE_DURATION - holdStart;
+  tl.fromTo("#stage", { scale: 1 }, { scale: 1.01, duration: cycle / 2, ease: "sine.inOut", yoyo: true,
+    repeat: Math.max(0, Math.floor(holdDur / cycle) - 1) }, holdStart);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

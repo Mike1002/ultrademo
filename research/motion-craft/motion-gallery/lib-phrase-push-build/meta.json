@@ -1,0 +1,23 @@
+{
+  "name": "Phrase push build",
+  "family": "Typography",
+  "purpose": [
+    "Sequence",
+    "Explanation",
+    "Attention"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "gsap",
+  "tags": [
+    "kinetic center build",
+    "centered phrase push build",
+    "vertical phrase build",
+    "kinetic type layout relay",
+    "type",
+    "headline",
+    "word by word",
+    "centered"
+  ],
+  "one_line": "\"Every frame is code.\" builds one word at a time: each new word slides in from the right and pushes the earlier words left so the growing phrase stays centred, then a yellow rule draws under it."
+}

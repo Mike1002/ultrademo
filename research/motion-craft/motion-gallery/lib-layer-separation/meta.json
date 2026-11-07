@@ -1,0 +1,21 @@
+{
+  "name": "Layer separation",
+  "family": "3D & Depth",
+  "purpose": [
+    "Explanation",
+    "Sequence"
+  ],
+  "energy": "steady",
+  "tier": 2,
+  "runtime": "css",
+  "tags": [
+    "3d layer fan out",
+    "layer separation and recomposition",
+    "depth",
+    "translatez",
+    "stack",
+    "fold",
+    "dark"
+  ],
+  "one_line": "Three stacked card layers, seen at an angle, lift apart to their own depths, then fold back together and the stack rotates flat into one card."
+}

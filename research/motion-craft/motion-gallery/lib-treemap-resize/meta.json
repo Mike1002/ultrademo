@@ -1,0 +1,20 @@
+{
+  "name": "Treemap resizing",
+  "family": "Data",
+  "purpose": [
+    "Data evidence",
+    "Comparison"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "svg",
+  "tags": [
+    "stable treemap resizing",
+    "data",
+    "treemap",
+    "share",
+    "resize",
+    "svg"
+  ],
+  "one_line": "Six team rectangles in a treemap of invites resize to a new month's shares without swapping neighbours, their names and counts riding along and the largest tile turning yellow, then resize back."
+}

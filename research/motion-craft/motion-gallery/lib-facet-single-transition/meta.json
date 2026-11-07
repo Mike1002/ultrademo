@@ -1,0 +1,21 @@
+{
+  "name": "Facet-to-single transition",
+  "family": "Data",
+  "purpose": [
+    "Comparison",
+    "Data evidence"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "svg",
+  "tags": [
+    "facet-to-single comparison",
+    "data",
+    "small multiples",
+    "facets",
+    "shared axis",
+    "overlay",
+    "svg"
+  ],
+  "one_line": "Three small team panels dissolve as their lines and dots travel onto one shared axis to overlay the trends, then the chart splits back into the three panels."
+}

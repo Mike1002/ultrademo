@@ -1,0 +1,21 @@
+{
+  "name": "Streaming chart",
+  "family": "Data",
+  "purpose": [
+    "Explanation",
+    "Sequence"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "canvas",
+  "tags": [
+    "streaming chart scroll",
+    "data",
+    "chart",
+    "rolling window",
+    "live",
+    "canvas",
+    "line"
+  ],
+  "one_line": "A live line chart of invites per minute scrolls left as new samples arrive at the right edge, each newest point ringed in yellow while older points and their time ticks slide out of view."
+}

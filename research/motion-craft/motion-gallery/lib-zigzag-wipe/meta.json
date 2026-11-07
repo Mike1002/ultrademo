@@ -1,0 +1,21 @@
+{
+  "name": "Zigzag wipe",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Sequence"
+  ],
+  "energy": "high",
+  "tier": 3,
+  "runtime": "svg",
+  "tags": [
+    "zigzag block wipe",
+    "transitions",
+    "wipe",
+    "zigzag",
+    "sawtooth",
+    "clip-path",
+    "polygon"
+  ],
+  "one_line": "A sawtooth boundary of twelve 80 px teeth, edged in yellow, sweeps left to right across an invite card and reveals a stats card behind it; the same zigzag runs again and takes it away."
+}

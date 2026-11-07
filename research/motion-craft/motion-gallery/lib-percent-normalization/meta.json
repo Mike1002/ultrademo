@@ -1,0 +1,22 @@
+{
+  "name": "Percent normalization",
+  "family": "Data",
+  "purpose": [
+    "Comparison",
+    "Data evidence"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "svg",
+  "tags": [
+    "percent normalization",
+    "data",
+    "stacked bar",
+    "100 percent",
+    "normalize",
+    "composition",
+    "axis swap",
+    "svg attr"
+  ],
+  "one_line": "Three stacked bars of different lengths stretch to the same full width while each one's joined, pending and declined segments keep their proportions, as the invite-count axis gives way to a percent axis ending at 100%."
+}

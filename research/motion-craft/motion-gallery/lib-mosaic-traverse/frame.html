@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-mosaic-traverse</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; overflow: hidden; }
+  .panel { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  .art { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  .art.a { background: #ece7da; }
+  .art.b { background: #f6f3ec; }
+  .card { position: absolute; left: 204px; top: 100px; width: 760px; height: 380px; background: #fffdf8;
+    border: 2px solid #1d1c1a; border-radius: 24px; }
+  .card .eyebrow { position: absolute; left: 56px; top: 44px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  .card .h1 { position: absolute; left: 56px; top: 84px; font-size: 56px; font-weight: 700; line-height: 1.1; white-space: nowrap; }
+  .card .sub { position: absolute; left: 56px; top: 164px; font-size: 22px; color: #6d6a63; }
+  .card .btn { position: absolute; left: 56px; top: 254px; width: 200px; height: 60px; background: #f2c200; border: 2px solid #1d1c1a;
+    border-radius: 14px; font-size: 20px; font-weight: 700; line-height: 56px; text-align: center; color: #1d1c1a; }
+  .card .av { position: absolute; top: 44px; width: 64px; height: 64px; border-radius: 50%; border: 2px solid #1d1c1a; background: #ece7da;
+    font-size: 20px; font-weight: 700; line-height: 60px; text-align: center; }
+  .card .av.v1 { left: 540px; } .card .av.v2 { left: 592px; } .card .av.v3 { left: 644px; }
+  .art.b .num { position: absolute; left: 92px; top: 86px; font-size: 136px; font-weight: 700; line-height: 1; letter-spacing: -.02em;
+    font-variant-numeric: tabular-nums; }
+  .art.b .cap { position: absolute; left: 100px; top: 236px; font-size: 22px; color: #6d6a63; }
+  .art.b .row { position: absolute; left: 96px; width: 520px; height: 60px; border-top: 2px solid #e3ded2; font-size: 22px; line-height: 58px;
+    padding-left: 30px; will-change: transform; }
+  .art.b .row .dot { position: absolute; left: 0; top: 24px; width: 12px; height: 12px; border-radius: 50%; background: #f2c200; }
+  .art.b .row.r1 { top: 320px; } .art.b .row.r2 { top: 384px; } .art.b .row.r3 { top: 448px; }
+  .art.b .disc { will-change: transform; position: absolute; left: 780px; top: 150px; width: 280px; height: 280px; border-radius: 50%; background: #f2c200;
+    border: 2px solid #1d1c1a; text-align: center; color: #1d1c1a; }
+  .art.b .disc .pct { position: absolute; left: 0; width: 276px; top: 86px; font-size: 72px; font-weight: 700; line-height: 1; }
+  .art.b .disc .pl { position: absolute; left: 0; width: 276px; top: 166px; font-size: 18px; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+
+  #world { position: absolute; left: 0; top: 0; width: 5840px; height: 1740px; transform-origin: 0 0; will-change: transform; background: #e3ded2; }
+  .tile { position: absolute; width: 1168px; height: 580px; overflow: hidden; box-shadow: inset 0 0 0 6px #1d1c1a; }
+  .tile .art { z-index: -1; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <template id="tplA"><div class="art a" data-layout-allow-overlap data-layout-allow-occlusion data-layout-allow-overflow><div class="card"><div class="eyebrow" data-layout-allow-overlap data-layout-allow-occlusion>Orbit</div><div class="h1" data-layout-allow-overlap data-layout-allow-occlusion>Invite your team</div><div class="sub" data-layout-allow-overlap data-layout-allow-occlusion>3 seats left</div><div class="btn" data-layout-allow-overlap data-layout-allow-occlusion>Continue</div><div class="av v1" data-layout-allow-overlap data-layout-allow-occlusion>JD</div><div class="av v2" data-layout-allow-overlap data-layout-allow-occlusion>SK</div><div class="av v3" data-layout-allow-overlap data-layout-allow-occlusion>ML</div></div></div></template>
+      <div id="world" data-layout-allow-overlap data-layout-allow-overflow>
+        <div class="tile" id="tB" data-layout-allow-overlap style="left:4672px;top:0"><div class="art b" data-layout-allow-overlap data-layout-allow-occlusion data-layout-allow-overflow><div class="num" data-layout-allow-overlap data-layout-allow-occlusion>12,480</div><div class="cap" data-layout-allow-overlap data-layout-allow-occlusion>invites sent</div><div class="row r1" data-layout-allow-overlap data-layout-allow-occlusion><span class="dot"></span>Jamie Dalton</div><div class="row r2" data-layout-allow-overlap data-layout-allow-occlusion><span class="dot"></span>Sam Kim</div><div class="row r3" data-layout-allow-overlap data-layout-allow-occlusion><span class="dot"></span>Morgan Lee</div><div class="disc" data-layout-allow-overlap data-layout-allow-occlusion><div class="pct" data-layout-allow-overlap data-layout-allow-occlusion>98%</div><div class="pl" data-layout-allow-overlap data-layout-allow-occlusion>accepted</div></div></div></div>
+      </div>
+    </div>
+    <div id="label"><span class="l-name">Mosaic traversal</span><span class="l-sep">·</span><span>Transitions</span><span class="l-sep">·</span><span>high</span></div>
+  </section>
+</div>
+<script>
+  // A 5x3 world of cloned invite tiles; the stats scene is the tile at column 4, row 0. The camera starts on the centre tile (2, 1).
+  const A_HTML = document.getElementById("tplA").innerHTML, world = document.getElementById("world");
+  for (let r = 0; r < 3; r++) for (let c = 0; c < 5; c++) {
+    if (c === 4 && r === 0) continue;
+    world.insertAdjacentHTML("beforeend", '<div class="tile" data-layout-allow-overlap style="left:' + (c * 1168) + 'px;top:' + (r * 580) + 'px">' + A_HTML + '</div>');
+  }
+  // Camera as world transforms about the top-left: screen = s * P + (x, y); the viewport centre is (584, 290).
+  const PA = [2920, 870], PB = [5256, 290], S = 0.2;
+  const cam = (s, p) => ({ scale: s, x: 584 - s * p[0], y: 290 - s * p[1] });
+  const c0 = cam(1, PA), c1 = cam(S, PA), c2 = cam(S, PB), c3 = cam(1, PB);
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+  // Zoom out 0.5 s (power3.in), travel two tiles right and one up 0.5 s (power2.inOut), zoom in on the stats tile 0.6 s (power3.out).
+  tl.fromTo("#world", c0, { ...c1, duration: 0.5, ease: "power3.in" }, 0.45);
+  tl.to("#world", { ...c2, duration: 0.5, ease: "power2.inOut" }, 0.95);
+  tl.to("#world", { ...c3, duration: 0.6, ease: "power3.out" }, 1.45);
+  const ROWS_AT = 2.15;
+  // Second beat: the three rows of the new scene settle in so the clip keeps moving.
+  tl.fromTo(".art.b .row.r1", { opacity: 0, x: 28 }, { opacity: 1, x: 0, duration: 0.5 }, ROWS_AT);
+  tl.fromTo(".art.b .row.r2", { opacity: 0, x: 28 }, { opacity: 1, x: 0, duration: 0.5 }, ROWS_AT + 0.1);
+  tl.fromTo(".art.b .row.r3", { opacity: 0, x: 28 }, { opacity: 1, x: 0, duration: 0.5 }, ROWS_AT + 0.2);
+  tl.fromTo(".art.b .disc", { scale: 0.6, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.7, ease: "back.out(1.5)" }, ROWS_AT + 0.05);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

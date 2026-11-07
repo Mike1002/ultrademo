@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-text-scramble</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px;  }
+  .lab { font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  .kicker { position: absolute; left: 60px; top: 150px; }
+  .text { position: absolute; left: 60px; top: 200px; white-space: pre; letter-spacing: 0; line-height: 1.3; font-size: 84px; font-weight: 700; }
+  .slot { position: relative; display: inline-block; }
+  .measure { opacity: 0; }
+  .char { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+  .baseline { position: absolute; left: 60px; right: 60px; top: 330px; height: 1px; background: #e3ded2; }
+  .caption { position: absolute; left: 60px; top: 370px; font-size: 18px; color: #6d6a63; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <span class="lab kicker">Symbols cycle · locks from the left</span>
+      <div class="text" id="text"></div>
+      <div class="baseline"></div>
+      <div class="caption">Uncertain glyphs converge into a readable line.</div>
+    </div>
+    <div id="label"><span class="l-name">Text scramble</span><span class="l-sep">·</span><span>Typography</span><span class="l-sep">·</span><span>high</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+  const text = Array.from("Every frame is code.");
+  const symbols = Array.from("!?%#+=<>*:/");
+  const INK = "#1d1c1a", FAINT = "#a19d93", YEL = "#f2c200";
+  const chars = text.map((c, i) => {
+    const slot = document.createElement("span"); slot.className = "slot"; slot.id = "slot" + i;
+    const measure = document.createElement("span"); measure.className = "measure"; measure.textContent = c;
+    const glyph = document.createElement("span"); glyph.className = "char"; glyph.id = "g" + i; glyph.setAttribute("data-layout-allow-overlap", "");
+    slot.append(measure, glyph); document.getElementById("text").appendChild(slot); return glyph;
+  });
+  // Index-derived pseudo-random symbol for slot i at tick k (pure function, no Math.random).
+  function sym(i, k) { const v = (((i + 1) * 9301 + (k + 1) * 49297 + (i + 1) * (k + 1) * 7919) % 233280) / 233280; return symbols[Math.floor(v * symbols.length)]; }
+  function renderAt(t) {
+    const tick = Math.min(60, Math.max(0, Math.floor((t - 0.3) / 0.05)));
+    const pending = text.findIndex((c, i) => c !== " " && t < 0.7 + i * 0.085);
+    chars.forEach((c, i) => {
+      const locked = t >= 0.7 + i * 0.085;
+      const g = text[i] === " " ? " " : (locked ? text[i] : sym(i, tick));
+      if (c.textContent !== g) c.textContent = g;
+      c.style.color = locked ? INK : (i === pending ? YEL : FAINT);
+    });
+  }
+  renderAt(0);
+  tl.to({ k: 0 }, { k: 1, duration: 3, ease: "none", onUpdate: () => renderAt(tl.time()) }, 0);
+  const baseRender = tl.render; tl.render = function () { const r = baseRender.apply(this, arguments); renderAt(this.time()); return r; };
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

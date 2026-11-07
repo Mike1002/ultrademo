@@ -1,0 +1,116 @@
+{
+  "id": "shadow-cut",
+  "name": "Shadow Cut",
+  "canvas": "dark",
+  "mood": [
+    "dark",
+    "cinematic"
+  ],
+  "suits": [
+    "security products",
+    "dramatic reveals",
+    "investigative content",
+    "intense launches"
+  ],
+  "palette": {
+    "bg": "#0a0a0a",
+    "bg_alt": "#0a0a0a",
+    "surface": "#1c1c1c",
+    "surface_2": "#3a3a3a",
+    "ink": "#f0f0f0",
+    "muted": "#8a8a8a",
+    "line": "rgba(255,255,255,0.16)",
+    "accent": "#C1121F",
+    "accent_2": "#C1121F",
+    "on_accent": "#ffffff",
+    "term_bg": "#111111"
+  },
+  "type": {
+    "display": {
+      "family": "Oswald",
+      "weight": 700,
+      "hook_px": 96,
+      "stat_px": 250,
+      "mark_px": 140,
+      "transform": "uppercase",
+      "tracking": "0.02em",
+      "line_height": "1.0",
+      "style": "normal",
+      "generic": "sans",
+      "card_title_px": 28,
+      "card_title_tracking": "0.03em"
+    },
+    "body": {
+      "family": "Inter",
+      "weight": 400,
+      "generic": "sans"
+    },
+    "mono": {
+      "family": "JetBrains Mono",
+      "weight": 400
+    },
+    "label": {
+      "family": "Inter",
+      "weight": 500,
+      "transform": "uppercase",
+      "tracking": "0.2em",
+      "generic": "sans",
+      "px": 15
+    }
+  },
+  "easing": {
+    "entry": "power3.out",
+    "exit": "power4.in",
+    "ambient": "sine.inOut",
+    "pop": "power3.out",
+    "counter": "power3.inOut",
+    "wipe": null
+  },
+  "rhythm": {
+    "energy": "steady",
+    "entrance": 0.8,
+    "stagger": 0.1
+  },
+  "transition": {
+    "kind": "blur",
+    "duration": 1,
+    "flash": false,
+    "band": false
+  },
+  "text_animation": "blur-in",
+  "accent_word": "none",
+  "layout": "center",
+  "atmosphere": [
+    "vignette:0.8",
+    "grain:0.12"
+  ],
+  "shape": {
+    "radius_card": 0,
+    "radius_button": 2,
+    "radius_pill": 2,
+    "border": "hairline",
+    "border_px": 1,
+    "shadow": "soft",
+    "rule_px": 3
+  },
+  "stat_colour": "accent",
+  "direction_settings": {
+    "energy": "steady",
+    "density": "sparse",
+    "ground": "dark",
+    "depth": "deep",
+    "camera": "push",
+    "type": "display",
+    "texture": "grain",
+    "colour": "one-accent",
+    "product_presence": "illustrated",
+    "sound": "scored",
+    "voice": "narrated"
+  },
+  "notes": "Near-monochrome with one blood accent, Oswald uppercase, elements emerge from darkness through blur, vignette and grain.",
+  "transitions": {
+    "between_moments": "blur",
+    "duration_s": 1,
+    "text": "blur-in"
+  }
+}

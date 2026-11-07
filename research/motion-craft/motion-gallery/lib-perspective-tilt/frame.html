@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-perspective-tilt</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #171a21; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #171a21; color: #ece8df;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; overflow: hidden; }
+  .lab { font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #a7adbb; white-space: nowrap; }
+  .num { font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1; white-space: nowrap; }
+  .t-xl { font-size: 84px; font-weight: 700; line-height: 1.05; white-space: nowrap; }
+  .t-l { font-size: 56px; font-weight: 700; line-height: 1.1; white-space: nowrap; }
+  .t-m { font-size: 34px; font-weight: 700; line-height: 1.15; white-space: nowrap; }
+  .t-body { font-size: 22px; line-height: 1.4; }
+  .hair { height: 1px; background: #2a2f3a; }
+  .dot { border-radius: 50%; background: #ece8df; }
+  .dot.v { background: #f2c200; border: 2px solid #ece8df; }
+
+  .camera { position: absolute; inset: 0; perspective: 1400px; perspective-origin: 50% 50%; }
+  .world { position: absolute; left: -166px; top: -205px; width: 1500px; height: 990px; transform-style: preserve-3d; transform-origin: 750px 495px; background: #171a21; will-change: transform; }
+  .plate { position: absolute; width: 500px; height: 330px; background: #1f232c; border: 1px solid #2a2f3a; }
+  .plate > .fig { position: absolute; left: 34px; top: 27px; }
+  .plate-number { position: absolute; left: 35px; top: 80px; font-size: 132px; color: #a7adbb; }
+  .plate-foot { position: absolute; left: 35px; top: 272px; }
+  .bars { position: absolute; left: 350px; top: 125px; display: flex; align-items: flex-end; height: 115px; gap: 12px; }
+  .bars i { display: block; width: 26px; height: 110px; background: #6d7380; border-radius: 4px; }
+  .bars i:nth-child(2) { height: 62px; } .bars i:nth-child(3) { height: 30px; }
+  .plate.focus { border: 2px solid #ece8df; }
+  .focus-title { position: absolute; left: 34px; top: 70px; font-size: 43px; }
+  .focus-value { position: absolute; left: 34px; top: 128px; font-size: 124px; color: #f2c200; }
+  .focus-value small { font-size: 32px; }
+  .focus-line { position: absolute; left: 34px; width: 430px; top: 262px; height: 2px; background: #ece8df; }
+  .focus-foot { position: absolute; left: 34px; top: 278px; }
+
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #a7adbb; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #ece8df; font-weight: 700; }
+  #label .l-sep { color: #6d7380; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+
+      <div class="camera" data-layout-allow-overflow><div class="world" data-layout-allow-overflow data-layout-allow-overlap><section class="plate" style="left:0px;top:0px"><div class="lab fig" data-layout-allow-overlap data-layout-allow-occlusion>Fig. 01 / Orbit</div><div class="num plate-number" data-layout-allow-overlap data-layout-allow-occlusion>3</div><div class="lab plate-foot" data-layout-allow-overlap data-layout-allow-occlusion>seats left</div><div class="bars"><i></i><i></i><i></i></div></section><section class="plate" style="left:500px;top:0px"><div class="lab fig" data-layout-allow-overlap data-layout-allow-occlusion>Fig. 02 / Orbit</div><div class="num plate-number" data-layout-allow-overlap data-layout-allow-occlusion>12</div><div class="lab plate-foot" data-layout-allow-overlap data-layout-allow-occlusion>invites today</div><div class="bars"><i></i><i></i><i></i></div></section><section class="plate" style="left:1000px;top:0px"><div class="lab fig" data-layout-allow-overlap data-layout-allow-occlusion>Fig. 03 / Orbit</div><div class="num plate-number" data-layout-allow-overlap data-layout-allow-occlusion>30</div><div class="lab plate-foot" data-layout-allow-overlap data-layout-allow-occlusion>days</div><div class="bars"><i></i><i></i><i></i></div></section><section class="plate" style="left:0px;top:330px"><div class="lab fig" data-layout-allow-overlap data-layout-allow-occlusion>Fig. 04 / Orbit</div><div class="num plate-number" data-layout-allow-overlap data-layout-allow-occlusion>21%</div><div class="lab plate-foot" data-layout-allow-overlap data-layout-allow-occlusion>pending</div><div class="bars"><i></i><i></i><i></i></div></section><section class="plate focus" style="left:500px;top:330px"><div class="lab fig" data-layout-allow-overlap data-layout-allow-occlusion>Fig. 05 / Orbit</div><div class="t-l focus-title" data-layout-allow-overlap data-layout-allow-occlusion>Invite your team</div><div class="num focus-value" data-layout-allow-overlap data-layout-allow-occlusion>98<small>%</small></div><div class="focus-line"></div><div class="lab focus-foot" data-layout-allow-overlap data-layout-allow-occlusion>Accepted · 12,480 invites sent</div></section><section class="plate" style="left:1000px;top:330px"><div class="lab fig" data-layout-allow-overlap data-layout-allow-occlusion>Fig. 06 / Orbit</div><div class="num plate-number" data-layout-allow-overlap data-layout-allow-occlusion>9</div><div class="lab plate-foot" data-layout-allow-overlap data-layout-allow-occlusion>declined</div><div class="bars"><i></i><i></i><i></i></div></section><section class="plate" style="left:0px;top:660px"><div class="lab fig" data-layout-allow-overlap data-layout-allow-occlusion>Fig. 07 / Orbit</div><div class="num plate-number" data-layout-allow-overlap data-layout-allow-occlusion>5</div><div class="lab plate-foot" data-layout-allow-overlap data-layout-allow-occlusion>teams</div><div class="bars"><i></i><i></i><i></i></div></section><section class="plate" style="left:500px;top:660px"><div class="lab fig" data-layout-allow-overlap data-layout-allow-occlusion>Fig. 08 / Orbit</div><div class="num plate-number" data-layout-allow-overlap data-layout-allow-occlusion>1,284</div><div class="lab plate-foot" data-layout-allow-overlap data-layout-allow-occlusion>views</div><div class="bars"><i></i><i></i><i></i></div></section><section class="plate" style="left:1000px;top:660px"><div class="lab fig" data-layout-allow-overlap data-layout-allow-occlusion>Fig. 09 / Orbit</div><div class="num plate-number" data-layout-allow-overlap data-layout-allow-occlusion>12,480</div><div class="lab plate-foot" data-layout-allow-overlap data-layout-allow-occlusion>sent</div><div class="bars"><i></i><i></i><i></i></div></section></div></div>
+
+    </div>
+    <div id="label"><span class="l-name">Perspective tilt reveal</span><span class="l-sep">·</span><span>Camera</span><span class="l-sep">·</span><span>high</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+
+  // Perspective tilt reveal: start frontal on one figure (scale 2.34), tilt the whole page back 55 degrees while pulling out to show the 3x3 grid,
+  // drift during the hold, then return to the frontal figure.
+  tl.fromTo(".world", { rotationX: 0, scale: 2.34, z: 0, x: 0, y: 0 }, { rotationX: 55, scale: 0.69, z: -180, y: -15, duration: 1.1, ease: "power2.inOut" }, 0.2);
+  tl.to(".world", { rotationX: 55, scale: 0.73, z: -150, y: 0, duration: 0.45, ease: "sine.inOut" }, 1.3);
+  tl.to(".world", { rotationX: 0, scale: 2.34, z: 0, y: 0, duration: 0.95, ease: "power3.inOut" }, 1.75);
+  tl.fromTo(".focus-line", { scaleX: 1, transformOrigin: "0% 50%" }, { scaleX: 0.4, duration: 0.01, ease: "none" }, 2.69);
+  tl.to(".focus-line", { scaleX: 1, duration: 0.3, ease: "power3.out" }, 2.7);
+
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

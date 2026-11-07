@@ -1,0 +1,20 @@
+{
+  "name": "Strikethrough replace",
+  "family": "Typography",
+  "purpose": [
+    "Emphasis",
+    "Comparison",
+    "Feedback"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "svg",
+  "tags": [
+    "strikethrough replace",
+    "type",
+    "before after",
+    "correction",
+    "replace"
+  ],
+  "one_line": "A line draws left to right through the old value, the old text dims, and the new value rises into place below it; a second pair then does the same for a second figure."
+}

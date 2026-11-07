@@ -1,0 +1,21 @@
+{
+  "name": "Chart filter fade",
+  "family": "Data",
+  "purpose": [
+    "Explanation",
+    "Comparison"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "svg",
+  "tags": [
+    "chart filter fade",
+    "data",
+    "scatter",
+    "filter",
+    "fade",
+    "condition",
+    "svg"
+  ],
+  "one_line": "A scatter of 30 invites: choosing the Accepted filter fades every other dot to a trace in place, then the This week filter swaps which dots show, some faded ones returning."
+}

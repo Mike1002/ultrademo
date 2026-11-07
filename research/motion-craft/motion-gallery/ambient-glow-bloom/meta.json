@@ -1,0 +1,23 @@
+{
+  "name": "Ambient glow bloom",
+  "family": "Idle & Ambient",
+  "purpose": [
+    "presence",
+    "hero",
+    "ambient"
+  ],
+  "energy": "calm",
+  "tags": [
+    "glow",
+    "bloom",
+    "ambient",
+    "radial",
+    "sweep",
+    "hero",
+    "presence",
+    "finite",
+    "un-triggered",
+    "dark"
+  ],
+  "one_line": "On a dark ground a soft yellow halo swells in behind a card as the card settles, keeps breathing faintly, and a single raked band of light slides once across the card's face."
+}

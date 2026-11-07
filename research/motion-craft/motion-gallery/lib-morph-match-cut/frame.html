@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-morph-match-cut</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; overflow: hidden; }
+  .panel { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  .art { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  .art.a { background: #ece7da; }
+  .art.b { background: #f6f3ec; }
+  .card { position: absolute; left: 204px; top: 100px; width: 760px; height: 380px; background: #fffdf8;
+    border: 2px solid #1d1c1a; border-radius: 24px; }
+  .card .eyebrow { position: absolute; left: 56px; top: 44px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  .card .h1 { position: absolute; left: 56px; top: 84px; font-size: 56px; font-weight: 700; line-height: 1.1; white-space: nowrap; }
+  .card .sub { position: absolute; left: 56px; top: 164px; font-size: 22px; color: #6d6a63; }
+  .card .btn { position: absolute; left: 56px; top: 254px; width: 200px; height: 60px; background: #f2c200; border: 2px solid #1d1c1a;
+    border-radius: 14px; font-size: 20px; font-weight: 700; line-height: 56px; text-align: center; color: #1d1c1a; }
+  .card .av { position: absolute; top: 44px; width: 64px; height: 64px; border-radius: 50%; border: 2px solid #1d1c1a; background: #ece7da;
+    font-size: 20px; font-weight: 700; line-height: 60px; text-align: center; }
+  .card .av.v1 { left: 540px; } .card .av.v2 { left: 592px; } .card .av.v3 { left: 644px; }
+  .art.b .num { position: absolute; left: 92px; top: 86px; font-size: 136px; font-weight: 700; line-height: 1; letter-spacing: -.02em;
+    font-variant-numeric: tabular-nums; }
+  .art.b .cap { position: absolute; left: 100px; top: 236px; font-size: 22px; color: #6d6a63; }
+  .art.b .row { position: absolute; left: 96px; width: 520px; height: 60px; border-top: 2px solid #e3ded2; font-size: 22px; line-height: 58px;
+    padding-left: 30px; will-change: transform; }
+  .art.b .row .dot { position: absolute; left: 0; top: 24px; width: 12px; height: 12px; border-radius: 50%; background: #f2c200; }
+  .art.b .row.r1 { top: 320px; } .art.b .row.r2 { top: 384px; } .art.b .row.r3 { top: 448px; }
+  .art.b .disc { will-change: transform; position: absolute; left: 780px; top: 150px; width: 280px; height: 280px; border-radius: 50%; background: #f2c200;
+    border: 2px solid #1d1c1a; text-align: center; color: #1d1c1a; }
+  .art.b .disc .pct { position: absolute; left: 0; width: 276px; top: 86px; font-size: 72px; font-weight: 700; line-height: 1; }
+  .art.b .disc .pl { position: absolute; left: 0; width: 276px; top: 166px; font-size: 18px; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+
+  #world { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; transform-origin: 584px 290px; will-change: transform; }
+  #world section { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  #sB, #sC { opacity: 0; }
+  .hl { stroke: #e3ded2; stroke-width: 1; fill: none; }
+  .hk { stroke: #1d1c1a; stroke-width: 1; fill: none; }
+  .lab { position: absolute; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  #sA .head { left: 40px; top: 36px; }
+  #sA .sub { position: absolute; left: 40px; top: 60px; font-size: 34px; font-weight: 700; }
+  #sC .pct { position: absolute; left: 464px; top: 236px; width: 240px; height: 108px; overflow: hidden; text-align: center; }
+  #sC .pct .pnum { display: block; font-size: 104px; line-height: 108px; font-weight: 700; white-space: nowrap; font-variant-numeric: tabular-nums; will-change: transform; }
+  #sC .col { position: absolute; left: 860px; top: 150px; width: 300px; }
+  #sC .col .c1, #sC .col .c2 { will-change: transform; }
+  #sC .col .lab { position: static; display: block; }
+  #sC .col .big { font-size: 34px; font-weight: 700; line-height: 1.2; margin-top: 6px; }
+  #sC .col .hair { height: 1px; background: #e3ded2; margin: 18px 0 14px; }
+  #sC .col .row { font-size: 15px; letter-spacing: .02em; color: #6d6a63; line-height: 28px; display: flex; justify-content: space-between; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div id="world" data-layout-allow-overlap>
+        <section id="sA">
+          <div class="lab head">Orbit · invite your team</div>
+          <div class="sub" data-layout-allow-overlap data-layout-allow-occlusion>Every frame is code.</div>
+          <svg width="1168" height="580" viewBox="0 0 1168 580" style="position:absolute;left:0;top:0">
+            <line class="hl" x1="0" y1="290" x2="1168" y2="290"/>
+            <line class="hl" x1="584" y1="20" x2="584" y2="560"/>
+            <circle class="hl" id="ring1" cx="584" cy="290" r="190" pathLength="1" stroke-dasharray="1 1" stroke-dashoffset="1" transform="rotate(-90 584 290)"/>
+            <circle class="hl" id="ring2" cx="584" cy="290" r="222" pathLength="1" stroke-dasharray="1 1" stroke-dashoffset="1" transform="rotate(-90 584 290)"/>
+          </svg>
+        </section>
+        <section id="sB" data-layout-allow-overlap>
+          <div class="lab" style="left:40px;top:36px">Letter O · same centre, same height</div>
+          <svg width="1168" height="580" viewBox="0 0 1168 580" style="position:absolute;left:0;top:0">
+            <line class="hl" x1="0" y1="140" x2="1168" y2="140"/>
+            <line class="hk" x1="0" y1="440" x2="1168" y2="440"/>
+            <line class="hl" x1="584" y1="110" x2="584" y2="470" stroke-dasharray="4 6"/>
+            <line class="hl" x1="472" y1="110" x2="472" y2="470"/>
+            <line class="hl" x1="696" y1="110" x2="696" y2="470"/>
+          </svg>
+          <div class="lab" style="left:40px;top:118px">Cap height</div>
+          <div class="lab" style="left:40px;top:418px">Baseline</div>
+          <div class="lab" style="left:1010px;top:118px">O · 300 px</div>
+        </section>
+        <section id="sC" data-layout-allow-overlap>
+          <div class="pct"><span class="pnum">98%</span></div>
+          <div class="col">
+            <span class="lab c1">Accepted first</span>
+            <div class="big c1">Jamie Dalton</div>
+            <div class="hair c1"></div>
+            <div class="row c2"><span>Sam Kim</span><span>1 h</span></div>
+            <div class="row c2"><span>Morgan Lee</span><span>3 h</span></div>
+            <div class="row c2"><span>Pending</span><span>2%</span></div>
+          </div>
+        </section>
+        <svg id="fx" width="1168" height="580" viewBox="0 0 1168 580" style="position:absolute;left:0;top:0;overflow:visible">
+          <circle id="disk" cx="584" cy="290" r="150" fill="#f2c200"/>
+          <path id="morph" fill="#f2c200" fill-rule="evenodd" opacity="0"/>
+          <circle id="track" cx="584" cy="290" r="125" fill="none" stroke="#e3ded2" stroke-width="50" opacity="0"/>
+          <circle id="arc" cx="584" cy="290" r="125" fill="none" stroke="#f2c200" stroke-width="50" pathLength="1" stroke-dasharray="1 1" stroke-dashoffset="0" transform="rotate(-90 584 290)" opacity="0"/>
+        </svg>
+      </div>
+    </div>
+    <div id="label"><span class="l-name">Morph match cut</span><span class="l-sep">·</span><span>Transitions</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const CX = 584, CY = 290, CUT = 1.0, M0 = 1.3, MD = 0.9, RING = M0 + MD, F = 0.034;
+  // One ellipse = two arcs; outer and inner ellipses overlaid evenodd make the O and the donut from the same path structure.
+  const ell = (rx, ry) => "M" + (CX - rx) + "," + CY + "A" + rx + "," + ry + " 0 1 1 " + (CX + rx) + "," + CY + "A" + rx + "," + ry + " 0 1 1 " + (CX - rx) + "," + CY + "Z";
+  const O = { orx: 112, ory: 150, irx: 76, iry: 135 }, D = { orx: 150, ory: 150, irx: 100, iry: 100 };
+  const morph = document.getElementById("morph");
+  const easeM = gsap.parseEase("power3.inOut");
+  function renderAt(t) {
+    const k = easeM(Math.max(0, Math.min(1, (t - M0) / MD)));
+    const L = (a, b) => a + (b - a) * k;
+    morph.setAttribute("d", ell(L(O.orx, D.orx), L(O.ory, D.ory)) + ell(L(O.irx, D.irx), L(O.iry, D.iry)));
+  }
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+  renderAt(0);
+  tl.to({ k: 0 }, { k: 1, duration: 3, ease: "none", onUpdate: () => renderAt(tl.time()) }, 0);
+  const baseRender = tl.render; tl.render = function () { const r = baseRender.apply(this, arguments); renderAt(this.time()); return r; };
+
+  // Camera: a slow push over the whole clip, a pan left during the morph.
+  tl.fromTo("#world", { scale: 1, x: 0 }, { scale: 1.06, duration: 2.8, ease: "sine.inOut" }, 0.2);
+  tl.to("#world", { x: -170, duration: 1.0, ease: "power2.inOut" }, M0);
+
+  // Scene A: the yellow circle grows into place, the guide rings draw.
+  tl.fromTo("#disk", { scale: 0, svgOrigin: "584 290" }, { scale: 1, duration: 0.7, ease: "power3.out" }, 0.2);
+  tl.fromTo("#ring1", { strokeDashoffset: 1 }, { strokeDashoffset: 0, autoRound: false, duration: 0.7, ease: "power2.out" }, 0.25);
+  tl.fromTo("#ring2", { strokeDashoffset: 1 }, { strokeDashoffset: 0, autoRound: false, duration: 0.7, ease: "power2.out" }, 0.35);
+
+  // Hard cut in one frame: same centre, same height, now a letter O.
+  tl.fromTo("#sA", { opacity: 1 }, { opacity: 0, duration: F, ease: "none" }, CUT);
+  tl.fromTo("#disk", { opacity: 1 }, { opacity: 0, duration: F, ease: "none" }, CUT);
+  tl.fromTo("#sB", { opacity: 0 }, { opacity: 1, duration: F, ease: "none" }, CUT);
+  tl.fromTo("#morph", { opacity: 0 }, { opacity: 1, duration: F, ease: "none" }, CUT);
+
+  // Morph: the O's ellipses ease into the donut (renderAt), scene B fades, scene C arrives.
+  tl.to("#sB", { opacity: 0, duration: 0.35, ease: "power1.out" }, M0);
+  tl.fromTo("#sC", { opacity: 0 }, { opacity: 1, duration: F, ease: "none" }, M0 + 0.4);
+  tl.fromTo("#sC .c1", { opacity: 0, x: 40 }, { opacity: 1, x: 0, duration: 0.55, stagger: 0.07 }, M0 + 0.45);
+  tl.fromTo("#sC .c2", { opacity: 0, x: 30 }, { opacity: 1, x: 0, duration: 0.45, stagger: 0.05 }, M0 + 0.7);
+
+  // Ring complete: swap the filled shape for a stroked ring of the same size and rewind it to 98%.
+  tl.to("#morph", { opacity: 0, duration: F, ease: "none" }, RING);
+  tl.fromTo("#track", { opacity: 0 }, { opacity: 1, duration: F, ease: "none" }, RING);
+  tl.fromTo("#arc", { opacity: 0 }, { opacity: 1, duration: F, ease: "none" }, RING);
+  tl.fromTo("#arc", { strokeDashoffset: 0 }, { strokeDashoffset: 0.02, autoRound: false, duration: 0.5, ease: "power2.inOut" }, RING + 0.05);
+  tl.fromTo("#sC .pnum", { yPercent: 110 }, { yPercent: 0, duration: 0.55, ease: "power3.out" }, RING + 0.15);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

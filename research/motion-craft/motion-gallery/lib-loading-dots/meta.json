@@ -1,0 +1,21 @@
+{
+  "name": "Loading dots",
+  "family": "Loop & Ambient",
+  "purpose": [
+    "Feedback",
+    "Mood"
+  ],
+  "energy": "calm",
+  "tier": 2,
+  "runtime": "css",
+  "tags": [
+    "typing dots loader",
+    "staggered loading dots",
+    "three dot flow",
+    "loop",
+    "stagger",
+    "bounce",
+    "waiting"
+  ],
+  "one_line": "Three dots under a headline hop up 8 px one after another in a 1.2 s cycle, the last one yellow, signalling a reply still being prepared."
+}

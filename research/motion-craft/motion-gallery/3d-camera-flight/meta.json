@@ -1,0 +1,29 @@
+{
+  "name": "3D camera flight",
+  "family": "Camera & Viewport",
+  "purpose": [
+    "camera",
+    "cinematic",
+    "transition"
+  ],
+  "energy": "high",
+  "tags": [
+    "camera",
+    "3d",
+    "flight",
+    "perspective",
+    "preserve-3d",
+    "rotateX",
+    "rotateY",
+    "translateZ",
+    "dive",
+    "tilt",
+    "world",
+    "cinematic",
+    "dark"
+  ],
+  "one_line": "From a wide view of a gridded floor the camera dives down onto one card at an angle, holds, then flies sideways across the floor to a second card while focus racks from the first card to the second and a big floating number drifts past out of focus.",
+  "aliases": [
+    "awesome-ai-motion:camera-flight"
+  ]
+}

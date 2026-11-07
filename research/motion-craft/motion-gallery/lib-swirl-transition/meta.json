@@ -1,0 +1,23 @@
+{
+  "name": "Swirl transition",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Attention"
+  ],
+  "energy": "high",
+  "tier": 3,
+  "runtime": "webgl",
+  "tags": [
+    "swirl vortex",
+    "swirl transition",
+    "vortex zoom orbit",
+    "transitions",
+    "whirlpool",
+    "twist",
+    "rings",
+    "clip-path",
+    "rotate"
+  ],
+  "one_line": "Eight concentric rings of the invite scene twist around the centre by amounts that grow toward the middle, like a whirlpool, the stats scene takes over at the peak and untwists from the same rings; its rows then settle in."
+}

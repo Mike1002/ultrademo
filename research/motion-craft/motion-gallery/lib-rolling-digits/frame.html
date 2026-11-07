@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-rolling-digits</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  #card { position: absolute; left: 254px; top: 130px; width: 660px; height: 320px; background: #fffdf8; border: 2px solid #1d1c1a; border-radius: 24px; }
+  #card .lab { position: absolute; left: 60px; top: 52px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  #num { position: absolute; left: 60px; top: 96px; height: 72px; width: 540px; display: flex; align-items: flex-start; }
+  .slot { position: relative; width: 64px; height: 72px; overflow: hidden; }
+  .reel { position: absolute; left: 0; top: 0; width: 64px; height: 1440px; will-change: transform; }
+  .reel div { width: 64px; height: 72px; line-height: 72px; text-align: center; font-size: 68px; font-weight: 700; font-variant-numeric: tabular-nums; color: #1d1c1a; }
+  .punct { width: 28px; height: 72px; line-height: 72px; text-align: center; font-size: 68px; font-weight: 700; color: #1d1c1a; }
+  #sub { position: absolute; left: 60px; top: 206px; font-size: 22px; color: #6d6a63; }
+  #pill { position: absolute; left: 480px; top: 200px; width: 120px; height: 40px; border-radius: 20px; background: #f2c200; border: 2px solid #1d1c1a;
+    font-size: 18px; font-weight: 700; line-height: 36px; text-align: center; will-change: transform; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div id="card">
+        <div class="lab">Invites sent</div>
+        <div id="num">
+          <div class="slot"><div class="reel" id="r0"></div></div>
+          <div class="slot"><div class="reel" id="r1"></div></div>
+          <div class="punct">,</div>
+          <div class="slot"><div class="reel" id="r2"></div></div>
+          <div class="slot"><div class="reel" id="r3"></div></div>
+          <div class="slot"><div class="reel" id="r4"></div></div>
+        </div>
+        <div id="sub">this month</div>
+        <div id="pill">+51 today</div>
+      </div>
+    </div>
+    <div id="label"><span class="l-name">Rolling digits</span><span class="l-sep">·</span><span>Data</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  // Each reel holds 0-9 twice so a second roll can keep moving forward.
+  const H = 72;
+  const reels = ["#r0", "#r1", "#r2", "#r3", "#r4"].map(s => document.querySelector(s));
+  reels.forEach(r => { let h = ""; for (let k = 0; k < 20; k++) h += "<div>" + (k % 10) + "</div>"; r.innerHTML = h; });
+  const first = [1, 2, 4, 8, 0];   // 12,480
+  const second = [1, 2, 5, 3, 1];  // 12,531 (reels only roll forward)
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+  // Roll 1: 00,000 -> 12,480; 800 ms per digit, 60 ms stagger from the left; punctuation stays put.
+  reels.forEach((reel, i) => {
+    tl.fromTo(reel, { y: 0 }, { y: -first[i] * H, duration: 0.8, ease: "power3.out" }, 0.2 + i * 0.06);
+  });
+  tl.fromTo("#pill", { scale: 0.6, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.5, ease: "back.out(1.8)" }, 0.9);
+  // Roll 2: 12,480 -> 12,531, same recipe, so the reel keeps turning in the second half.
+  reels.forEach((reel, i) => {
+    const to = second[i] >= first[i] ? second[i] : second[i] + 10;
+    tl.fromTo(reel, { y: -first[i] * H }, { y: -to * H, duration: 0.8, ease: "power3.out", immediateRender: false }, 1.9 + i * 0.06);
+  });
+  tl.fromTo("#pill", { scale: 1 }, { scale: 1.12, duration: 0.18, ease: "power2.out", yoyo: true, repeat: 1, immediateRender: false }, 2.2);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

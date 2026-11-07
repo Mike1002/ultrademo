@@ -1,0 +1,127 @@
+{
+  "id": "noir-quote",
+  "name": "Noir Quote",
+  "canvas": "dark",
+  "mood": [
+    "cinematic",
+    "moody",
+    "elegant"
+  ],
+  "suits": [
+    "trailers",
+    "brand films",
+    "quote-led reveals"
+  ],
+  "palette": {
+    "bg": "#0b0a09",
+    "bg_alt": "#0b0a09",
+    "surface": "#141210",
+    "surface_2": "#1d1a17",
+    "ink": "#ede6d8",
+    "muted": "#a89c86",
+    "line": "rgba(237,230,216,0.18)",
+    "accent": "#a89c86",
+    "accent_2": "#2a2622",
+    "on_accent": "#0b0a09",
+    "button_bg": "#ede6d8",
+    "button_ink": "#0b0a09",
+    "pill_bg": "#0b0a09",
+    "pill_ink": "#ede6d8",
+    "pill_dot": "#ede6d8",
+    "term_bg": "#141210",
+    "term_ink": "#ede6d8",
+    "term_muted": "#6d655a",
+    "term_line": "rgba(237,230,216,0.18)",
+    "term_prompt": "#a89c86",
+    "term_ok": "#ede6d8"
+  },
+  "type": {
+    "display": {
+      "family": "Playfair Display",
+      "weight": 400,
+      "hook_px": 84,
+      "stat_px": 220,
+      "mark_px": 116,
+      "transform": "none",
+      "tracking": "0.02em",
+      "line_height": "1.1",
+      "style": "italic",
+      "generic": "serif",
+      "card_title_px": 28,
+      "mark_transform": "uppercase"
+    },
+    "body": {
+      "family": "Cormorant Garamond",
+      "weight": 500,
+      "generic": "serif"
+    },
+    "mono": {
+      "family": "Cormorant Garamond",
+      "weight": 500
+    },
+    "label": {
+      "family": "Cormorant Garamond",
+      "weight": 500,
+      "transform": "uppercase",
+      "tracking": "0.4em",
+      "generic": "serif",
+      "px": 15
+    }
+  },
+  "easing": {
+    "entry": "power1.inOut",
+    "exit": "power1.inOut",
+    "ambient": "sine.inOut",
+    "pop": "power1.inOut",
+    "counter": "power1.inOut",
+    "wipe": null
+  },
+  "rhythm": {
+    "energy": "calm",
+    "entrance": 1,
+    "stagger": 0.2
+  },
+  "transition": {
+    "kind": "crossfade",
+    "duration": 1,
+    "flash": false,
+    "band": false
+  },
+  "text_animation": "word-blur",
+  "accent_word": "none",
+  "layout": "center",
+  "atmosphere": [
+    "letterbox:87",
+    "vignette:0.75",
+    "grain:0.16"
+  ],
+  "shape": {
+    "radius_card": 0,
+    "radius_button": 0,
+    "radius_pill": 0,
+    "border": "hairline",
+    "border_px": 1,
+    "shadow": "none",
+    "rule_px": 1
+  },
+  "stat_colour": "ink",
+  "direction_settings": {
+    "energy": "calm",
+    "density": "sparse",
+    "ground": "dark",
+    "depth": "deep",
+    "camera": "drift",
+    "type": "editorial",
+    "texture": "grain",
+    "colour": "mono",
+    "product_presence": "illustrated",
+    "sound": "scored",
+    "voice": "narrated"
+  },
+  "notes": "Letterbox bars and film grain over near-black, Playfair italic that fades in word by word through blur, nothing faster than a second; the source has no accent colour, so the warm muted tone serves as one.",
+  "transitions": {
+    "between_moments": "crossfade",
+    "duration_s": 1,
+    "text": "word-blur"
+  }
+}

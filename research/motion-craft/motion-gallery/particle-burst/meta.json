@@ -1,0 +1,24 @@
+{
+  "name": "Particle burst",
+  "family": "Transition & Motion",
+  "purpose": [
+    "celebration",
+    "emphasis",
+    "punctuation"
+  ],
+  "energy": "high",
+  "tags": [
+    "particles",
+    "confetti",
+    "burst",
+    "dissolve",
+    "celebration",
+    "ballistic",
+    "deterministic",
+    "punctuation"
+  ],
+  "one_line": "Confetti pop: a big number springs in and, as it lands, a handful of yellow and ink chips erupt from behind it, arc down under gravity and vanish in a blink.",
+  "aliases": [
+    "awesome-ai-motion:particle-burst"
+  ]
+}

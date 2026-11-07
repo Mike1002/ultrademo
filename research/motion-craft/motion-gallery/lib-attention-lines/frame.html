@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-attention-lines</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  #arcs { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; overflow: visible; }
+  #arcs path { fill: none; stroke: #1d1c1a; }
+  .tok { position: absolute; top: 340px; width: 180px; height: 76px; line-height: 76px; text-align: center; font-size: 52px; font-weight: 700; border-radius: 12px; }
+  .rule { position: absolute; top: 432px; width: 180px; height: 1px; background: #e3ded2; }
+  .lab { position: absolute; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  .w { top: 450px; width: 180px; text-align: center; font-variant-numeric: tabular-nums; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div class="lab" style="left:90px;top:40px">Last token → the tokens it looks back at</div>
+      <svg id="arcs" viewBox="0 0 1168 580" data-layout-allow-overlap>
+        <path id="p1" d="M980 338 Q580 15 180 338" pathLength="1" stroke-width="1.5" opacity=".35"/>
+        <path id="p2" d="M980 338 Q680 65 380 338" pathLength="1" stroke-width=".6" opacity=".25"/>
+        <path id="p3" d="M980 338 Q780 115 580 338" pathLength="1" stroke-width="6" opacity=".9"/>
+        <path id="p4" d="M980 338 Q880 205 780 338" pathLength="1" stroke-width="3" opacity=".6"/>
+      </svg>
+      <div class="tok" id="k1" style="left:90px">Invite</div>
+      <div class="tok" id="k2" style="left:290px">your</div>
+      <div class="tok" id="k3" style="left:490px">team</div>
+      <div class="tok" id="k4" style="left:690px">to</div>
+      <div class="tok" id="k5" style="left:890px">Orbit</div>
+      <div class="rule" style="left:90px"></div><div class="rule" style="left:290px"></div><div class="rule" style="left:490px"></div><div class="rule" style="left:690px"></div><div class="rule" style="left:890px"></div>
+      <div class="lab w" id="w1" style="left:90px">0.12</div>
+      <div class="lab w" id="w2" style="left:290px">0.04</div>
+      <div class="lab w" id="w3" style="left:490px">0.60</div>
+      <div class="lab w" id="w4" style="left:690px">0.24</div>
+      <div class="lab w" id="w5" style="left:890px">source</div>
+    </div>
+    <div id="label"><span class="l-name">Attention lines</span><span class="l-sep">·</span><span>Explainer</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+  // Source token lights up first.
+  tl.fromTo("#k5", { backgroundColor: "rgba(242,194,0,0)" }, { backgroundColor: "rgba(242,194,0,1)", duration: 0.3 }, 0.3);
+  // Arcs draw from the source back to each earlier token; thickness and opacity carry the weight.
+  // Dash boundary parked mid-gap so frame 0 shows no cap dot (pathLength = 1).
+  ["#p1", "#p2", "#p3", "#p4"].forEach((s, i) => {
+    tl.fromTo(s, { strokeDasharray: "1 1.2", strokeDashoffset: 1.1 }, { strokeDashoffset: 0, duration: 1.15, ease: "power2.inOut" }, 0.45 + i * 0.12);
+  });
+  // Weights read out once the arcs have landed.
+  tl.fromTo(["#w1", "#w2", "#w3", "#w4", "#w5"], { opacity: 0 }, { opacity: 1, duration: 0.35, stagger: 0.05 }, 1.9);
+  // Second beat: the heaviest-weighted token lights up pale, its arc goes solid.
+  tl.fromTo("#k3", { backgroundColor: "rgba(251,243,207,0)" }, { backgroundColor: "rgba(251,243,207,1)", duration: 0.4 }, 2.3);
+  tl.to("#p3", { opacity: 1, strokeWidth: 7, duration: 0.4 }, 2.3);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-zigzag-wipe</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; overflow: hidden; }
+  .art { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  .art.a { background: #ece7da; }
+  .art.b { background: #f6f3ec; }
+  #edge { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; background: #f2c200; }
+  .card { position: absolute; left: 264px; top: 110px; width: 640px; height: 360px; background: #fffdf8; border: 2px solid #1d1c1a; border-radius: 24px; }
+  .card .lab { position: absolute; left: 56px; top: 48px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  .card h1 { position: absolute; left: 56px; top: 80px; font-size: 56px; font-weight: 700; line-height: 64px; white-space: nowrap; }
+  .card .sub { position: absolute; left: 56px; top: 160px; font-size: 22px; color: #6d6a63; }
+  .card .btn { position: absolute; left: 56px; top: 240px; width: 200px; height: 60px; border-radius: 14px; background: #f2c200; border: 2px solid #1d1c1a;
+    font-size: 20px; font-weight: 700; line-height: 56px; text-align: center; }
+  .card.b h1 { font-size: 96px; line-height: 104px; top: 74px; font-variant-numeric: tabular-nums; }
+  .card.b .sub { top: 190px; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div class="art a" id="A"><div class="card a">
+        <div class="lab" data-layout-allow-overlap data-layout-allow-occlusion>Orbit</div>
+        <h1 data-layout-allow-overlap data-layout-allow-occlusion>Invite your team</h1>
+        <div class="sub" data-layout-allow-overlap data-layout-allow-occlusion>3 seats left on this plan</div>
+        <div class="btn" data-layout-allow-overlap data-layout-allow-occlusion>Continue</div>
+      </div></div>
+      <div id="edge" data-layout-allow-overlap></div>
+      <div class="art b" id="B" data-layout-allow-overlap><div class="card b">
+        <div class="lab" data-layout-allow-overlap data-layout-allow-occlusion>This month</div>
+        <h1 data-layout-allow-overlap data-layout-allow-occlusion>12,480</h1>
+        <div class="sub" data-layout-allow-overlap data-layout-allow-occlusion>invites sent</div>
+      </div></div>
+    </div>
+    <div id="label"><span class="l-name">Zigzag wipe</span><span class="l-sep">·</span><span>Transitions</span><span class="l-sep">·</span><span>high</span></div>
+  </section>
+</div>
+<script>
+  // The boundary is a 12-tooth zigzag, 80 px deep, written as a polygon of the boundary position p only; GSAP interpolates the numbers.
+  const N = 12, TH = 580 / N, D = 80, W = 1168;
+  function left(p) {   // everything left of the zigzag
+    const s = []; for (let i = 0; i <= N; i++) s.push((p + (i % 2 ? D : 0)).toFixed(1) + "px " + (i * TH).toFixed(1) + "px");
+    return "polygon(0px 0px, " + s.join(", ") + ", 0px 580px)";
+  }
+  function right(p) {  // everything right of the zigzag
+    const s = []; for (let i = 0; i <= N; i++) s.push((p + (i % 2 ? D : 0)).toFixed(1) + "px " + (i * TH).toFixed(1) + "px");
+    return "polygon(" + W + "px 0px, " + s.join(", ") + ", " + W + "px 580px)";
+  }
+  const B = document.getElementById("B"), E = document.getElementById("edge");
+  // Wipe windows [start, duration, kind]: 700 ms each, linear. Wipe 1 reveals B left to right behind a 6 px yellow tooth-line;
+  // wipe 2 runs the same zigzag again and takes B away, so A is back and the second half keeps moving.
+  const WIN = [[0.75, 0.7, "in"], [2.2, 0.7, "out"]];
+  let last = null;
+  function renderAt(t) {
+    let state = t < WIN[0][0] ? "a" : t < WIN[1][0] ? "b" : "a2", p = 0, w = null;
+    for (const win of WIN) if (t >= win[0] && t < win[0] + win[1]) { w = win; p = -D - 6 + ((t - win[0]) / win[1]) * (W + D + 12); }
+    const key = w ? w[2] + Math.round(p) : state;
+    if (key === last) return; last = key;
+    if (!w) {
+      if (state === "b") { B.style.clipPath = left(W + 6); E.style.clipPath = left(W + 12); }
+      else { B.style.clipPath = left(-D - 6); E.style.clipPath = left(-D); }
+      return;
+    }
+    if (w[2] === "in") { B.style.clipPath = left(p); E.style.clipPath = left(p + 6); }
+    else { B.style.clipPath = right(p + 6); E.style.clipPath = right(p); }
+  }
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "none", duration: 0.7 } });
+  renderAt(0);
+  tl.to({ k: 0 }, { k: 1, duration: 3, ease: "none", onUpdate: () => renderAt(tl.time()) }, 0);
+  const baseRender = tl.render; tl.render = function () { const r = baseRender.apply(this, arguments); renderAt(this.time()); return r; };
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+{
+  "name": "Colour distance dissolve",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Mood"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "webgl",
+  "tags": [
+    "color distance dissolve",
+    "transitions",
+    "tiles",
+    "grid",
+    "content-driven",
+    "dissolve",
+    "colour difference"
+  ],
+  "one_line": "An invite scene dissolves into a stats scene tile by tile in an order set by the picture itself: tiles where the two scenes already match melt across first, and the yellow button, where they differ most, swaps last."
+}

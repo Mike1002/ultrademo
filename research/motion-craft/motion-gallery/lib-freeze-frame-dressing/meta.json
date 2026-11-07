@@ -1,0 +1,21 @@
+{
+  "name": "Freeze frame dressing",
+  "family": "Transitions",
+  "purpose": [
+    "Emphasis",
+    "Branding"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "gsap",
+  "tags": [
+    "freeze frame dressing",
+    "transitions",
+    "freeze",
+    "sticker",
+    "tape",
+    "label",
+    "paper"
+  ],
+  "one_line": "A cursor presses Invite on a member row and the picture freezes as it lifts away; a tape strip, a paper name label and a yellow sticker stick onto the frozen frame one after another while it creeps larger."
+}

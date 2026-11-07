@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-map-extrusion</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #171a21; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #171a21; color: #ece8df;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  .lab { font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #a7adbb; white-space: nowrap; }
+  .t-m { font-size: 34px; font-weight: 700; line-height: 1.15; white-space: nowrap; }
+  .space { position: absolute; inset: 0; perspective: 1200px; }
+  #ground { position: absolute; left: 264px; top: 130px; width: 640px; height: 520px; transform-style: preserve-3d; will-change: transform; }
+  .cell { position: absolute; transform-style: preserve-3d; }
+  .top { position: absolute; inset: 0; clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%); will-change: transform; }
+  .wall { position: absolute; width: 50px; height: 220px; will-change: transform; }
+  .wall.l { background: #3a4150; }
+  .wall.r { background: #262b36; }
+  #title { position: absolute; left: 0; top: 0; }
+  #sub { position: absolute; left: 0; top: 46px; }
+  #legend { position: absolute; left: 0; top: 500px; display: flex; gap: 10px; align-items: center; }
+  #legend i { display: block; width: 28px; height: 16px; border-radius: 3px; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #a7adbb; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #ece8df; font-weight: 700; }
+  #label .l-sep { color: #6d7380; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div class="space"><div id="ground" data-layout-allow-overlap data-layout-allow-occlusion></div></div>
+      <div class="t-m" id="title">Density by district</div>
+      <div class="lab" id="sub">19 districts · height by invites per seat</div>
+      <div id="legend" class="lab"><span>Low</span><i style="background:#3a4150"></i><i style="background:#6d7380"></i><i style="background:#a7adbb"></i><i style="background:#f2c200"></i><span>High</span></div>
+    </div>
+    <div id="label"><span class="l-name">Map extrusion</span><span class="l-sep">·</span><span>Data</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  // Abstract hex grid (3-4-5-4-3), pointy-top, circumradius 50. No real geography.
+  const R = 50, W = Math.sqrt(3) * R, ROWH = 1.5 * R, HM = 220, GX = 320, GY = 260;
+  const rows = [3, 4, 5, 4, 3];
+  const vals = [0.3, 0.5, 0.4, 0.6, 0.9, 0.7, 0.45, 0.5, 0.8, 1.0, 0.75, 0.35, 0.4, 0.65, 0.55, 0.3, 0.25, 0.45, 0.2];
+  const tone = v => v >= 0.85 ? "#f2c200" : v >= 0.6 ? "#a7adbb" : v >= 0.4 ? "#6d7380" : "#3a4150";
+  const ground = document.getElementById("ground");
+  const cells = []; let k = 0;
+  rows.forEach((n, j) => { for (let i = 0; i < n; i++) { const v = vals[k++];
+    const cx = GX + (i - (n - 1) / 2) * W, cy = GY + (j - 2) * ROWH;
+    const cell = document.createElement("div"); cell.className = "cell"; cell.style.left = (cx - W / 2) + "px"; cell.style.top = (cy - R) + "px"; cell.style.width = W + "px"; cell.style.height = 2 * R + "px";
+    cell.setAttribute("data-layout-allow-overlap", ""); cell.setAttribute("data-layout-allow-occlusion", "");
+    const top = document.createElement("div"); top.className = "top"; top.style.background = tone(v); top.setAttribute("data-layout-allow-overlap", ""); top.setAttribute("data-layout-allow-occlusion", "");
+    const wl = document.createElement("div"); wl.className = "wall l"; wl.style.left = (W / 4 - R / 2) + "px"; wl.style.top = (1.75 * R - HM) + "px"; wl.setAttribute("data-layout-allow-overlap", ""); wl.setAttribute("data-layout-allow-occlusion", "");
+    const wr = document.createElement("div"); wr.className = "wall r"; wr.style.left = (3 * W / 4 - R / 2) + "px"; wr.style.top = (1.75 * R - HM) + "px"; wr.setAttribute("data-layout-allow-overlap", ""); wr.setAttribute("data-layout-allow-occlusion", "");
+    cell.appendChild(wl); cell.appendChild(wr); cell.appendChild(top); ground.appendChild(cell);
+    cells.push({ v, top, wl, wr }); } });
+
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 1.2 } });
+  // Camera fixed at 55 degrees; the ground turns slowly through the clip so the scene never stands still.
+  tl.fromTo(ground, { rotationX: 55, rotationZ: -7 }, { rotationX: 55, rotationZ: 7, duration: 3, ease: "none" }, 0);
+  // Each district rises as a prism: its two front walls scale up from the base and its top face lifts to z = value * 220; largest values first, 30 ms apart.
+  const order = cells.map((c, i) => i).sort((a, b) => cells[b].v - cells[a].v);
+  order.forEach((ci, rank) => { const c = cells[ci], h = c.v * HM, at = 0.3 + rank * 0.03;
+    tl.fromTo(c.wl, { rotationX: -90, rotation: 30, scaleY: 0.001, transformOrigin: "50% 100%" }, { scaleY: h / HM, duration: 1.2 }, at);
+    tl.fromTo(c.wr, { rotationX: -90, rotation: -30, scaleY: 0.001, transformOrigin: "50% 100%" }, { scaleY: h / HM, duration: 1.2 }, at);
+    tl.fromTo(c.top, { z: 0 }, { z: h, duration: 1.2 }, at); });
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

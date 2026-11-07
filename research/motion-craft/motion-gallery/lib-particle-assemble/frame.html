@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-particle-assemble</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #171a21; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #171a21; color: #ece8df;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; overflow: hidden; }
+  #cv { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #a7adbb; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #ece8df; font-weight: 700; }
+  #label .l-sep { color: #6d7380; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage"><canvas id="cv" width="1168" height="580"></canvas></div>
+    <div id="label"><span class="l-name">Particle scatter &amp; assemble</span><span class="l-sep">·</span><span>Generative</span><span class="l-sep">·</span><span>high</span></div>
+  </section>
+</div>
+<script>
+  function rand(seed){ let a = seed >>> 0 || 1; return function(){ a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+  const cv = document.getElementById("cv"), ctx = cv.getContext("2d");
+  const W = 1168, H = 580, N = 900, SEC = 3;
+  const SANS = '-apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif';
+  const INK = [236, 232, 223], INK3 = [109, 115, 128], ACC = [242, 194, 0];
+  const mixc = (a, b, k) => "rgb(" + a.map((v, i) => Math.round(v + (b[i] - v) * k)).join(",") + ")";
+  const clamp = v => v < 0 ? 0 : v > 1 ? 1 : v;
+  const ease = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; // power3.inOut
+  let P = [], STEP = 8;
+  // Target points: the number is drawn once offscreen (system sans, thick stroke so thin strokes also catch particles) and its pixels sampled on a grid.
+  (function setup() {
+    const off = document.createElement("canvas"); off.width = W; off.height = H; const o = off.getContext("2d");
+    o.font = "800 470px " + SANS; o.textBaseline = "alphabetic";
+    const TXT = "1,284", m = o.measureText(TXT);
+    const x0 = (W - m.width) / 2, base = H / 2 + (m.actualBoundingBoxAscent - m.actualBoundingBoxDescent) / 2;
+    o.fillStyle = "#fff"; o.fillText(TXT, x0, base);
+    o.lineWidth = 9; o.lineJoin = "round"; o.strokeStyle = "#fff"; o.strokeText(TXT, x0, base);
+    const img = o.getImageData(0, 0, W, H).data;
+    let pts = [];
+    for (let step = 14; step >= 4; step -= 0.5) {
+      pts = [];
+      for (let y = step / 2; y < H; y += step) for (let x = step / 2 + ((y / step) % 2) * step / 2; x < W; x += step)
+        if (img[(Math.floor(y) * W + Math.floor(x)) * 4 + 3] > 128) pts.push([x, y]);
+      if (pts.length >= N) { STEP = step; break; }
+    }
+    const r = rand(939);
+    for (let i = pts.length - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [pts[i], pts[j]] = [pts[j], pts[i]]; }
+    pts = pts.slice(0, N);
+    // The last glyph (the 4) turns yellow once it has assembled, top to bottom.
+    const midL = x0 + o.measureText("1,28").width;
+    let maxD = 0;
+    P = pts.map(([tx, ty]) => {
+      const sx = 20 + r() * (W - 40), sy = 16 + r() * (H - 32);
+      const d = Math.hypot(tx - sx, ty - sy); maxD = Math.max(maxD, d);
+      return { tx, ty, sx, sy, d, r0: 1.4 + r() * 3.2, ph: r() * 6.283, fq: 0.6 + r() * 0.8, amp: 8 + r() * 18,
+        curl: (r() - 0.5) * 0.5, t0: 0.2 + r() * 0.12, mid: tx > midL };
+    });
+    const ys = P.filter(q => q.mid).map(q => q.ty), yMin = Math.min(...ys), yMax = Math.max(...ys);
+    // Source: flight 0.9 s + up to 1.0 s by distance over a 4 s clip; here 0.7 s + up to 0.8 s so the far particles land by ~1.9 s.
+    P.forEach(q => { q.dur = 0.7 + 0.8 * (q.d / maxD); q.vt = q.mid ? 2.0 + 0.4 * (q.ty - yMin) / (yMax - yMin) : 99; });
+  })();
+  function pos(q, t) {
+    const fx = q.sx + Math.sin(t * q.fq + q.ph) * q.amp, fy = q.sy + Math.cos(t * q.fq * 0.8 + q.ph) * q.amp * 0.7;
+    const e = ease(clamp((t - q.t0) / q.dur));
+    const dx = q.tx - fx, dy = q.ty - fy, bend = Math.sin(Math.PI * e) * q.curl;
+    return [fx + dx * e - dy * bend, fy + dy * e + dx * bend, e];
+  }
+  function renderAt(t) {
+    ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.clearRect(0, 0, W, H); ctx.globalAlpha = 1;
+    const z = 1.1 - 0.1 * ease(clamp((t - 0.15) / 1.9)); // camera 1.10 -> 1.00 while the pieces gather
+    ctx.setTransform(z, 0, 0, z, W / 2 * (1 - z), H / 2 * (1 - z));
+    ctx.lineCap = "round";
+    for (const q of P) {
+      const [x, y, e] = pos(q, t);
+      const rad = q.r0 + (STEP * 0.36 - q.r0) * e;
+      const vk = clamp((t - q.vt) / 0.18);
+      const col = vk > 0 ? mixc(INK, ACC, vk) : mixc(INK3, INK, e);
+      const [px, py] = pos(q, t - 1 / 30);
+      const sp = Math.hypot(x - px, y - py);
+      if (sp > 6) { ctx.strokeStyle = col; ctx.globalAlpha = 0.22; ctx.lineWidth = rad * 1.4; ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(x, y); ctx.stroke(); ctx.globalAlpha = 1; }
+      ctx.fillStyle = col; ctx.beginPath(); ctx.arc(x, y, rad, 0, 6.2832); ctx.fill();
+    }
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.globalAlpha = clamp((t - 2.2) / 0.3);
+    ctx.fillStyle = "#a7adbb"; ctx.font = "13px " + SANS; ctx.textAlign = "left"; ctx.fillText("900 PARTICLES · THE FARTHEST ARRIVE LAST · INVITES SENT", 48, 30);
+    ctx.globalAlpha = 1;
+  }
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+  renderAt(0);
+  tl.to({ k: 0 }, { k: 1, duration: 3, ease: "none", onUpdate: () => renderAt(tl.time()) }, 0);
+  const baseRender = tl.render; tl.render = function () { const r = baseRender.apply(this, arguments); renderAt(this.time()); return r; };
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

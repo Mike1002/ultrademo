@@ -1,0 +1,22 @@
+{
+  "name": "Light ray transition",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Attention"
+  ],
+  "energy": "high",
+  "tier": 3,
+  "runtime": "webgl",
+  "tags": [
+    "light ray burst",
+    "transitions",
+    "rays",
+    "burst",
+    "radial",
+    "conic",
+    "glow",
+    "dark"
+  ],
+  "one_line": "Twenty-four rays of yellow-white light shoot out from the centre of the invite card until they cover the frame, the stats card is underneath when they clear, and a quieter burst flickers from the same point later."
+}

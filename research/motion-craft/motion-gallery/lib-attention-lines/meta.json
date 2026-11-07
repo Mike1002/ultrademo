@@ -1,0 +1,20 @@
+{
+  "name": "Attention lines",
+  "family": "Explainer",
+  "purpose": [
+    "Explanation",
+    "Sequence"
+  ],
+  "energy": "steady",
+  "tier": 2,
+  "runtime": "gsap",
+  "tags": [
+    "attention weights",
+    "attention weight encoding",
+    "explainer",
+    "arcs",
+    "stroke-dashoffset",
+    "weights"
+  ],
+  "one_line": "The last word of a sentence lights up and arcs of different thickness and opacity draw back to the four earlier words, with the weights reading out below."
+}

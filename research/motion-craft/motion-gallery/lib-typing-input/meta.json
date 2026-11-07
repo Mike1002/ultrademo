@@ -1,0 +1,21 @@
+{
+  "name": "Typing input",
+  "family": "UI Demo",
+  "purpose": [
+    "Explanation",
+    "Feedback"
+  ],
+  "energy": "steady",
+  "tier": 2,
+  "runtime": "gsap",
+  "tags": [
+    "typing input",
+    "keyboard press demo",
+    "typing input simulation",
+    "backspace retype",
+    "ui",
+    "irregular gaps",
+    "caret blink"
+  ],
+  "one_line": "A search field types \"Invite my team\" character by character at uneven human gaps, a yellow caret blinking at the insertion point and then holding steady once the line is complete."
+}

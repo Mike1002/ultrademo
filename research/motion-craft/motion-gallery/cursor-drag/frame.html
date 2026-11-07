@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>cursor-drag</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  /* tray on the left: 300x440 at (80,140) */
+  .tray { position: absolute; left: 80px; top: 140px; width: 300px; height: 440px; background: #fffdf8;
+    border: 2px solid #1d1c1a; border-radius: 24px; }
+  .tray-title { position: absolute; left: 28px; top: 28px; font-size: 20px; color: #6d6a63; }
+  /* canvas card on the right: 720x440 at (480,140) */
+  .canvas { position: absolute; left: 480px; top: 140px; width: 720px; height: 440px; background: #fffdf8;
+    border: 2px solid #1d1c1a; border-radius: 24px; }
+  .line { position: absolute; left: 44px; top: 44px; font-size: 40px; font-weight: 700; letter-spacing: -0.01em; }
+  .sub { position: absolute; left: 44px; top: 102px; font-size: 20px; color: #6d6a63; }
+  .slot { position: absolute; left: 524px; top: 400px; width: 240px; height: 64px; border-radius: 16px;
+    border: 2px dashed #e3ded2; }
+  /* chip in the tray: 220x64 at stage (120, 400). Grip point = (120+26, 400+32) = (146, 432) */
+  .chip { position: absolute; left: 120px; top: 400px; width: 220px; height: 64px; border-radius: 16px; background: #f2c200;
+    border: 2px solid #1d1c1a; color: #1d1c1a; font-size: 22px; font-weight: 700; display: flex; align-items: center;
+    padding-left: 40px; transform-origin: 50% 50%; will-change: transform; }
+  .grip { position: absolute; left: 14px; top: 20px; width: 10px; height: 24px; }
+  .grip i { position: absolute; width: 4px; height: 4px; border-radius: 50%; background: #1d1c1a; }
+  .grip i:nth-child(1) { left: 0; top: 0; } .grip i:nth-child(2) { left: 6px; top: 0; }
+  .grip i:nth-child(3) { left: 0; top: 10px; } .grip i:nth-child(4) { left: 6px; top: 10px; }
+  .grip i:nth-child(5) { left: 0; top: 20px; } .grip i:nth-child(6) { left: 6px; top: 20px; }
+  /* ghost: pre-rendered clone at the chip's position, opacity 0, revealed by tl.set */
+  .ghost { opacity: 0; z-index: 5; box-shadow: 0 0 0 rgba(0,0,0,0); pointer-events: none; }
+  /* placed field: at the slot's final position (480+44, 140+260) = (524, 400), same silhouette as the chip */
+  .placed { left: 524px; top: 400px; opacity: 0; }
+  .select-box { position: absolute; left: 516px; top: 392px; width: 236px; height: 80px; border: 2px solid #1d1c1a;
+    border-radius: 18px; opacity: 0; pointer-events: none; transform-origin: 50% 50%; }
+  .handle { position: absolute; width: 14px; height: 14px; background: #fffdf8; border: 2px solid #1d1c1a; border-radius: 3px;
+    opacity: 0; pointer-events: none; transform-origin: 50% 50%; }
+  #h1 { left: 509px; top: 385px; } #h2 { left: 745px; top: 385px; } #h3 { left: 509px; top: 465px; } #h4 { left: 745px; top: 465px; }
+  /* cursor: tip at box origin; rest = tip on the grip point (146, 432) */
+  .cursor { position: absolute; left: 146px; top: 432px; width: 36px; height: 49px; z-index: 10; pointer-events: none;
+    transform-origin: 2px 2px; will-change: transform; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.25)); }
+  .cursor svg { width: 36px; height: 49px; display: block; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div class="tray"><div class="tray-title">Components</div></div>
+    <div class="canvas">
+      <div class="line">Every frame is code</div>
+      <div class="sub">Drag the button into the layout</div>
+    </div>
+    <div class="slot"></div>
+    <div class="chip" id="source-chip"><span class="grip"><i></i><i></i><i></i><i></i><i></i><i></i></span>Continue</div>
+    <div class="chip ghost" id="drag-ghost" aria-hidden="true" data-layout-allow-overlap><span class="grip"><i></i><i></i><i></i><i></i><i></i><i></i></span>Continue</div>
+    <div class="chip placed" id="placed-field"><span class="grip"><i></i><i></i><i></i><i></i><i></i><i></i></span>Continue</div>
+    <div class="select-box" id="select-box"></div>
+    <div class="handle" id="h1"></div><div class="handle" id="h2"></div><div class="handle" id="h3"></div><div class="handle" id="h4"></div>
+    <div class="cursor" id="cursor">
+      <svg viewBox="0 0 28 38"><path d="M2.5 2.5 L2.5 29.5 L9.6 23 L14.4 33.6 L19 31.6 L14.3 21.4 L23.8 21.4 Z" fill="#ffffff" stroke="#1d1c1a" stroke-width="2" stroke-linejoin="round"/></svg>
+    </div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true });
+  // Measured at build time (single scene): travel delta from chip to slot.
+  const chipRect = document.querySelector("#source-chip").getBoundingClientRect();
+  const slotRect = document.querySelector("#placed-field").getBoundingClientRect();
+  const TRAVEL_DX = slotRect.left - chipRect.left, TRAVEL_DY = slotRect.top - chipRect.top;
+  // Rule values: approach 0.5 s; press-dip halves 0.08 s (cursor compresses more than payload); ghost opacity 0.65;
+  // lift scale 1.05 over 0.15 s; travel 0.9 s power2.inOut; DROP_AT = TRAVEL_AT + TRAVEL_DUR; snap 0.25 s.
+  const APPROACH_AT = 0.1, APPROACH_DUR = 0.5, GRAB_AT = 0.65, PRESS = 0.08, LIFT_DUR = 0.15;
+  const TRAVEL_AT = GRAB_AT + 2 * PRESS + LIFT_DUR, TRAVEL_DUR = 0.9, TRAVEL_EASE = "power2.inOut";
+  const DROP_AT = TRAVEL_AT + TRAVEL_DUR, SNAP_DUR = 0.25;
+
+  // Approach: cursor glides in from the lower left to the grip point
+  tl.fromTo("#cursor", { x: -220, y: 240, scale: 1 }, { x: 0, y: 0, duration: APPROACH_DUR, ease: "power2.inOut" }, APPROACH_AT);
+  // Grab: press dip on cursor + chip together (cursor dips more), ghost revealed on the down-beat with a lift
+  tl.to("#cursor", { scale: 0.85, duration: PRESS, ease: "power2.in", yoyo: true, repeat: 1 }, GRAB_AT);
+  tl.fromTo("#source-chip", { scale: 1 }, { scale: 0.96, duration: PRESS, ease: "power2.in", yoyo: true, repeat: 1, immediateRender: false }, GRAB_AT);
+  tl.set("#drag-ghost", { opacity: 0.65, x: 0, y: 0 }, GRAB_AT + PRESS);
+  tl.fromTo("#drag-ghost", { scale: 1, boxShadow: "0px 0px 0px rgba(29,28,26,0)" },
+    { scale: 1.05, boxShadow: "0px 16px 28px rgba(29,28,26,0.28)", duration: LIFT_DUR, ease: "power2.out", immediateRender: false }, GRAB_AT + PRESS);
+  // Travel: deltas identical for cursor and ghost, so ONE shared tween keeps them rigidly locked
+  tl.fromTo(["#drag-ghost", "#cursor"], { x: 0, y: 0 },
+    { x: TRAVEL_DX, y: TRAVEL_DY, duration: TRAVEL_DUR, ease: TRAVEL_EASE, immediateRender: false }, TRAVEL_AT);
+  // Drop is a state commit: ghost off + placed field on at the SAME position
+  tl.set("#drag-ghost", { opacity: 0 }, DROP_AT);
+  tl.fromTo("#placed-field", { opacity: 0, scale: 0.92 }, { opacity: 1, scale: 1, duration: SNAP_DUR, ease: "power3.out" }, DROP_AT);
+  tl.fromTo(["#select-box", "#h1", "#h2", "#h3", "#h4"], { opacity: 0, scale: 0.6 },
+    { opacity: 1, scale: 1, duration: 0.18, ease: "power3.out", stagger: 0.02 }, DROP_AT + SNAP_DUR * 0.4);
+  // Release dip, then the cursor glides off toward the next target
+  tl.to("#cursor", { scale: 0.85, duration: PRESS, ease: "power2.in", yoyo: true, repeat: 1 }, DROP_AT);
+  tl.to("#cursor", { x: TRAVEL_DX + 170, y: TRAVEL_DY - 120, duration: 0.6, ease: "power2.inOut" }, DROP_AT + 0.45);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

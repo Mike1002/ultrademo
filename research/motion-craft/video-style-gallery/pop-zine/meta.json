@@ -1,0 +1,47 @@
+{
+  "name": "Pop Zine",
+  "fonts": {
+    "display": "Anton",
+    "body": "Space Grotesk",
+    "mono": "Share Tech Mono",
+    "label": "Share Tech Mono"
+  },
+  "font_families": [
+    "Anton",
+    "Share Tech Mono",
+    "Space Grotesk"
+  ],
+  "font_substitutions": {},
+  "canvas": "light",
+  "mood": [
+    "loud",
+    "playful",
+    "editorial"
+  ],
+  "suits": [
+    "podcasts",
+    "zine-style launches",
+    "countdowns"
+  ],
+  "direction_settings": {
+    "energy": "high",
+    "density": "dense",
+    "ground": "alternating",
+    "depth": "layered",
+    "camera": "locked",
+    "type": "loud",
+    "texture": "grain",
+    "colour": "full-palette",
+    "product_presence": "illustrated",
+    "sound": "beat-driven",
+    "voice": "spoken-headline"
+  },
+  "duration_s": 10,
+  "size": [
+    1280,
+    720
+  ],
+  "fps": 30,
+  "strip": "D-58 style strip: hook · project card · number · agent · close",
+  "one_line": ""
+}

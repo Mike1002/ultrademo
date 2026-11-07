@@ -1,0 +1,122 @@
+{
+  "id": "cream-serif",
+  "name": "Cream Serif",
+  "canvas": "light",
+  "mood": [
+    "warm",
+    "friendly",
+    "credible"
+  ],
+  "suits": [
+    "developer-tool launches",
+    "comparisons",
+    "warm SaaS"
+  ],
+  "palette": {
+    "bg": "#f3ede2",
+    "bg_alt": "#f3ede2",
+    "surface": "#fffaf2",
+    "surface_2": "#f0e8da",
+    "ink": "#1d1b18",
+    "muted": "#8f877b",
+    "line": "#e2d9c9",
+    "accent": "#ec5b3c",
+    "accent_2": "#ec5b3c",
+    "on_accent": "#fffaf2",
+    "pill_bg": "#fbe3d9",
+    "pill_ink": "#1d1b18",
+    "pill_dot": "#ec5b3c",
+    "term_bg": "#1d1b18",
+    "term_ink": "#f3ede2",
+    "term_muted": "#8f877b",
+    "term_line": "#1d1b18",
+    "term_prompt": "#ec5b3c",
+    "term_ok": "#ec5b3c"
+  },
+  "type": {
+    "display": {
+      "family": "Fraunces",
+      "weight": 800,
+      "hook_px": 96,
+      "stat_px": 260,
+      "mark_px": 140,
+      "transform": "none",
+      "tracking": "-0.02em",
+      "line_height": "1.02",
+      "style": "normal",
+      "generic": "serif",
+      "card_title_px": 30
+    },
+    "body": {
+      "family": "Inter",
+      "weight": 400,
+      "generic": "sans"
+    },
+    "mono": {
+      "family": "JetBrains Mono",
+      "weight": 500
+    },
+    "label": {
+      "family": "Inter",
+      "weight": 600,
+      "transform": "uppercase",
+      "tracking": "0.12em",
+      "generic": "sans",
+      "px": 13
+    }
+  },
+  "easing": {
+    "entry": "power3.out",
+    "exit": "power2.in",
+    "ambient": "none",
+    "pop": "back.out(2.2)",
+    "counter": "power2.out",
+    "wipe": null
+  },
+  "rhythm": {
+    "energy": "steady",
+    "entrance": 0.55,
+    "stagger": 0.08
+  },
+  "transition": {
+    "kind": "cut",
+    "duration": 0,
+    "flash": false,
+    "band": false
+  },
+  "text_animation": "blur-in",
+  "accent_word": "italic",
+  "layout": "center",
+  "atmosphere": [
+    "corner-glow:0.2"
+  ],
+  "shape": {
+    "radius_card": 26,
+    "radius_button": 14,
+    "radius_pill": 999,
+    "border": "hairline",
+    "border_px": 1,
+    "shadow": "soft",
+    "rule_px": 4
+  },
+  "stat_colour": "accent",
+  "direction_settings": {
+    "energy": "steady",
+    "density": "balanced",
+    "ground": "light",
+    "depth": "layered",
+    "camera": "locked",
+    "type": "editorial",
+    "texture": "clean",
+    "colour": "one-accent",
+    "product_presence": "illustrated",
+    "sound": "scored",
+    "voice": "narrated"
+  },
+  "notes": "Cream ground, Fraunces 800 with one coral italic word per line, headlines resolve from blur, hard cuts; the stat lands with a back-out overshoot.",
+  "transitions": {
+    "between_moments": "cut",
+    "duration_s": 0,
+    "text": "blur-in"
+  }
+}

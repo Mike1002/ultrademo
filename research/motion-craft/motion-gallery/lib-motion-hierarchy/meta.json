@@ -1,0 +1,24 @@
+{
+  "name": "Motion hierarchy",
+  "family": "Principles",
+  "purpose": [
+    "Sequence",
+    "Explanation",
+    "Attention"
+  ],
+  "energy": "calm",
+  "tier": 2,
+  "runtime": "gsap",
+  "tags": [
+    "reading order",
+    "motion hierarchy",
+    "negative space hold",
+    "coherence-driven background settling",
+    "principles",
+    "title",
+    "subtitle",
+    "detail",
+    "typography"
+  ],
+  "one_line": "A big title rises in first and slowest, the subtitle follows with a shorter lift, then the detail line and a divider snap in last, so the size and the timing both say what to read first; numbered leaders mark the order."
+}

@@ -1,0 +1,21 @@
+{
+  "name": "Text cutout zoom",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Attention"
+  ],
+  "energy": "high",
+  "tier": 3,
+  "runtime": "svg",
+  "tags": [
+    "text cutout scene reveal",
+    "transitions",
+    "mask",
+    "cutout",
+    "letter",
+    "zoom",
+    "title"
+  ],
+  "one_line": "A stats scene shows through the O of a huge ORBIT title cut out of a dark plate; the letter-shaped hole grows about its centre until the whole frame is the scene, then the names settle in."
+}

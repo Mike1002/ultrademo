@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-eyeline-match</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; overflow: hidden; }
+  /* the person: a shape avatar with two eye dots */
+  #person { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; will-change: opacity; }
+  #head { position: absolute; left: 364px; top: 130px; width: 240px; height: 240px; border-radius: 50%; background: #ece7da; border: 2px solid #1d1c1a; }
+  .eye { position: absolute; top: 100px; width: 22px; height: 22px; border-radius: 50%; background: #1d1c1a; will-change: transform; }
+  #eyeL { left: 70px; } #eyeR { left: 148px; }
+  #who { position: absolute; left: 0; top: 400px; width: 968px; text-align: center; font-size: 28px; font-weight: 700; }
+  #who span { display: block; font-size: 18px; font-weight: 400; color: #6d6a63; margin-top: 6px; }
+  /* what they look at: the invite card, on the right after a glance right, on the left after a glance left */
+  .card { position: absolute; top: 110px; width: 640px; height: 360px; background: #fffdf8; border: 2px solid #1d1c1a; border-radius: 24px; will-change: transform, opacity; }
+  #cardR { left: 500px; } #cardL { left: 28px; }
+  .card .lab { position: absolute; left: 56px; top: 48px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  .card .h1 { position: absolute; left: 56px; top: 80px; font-size: 56px; font-weight: 700; line-height: 64px; white-space: nowrap; }
+  .card .sub { position: absolute; left: 56px; top: 160px; font-size: 22px; color: #6d6a63; }
+  .card .btn { position: absolute; left: 56px; top: 240px; width: 200px; height: 60px; border-radius: 14px; background: #f2c200; border: 2px solid #1d1c1a;
+    font-size: 20px; font-weight: 700; line-height: 56px; text-align: center; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div id="person" data-layout-allow-overlap>
+        <div id="head" data-layout-allow-overlap><div class="eye" id="eyeL"></div><div class="eye" id="eyeR"></div></div>
+        <div id="who" data-layout-allow-overlap data-layout-allow-occlusion>Jamie Dalton<span>looks over</span></div>
+      </div>
+      <div class="card" id="cardR" data-layout-allow-overlap>
+        <div class="lab" data-layout-allow-overlap data-layout-allow-occlusion>Orbit</div>
+        <div class="h1" data-layout-allow-overlap data-layout-allow-occlusion>Invite your team</div>
+        <div class="sub" data-layout-allow-overlap data-layout-allow-occlusion>3 seats left on this plan</div>
+        <div class="btn" data-layout-allow-overlap data-layout-allow-occlusion>Continue</div>
+      </div>
+      <div class="card" id="cardL" data-layout-allow-overlap>
+        <div class="lab" data-layout-allow-overlap data-layout-allow-occlusion>Orbit</div>
+        <div class="h1" data-layout-allow-overlap data-layout-allow-occlusion>Invite your team</div>
+        <div class="sub" data-layout-allow-overlap data-layout-allow-occlusion>3 seats left on this plan</div>
+        <div class="btn" data-layout-allow-overlap data-layout-allow-occlusion>Continue</div>
+      </div>
+    </div>
+    <div id="label"><span class="l-name">Eyeline match</span><span class="l-sep">·</span><span>Transitions</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "none", duration: 0.6 } });
+  // Rest: the person; both card shots hidden.
+  tl.fromTo("#person", { opacity: 1 }, { opacity: 1, duration: 0.01 }, 0);
+  tl.fromTo("#cardR", { opacity: 0, scale: 1.06, transformOrigin: "50% 50%" }, { opacity: 0, duration: 0.01 }, 0);
+  tl.fromTo("#cardL", { opacity: 0, scale: 1.06, transformOrigin: "50% 50%" }, { opacity: 0, duration: 0.01 }, 0);
+  // Glance up and to the right (0.2 to 0.7 s), then cut at 1.0 s to what they saw: the card on the right, settling from 1.06 to 1.
+  tl.fromTo(["#eyeL", "#eyeR"], { x: 0, y: 0 }, { x: 24, y: -12, duration: 0.5, ease: "power2.out" }, 0.2);
+  tl.to("#person", { opacity: 0, duration: 0.034, ease: "none" }, 1.0);
+  tl.to("#cardR", { opacity: 1, duration: 0.034, ease: "none" }, 1.0);
+  tl.to("#cardR", { scale: 1, duration: 0.6, ease: "power2.out" }, 1.0);
+  // Back to the person, who glances left; the card follows on the left.
+  tl.to("#cardR", { opacity: 0, duration: 0.034, ease: "none" }, 1.85);
+  tl.to("#person", { opacity: 1, duration: 0.034, ease: "none" }, 1.85);
+  tl.to(["#eyeL", "#eyeR"], { x: -24, y: -12, duration: 0.5, ease: "power2.out" }, 1.95);
+  tl.to("#person", { opacity: 0, duration: 0.034, ease: "none" }, 2.5);
+  tl.to("#cardL", { opacity: 1, duration: 0.034, ease: "none" }, 2.5);
+  tl.to("#cardL", { scale: 1, duration: 0.5, ease: "power2.out" }, 2.5);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

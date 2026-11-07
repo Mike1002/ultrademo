@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-lower-third-reveal</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px;  }
+  .lab { font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  .topic { position: absolute; left: 110px; top: 80px; }
+  .topic .lab { display: block; margin-bottom: 22px; }
+  .topic .t-l { font-size: 60px; font-weight: 700; }
+  .dot { position: absolute; right: 120px; top: 190px; width: 92px; height: 92px; border-radius: 50%; background: #f2c200; border: 2px solid #1d1c1a; will-change: transform; }
+  .lt { position: absolute; left: 110px; top: 400px; width: 625px; height: 136px; will-change: transform; }
+  .band { position: absolute; inset: 0; background: #fffdf8; border: 2px solid #1d1c1a; border-radius: 20px; transform-origin: left center; will-change: transform; }
+  .accent { position: absolute; left: 0; top: 0; bottom: 0; width: 14px; background: #f2c200; border-radius: 18px 0 0 18px; }
+  .name { position: absolute; left: 40px; top: 24px; font-size: 36px; font-weight: 700; will-change: transform; }
+  .role { position: absolute; left: 40px; top: 80px; font-size: 20px; color: #6d6a63; will-change: transform; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div class="topic"><span class="lab">Orbit · Onboarding</span><div class="t-l">Invite your team</div></div>
+      <div class="dot" id="dot"></div>
+      <div class="lt" id="lt" data-layout-allow-overlap><div class="band" id="band"><div class="accent"></div></div><div class="name" id="name">Jamie Dalton</div><div class="role" id="role">Head of Product, Orbit</div></div>
+    </div>
+    <div id="label"><span class="l-name">Lower third reveal</span><span class="l-sep">·</span><span>Captions</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+  tl.fromTo("#band", { scaleX: 0 }, { scaleX: 1, duration: 0.35, ease: "power3.out" }, 0.3);
+  tl.fromTo("#name", { x: -24, opacity: 0 }, { x: 0, opacity: 1, duration: 0.3 }, 0.4);
+  tl.fromTo("#role", { x: -24, opacity: 0 }, { x: 0, opacity: 1, duration: 0.3 }, 0.58);
+  // Hold, then the reverse exit.
+  tl.to("#lt", { opacity: 0, x: -40, duration: 0.25, ease: "power2.in" }, 2.55);
+  // Quiet ambient drift on the speaker mark so the hold is not frozen.
+  tl.fromTo("#dot", { y: 0 }, { y: -10, duration: 1.2, ease: "sine.inOut", yoyo: true, repeat: 1 }, 0.4);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

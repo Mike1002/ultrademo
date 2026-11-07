@@ -1,0 +1,123 @@
+{
+  "id": "red-band-title",
+  "name": "Red Band Title",
+  "canvas": "dark",
+  "mood": [
+    "dramatic",
+    "hype",
+    "cinematic"
+  ],
+  "suits": [
+    "title cards",
+    "trailer-style intros",
+    "dramatic launches"
+  ],
+  "palette": {
+    "bg": "#1b1b1d",
+    "bg_alt": "#f4f3ee",
+    "surface": "#242427",
+    "surface_2": "#2e2e32",
+    "ink": "#f7f5f2",
+    "muted": "#a9a7a2",
+    "line": "rgba(247,245,242,0.2)",
+    "accent": "#e5173f",
+    "accent_2": "#27e3ff",
+    "on_accent": "#ffffff",
+    "pill_bg": "#2e2e32",
+    "pill_ink": "#f7f5f2",
+    "pill_dot": "#e5173f",
+    "term_bg": "#141414",
+    "term_ink": "#f7f5f2",
+    "term_muted": "#8a8a86",
+    "term_line": "rgba(247,245,242,0.2)",
+    "term_prompt": "#e5173f",
+    "term_ok": "#27e3ff"
+  },
+  "type": {
+    "display": {
+      "family": "Dela Gothic One",
+      "weight": 400,
+      "hook_px": 88,
+      "stat_px": 220,
+      "mark_px": 120,
+      "transform": "none",
+      "tracking": "0",
+      "line_height": "1.05",
+      "style": "normal",
+      "generic": "sans",
+      "card_title_px": 22
+    },
+    "body": {
+      "family": "Oswald",
+      "weight": 500,
+      "generic": "sans"
+    },
+    "mono": {
+      "family": "Oswald",
+      "weight": 500
+    },
+    "label": {
+      "family": "Oswald",
+      "weight": 500,
+      "transform": "uppercase",
+      "tracking": "0.3em",
+      "generic": "sans",
+      "px": 14
+    }
+  },
+  "easing": {
+    "entry": "back.out(2.5)",
+    "exit": "power4.in",
+    "ambient": "none",
+    "pop": "back.out(2.5)",
+    "counter": "power4.out",
+    "wipe": null
+  },
+  "rhythm": {
+    "energy": "high",
+    "entrance": 0.4,
+    "stagger": 0.1
+  },
+  "transition": {
+    "kind": "cut",
+    "duration": 0,
+    "flash": true,
+    "band": false,
+    "flash_colour": "#e5173f"
+  },
+  "text_animation": "drop",
+  "accent_word": "none",
+  "layout": "center",
+  "atmosphere": [
+    "vignette:0.5"
+  ],
+  "shape": {
+    "radius_card": 0,
+    "radius_button": 0,
+    "radius_pill": 0,
+    "border": "none",
+    "border_px": 0,
+    "shadow": "none",
+    "rule_px": 10
+  },
+  "stat_colour": "accent",
+  "direction_settings": {
+    "energy": "high",
+    "density": "sparse",
+    "ground": "alternating",
+    "depth": "flat",
+    "camera": "handheld",
+    "type": "loud",
+    "texture": "clean",
+    "colour": "one-accent",
+    "product_presence": "illustrated",
+    "sound": "beat-driven",
+    "voice": "spoken-headline"
+  },
+  "notes": "Charcoal, crimson and off-white, Dela Gothic One letters dropping in with back.out, Oswald tracked sublines, hard cuts with a crimson flash; the card and terminal sit on the cream hit card.",
+  "transitions": {
+    "between_moments": "cut",
+    "duration_s": 0,
+    "text": "drop"
+  }
+}

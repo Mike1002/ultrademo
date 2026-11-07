@@ -1,0 +1,123 @@
+{
+  "id": "dot-matrix",
+  "name": "Dot Matrix",
+  "canvas": "light",
+  "mood": [
+    "precise",
+    "technical",
+    "confident"
+  ],
+  "suits": [
+    "stats",
+    "status boards",
+    "numbers-led launches"
+  ],
+  "palette": {
+    "bg": "#f1ede4",
+    "bg_alt": "#0b0b0b",
+    "surface": "#f1ede4",
+    "surface_2": "#e4dfd2",
+    "ink": "#161616",
+    "muted": "#ff2e88",
+    "line": "#161616",
+    "accent": "#ff2e88",
+    "accent_2": "#ff2e88",
+    "on_accent": "#ffffff",
+    "pill_bg": "#161616",
+    "pill_ink": "#f1ede4",
+    "pill_dot": "#ff2e88",
+    "thumb": "#d9d4c6",
+    "term_bg": "#0b0b0b",
+    "term_ink": "#f1ede4",
+    "term_muted": "#8a8a8a",
+    "term_line": "#161616",
+    "term_prompt": "#ff2e88",
+    "term_ok": "#ff2e88"
+  },
+  "type": {
+    "display": {
+      "family": "Silkscreen",
+      "weight": 700,
+      "hook_px": 60,
+      "stat_px": 190,
+      "mark_px": 100,
+      "transform": "uppercase",
+      "tracking": "0",
+      "line_height": "1.1",
+      "style": "normal",
+      "generic": "sans",
+      "card_title_px": 18
+    },
+    "body": {
+      "family": "JetBrains Mono",
+      "weight": 500,
+      "generic": "sans"
+    },
+    "mono": {
+      "family": "JetBrains Mono",
+      "weight": 500
+    },
+    "label": {
+      "family": "JetBrains Mono",
+      "weight": 700,
+      "transform": "uppercase",
+      "tracking": "0.12em",
+      "generic": "sans",
+      "px": 13
+    }
+  },
+  "easing": {
+    "entry": "back.out(3)",
+    "exit": "power2.in",
+    "ambient": "none",
+    "pop": "back.out(3)",
+    "counter": "steps(12)",
+    "wipe": null
+  },
+  "rhythm": {
+    "energy": "steady",
+    "entrance": 0.4,
+    "stagger": 0.08
+  },
+  "transition": {
+    "kind": "cut",
+    "duration": 0,
+    "flash": false,
+    "band": false
+  },
+  "text_animation": "letters",
+  "accent_word": "none",
+  "layout": "center",
+  "atmosphere": [
+    "dots:16"
+  ],
+  "shape": {
+    "radius_card": 0,
+    "radius_button": 0,
+    "radius_pill": 0,
+    "border": "bold",
+    "border_px": 2,
+    "shadow": "none",
+    "rule_px": 6
+  },
+  "stat_colour": "accent",
+  "direction_settings": {
+    "energy": "steady",
+    "density": "balanced",
+    "ground": "alternating",
+    "depth": "flat",
+    "camera": "locked",
+    "type": "display",
+    "texture": "textured",
+    "colour": "one-accent",
+    "product_presence": "illustrated",
+    "sound": "beat-driven",
+    "voice": "caption"
+  },
+  "notes": "A board of round dots with hot pink captions; the source draws its own 5x7 bitmap letters from divs, here the pixel face Silkscreen stands in, letters pop in with back.out(3), cream and black cut on the scan line.",
+  "transitions": {
+    "between_moments": "cut",
+    "duration_s": 0,
+    "text": "letters"
+  }
+}

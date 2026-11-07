@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-wind-wipe</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; overflow: hidden; }
+  .art { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; background: #f6f3ec; }
+  .card { position: absolute; left: 264px; top: 110px; width: 640px; height: 360px; background: #fffdf8; border: 2px solid #1d1c1a; border-radius: 24px; }
+  .card .lab { position: absolute; left: 56px; top: 48px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  .card h1 { position: absolute; left: 56px; top: 80px; font-size: 56px; font-weight: 700; line-height: 64px; white-space: nowrap; }
+  .card .sub { position: absolute; left: 56px; top: 160px; font-size: 22px; color: #6d6a63; }
+  .card .btn { position: absolute; left: 56px; top: 240px; width: 200px; height: 60px; border-radius: 14px; background: #f2c200; border: 2px solid #1d1c1a;
+    font-size: 20px; font-weight: 700; line-height: 56px; text-align: center; }
+  .card.b h1 { font-size: 96px; line-height: 104px; top: 74px; font-variant-numeric: tabular-nums; }
+  .card.b .sub { top: 190px; }
+  .strip { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; will-change: clip-path; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div class="art" id="B"><div class="card b">
+        <div class="lab" data-layout-allow-overlap data-layout-allow-occlusion>This month</div>
+        <h1 data-layout-allow-overlap data-layout-allow-occlusion>12,480</h1>
+        <div class="sub" data-layout-allow-overlap data-layout-allow-occlusion>invites sent</div>
+      </div></div>
+      <div id="strips"></div>
+    </div>
+    <div id="label"><span class="l-name">Wind wipe</span><span class="l-sep">·</span><span>Transitions</span><span class="l-sep">·</span><span>high</span></div>
+  </section>
+</div>
+<script>
+  // Scene A is split into 24 horizontal strips, each a full copy of A clipped to its own band.
+  const A_HTML = '<div class="art" data-layout-allow-overlap><div class="card a" data-layout-allow-overlap>' +
+    '<div class="lab" data-layout-allow-overlap data-layout-allow-occlusion>Orbit</div>' +
+    '<h1 data-layout-allow-overlap data-layout-allow-occlusion>Invite your team</h1>' +
+    '<div class="sub" data-layout-allow-overlap data-layout-allow-occlusion>3 seats left on this plan</div>' +
+    '<div class="btn" data-layout-allow-overlap data-layout-allow-occlusion>Continue</div></div></div>';
+  const N = 24;
+  const host = document.getElementById("strips");
+  let html = "";
+  for (let i = 0; i < N; i++) html += '<div class="strip" id="st' + i + '" data-layout-allow-overlap data-layout-allow-overflow>' + A_HTML + '</div>';
+  host.innerHTML = html;
+  // Seeded delays (the card's own hash), spread across 0 to 0.25 s; each strip's edge crosses in 0.55 s, linear, so all are through by 0.8 s.
+  const seed = i => ((Math.sin(i * 127.1 + 1) * 43758.5453) % 1 + 1) % 1;
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "none", duration: 0.55 } });
+  const T1 = 0.8, T2 = 2.2, D = 0.55;
+  for (let i = 0; i < N; i++) {
+    const s = "#st" + i, d = seed(i) * 0.25;
+    const top = (i * 100 / N).toFixed(3) + "%", bot = (100 - (i + 1) * 100 / N).toFixed(3) + "%";
+    // Wipe 1: the left edge of each A band is eaten away to the right, revealing B in streaks of different length.
+    tl.fromTo(s, { clipPath: "inset(" + top + " 0% " + bot + " 0%)" }, { clipPath: "inset(" + top + " 0% " + bot + " 100%)", duration: D, ease: "none" }, T1 + d);
+    // Wipe 2 (the second half keeps moving): the same wind blows A back in from the left over B.
+    tl.fromTo(s, { clipPath: "inset(" + top + " 100% " + bot + " 0%)" }, { clipPath: "inset(" + top + " 0% " + bot + " 0%)", duration: D, ease: "none", immediateRender: false }, T2 + d);
+  }
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

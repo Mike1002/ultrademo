@@ -1,0 +1,21 @@
+{
+  "name": "Nudge curve",
+  "family": "Transition & Motion",
+  "purpose": [
+    "reposition",
+    "reveal",
+    "layout"
+  ],
+  "energy": "steady",
+  "tags": [
+    "slide",
+    "reposition",
+    "group-motion",
+    "easing",
+    "nudge",
+    "slow-fast-slow",
+    "reveal",
+    "layout"
+  ],
+  "one_line": "A stack of word rows eases into a quick slide left and creeps to rest, a yellow button appearing in the space it made; then the whole group nudges up the same way to make room for a line below."
+}

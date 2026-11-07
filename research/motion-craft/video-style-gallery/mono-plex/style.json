@@ -1,0 +1,120 @@
+{
+  "id": "mono-plex",
+  "name": "Mono Plex",
+  "canvas": "light",
+  "mood": [
+    "minimal",
+    "calm",
+    "technical"
+  ],
+  "suits": [
+    "changelogs",
+    "release notes",
+    "minimal product updates"
+  ],
+  "palette": {
+    "bg": "#fafafa",
+    "bg_alt": "#fafafa",
+    "surface": "#ffffff",
+    "surface_2": "#eeeeee",
+    "ink": "#0a0a0a",
+    "muted": "#737373",
+    "line": "#e5e5e5",
+    "accent": "#0a0a0a",
+    "accent_2": "#737373",
+    "on_accent": "#fafafa",
+    "pill_bg": "#ffffff",
+    "pill_ink": "#0a0a0a",
+    "pill_dot": "#0a0a0a",
+    "term_bg": "#ffffff",
+    "term_ink": "#0a0a0a",
+    "term_muted": "#737373",
+    "term_line": "#e5e5e5",
+    "term_prompt": "#0a0a0a",
+    "term_ok": "#0a0a0a"
+  },
+  "type": {
+    "display": {
+      "family": "IBM Plex Sans",
+      "weight": 600,
+      "hook_px": 84,
+      "stat_px": 220,
+      "mark_px": 124,
+      "transform": "none",
+      "tracking": "-0.02em",
+      "line_height": "1.05",
+      "style": "normal",
+      "generic": "sans",
+      "card_title_px": 28
+    },
+    "body": {
+      "family": "IBM Plex Sans",
+      "weight": 400,
+      "generic": "sans"
+    },
+    "mono": {
+      "family": "IBM Plex Mono",
+      "weight": 400
+    },
+    "label": {
+      "family": "IBM Plex Mono",
+      "weight": 500,
+      "transform": "none",
+      "tracking": "0.04em",
+      "generic": "sans",
+      "px": 15
+    }
+  },
+  "easing": {
+    "entry": "power2.out",
+    "exit": "power1.in",
+    "ambient": "none",
+    "pop": "power2.out",
+    "counter": "power2.out",
+    "wipe": null
+  },
+  "rhythm": {
+    "energy": "calm",
+    "entrance": 0.55,
+    "stagger": 0.14
+  },
+  "transition": {
+    "kind": "crossfade",
+    "duration": 0.4,
+    "flash": false,
+    "band": false
+  },
+  "text_animation": "fade-up",
+  "accent_word": "none",
+  "layout": "left",
+  "atmosphere": [],
+  "shape": {
+    "radius_card": 0,
+    "radius_button": 0,
+    "radius_pill": 8,
+    "border": "hairline",
+    "border_px": 1,
+    "shadow": "none",
+    "rule_px": 1
+  },
+  "stat_colour": "ink",
+  "direction_settings": {
+    "energy": "calm",
+    "density": "sparse",
+    "ground": "light",
+    "depth": "flat",
+    "camera": "locked",
+    "type": "quiet",
+    "texture": "clean",
+    "colour": "mono",
+    "product_presence": "illustrated",
+    "sound": "none",
+    "voice": "caption"
+  },
+  "notes": "Black, white and two greys only, IBM Plex Sans statements with IBM Plex Mono labels, a strict left column, fades and a blinking caret.",
+  "transitions": {
+    "between_moments": "crossfade",
+    "duration_s": 0.4,
+    "text": "fade-up"
+  }
+}

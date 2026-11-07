@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>particle-burst</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  .burst-stage { position: absolute; inset: 0; }
+  /* the hero number is centred on the stage; particles launch from a zero-size field at its centre, behind it */
+  .burst-hero { position: absolute; left: 0; top: 0; width: 1280px; height: 720px; display: grid; place-items: center; z-index: 2;
+    font-size: 200px; font-weight: 800; letter-spacing: -0.04em; will-change: transform; }
+  .particle-field { position: absolute; left: 640px; top: 350px; width: 0; height: 0; z-index: 1; }
+  .particle { position: absolute; left: 0; top: 0; border-radius: 2px; opacity: 0; will-change: transform, opacity; }
+  .sub { position: absolute; left: 0; bottom: 120px; width: 1280px; text-align: center; font-size: 24px; font-weight: 600; color: #6d6a63; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div class="burst-stage">
+      <div class="particle-field" id="particle-field"></div>
+      <div class="burst-hero" id="burst-hero">98%</div>
+      <div class="sub" id="sub">Every frame is code</div>
+    </div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true });
+  const PARTICLE_COUNT = 22, G = 1100, SPEED_MIN = 340, SPEED_MAX = 640, CONE = 0.65, FLIGHT_DUR = 1.1;
+  const SIZE_MIN = 12, SIZE_MAX = 22, SPIN_MAX = 540, FADE_FRAC = 0.02, SHRINK_DUR = 0.2;
+  const HERO_AT = 0.1, HERO_DUR = 0.55, BURST_AT = 0.6;              // the burst fires on the hero's settle
+  const prand = (n) => { const x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
+  // setup: a deterministic pool, generated once
+  const field = document.getElementById("particle-field");
+  const palette = ["#f2c200", "#1d1c1a", "#6d6a63", "#f2c200"];
+  const parts = [];
+  for (let i = 0; i < PARTICLE_COUNT; i++) {
+    const el = document.createElement("div");
+    el.className = "particle"; el.id = "p" + i;
+    const size = SIZE_MIN + prand(i * 3 + 1) * (SIZE_MAX - SIZE_MIN);
+    el.style.width = size + "px"; el.style.height = (size * 0.7) + "px";
+    el.style.background = palette[i % palette.length];
+    field.appendChild(el);
+    const straggler = i % 10 < 3;                                       // two-stage burst: 30 % fire 0.12 s later, slower
+    const angle = -Math.PI / 2 + (prand(i * 5 + 2) * 2 - 1) * CONE;
+    const speed = (SPEED_MIN + prand(i * 7 + 3) * (SPEED_MAX - SPEED_MIN)) * (straggler ? 0.7 : 1);
+    parts.push({ el, vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed, spin: (prand(i * 11 + 4) * 2 - 1) * SPIN_MAX, at: BURST_AT + (straggler ? 0.12 : 0) });
+  }
+  // every particle's state is a pure ballistic function of time; dead before and after its flight
+  function renderAt(time) {
+    parts.forEach((p) => {
+      const t = time - p.at;
+      if (t <= 0 || t >= FLIGHT_DUR) { gsap.set(p.el, { opacity: 0, x: 0, y: 0, rotation: 0, scale: 1 }); return; }
+      const T = t / FLIGHT_DUR;
+      const fade = Math.min(1, (1 - T) / FADE_FRAC);
+      const shrinkT = Math.max(0, (t - (FLIGHT_DUR - SHRINK_DUR)) / SHRINK_DUR);   // instant-shrink over the last 0.2 s
+      gsap.set(p.el, { x: p.vx * t, y: p.vy * t + 0.5 * G * t * t, rotation: p.spin * t, opacity: fade, scale: 1 - shrinkT * shrinkT });
+    });
+  }
+  renderAt(0);
+  tl.fromTo("#burst-hero", { scale: 0.5, opacity: 0 }, { scale: 1, opacity: 1, duration: HERO_DUR, ease: "back.out(1.8)" }, HERO_AT);
+  tl.fromTo("#sub", { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, 1.0);
+  tl.to({ k: 0 }, { k: 1, duration: 3, ease: "none", onUpdate: () => renderAt(tl.time()) }, 0);
+  const baseRender = tl.render; tl.render = function () { const r = baseRender.apply(this, arguments); renderAt(this.time()); return r; };
+  // settled life: the hero breathes once after the confetti is gone
+  tl.to("#burst-hero", { scale: 1.04, duration: 0.5, ease: "sine.inOut", yoyo: true, repeat: 1 }, 2.0);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+{
+  "name": "Bounce transition",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Mood"
+  ],
+  "energy": "high",
+  "tier": 3,
+  "runtime": "gsap",
+  "tags": [
+    "bounce reveal",
+    "transitions",
+    "bounce",
+    "drop",
+    "shadow",
+    "cover"
+  ],
+  "one_line": "A stats card scene drops in from above, bounces three times on the invite scene with a soft shadow under its leading edge, settles covering it, and its avatars pop in."
+}

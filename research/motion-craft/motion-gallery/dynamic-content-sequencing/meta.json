@@ -1,0 +1,19 @@
+{
+  "name": "Dynamic content sequencing",
+  "family": "Text & Typography",
+  "purpose": [
+    "sequence",
+    "steps",
+    "transition"
+  ],
+  "energy": "calm",
+  "tags": [
+    "timeline",
+    "sequencing",
+    "dynamic",
+    "duration",
+    "content-aware",
+    "utility"
+  ],
+  "one_line": "A card hard-cuts through three steps, each shown for a time set by how much text it carries, while a yellow progress bar fills steadily underneath."
+}

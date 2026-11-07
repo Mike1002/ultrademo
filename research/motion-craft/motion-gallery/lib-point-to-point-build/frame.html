@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-point-to-point-build</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  #chart { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  #chart text { font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .grid { stroke: #e3ded2; stroke-width: 2; }
+  .axis { stroke: #1d1c1a; stroke-width: 2; }
+  .tick { font-size: 16px; fill: #6d6a63; }
+  .line { fill: none; stroke: #1d1c1a; stroke-width: 3; stroke-linejoin: round; stroke-linecap: round; }
+  .pt { fill: #fffdf8; stroke: #1d1c1a; stroke-width: 3; }
+  .head { fill: #f2c200; stroke: #1d1c1a; stroke-width: 3; }
+  .callout { font-size: 20px; font-weight: 700; fill: #1d1c1a; }
+  .heading { position: absolute; left: 32px; top: 16px; font-size: 34px; font-weight: 700; }
+  .sub { position: absolute; left: 34px; top: 64px; font-size: 18px; color: #6d6a63; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div class="heading">Weekly invites</div>
+      <div class="sub">One observation at a time</div>
+      <svg id="chart" viewBox="0 0 1168 580" xmlns="http://www.w3.org/2000/svg">
+        <line class="grid" x1="160" y1="110" x2="1100" y2="110"/>
+        <line class="grid" x1="160" y1="315" x2="1100" y2="315"/>
+        <line class="axis" x1="160" y1="520" x2="1100" y2="520"/>
+        <line class="axis" x1="160" y1="110" x2="160" y2="520"/>
+        <text class="tick" x="140" y="116" text-anchor="end">800</text>
+        <text class="tick" x="140" y="321" text-anchor="end">400</text>
+        <text class="tick" x="140" y="526" text-anchor="end">0</text>
+        <g id="xticks"></g>
+        <polyline id="line" class="line" points=""/>
+        <g id="pts"></g>
+        <circle id="head" class="head" cx="0" cy="0" r="10" opacity="0"/>
+        <text id="callout" class="callout" x="0" y="0" text-anchor="end" opacity="0">720 this week</text>
+      </svg>
+    </div>
+    <div id="label"><span class="l-name">Point-to-point construction</span><span class="l-sep">·</span><span>Data</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const NS = "http://www.w3.org/2000/svg";
+  const V = [120, 180, 150, 260, 310, 280, 420, 390, 520, 610, 580, 720];
+  const X0 = 200, XW = 860, Y0 = 520, YH = 410, MAX = 800;
+  const P = V.map((v, i) => [X0 + (i / (V.length - 1)) * XW, Y0 - (v / MAX) * YH]);
+  const T0 = 0.3, D = 0.2;           // each new point travels from the previous one in 200 ms, linear
+  const gX = document.getElementById("xticks"), gP = document.getElementById("pts"), dots = [];
+  P.forEach(([x, y], i) => {
+    const t = document.createElementNS(NS, "text"); t.setAttribute("class", "tick"); t.setAttribute("x", x); t.setAttribute("y", 548); t.setAttribute("text-anchor", "middle"); t.textContent = "W" + (i + 1); gX.appendChild(t);
+    const c = document.createElementNS(NS, "circle"); c.id = "p" + i; c.setAttribute("class", "pt"); c.setAttribute("cx", x); c.setAttribute("cy", y); c.setAttribute("r", 6); c.setAttribute("opacity", 0); gP.appendChild(c); dots.push(c);
+  });
+  const line = document.getElementById("line"), head = document.getElementById("head"), callout = document.getElementById("callout");
+  const ease = k => 1 - Math.pow(1 - k, 2);
+  function renderAt(t) {
+    // Point i is in flight during [T0 + (i-1)D, T0 + iD]; before that it does not exist, after that it is fixed.
+    const pts = [];
+    let hx = P[0][0], hy = P[0][1], headVis = 0, landed = -1;
+    if (t >= T0) {
+      const prog = (t - T0) / D;                       // how many segments have fully landed
+      landed = Math.min(V.length - 1, Math.floor(prog));
+      for (let i = 0; i <= landed; i++) pts.push(P[i][0].toFixed(1) + "," + P[i][1].toFixed(1));
+      if (landed < V.length - 1) {
+        const k = prog - landed, a = P[landed], b = P[landed + 1];
+        hx = a[0] + (b[0] - a[0]) * k; hy = a[1] + (b[1] - a[1]) * k;
+        pts.push(hx.toFixed(1) + "," + hy.toFixed(1));
+        headVis = 1;
+      } else { hx = P[V.length - 1][0]; hy = P[V.length - 1][1]; headVis = 1; }
+    }
+    dots.forEach((c, i) => c.setAttribute("opacity", i <= landed ? 1 : 0));
+    line.setAttribute("points", pts.join(" "));
+    head.setAttribute("cx", hx.toFixed(1)); head.setAttribute("cy", hy.toFixed(1)); head.setAttribute("opacity", headVis);
+    // Landing beat: the head swells once on the final point and the value is called out, so the end keeps a little life.
+    const tEnd = T0 + (V.length - 1) * D;
+    const s = t > tEnd ? Math.sin(Math.min(1, (t - tEnd) / 0.5) * Math.PI) : 0;
+    head.setAttribute("r", (10 + 6 * s).toFixed(2));
+    const co = t > tEnd + 0.1 ? ease(Math.min(1, (t - tEnd - 0.1) / 0.3)) : 0;
+    callout.setAttribute("opacity", co.toFixed(3));
+    callout.setAttribute("x", (P[11][0] - 24).toFixed(1)); callout.setAttribute("y", (P[11][1] - 22 + 8 * (1 - co)).toFixed(1));
+  }
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "none", duration: 0.6 } });
+  renderAt(0);
+  tl.to({ k: 0 }, { k: 1, duration: 3, ease: "none", onUpdate: () => renderAt(tl.time()) }, 0);
+  const baseRender = tl.render; tl.render = function () { const r = baseRender.apply(this, arguments); renderAt(this.time()); return r; };
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>hacker-flip-3d</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  /* 3D stage: perspective on the ancestor, chars hinge at their bottom edge */
+  .stage { position: absolute; inset: 0; perspective: 1500px; display: grid; place-items: center; }
+  .hacker-text-wrap { position: relative; font-family: "SF Mono", Menlo, Consolas, "Courier New", monospace;
+    font-weight: 900; font-size: 64px; letter-spacing: 0.04em; line-height: 1; white-space: pre; transform-style: preserve-3d; }
+  .hacker-char { display: inline-block; transform-origin: bottom; transform-style: preserve-3d; will-change: transform; }
+  .hacker-ghost { opacity: 0; pointer-events: none; position: absolute; inset: 0 auto auto 0; }
+  /* the one accent: a yellow underline bar that fills as the decode progresses (scaleX, GSAP-owned) */
+  .bar { position: absolute; left: 240px; top: 420px; width: 800px; height: 10px; background: #f2c200; border-radius: 5px;
+    transform-origin: left center; will-change: transform; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div class="stage" id="stage">
+      <div class="hacker-text-wrap" id="hacker-text" data-target="EVERY FRAME IS CODE"></div>
+    </div>
+    <div class="bar" id="bar"></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true });
+  // Values: 64px (~9% of 720), FLIP_DURATION 0.8, CHAR_STAGGER 0.07, REVEAL_THRESHOLD 0.6, FLICKER 4 frames.
+  const FLIP_DURATION = 0.8, CHAR_STAGGER = 0.07, REVEAL_THRESHOLD = 0.6, FLICKER_FRAMES = 4, FPS = 30, START = 0.3;
+  const GLYPHS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*";
+  const wrap = document.getElementById("hacker-text");
+  const targetWord = wrap.dataset.target;
+  const ghost = document.createElement("div");
+  ghost.className = "hacker-ghost";
+  ghost.textContent = targetWord;
+  wrap.appendChild(ghost);
+  const charEls = [...targetWord].map((ch) => {
+    const span = document.createElement("span");
+    span.className = "hacker-char";
+    span.textContent = ch;
+    span.dataset.target = ch;
+    wrap.appendChild(span);
+    return span;
+  });
+  const ease = gsap.parseEase("power3.out");
+  function pseudoGlyph(seed) {
+    const h = ((seed * 9301 + 49297) % 233280) / 233280;
+    return GLYPHS[Math.floor(h * GLYPHS.length)];
+  }
+  // Pure function of timeline time: per-char progress, seeded flicker, then the real glyph clicks in.
+  function renderAt(t) {
+    const frame = Math.floor(t * FPS / FLICKER_FRAMES);
+    charEls.forEach((el, i) => {
+      const raw = (t - START - i * CHAR_STAGGER) / FLIP_DURATION;
+      const p = raw <= 0 ? 0 : raw >= 1 ? 1 : ease(raw);
+      if (el.dataset.target === " ") { el.textContent = " "; }
+      else if (p < REVEAL_THRESHOLD) { el.textContent = pseudoGlyph(i * 1000 + frame); }
+      else { el.textContent = el.dataset.target; }
+      el.style.transform = `rotateX(${90 - p * 90}deg)`;
+      el.style.opacity = Math.min(1, p * 2);
+    });
+  }
+  renderAt(0);
+  tl.to({ k: 0 }, { k: 1, duration: 3, ease: "none", onUpdate: () => renderAt(tl.time()) }, 0);
+  // Underline fills with the decode, then holds.
+  const DECODE_END = START + CHAR_STAGGER * (targetWord.length - 1) + FLIP_DURATION;
+  tl.fromTo("#bar", { scaleX: 0 }, { scaleX: 1, duration: DECODE_END - START, ease: "none" }, START);
+  const baseRender = tl.render;
+  tl.render = function () { const r = baseRender.apply(this, arguments); renderAt(this.time()); return r; };
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+{
+  "name": "Overlapping action",
+  "family": "Principles",
+  "purpose": [
+    "Mood",
+    "Sequence"
+  ],
+  "energy": "steady",
+  "tier": 2,
+  "runtime": "gsap",
+  "tags": [
+    "offset timing",
+    "time delayed follower",
+    "drag",
+    "follow",
+    "principles"
+  ],
+  "one_line": "Two jointed shapes slide right: the top one as a rigid block, the bottom one with each part leaving and stopping a little later than the one ahead, so it reads as one flexible body."
+}

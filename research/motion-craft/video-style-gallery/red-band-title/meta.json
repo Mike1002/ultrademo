@@ -1,0 +1,46 @@
+{
+  "name": "Red Band Title",
+  "fonts": {
+    "display": "Dela Gothic One",
+    "body": "Oswald",
+    "mono": "Oswald",
+    "label": "Oswald"
+  },
+  "font_families": [
+    "Dela Gothic One",
+    "Oswald"
+  ],
+  "font_substitutions": {},
+  "canvas": "dark",
+  "mood": [
+    "dramatic",
+    "hype",
+    "cinematic"
+  ],
+  "suits": [
+    "title cards",
+    "trailer-style intros",
+    "dramatic launches"
+  ],
+  "direction_settings": {
+    "energy": "high",
+    "density": "sparse",
+    "ground": "alternating",
+    "depth": "flat",
+    "camera": "handheld",
+    "type": "loud",
+    "texture": "clean",
+    "colour": "one-accent",
+    "product_presence": "illustrated",
+    "sound": "beat-driven",
+    "voice": "spoken-headline"
+  },
+  "duration_s": 10,
+  "size": [
+    1280,
+    720
+  ],
+  "fps": 30,
+  "strip": "D-58 style strip: hook · project card · number · agent · close",
+  "one_line": ""
+}

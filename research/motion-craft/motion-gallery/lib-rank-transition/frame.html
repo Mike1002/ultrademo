@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-rank-transition</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  #card { position: absolute; left: 144px; top: 70px; width: 880px; height: 440px; background: #fffdf8; border: 2px solid #1d1c1a; border-radius: 24px; }
+  .hdr { position: absolute; left: 60px; top: 44px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  #list { position: absolute; left: 60px; top: 100px; width: 760px; height: 300px; }
+  .rank { position: absolute; left: 0; width: 40px; height: 56px; line-height: 56px; font-size: 22px; font-weight: 700; color: #a19d93; font-variant-numeric: tabular-nums; }
+  .rank-row { position: absolute; left: 56px; top: 0; width: 704px; height: 56px; will-change: transform; }
+  .av { position: absolute; left: 0; top: 8px; width: 40px; height: 40px; border-radius: 50%; border: 2px solid #1d1c1a; }
+  .name { position: absolute; left: 58px; top: 0; height: 56px; line-height: 56px; font-size: 22px; font-weight: 700; color: #1d1c1a; white-space: nowrap; }
+  .bar { position: absolute; left: 250px; top: 18px; width: 340px; height: 20px; border-radius: 10px; background: #1d1c1a; will-change: transform; }
+  .val { position: absolute; left: 610px; top: 0; width: 94px; height: 56px; line-height: 56px; text-align: right; font-size: 22px; color: #6d6a63; font-variant-numeric: tabular-nums; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div id="card">
+        <div class="hdr" id="h1">Ranked by invites sent</div>
+        <div class="hdr" id="h2">Ranked by replies</div>
+        <div id="list">
+          <div class="rank" style="top:0">1</div><div class="rank" style="top:64px">2</div><div class="rank" style="top:128px">3</div><div class="rank" style="top:192px">4</div>
+          <div class="rank-row" id="ra" data-id="a"><div class="av" style="background:#f2c200"></div><div class="name">Jamie Dalton</div><div class="bar" id="ba"></div><div class="val" id="va1">12,480</div><div class="val" id="va2">1,284</div></div>
+          <div class="rank-row" id="rb" data-id="b"><div class="av" style="background:#1d1c1a"></div><div class="name">Sam Kim</div><div class="bar" id="bb"></div><div class="val" id="vb1">9,860</div><div class="val" id="vb2">640</div></div>
+          <div class="rank-row" id="rc" data-id="c"><div class="av" style="background:#6d6a63"></div><div class="name">Morgan Lee</div><div class="bar" id="bc"></div><div class="val" id="vc1">7,420</div><div class="val" id="vc2">2,110</div></div>
+          <div class="rank-row" id="rd" data-id="d"><div class="av" style="background:#a19d93"></div><div class="name">Everyone else</div><div class="bar" id="bd"></div><div class="val" id="vd1">3,310</div><div class="val" id="vd2">930</div></div>
+        </div>
+      </div>
+    </div>
+    <div id="label"><span class="l-name">Rank transition</span><span class="l-sep">·</span><span>Data</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power2.inOut", duration: 0.75 } });
+  const ROW = 64, D = 0.75, ST = 0.025;
+  const ids = ["a", "b", "c", "d"];
+  const order1 = ["a", "b", "c", "d"];            // by invites
+  const order2 = ["c", "a", "d", "b"];            // by replies
+  const w1 = { a: 1, b: 0.79, c: 0.59, d: 0.27 }; // bar lengths, invites
+  const w2 = { a: 0.61, b: 0.3, c: 1, d: 0.44 };  // bar lengths, replies
+  const rows = ids.map(id => document.querySelector('.rank-row[data-id="' + id + '"]'));
+  // Resting state: ranked by invites.
+  rows.forEach((row, i) => {
+    const id = row.dataset.id;
+    tl.fromTo(row, { y: order1.indexOf(id) * ROW }, { y: order1.indexOf(id) * ROW, duration: 0.01 }, 0);
+    tl.fromTo("#b" + id, { scaleX: w1[id], transformOrigin: "0% 50%" }, { scaleX: w1[id], duration: 0.01 }, 0);
+    tl.fromTo("#v" + id + "1", { opacity: 1 }, { opacity: 1, duration: 0.01 }, 0);
+    tl.fromTo("#v" + id + "2", { opacity: 0 }, { opacity: 0, duration: 0.01 }, 0);
+  });
+  tl.fromTo("#h2", { opacity: 0 }, { opacity: 0, duration: 0.01 }, 0);
+  // Sort by a new criterion: every row finds its new rank by id and glides there, 25 ms later per row; bars and values follow.
+  function sortTo(order, w, vOld, vNew, hOld, hNew, at) {
+    rows.forEach((row, i) => {
+      const id = row.dataset.id;
+      tl.to(row, { y: order.indexOf(id) * ROW, duration: D, ease: "power2.inOut" }, at + i * ST);
+      tl.to("#b" + id, { scaleX: w[id], duration: D, ease: "power2.inOut" }, at + i * ST);
+      tl.to("#v" + id + vOld, { opacity: 0, duration: 0.3, ease: "power2.inOut" }, at + i * ST);
+      tl.to("#v" + id + vNew, { opacity: 1, duration: 0.3, ease: "power2.inOut" }, at + 0.3 + i * ST);
+    });
+    tl.to(hOld, { opacity: 0, duration: 0.25 }, at);
+    tl.to(hNew, { opacity: 1, duration: 0.25 }, at + 0.25);
+  }
+  sortTo(order2, w2, "1", "2", "#h1", "#h2", 0.5);
+  sortTo(order1, w1, "2", "1", "#h2", "#h1", 1.9);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

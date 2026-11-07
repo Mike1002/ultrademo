@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>orbit-3d-entry</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #scene { display: grid; place-items: center; perspective: 1800px; }   /* REQUIRED on the scene root */
+  .orbit-stage { position: relative; width: 1280px; height: 720px; transform-style: preserve-3d; }
+  /* items: 72px circles centred on the stage centre; GSAP owns every transform */
+  .orbit-item { position: absolute; top: 50%; left: 50%; width: 72px; height: 72px; border-radius: 50%; background: #fffdf8;
+    border: 2px solid #1d1c1a; display: grid; place-items: center; transform-style: preserve-3d; will-change: transform; }
+  .orbit-item i { display: block; background: #1d1c1a; }
+  .i-dot { width: 24px; height: 24px; border-radius: 50%; }
+  .i-ring { width: 30px; height: 30px; border-radius: 50%; background: transparent !important; border: 6px solid #1d1c1a; }
+  .i-bar { width: 32px; height: 10px; border-radius: 5px; }
+  .i-sq { width: 24px; height: 24px; border-radius: 5px; }
+  .i-tri { width: 0; height: 0; background: transparent !important; border-left: 14px solid transparent; border-right: 14px solid transparent; border-bottom: 24px solid #1d1c1a; }
+  .i-plus { width: 26px; height: 8px; border-radius: 4px; position: relative; }
+  .i-plus::after { content: ""; position: absolute; left: 9px; top: -9px; width: 8px; height: 26px; border-radius: 4px; background: #1d1c1a; }
+  /* centre label: 300x96 card centred on (640,360); pushed forward on z by GSAP so it wins paint order */
+  .orbit-center { position: absolute; left: 490px; top: 312px; width: 300px; height: 96px; z-index: 9999; background: #f2c200;
+    border: 2px solid #1d1c1a; border-radius: 22px; display: grid; place-items: center; font-size: 30px; font-weight: 800;
+    letter-spacing: -0.01em; will-change: transform; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div class="orbit-stage">
+      <div class="orbit-item" id="o0" data-angle="0"><i class="i-dot"></i></div>
+      <div class="orbit-item" id="o1" data-angle="60"><i class="i-ring"></i></div>
+      <div class="orbit-item" id="o2" data-angle="120"><i class="i-bar"></i></div>
+      <div class="orbit-item" id="o3" data-angle="180"><i class="i-sq"></i></div>
+      <div class="orbit-item" id="o4" data-angle="240"><i class="i-tri"></i></div>
+      <div class="orbit-item" id="o5" data-angle="300"><i class="i-plus"></i></div>
+      <div class="orbit-center" id="orbit-center">Every frame is code</div>
+    </div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true });
+  // ring clearance: RADIUS_X * cos(30deg) >= label half-width (150) + item half-width (36) + room (50) => >= 272
+  const RADIUS_X = 400, Y_TO_X_RATIO = 0.5, RADIUS_Y = RADIUS_X * Y_TO_X_RATIO;
+  const ORBIT_DURATION = 6, ENTRY_DUR = 0.6, STAGGER = 0.09, FLIP_BACK = 1.5, CENTER_BACK = 1.4, CENTER_FADE_AT = 0.35;
+  const ROTATE_X_FROM = 80, ROTATE_Y_FROM = 60, Z_FROM = -300, SCALE_FROM = 0.4;
+  const items = document.querySelectorAll(".orbit-item");
+  items.forEach((el, i) => {
+    const a0 = (Number(el.dataset.angle) / 360) * Math.PI * 2;
+    const startX = Math.cos(a0) * RADIUS_X, startY = Math.sin(a0) * RADIUS_Y;
+    // 1) park at the orbital position, hidden, before any tween
+    gsap.set(el, { xPercent: -50, yPercent: -50, x: startX, y: startY, rotateX: ROTATE_X_FROM, rotateY: ROTATE_Y_FROM, z: Z_FROM, opacity: 0, scale: SCALE_FROM,
+      zIndex: 1 + Math.round(((startY + RADIUS_Y) / (2 * RADIUS_Y)) * 49) });
+    // 2) flip in IN PLACE: rotation / opacity / scale only
+    tl.to(el, { rotateX: 0, rotateY: 0, z: 0, opacity: 1, scale: 1, duration: ENTRY_DUR, ease: "back.out(" + FLIP_BACK + ")" }, i * STAGGER);
+    // 3) continuous orbit: own progress tween per item, position a pure function of p
+    const orbit = { p: 0 };
+    tl.to(orbit, { p: 1, duration: ORBIT_DURATION, ease: "none", onUpdate: () => {
+      const a = a0 + orbit.p * Math.PI * 2;
+      const x = Math.cos(a) * RADIUS_X, y = Math.sin(a) * RADIUS_Y;
+      gsap.set(el, { x: x, y: y, zIndex: 1 + Math.round(((y + RADIUS_Y) / (2 * RADIUS_Y)) * 49) });   // capped z-index band [1, 50]
+    } }, i * STAGGER + ENTRY_DUR);
+  });
+  gsap.set("#orbit-center", { z: 220 });   // wins paint order inside preserve-3d
+  tl.fromTo("#orbit-center", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: ENTRY_DUR, ease: "back.out(" + CENTER_BACK + ")" }, CENTER_FADE_AT);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

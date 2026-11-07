@@ -1,0 +1,123 @@
+{
+  "id": "midnight-glow",
+  "name": "Midnight Glow",
+  "canvas": "dark",
+  "mood": [
+    "sleek",
+    "premium",
+    "calm"
+  ],
+  "suits": [
+    "AI product launches",
+    "dark-mode apps",
+    "app reveals"
+  ],
+  "palette": {
+    "bg": "#0a0a0b",
+    "bg_alt": "#0a0a0b",
+    "surface": "#151518",
+    "surface_2": "#1d1d21",
+    "ink": "#f2f2f3",
+    "muted": "#8b8b93",
+    "line": "#2a2a31",
+    "accent": "#ff5b3a",
+    "accent_2": "#c04bff",
+    "on_accent": "#ffffff",
+    "pill_bg": "#1d1d21",
+    "pill_ink": "#f2f2f3",
+    "pill_dot": "#ff5b3a",
+    "glow_1": "#5a3fb0",
+    "term_bg": "#151518",
+    "term_ink": "#f2f2f3",
+    "term_muted": "#8b8b93",
+    "term_line": "#2a2a31",
+    "term_prompt": "#ff5b3a",
+    "term_ok": "#c04bff"
+  },
+  "type": {
+    "display": {
+      "family": "Inter",
+      "weight": 600,
+      "hook_px": 92,
+      "stat_px": 240,
+      "mark_px": 136,
+      "transform": "none",
+      "tracking": "-0.03em",
+      "line_height": "1.04",
+      "style": "normal",
+      "generic": "sans",
+      "card_title_px": 28
+    },
+    "body": {
+      "family": "Inter",
+      "weight": 400,
+      "generic": "sans"
+    },
+    "mono": {
+      "family": "JetBrains Mono",
+      "weight": 400
+    },
+    "label": {
+      "family": "Inter",
+      "weight": 500,
+      "transform": "none",
+      "tracking": "0",
+      "generic": "sans",
+      "px": 15
+    }
+  },
+  "easing": {
+    "entry": "expo.out",
+    "exit": "power2.in",
+    "ambient": "none",
+    "pop": "power3.out",
+    "counter": "power2.out",
+    "wipe": null
+  },
+  "rhythm": {
+    "energy": "steady",
+    "entrance": 0.6,
+    "stagger": 0.08
+  },
+  "transition": {
+    "kind": "blur",
+    "duration": 0.5,
+    "flash": false,
+    "band": false
+  },
+  "text_animation": "blur-in",
+  "accent_word": "none",
+  "layout": "center",
+  "atmosphere": [
+    "glow-center:0.22"
+  ],
+  "shape": {
+    "radius_card": 16,
+    "radius_button": 12,
+    "radius_pill": 999,
+    "border": "hairline",
+    "border_px": 1,
+    "shadow": "soft",
+    "rule_px": 3
+  },
+  "stat_colour": "accent",
+  "direction_settings": {
+    "energy": "steady",
+    "density": "sparse",
+    "ground": "dark",
+    "depth": "layered",
+    "camera": "locked",
+    "type": "display",
+    "texture": "clean",
+    "colour": "one-accent",
+    "product_presence": "illustrated",
+    "sound": "scored",
+    "voice": "narrated"
+  },
+  "notes": "Near-black with a faint purple glow at the centre, Inter 600 centred lines that resolve through blur and opacity; no hard cuts.",
+  "transitions": {
+    "between_moments": "blur",
+    "duration_s": 0.5,
+    "text": "blur-in"
+  }
+}

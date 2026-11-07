@@ -1,0 +1,21 @@
+{
+  "name": "Glyph roll",
+  "family": "Typography",
+  "purpose": [
+    "Feedback",
+    "Data evidence"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "css",
+  "tags": [
+    "rolling glyphs",
+    "rolling glyph replacement",
+    "type",
+    "slot",
+    "status",
+    "counter",
+    "roll"
+  ],
+  "one_line": "A status pill whose letters each sit in a clipped slot: the slots roll upward one after another so Draft becomes Review, then roll again to Live as the pill's dot turns yellow."
+}

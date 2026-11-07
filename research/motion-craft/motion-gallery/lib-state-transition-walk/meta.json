@@ -1,0 +1,21 @@
+{
+  "name": "State transition walk",
+  "family": "Explainer",
+  "purpose": [
+    "Explanation",
+    "Sequence"
+  ],
+  "energy": "steady",
+  "tier": 2,
+  "runtime": "svg",
+  "tags": [
+    "step progress",
+    "progress-bar-linear-segmented",
+    "state-machine transition pulse",
+    "explainer",
+    "states",
+    "signal",
+    "svg attr"
+  ],
+  "one_line": "A yellow signal dot rides the edge from Draft to Review to Live; each node it reaches fills yellow as the current state while the one it left goes pale, with the caption below swapping to match."
+}

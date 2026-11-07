@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-loading-dots</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  .heading { position: absolute; left: 80px; top: 50px; font-size: 18px; color: #6d6a63; }
+  .copy { position: absolute; left: 650px; top: 160px; }
+  .copy .t-xl { font-size: 72px; font-weight: 700; line-height: 1.1; letter-spacing: -0.02em; white-space: nowrap; }
+  .copy p { font-size: 22px; color: #6d6a63; margin-top: 18px; white-space: nowrap; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+  .message { position: absolute; left: 190px; top: 130px; width: 790px; height: 330px; border-top: 2px solid #1d1c1a; border-bottom: 1px solid #e3ded2; }
+  .message .t-xl { position: absolute; left: 0; top: 50px; font-size: 72px; font-weight: 700; letter-spacing: -0.02em; white-space: nowrap; }
+  .dot { position: absolute; top: 190px; width: 34px; height: 34px; border-radius: 50%; background: #1d1c1a; will-change: transform; }
+  #d1 { left: 0; } #d2 { left: 54px; } #d3 { left: 108px; background: #f2c200; border: 2px solid #1d1c1a; }
+  .message .lab { position: absolute; right: 0; top: 270px; font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; color: #6d6a63; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <span class="heading">Waiting for a reply</span>
+      <div class="message">
+        <div class="t-xl">Sending your invites</div>
+        <div class="dot" id="d1"></div><div class="dot" id="d2"></div><div class="dot" id="d3"></div>
+        <span class="lab">One moment</span>
+      </div>
+    </div>
+    <div id="label"><span class="l-name">Loading dots</span><span class="l-sep">·</span><span>Loop &amp; Ambient</span><span class="l-sep">·</span><span>calm</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+  // 1.2 s cycle baked three times; each dot starts 0.15 s after the one to its left, rises 8 px and grows a little.
+  const dots = ["#d1", "#d2", "#d3"];
+  for (let cycle = 0; cycle < 3; cycle++) dots.forEach((d, i) => {
+    const at = cycle * 1.2 + i * 0.15;
+    tl.fromTo(d, { y: 0, scale: 1 }, { y: -8, scale: 1.18, duration: 0.45, ease: "sine.inOut", immediateRender: cycle === 0 }, at);
+    tl.fromTo(d, { y: -8, scale: 1.18 }, { y: 0, scale: 1, duration: 0.45, ease: "sine.inOut", immediateRender: false }, at + 0.45);
+  });
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

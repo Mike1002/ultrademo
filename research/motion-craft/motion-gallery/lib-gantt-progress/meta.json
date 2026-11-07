@@ -1,0 +1,21 @@
+{
+  "name": "Gantt progress",
+  "family": "Data",
+  "purpose": [
+    "Comparison",
+    "Data evidence"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "svg",
+  "tags": [
+    "data",
+    "gantt",
+    "schedule",
+    "time cursor",
+    "task bars",
+    "progress",
+    "svg"
+  ],
+  "one_line": "A NOW cursor sweeps across a Monday-to-Friday grid while four task bars (record, edit, review, ship) fill yellow behind it inside their scheduled windows; the review bar stops short, showing work that fell behind the schedule."
+}

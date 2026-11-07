@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-arc-motion</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  .lab { font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  .label { position: absolute; left: 80px; }
+  .label.a { top: 85px; } .label.b { top: 520px; }
+  .apex { position: absolute; left: 500px; top: 222px; }
+  .track { position: absolute; left: 180px; top: 150px; width: 770px; height: 2px; background: #e3ded2; }
+  .baseline { position: absolute; left: 180px; top: 470px; width: 770px; height: 2px; background: #e3ded2; }
+  .trail { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  .trail circle { fill: #a19d93; }
+  .dot { position: absolute; width: 48px; height: 48px; left: 156px; border-radius: 50%; will-change: transform; }
+  #straight { top: 126px; background: #a19d93; }
+  #arc { top: 446px; background: #f2c200; border: 2px solid #1d1c1a; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div class="lab label a">Straight line</div>
+      <div class="track"></div><div class="baseline"></div>
+      <svg class="trail" id="trail" viewBox="0 0 1168 580" data-layout-allow-overlap></svg>
+      <div class="dot" id="straight" data-layout-allow-overlap></div>
+      <div class="dot" id="arc" data-layout-allow-overlap></div>
+      <div class="lab label b">Arc: same 770 px, same 1.65 s, over a 230 px peak</div>
+      <div class="lab apex" id="apex">Peak 230 px</div>
+    </div>
+    <div id="label"><span class="l-name">Arcs</span><span class="l-sep">·</span><span>Principles</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+  const T0 = 0.45, D = 1.65, X = 770, H = 230, trail = document.getElementById("trail");
+  // Trajectory dots, baked at 0.025 progress steps; each one appears as the ball passes it.
+  for (let i = 0; i <= 40; i++) {
+    const p = i / 40, c = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    c.setAttribute("cx", 180 + X * p); c.setAttribute("cy", 470 - 4 * H * p * (1 - p)); c.setAttribute("r", "3");
+    trail.appendChild(c);
+    tl.fromTo(c, { opacity: 0 }, { opacity: 1, duration: 0.08, ease: "none" }, T0 + D * p);
+  }
+  tl.fromTo("#straight", { x: 0 }, { x: X, duration: D, ease: "none" }, T0);
+  // Parabola y = -4H p (1 - p): linear x, and y as power2.out up then power2.in down, which is exactly that curve.
+  tl.fromTo("#arc", { x: 0, y: 0 }, { x: X, duration: D, ease: "none" }, T0);
+  tl.to("#arc", { y: -H, duration: D / 2, ease: "power2.out" }, T0);
+  tl.to("#arc", { y: 0, duration: D / 2, ease: "power2.in" }, T0 + D / 2);
+  // Landing: a small settle hop, then the peak caption.
+  tl.to("#arc", { y: -36, duration: 0.14, ease: "power2.out" }, T0 + D);
+  tl.to("#arc", { y: 0, duration: 0.16, ease: "power2.in" }, T0 + D + 0.14);
+  tl.fromTo("#apex", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 2.45);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

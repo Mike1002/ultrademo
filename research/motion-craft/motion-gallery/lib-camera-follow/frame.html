@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-camera-follow</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  /* The stage is the camera viewport: a framed window onto a wider world. */
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; overflow: hidden; border: 2px solid #1d1c1a; border-radius: 20px; background: #f6f3ec; }
+  #world { position: absolute; left: 0; top: 0; width: 2400px; height: 576px; will-change: transform;
+    background-image: radial-gradient(#d9d3c4 1.6px, transparent 1.7px); background-size: 40px 40px; background-position: 20px 20px; }
+  .card { position: absolute; top: 120px; width: 360px; height: 220px; background: #fffdf8; border: 2px solid #1d1c1a; border-radius: 20px; }
+  .card .n { position: absolute; left: 28px; top: 20px; font-size: 56px; font-weight: 700; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+  .card .t { position: absolute; left: 28px; top: 100px; font-size: 24px; font-weight: 700; white-space: nowrap; }
+  .card .s { position: absolute; left: 28px; top: 136px; width: 304px; font-size: 17px; line-height: 24px; color: #6d6a63; }
+  #track { position: absolute; left: 60px; top: 430px; width: 2000px; height: 2px; background: #c9c3b4; }
+  #mk { position: absolute; left: 0; top: 400px; width: 64px; height: 64px; will-change: transform; }
+  #mk .disc { position: absolute; left: 0; top: 0; width: 64px; height: 64px; border-radius: 50%; background: #f2c200; border: 2px solid #1d1c1a; }
+  #mk .ring { position: absolute; left: 0; top: 0; width: 64px; height: 64px; border-radius: 50%; border: 3px solid #f2c200; will-change: transform, opacity; }
+  #mk .lab { position: absolute; left: 0; top: 70px; width: 64px; text-align: center; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  #mk svg { position: absolute; left: 20px; top: 14px; }
+  #anchor { position: absolute; left: 700px; top: 16px; width: 0; height: 544px; border-left: 2px dashed #a19d93; }
+  #anchorlab { position: absolute; left: 712px; top: 18px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; white-space: nowrap; }
+  #camlab { position: absolute; left: 24px; top: 18px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; white-space: nowrap; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div id="world">
+        <div id="track"></div>
+        <div class="card" style="left:40px"><div class="n">1</div><div class="t">Invite your team</div><div class="s">Orbit workspace · 3 seats left</div></div>
+        <div class="card" style="left:520px"><div class="n">2</div><div class="t">Pick the people</div><div class="s">Jamie Dalton, Sam Kim, Morgan Lee</div></div>
+        <div class="card" style="left:1000px"><div class="n">3</div><div class="t">Send</div><div class="s">12,480 invites sent so far</div></div>
+        <div class="card" style="left:1480px"><div class="n">4</div><div class="t">Continue</div><div class="s">Everyone lands in the workspace</div></div>
+        <div id="mk" data-layout-allow-overlap><div class="ring" id="ring"></div><div class="disc"></div>
+          <svg width="24" height="32" viewBox="0 0 28 36"><path d="M2 2 L2 28 L9 21.5 L14 33 L19 31 L14 19.5 L23 19.5 Z" fill="#1d1c1a" stroke="#fffdf8" stroke-width="2" stroke-linejoin="round"/></svg>
+          <div class="lab">Subject</div></div>
+      </div>
+      <div id="anchor" data-layout-allow-overlap></div>
+      <div id="anchorlab">Anchor 60%</div>
+      <div id="camlab">Camera</div>
+    </div>
+    <div id="label"><span class="l-name">Camera follow</span><span class="l-sep">·</span><span>Camera</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power2.out", duration: 0.6 } });
+  // Params: viewport 1168 wide; the world shifts when the subject crosses 65% (759 px), to put it at 60% (701 px); 600 ms power2.out.
+  const VIEW = 1168, ANCHOR = 0.60, LIMIT = 0.65, FOLLOW = 0.6;
+  const STOPS = [220, 700, 1180, 1660];           // subject centres in world coordinates (one per card)
+  const MOVES = [0.4, 1.1, 1.9];                  // when the subject leaves for the next stop (each move takes 0.5 s)
+  gsap.set("#mk", { x: STOPS[0] - 32 });
+  gsap.set("#world", { x: 0 });
+  gsap.set("#ring", { scale: 1, opacity: 0, transformOrigin: "50% 50%" });
+  let camX = 0;
+  MOVES.forEach((at, i) => {
+    const to = STOPS[i + 1];
+    tl.to("#mk", { x: to - 32, duration: 0.5, ease: "power2.inOut" }, at);
+    // Camera decision, baked at build time: shift only when the subject would land past the 65% line.
+    if (to + camX > VIEW * LIMIT) {
+      camX = VIEW * ANCHOR - to;
+      tl.to("#world", { x: camX, duration: FOLLOW, ease: "power2.out" }, at + 0.05);
+    }
+  });
+  // Settle: the subject pulses once where it arrived.
+  tl.fromTo("#ring", { scale: 1, opacity: 0.9 }, { scale: 2.2, opacity: 0, duration: 0.5, ease: "power2.out", immediateRender: false }, 2.5);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

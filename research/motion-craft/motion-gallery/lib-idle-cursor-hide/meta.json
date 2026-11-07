@@ -1,0 +1,21 @@
+{
+  "name": "Idle cursor hide",
+  "family": "UI Demo",
+  "purpose": [
+    "Feedback",
+    "Emphasis"
+  ],
+  "energy": "calm",
+  "tier": 3,
+  "runtime": "gsap",
+  "tags": [
+    "idle cursor hide",
+    "ui",
+    "cursor",
+    "idle",
+    "fade",
+    "shrink",
+    "reappear"
+  ],
+  "one_line": "A pointer settles on a command field and stops; a small yellow ring counts down the idle time, the pointer shrinks and fades away, then reappears at full size the moment it moves again to a command row."
+}

@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-bubble-time-series</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  #chart { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  #cap { position: absolute; left: 160px; top: 8px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  text { font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .axis { stroke: #1d1c1a; stroke-width: 2; }
+  .grid { stroke: #e3ded2; stroke-width: 2; }
+  .tx { font-size: 16px; fill: #6d6a63; }
+  .ax { font-size: 13px; letter-spacing: .06em; text-transform: uppercase; fill: #6d6a63; }
+  .bub circle { fill: #ece7da; fill-opacity: 0.85; stroke: #1d1c1a; stroke-width: 2; }
+  .bub.acc circle { fill: #f2c200; fill-opacity: 0.9; stroke-width: 3; }
+  .bub text { font-size: 18px; font-weight: 700; fill: #1d1c1a; }
+  .year { font-size: 84px; font-weight: 700; fill: #1d1c1a; font-variant-numeric: tabular-nums; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div id="cap">Teams · invites sent vs accepted</div>
+      <svg id="chart" viewBox="0 0 1168 580" width="1168" height="580">
+        <g id="grid"></g>
+        <line class="axis" x1="160" y1="80" x2="160" y2="500"/>
+        <line class="axis" x1="160" y1="500" x2="1080" y2="500"/>
+        <text class="ax" x="620" y="556" text-anchor="middle">Invites sent</text>
+        <text class="ax" x="166" y="72">Accepted %</text>
+        <text class="year" id="y0" x="1080" y="478" data-layout-allow-overlap text-anchor="end">2023</text>
+        <text class="year" id="y1" x="1080" y="478" data-layout-allow-overlap text-anchor="end">2024</text>
+        <text class="year" id="y2" x="1080" y="478" data-layout-allow-overlap text-anchor="end">2025</text>
+        <text class="year" id="y3" x="1080" y="478" data-layout-allow-overlap text-anchor="end">2026</text>
+        <g id="bubs"></g>
+      </svg>
+    </div>
+    <div id="label"><span class="l-name">Animated bubble time series</span><span class="l-sep">·</span><span>Data</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const SVG = "http://www.w3.org/2000/svg";
+  const X = v => 160 + v * (920 / 200), Y = p => 500 - p * 4.2, R = a => Math.sqrt(a * 94 / Math.PI);
+  // Five teams, four years: [invites sent, accepted %, team size] per year. Radius is the square root of the area.
+  const teams = [
+    { n: "Jamie", acc: true, d: [[30, 40, 20], [60, 55, 40], [110, 62, 70], [160, 78, 120]] },
+    { n: "Sam", d: [[50, 30, 30], [80, 45, 35], [95, 58, 45], [120, 70, 60]] },
+    { n: "Morgan", d: [[20, 60, 10], [40, 52, 15], [70, 48, 30], [90, 66, 45]] },
+    { n: "Design", d: [[70, 20, 25], [65, 30, 25], [60, 45, 20], [85, 50, 30]] },
+    { n: "Support", d: [[40, 70, 15], [55, 75, 20], [60, 80, 30], [75, 88, 40]] }
+  ];
+  const grid = document.getElementById("grid");
+  [25, 50, 75, 100].forEach(p => { const l = document.createElementNS(SVG, "line"); l.setAttribute("class", "grid"); l.setAttribute("x1", 160); l.setAttribute("x2", 1080); l.setAttribute("y1", Y(p)); l.setAttribute("y2", Y(p)); grid.appendChild(l);
+    const t = document.createElementNS(SVG, "text"); t.setAttribute("class", "tx"); t.setAttribute("x", 140); t.setAttribute("y", Y(p) + 5); t.setAttribute("text-anchor", "end"); t.textContent = p; grid.appendChild(t); });
+  [50, 100, 150, 200].forEach(v => { const t = document.createElementNS(SVG, "text"); t.setAttribute("class", "tx"); t.setAttribute("x", X(v)); t.setAttribute("y", 524); t.setAttribute("text-anchor", "middle"); t.textContent = v; grid.appendChild(t); });
+  const bubs = document.getElementById("bubs"), els = [];
+  teams.forEach((tm, i) => {
+    const g = document.createElementNS(SVG, "g"); g.setAttribute("class", "bub" + (tm.acc ? " acc" : "")); g.id = "b" + i;
+    const c = document.createElementNS(SVG, "circle"); c.setAttribute("cx", 0); c.setAttribute("cy", 0); c.setAttribute("r", R(tm.d[0][2])); g.appendChild(c);
+    const t = document.createElementNS(SVG, "text"); t.setAttribute("x", 0); t.setAttribute("y", 6); t.setAttribute("text-anchor", "middle"); t.setAttribute("data-layout-allow-overlap", ""); t.textContent = tm.n; g.appendChild(t);
+    bubs.appendChild(g); els.push({ g, c, t });
+  });
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "none", duration: 0.5 } });
+  const STEP = [0.35, 1.05, 1.75], D = 0.5;   // 2023->2024, 2024->2025, 2025->2026
+  els.forEach((e, i) => {
+    const d = teams[i].d;
+    tl.fromTo(e.g, { x: X(d[0][0]), y: Y(d[0][1]) }, { x: X(d[0][0]), y: Y(d[0][1]), duration: 0.01 }, 0);
+    STEP.forEach((t0, k) => {
+      // Position and area change together: x, y on the group, r on the circle, all linear so the year clock reads as even time.
+      tl.fromTo(e.g, { x: X(d[k][0]), y: Y(d[k][1]) }, { x: X(d[k + 1][0]), y: Y(d[k + 1][1]), duration: D, immediateRender: false }, t0);
+      tl.fromTo(e.c, { attr: { r: R(d[k][2]) } }, { attr: { r: R(d[k + 1][2]) }, duration: D, immediateRender: false }, t0);
+    });
+  });
+  // The big year label swaps at the start of each step; one year shows at a time.
+  ["#y1", "#y2", "#y3"].forEach(s => tl.fromTo(s, { opacity: 0 }, { opacity: 0, duration: 0.01 }, 0));
+  STEP.forEach((t0, k) => {
+    tl.fromTo("#y" + k, { opacity: 1 }, { opacity: 0, duration: 0.01, ease: "none", immediateRender: false }, t0);
+    tl.fromTo("#y" + (k + 1), { opacity: 0 }, { opacity: 1, duration: 0.01, ease: "none", immediateRender: false }, t0);
+  });
+  // Settle beat after 2026: the yellow team breathes once so the final state is not a freeze.
+  tl.fromTo("#b0 circle", { attr: { r: R(120) } }, { attr: { r: R(145) }, duration: 0.3, ease: "power2.inOut", yoyo: true, repeat: 1, immediateRender: false }, 2.4);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

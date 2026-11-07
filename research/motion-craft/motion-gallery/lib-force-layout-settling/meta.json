@@ -1,0 +1,22 @@
+{
+  "name": "Force layout settling",
+  "family": "Data",
+  "purpose": [
+    "Explanation",
+    "Sequence"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "canvas",
+  "tags": [
+    "force layout relaxation",
+    "data",
+    "network",
+    "graph",
+    "nodes",
+    "links",
+    "simulation",
+    "svg"
+  ],
+  "one_line": "Twelve team members and the links between them start as a tight knot and relax under repulsion, link springs and damping into a settled network, the hub breathing once when it comes to rest."
+}

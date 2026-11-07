@@ -1,0 +1,48 @@
+{
+  "name": "Control room at night",
+  "fonts": {
+    "display": "Archivo Black",
+    "body": "Geist",
+    "mono": "Geist Mono",
+    "label": "Geist Mono"
+  },
+  "font_families": [
+    "Archivo Black",
+    "Geist",
+    "Geist Mono"
+  ],
+  "font_substitutions": {},
+  "canvas": "dark",
+  "mood": [
+    "cinematic",
+    "technical",
+    "confident"
+  ],
+  "suits": [
+    "developer tools",
+    "live products",
+    "launch videos",
+    "dark-mode apps"
+  ],
+  "direction_settings": {
+    "energy": "steady",
+    "density": "balanced",
+    "ground": "dark",
+    "depth": "deep",
+    "camera": "drift",
+    "type": "display",
+    "texture": "clean",
+    "colour": "two-accent",
+    "product_presence": "framed",
+    "sound": "scored",
+    "voice": "narrated"
+  },
+  "duration_s": 10,
+  "size": [
+    1280,
+    720
+  ],
+  "fps": 30,
+  "strip": "D-58 style strip: hook · project card · number · agent · close",
+  "one_line": ""
+}

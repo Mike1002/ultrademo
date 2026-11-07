@@ -1,0 +1,22 @@
+{
+  "name": "Axis rescaling",
+  "family": "Data",
+  "purpose": [
+    "Data evidence",
+    "Comparison"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "svg",
+  "tags": [
+    "axis rescale choreography",
+    "animated axes",
+    "small-multiple scale alignment",
+    "data",
+    "chart",
+    "ticks",
+    "gridlines",
+    "svg"
+  ],
+  "one_line": "A value too big for a 0-100 line chart arrives, so the axis rescales to 0-200: the kept ticks and gridlines slide to their new rows, two new ticks fade in, and every mark and the line move with them."
+}

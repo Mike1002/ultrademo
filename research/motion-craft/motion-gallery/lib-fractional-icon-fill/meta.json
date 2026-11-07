@@ -1,0 +1,21 @@
+{
+  "name": "Fractional icon fill",
+  "family": "Data",
+  "purpose": [
+    "Data evidence",
+    "Comparison"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "css",
+  "tags": [
+    "fractional star fill",
+    "fractional rating",
+    "fractional pictogram fill",
+    "data",
+    "rating",
+    "clip-path",
+    "stars"
+  ],
+  "one_line": "A row of five outlined stars fills with yellow from the left and stops exactly at 4.5, half way through the fifth star; a second row then fills to 3.8."
+}

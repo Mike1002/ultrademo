@@ -1,0 +1,19 @@
+{
+  "name": "Crossfade",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Sequence"
+  ],
+  "energy": "calm",
+  "tier": 2,
+  "runtime": "gsap",
+  "tags": [
+    "dissolve",
+    "cross dissolve",
+    "fade",
+    "opacity",
+    "transitions"
+  ],
+  "one_line": "Scene A (a card) fades out as scene B (a big number) fades in at the same time, so both scenes briefly coexist."
+}

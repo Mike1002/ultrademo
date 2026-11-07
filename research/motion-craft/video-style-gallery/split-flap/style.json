@@ -1,0 +1,125 @@
+{
+  "id": "split-flap",
+  "name": "Split Flap",
+  "canvas": "dark",
+  "mood": [
+    "mechanical",
+    "nostalgic",
+    "precise"
+  ],
+  "suits": [
+    "launch countdowns",
+    "schedule-like products",
+    "typographic reveals"
+  ],
+  "palette": {
+    "bg": "#15171a",
+    "bg_alt": "#15171a",
+    "surface": "#0a0a0a",
+    "surface_2": "#1c1c1e",
+    "ink": "#efece4",
+    "muted": "#8d8a83",
+    "line": "#26282b",
+    "accent": "#ffb000",
+    "accent_2": "#3ddc84",
+    "on_accent": "#0a0a0a",
+    "pill_bg": "#26282b",
+    "pill_ink": "#efece4",
+    "pill_dot": "#3ddc84",
+    "thumb": "#1c1c1e",
+    "term_bg": "#0a0a0a",
+    "term_ink": "#efece4",
+    "term_muted": "#8d8a83",
+    "term_line": "#26282b",
+    "term_prompt": "#ffb000",
+    "term_ok": "#3ddc84"
+  },
+  "type": {
+    "display": {
+      "family": "Barlow Condensed",
+      "weight": 600,
+      "hook_px": 100,
+      "stat_px": 260,
+      "mark_px": 140,
+      "transform": "uppercase",
+      "tracking": "0.04em",
+      "line_height": "1.0",
+      "style": "normal",
+      "generic": "sans",
+      "card_title_px": 30,
+      "card_title_tracking": "0.04em"
+    },
+    "body": {
+      "family": "Barlow Condensed",
+      "weight": 500,
+      "generic": "sans"
+    },
+    "mono": {
+      "family": "Barlow Condensed",
+      "weight": 600
+    },
+    "label": {
+      "family": "Barlow Condensed",
+      "weight": 600,
+      "transform": "uppercase",
+      "tracking": "0.2em",
+      "generic": "sans",
+      "px": 15
+    }
+  },
+  "easing": {
+    "entry": "steps(4)",
+    "exit": "power2.in",
+    "ambient": "sine.inOut",
+    "pop": "power3.out",
+    "counter": "steps(12)",
+    "wipe": "steps(6)"
+  },
+  "rhythm": {
+    "energy": "steady",
+    "entrance": 0.3,
+    "stagger": 0.06
+  },
+  "transition": {
+    "kind": "wipe-up",
+    "duration": 0.35,
+    "flash": false,
+    "band": false
+  },
+  "text_animation": "flip",
+  "accent_word": "none",
+  "layout": "center",
+  "atmosphere": [
+    "vignette:0.4"
+  ],
+  "shape": {
+    "radius_card": 18,
+    "radius_button": 6,
+    "radius_pill": 6,
+    "border": "hairline",
+    "border_px": 1,
+    "shadow": "soft",
+    "rule_px": 4,
+    "radius_thumb": 5
+  },
+  "stat_colour": "accent",
+  "direction_settings": {
+    "energy": "steady",
+    "density": "dense",
+    "ground": "dark",
+    "depth": "layered",
+    "camera": "locked",
+    "type": "display",
+    "texture": "clean",
+    "colour": "two-accent",
+    "product_presence": "illustrated",
+    "sound": "ambient",
+    "voice": "caption"
+  },
+  "notes": "Dark wall, black housing with a bezel, amber and green status colours, Barlow Condensed; characters flip in on a stepped rotation and moments re-flip top to bottom.",
+  "transitions": {
+    "between_moments": "wipe-up",
+    "duration_s": 0.35,
+    "text": "flip"
+  }
+}

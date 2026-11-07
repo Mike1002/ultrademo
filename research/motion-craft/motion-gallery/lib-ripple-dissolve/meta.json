@@ -1,0 +1,23 @@
+{
+  "name": "Ripple dissolve",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Mood"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "webgl",
+  "tags": [
+    "ripple distortion",
+    "ripple dissolve",
+    "water drop reveal",
+    "transitions",
+    "ripple",
+    "rings",
+    "wave",
+    "clip-path",
+    "radial"
+  ],
+  "one_line": "The invite scene is sliced into concentric rings that swell and settle in a wave travelling out from the centre, each ring thinning away so the stats scene shows through from the middle outward."
+}

@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-repeat-text-wall</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; overflow: hidden; }
+  .row { position: absolute; left: -400px; width: 1968px; height: 64px; line-height: 64px; text-align: center; font-size: 58px; font-weight: 700; letter-spacing: -0.01em; white-space: nowrap; color: #1d1c1a; will-change: transform, opacity; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage"></div>
+    <div id="label"><span class="l-name">Repeated text wall</span><span class="l-sep">·</span><span>Typography</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  // Params: 9 rows, rows arrive 80 ms apart from the top, 0.7 s power3.out each; only the middle row is fully opaque,
+  // the others fall off to 0.18; alternating x offsets; a slow drift keeps the wall alive and the middle row turns yellow last.
+  const PHRASE = "Ship it. Show it.";
+  const N = 9, PITCH = 64, MID = 4;
+  const stage = document.getElementById("stage");
+  let html = "";
+  for (let i = 0; i < N; i++) {
+    const copies = Array(4).fill(PHRASE).join("   ");
+    html += '<div class="row" id="r' + i + '" style="top:' + (2 + i * PITCH) + 'px" data-layout-allow-overlap>' + copies + '</div>';
+  }
+  stage.innerHTML = html;
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.7 } });
+  for (let i = 0; i < N; i++) {
+    const d = Math.abs(i - MID);
+    const alpha = d === 0 ? 1 : Math.max(0.18, 0.62 - d * 0.12);
+    const xRest = (i % 2 ? 1 : -1) * 70;
+    tl.fromTo("#r" + i, { y: -36, x: xRest - 60, opacity: 0 }, { y: 0, x: xRest, opacity: alpha, duration: 0.7, ease: "power3.out" }, 0.15 + i * 0.08);
+    tl.to("#r" + i, { x: xRest + (i % 2 ? 1 : -1) * 40, duration: 1.4, ease: "sine.inOut" }, 1.55);
+  }
+  tl.fromTo("#r4", { color: "#1d1c1a" }, { color: "#f2c200", duration: 0.35, ease: "power2.out", immediateRender: false }, 2.0);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

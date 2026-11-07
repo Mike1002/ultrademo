@@ -1,0 +1,22 @@
+{
+  "name": "Matrix row-column sorting",
+  "family": "Data",
+  "purpose": [
+    "Data evidence",
+    "Comparison"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "svg",
+  "tags": [
+    "matrix row-column sorting",
+    "data",
+    "matrix",
+    "heatmap",
+    "sort",
+    "reorder",
+    "cluster",
+    "svg attr"
+  ],
+  "one_line": "A six by six grid of shaded cells glides into a new row and column order while every cell and name label keeps its identity, and two dense clusters that were hidden are outlined in yellow once the sort lands."
+}

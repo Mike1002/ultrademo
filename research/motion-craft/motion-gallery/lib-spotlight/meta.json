@@ -1,0 +1,22 @@
+{
+  "name": "Spotlight",
+  "family": "UI Demo",
+  "purpose": [
+    "Explanation",
+    "Emphasis"
+  ],
+  "energy": "steady",
+  "tier": 2,
+  "runtime": "gsap",
+  "tags": [
+    "signaling",
+    "card focus blur",
+    "spotlight reveal",
+    "mask-spotlight-drift",
+    "ui",
+    "dim surroundings",
+    "brackets",
+    "stroke draw"
+  ],
+  "one_line": "A list dims to a quarter of its ink while one row keeps full contrast, and yellow brackets draw around that row to mark the region to read now."
+}

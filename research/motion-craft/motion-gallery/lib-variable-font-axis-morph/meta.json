@@ -1,0 +1,23 @@
+{
+  "name": "Variable font axis morph",
+  "family": "Typography",
+  "purpose": [
+    "Emphasis",
+    "Mood"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "css",
+  "tags": [
+    "variable font flex",
+    "variable font width breathing",
+    "variable font slant motion",
+    "variable font custom axis morph",
+    "type",
+    "weight",
+    "width",
+    "morph",
+    "font axis"
+  ],
+  "one_line": "A line of text thickens from a light voice to a heavy one glyph by glyph as it widens, then relaxes back; the system font's weight axis is real and the width axis is faked with a horizontal stretch."
+}

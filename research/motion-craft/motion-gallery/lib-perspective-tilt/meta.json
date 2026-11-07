@@ -1,0 +1,23 @@
+{
+  "name": "Perspective tilt reveal",
+  "family": "Camera",
+  "purpose": [
+    "Attention",
+    "Explanation",
+    "Transition"
+  ],
+  "energy": "high",
+  "tier": 2,
+  "runtime": "gsap",
+  "tags": [
+    "perspective tilt reveal",
+    "3d tilt and depth",
+    "perspective card tilt",
+    "3d card tilt and float",
+    "camera",
+    "rotatex",
+    "grid",
+    "dark"
+  ],
+  "one_line": "A page of nine figures tilts back by 55 degrees to reveal its whole grid, drifts, then returns frontal onto the one yellow figure."
+}

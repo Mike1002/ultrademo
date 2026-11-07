@@ -1,0 +1,127 @@
+{
+  "id": "pop-zine",
+  "name": "Pop Zine",
+  "canvas": "light",
+  "mood": [
+    "loud",
+    "playful",
+    "editorial"
+  ],
+  "suits": [
+    "podcasts",
+    "zine-style launches",
+    "countdowns"
+  ],
+  "palette": {
+    "bg": "#efe6d2",
+    "bg_alt": "#34417a",
+    "surface": "#f3ead6",
+    "surface_2": "#e6dcc3",
+    "ink": "#232b52",
+    "muted": "#2e3a6b",
+    "line": "#2e3a6b",
+    "accent": "#ff4f9a",
+    "accent_2": "#f0582a",
+    "on_accent": "#232b52",
+    "shadow": "#2e3a6b",
+    "pill_bg": "#f5c84b",
+    "pill_ink": "#232b52",
+    "pill_dot": "#e8402f",
+    "thumb": "#6f7fb8",
+    "term_bg": "#232b52",
+    "term_ink": "#efe6d2",
+    "term_muted": "#9aa5d0",
+    "term_line": "#232b52",
+    "term_prompt": "#ff4f9a",
+    "term_ok": "#f5c84b"
+  },
+  "type": {
+    "display": {
+      "family": "Anton",
+      "weight": 400,
+      "hook_px": 124,
+      "stat_px": 270,
+      "mark_px": 150,
+      "transform": "uppercase",
+      "tracking": "0.01em",
+      "line_height": "0.95",
+      "style": "normal",
+      "generic": "sans",
+      "card_title_px": 30,
+      "card_title_tracking": "0.02em"
+    },
+    "body": {
+      "family": "Space Grotesk",
+      "weight": 600,
+      "generic": "sans"
+    },
+    "mono": {
+      "family": "Share Tech Mono",
+      "weight": 400
+    },
+    "label": {
+      "family": "Share Tech Mono",
+      "weight": 400,
+      "transform": "uppercase",
+      "tracking": "0.3em",
+      "generic": "sans",
+      "px": 14
+    }
+  },
+  "easing": {
+    "entry": "expo.out",
+    "exit": "power4.in",
+    "ambient": "none",
+    "pop": "back.out(2)",
+    "counter": "power3.inOut",
+    "wipe": null
+  },
+  "rhythm": {
+    "energy": "high",
+    "entrance": 0.3,
+    "stagger": 0.12
+  },
+  "transition": {
+    "kind": "cut",
+    "duration": 0,
+    "flash": false,
+    "band": false
+  },
+  "text_animation": "slam",
+  "accent_word": "none",
+  "layout": "center",
+  "atmosphere": [
+    "sunburst",
+    "grain:0.1"
+  ],
+  "shape": {
+    "radius_card": 0,
+    "radius_button": 0,
+    "radius_pill": 999,
+    "border": "bold",
+    "border_px": 3,
+    "shadow": "hard",
+    "rule_px": 8,
+    "hard_offset": 6
+  },
+  "stat_colour": "accent",
+  "direction_settings": {
+    "energy": "high",
+    "density": "dense",
+    "ground": "alternating",
+    "depth": "layered",
+    "camera": "locked",
+    "type": "loud",
+    "texture": "grain",
+    "colour": "full-palette",
+    "product_presence": "illustrated",
+    "sound": "beat-driven",
+    "voice": "spoken-headline"
+  },
+  "notes": "Cream paper, navy halftone and a slowly rotating pink sunburst, Anton punch words with a hard navy offset shadow, hard cuts every moment, Share Tech Mono stamps.",
+  "transitions": {
+    "between_moments": "cut",
+    "duration_s": 0,
+    "text": "slam"
+  }
+}

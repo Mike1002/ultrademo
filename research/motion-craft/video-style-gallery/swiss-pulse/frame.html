@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>swiss-pulse · style strip</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  @font-face { font-family: "Inter"; src: url("../_fonts/inter/inter-300.woff2") format("woff2"); font-weight: 300; font-style: normal; font-display: block; }
+  @font-face { font-family: "Inter"; src: url("../_fonts/inter/inter-400.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: block; }
+  @font-face { font-family: "Inter"; src: url("../_fonts/inter/inter-500.woff2") format("woff2"); font-weight: 500; font-style: normal; font-display: block; }
+  @font-face { font-family: "Inter"; src: url("../_fonts/inter/inter-600.woff2") format("woff2"); font-weight: 600; font-style: normal; font-display: block; }
+  @font-face { font-family: "Inter"; src: url("../_fonts/inter/inter-700.woff2") format("woff2"); font-weight: 700; font-style: normal; font-display: block; }
+  @font-face { font-family: "Inter"; src: url("../_fonts/inter/inter-800.woff2") format("woff2"); font-weight: 800; font-style: normal; font-display: block; }
+  @font-face { font-family: "Inter"; src: url("../_fonts/inter/inter-900.woff2") format("woff2"); font-weight: 900; font-style: normal; font-display: block; }
+  :root {
+    --bg: #ffffff; --bg-alt: #f2f2f2; --surface: #ffffff; --surface-2: #f0f0f0;
+    --ink: #1a1a1a; --muted: #6b6b6b; --line: #d8d8d8; --accent: #0066FF; --accent-2: #0066FF; --on-accent: #ffffff;
+    --card-fill: #ffffff; --card-border: #d8d8d8; --pill-bg: #f0f0f0; --pill-ink: #1a1a1a;
+    --button-bg: #0066FF; --button-ink: #ffffff; --thumb: #f0f0f0;
+    --term-bg: #1a1a1a; --term-ink: #ffffff; --term-muted: #9a9a9a; --term-prompt: #0066FF; --term-ok: #0066FF; --term-line: #333333;
+    --stat: #0066FF; --card-ink: #1a1a1a; --card-muted: #6b6b6b; --card-line: #d8d8d8; --hi: #0066FF;
+    --f-display: "Inter", -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; --f-body: "Inter", -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; --f-mono: "Inter", ui-monospace, Menlo, Monaco, monospace; --f-label: "Inter", -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+    --w-display: 700; --w-body: 400; --w-mono: 500; --w-label: 400;
+    --r-card: 0px; --r-button: 0px; --r-pill: 2px; --r-thumb: 2px;
+    --border-px: 1px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: var(--bg); }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: var(--bg); color: var(--ink);
+    font-family: var(--f-body); font-weight: var(--w-body); -webkit-font-smoothing: antialiased; }
+  .clip { position: absolute; inset: 0; }
+  .stage { position: absolute; inset: 0; overflow: hidden; background: var(--bg); will-change: transform, opacity, filter; }
+  .display { font-family: var(--f-display); font-weight: var(--w-display); font-style: normal; text-transform: none; letter-spacing: -0.03em; line-height: 0.98; }
+  .label { font-family: var(--f-label); font-weight: var(--w-label); text-transform: uppercase; letter-spacing: 0.1em; font-size: 15px; font-style: normal; color: var(--muted); }
+  .mono { font-family: var(--f-mono); font-weight: var(--w-mono); }
+  .w { display: inline-block; will-change: transform, opacity, filter; }
+  .mask { display: inline-block; overflow: hidden; vertical-align: top; padding: 0.08em 0.02em 0.12em; margin: -0.08em -0.02em -0.12em; }
+  .mask .w { display: block; }
+  .ch { display: inline-block; will-change: transform, opacity; white-space: pre; }
+  .atm { position: absolute; inset: 0; pointer-events: none; }
+
+  .u-grid { background-image: linear-gradient(rgba(0,0,0,0.07) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.07) 1px, transparent 1px); background-size: 64px 64px; z-index: 0; }
+  .reg { position: absolute; width: 18px; height: 18px; z-index: 35; }
+  .reg:before, .reg:after { content: ''; position: absolute; background: var(--muted); } .reg:before { left: 8px; top: 0; width: 1px; height: 18px; } .reg:after { top: 8px; left: 0; width: 18px; height: 1px; }
+  #flash { background: #1a1a1a; opacity: 0; z-index: 50; }
+  #band { left: 0; top: 0; width: 1280px; height: 720px; background: #0066FF; z-index: 45; will-change: transform; opacity: 0; }
+  #hookwrap { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; text-align: left; padding: 0 96px; }
+  #kicker { margin-bottom: 26px; font-size: 16px; }
+  #kicker .w { display: inline-block; }
+  #hook { font-size: 92px; color: var(--ink); max-width: 1100px; position: relative; }
+  #hook .accent-word { color: inherit; font-style: inherit; font-family: inherit; font-weight: inherit; text-transform: inherit; position: relative; z-index: 1; }
+  #hook .ghost { color: var(--accent); }
+  #hook .has-ghost > .ghost ~ * { opacity: 0; }
+  #hi { position: absolute; left: 0; top: 0; width: 100%; height: 100%; background: var(--hi); transform-origin: left center; z-index: 0; opacity: 0.9; display: none; will-change: transform; }
+  #hookrule { margin-top: 30px; width: 120px; height: 6px; background: var(--accent); transform-origin: left center; display: block; will-change: transform; }
+
+  #card { position: absolute; left: 330px; top: 160px; width: 620px; height: 400px; background: var(--card-fill); border: var(--border-px) solid var(--card-border); border-radius: var(--r-card); box-shadow: none; padding: 34px 36px; will-change: transform, opacity; --ink: var(--card-ink); --muted: var(--card-muted); --line: var(--card-line); color: var(--card-ink); }
+  #card .ck { font-size: 14px; }
+  #card .title { margin-top: 10px; font-family: var(--f-display); font-weight: var(--w-display); text-transform: none; letter-spacing: -0.005em; font-size: 30px; line-height: 1.1; color: var(--ink); white-space: nowrap; }
+  #pill { position: absolute; right: 34px; top: 34px; height: 34px; padding: 0 14px 0 12px; border-radius: var(--r-pill); background: var(--pill-bg); color: var(--pill-ink); border: 1px solid #d8d8d8; font-family: var(--f-label); font-weight: var(--w-label); font-size: 14px; letter-spacing: 0.1em; text-transform: uppercase; line-height: 34px; white-space: nowrap; will-change: transform, opacity; }
+  #pill i { display: inline-block; width: 9px; height: 9px; border-radius: 50%; background: #0066FF; margin-right: 8px; vertical-align: 1px; }
+  #thumbs { position: absolute; left: 36px; top: 150px; width: 548px; height: 106px; }
+  .thumb { position: absolute; top: 0; width: 170px; height: 106px; background: var(--thumb); border-radius: var(--r-thumb); border: 0 solid transparent; will-change: transform, opacity; }
+  .thumb i { position: absolute; left: 14px; bottom: 14px; height: 6px; border-radius: 3px; background: var(--line); display: block; }
+  #btn { position: absolute; left: 36px; bottom: 34px; width: 150px; height: 50px; border-radius: var(--r-button); background: var(--button-bg); color: var(--button-ink); border: 0 solid transparent; font-family: var(--f-body); font-weight: 600; font-size: 18px; line-height: 50px; text-align: center; box-shadow: none; will-change: transform; }
+
+  #numwrap { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; text-align: left; padding: 0 96px; }
+  #numrow { display: flex; align-items: baseline; gap: 22px; }
+  #num { font-size: 240px; color: var(--stat); font-variant-numeric: tabular-nums; min-width: 2.1ch; text-align: right; }
+  #unit { font-size: 92px; color: var(--ink); }
+  #numlabel { margin-top: 18px; font-size: 26px; color: var(--muted); font-family: var(--f-body); font-weight: var(--w-body); }
+  #numbar { margin-top: 28px; width: 420px; height: 6px; background: var(--line); position: relative; }
+  #numfill { position: absolute; left: 0; top: 0; width: 100%; height: 100%; background: var(--accent); transform-origin: left center; will-change: transform; }
+
+  #term { position: absolute; left: 200px; top: 150px; width: 880px; height: 420px; background: var(--term-bg); color: var(--term-ink); border: var(--border-px) solid var(--term-line); border-radius: var(--r-card); overflow: hidden; box-shadow: none; will-change: transform, opacity; font-family: var(--f-mono); font-weight: var(--w-mono); font-size: 22px; }
+  #tbar { position: absolute; left: 0; top: 0; width: 100%; height: 48px; border-bottom: 1px solid var(--term-line); }
+  #tbar .d { position: absolute; top: 17px; width: 13px; height: 13px; border-radius: 50%; background: var(--term-muted); opacity: 0.6; }
+  #tbar .ttl { position: absolute; left: 0; width: 100%; top: 13px; text-align: center; font-size: 15px; color: var(--term-muted); letter-spacing: 0.06em; }
+  .tln { position: absolute; left: 36px; height: 34px; line-height: 34px; white-space: pre; will-change: transform, opacity; }
+  .tln .p { color: var(--term-prompt); }
+  .tln .ok { color: var(--term-ok); }
+  .tln .dim { color: var(--term-muted); }
+  #caret { position: absolute; top: 5px; width: 12px; height: 26px; background: var(--term-prompt); will-change: transform; }
+
+  #closewrap { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+  #mark { font-size: 130px; color: var(--ink); text-transform: none; will-change: transform; }
+  #mark .ghost { color: var(--accent); }
+  #mark .has-ghost > .ghost ~ * { opacity: 0; }
+  #markrule { margin-top: 22px; width: 160px; height: 6px; background: var(--accent); transform-origin: center center; will-change: transform; }
+  #url { margin-top: 22px; font-size: 20px; color: var(--muted); }
+
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="10" data-width="1280" data-height="720" data-fps="30">
+  <section id="s1" class="clip" data-start="0" data-duration="2.200">
+    <div id="st1" class="stage">
+  <div class="atm u-grid"></div>
+      <div id="hookwrap">
+        <div id="kicker" class="label"><span class="w">Ultrademo</span></div>
+        <div id="hook" class="display">Your product, in motion.</div>
+        <div id="hookrule"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="s2" class="clip" data-start="1.800" data-duration="2.900">
+    <div id="st2" class="stage ">
+  <div class="atm u-grid"></div>
+      <div id="card">
+        <div class="ck label">Project</div>
+        <div class="title">Launch video · Orbit</div>
+        <div id="pill"><i></i>Up to date</div>
+        <div id="thumbs">
+          <div class="thumb" id="th1" style="left:0"><i style="width:70px"></i></div>
+          <div class="thumb" id="th2" style="left:189px"><i style="width:48px"></i></div>
+          <div class="thumb" id="th3" style="left:378px"><i style="width:92px"></i></div>
+        </div>
+        <div id="btn">Re-run</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="s3" class="clip" data-start="4.300" data-duration="2.400">
+    <div id="st3" class="stage">
+  <div class="atm u-grid"></div>
+      <div id="numwrap">
+        <div id="numrow"><div id="num" class="display">0</div><div id="unit" class="display">videos</div></div>
+        <div id="numlabel">always current</div>
+        <div id="numbar"><div id="numfill"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="s4" class="clip" data-start="6.300" data-duration="2.400">
+    <div id="st4" class="stage ">
+  <div class="atm u-grid"></div>
+      <div id="term">
+        <div id="tbar"><div class="d" style="left:18px"></div><div class="d" style="left:40px"></div><div class="d" style="left:62px"></div><div class="ttl">agent · mcp</div></div>
+        <div class="tln" id="tl1" style="top:78px"><span class="p">› </span><span id="typed"></span><div id="caret" data-layout-allow-overlap></div></div>
+        <div class="tln" id="tl2" style="top:132px"><span class="ok">ultrademo</span><span class="dim"> · </span>storyboard ready <span class="dim">(6 moments)</span></div>
+        <div class="tln" id="tl3" style="top:172px"><span class="ok">ultrademo</span><span class="dim"> · </span>render queued</div>
+        <div class="tln" id="tl4" style="top:212px"><span class="ok">ultrademo</span><span class="dim"> · </span>preview ready</div>
+        <div class="tln" id="tl5" style="top:280px"><span class="p">› </span><div id="caret2" data-layout-allow-overlap style="position:absolute;top:5px;width:12px;height:26px;background:var(--term-prompt);will-change:transform;"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="s5" class="clip" data-start="8.300" data-duration="1.700">
+    <div id="st5" class="stage">
+  <div class="atm u-grid"></div>
+      <div id="closewrap">
+        <div id="mark" class="display"><span class="mask"><span class="w">Ultrademo</span></span></div>
+        <div id="markrule"></div>
+        <div id="url" class="mono">ultrademo.net</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="reg" style="left:30px;top:30px"></div><div class="reg" style="right:30px;top:30px"></div><div class="reg" style="left:30px;bottom:30px"></div><div class="reg" style="right:30px;bottom:30px"></div>
+  <div id="band" class="atm"></div><div id="flash" class="atm"></div>
+</div>
+<script>
+  const S = {"easing": {"entry": "expo.out", "exit": "power4.in", "ambient": "none", "pop": "expo.out", "counter": "power3.out", "wipe": null}, "rhythm": {"entrance": 0.4, "stagger": 0.05}, "text_animation": "rise-mask", "transition": {"kind": "zoom", "duration": 0.4, "flash": false, "band": false}, "moments": [[0, 2.0], [2.0, 4.5], [4.5, 6.5], [6.5, 8.5], [8.5, 10.0]]};
+  const tl = gsap.timeline({ paused: true });
+  const EASE = S.easing;
+  // Moment windows (seconds) and the transition each boundary uses; the strip is identical for every style.
+  const M = S.moments; // [[start,end],...]
+  const TD = S.transition.duration;
+  // ---- shared text animation (hook line, close wordmark): one choice per style, all seek-safe fromTo at absolute times
+  function splitWords(el, accentIndex) {
+    const words = el.textContent.split(" ");
+    el.textContent = "";
+    return words.map((w, i) => {
+      const mask = document.createElement("span"); mask.className = "mask";
+      const span = document.createElement("span"); span.className = "w" + (i === accentIndex ? " accent-word" : ""); span.textContent = w;
+      mask.appendChild(span); el.appendChild(mask);
+      if (i < words.length - 1) el.appendChild(document.createTextNode(" "));
+      return span;
+    });
+  }
+  function splitChars(span) {
+    const t = span.textContent; span.textContent = "";
+    return t.split("").map(c => { const s = document.createElement("span"); s.className = "ch"; s.textContent = c; span.appendChild(s); return s; });
+  }
+  const SCR = "AXZ#%&@/*+=KQW"; // deterministic scramble glyphs
+  function textIn(targets, t0, opts) {
+    // targets: array of word spans; animates by S.text_animation. opts: {stagger, dur, chars}
+    const o = Object.assign({ stagger: S.rhythm.stagger, dur: S.rhythm.entrance }, opts || {});
+    const kind = S.text_animation;
+    targets.forEach((w, i) => {
+      const at = t0 + i * o.stagger;
+      switch (kind) {
+        case "rise-mask":
+          tl.fromTo(w, { yPercent: 110, opacity: 1 }, { yPercent: 0, duration: o.dur, ease: EASE.entry }, at); break;
+        case "fade-up":
+          tl.fromTo(w, { y: 26, opacity: 0 }, { y: 0, opacity: 1, duration: o.dur, ease: EASE.entry }, at); break;
+        case "slam":
+          tl.fromTo(w, { scale: 1.35, opacity: 0, y: 40 }, { scale: 1, opacity: 1, y: 0, duration: Math.max(0.25, o.dur * 0.7), ease: EASE.entry }, at); break;
+        case "blur-in":
+          tl.fromTo(w, { filter: "blur(18px)", opacity: 0, scale: 1.06 }, { filter: "blur(0px)", opacity: 1, scale: 1, duration: o.dur, ease: EASE.entry }, at); break;
+        case "scale-in":
+          tl.fromTo(w, { scale: 0.6, opacity: 0 }, { scale: 1, opacity: 1, duration: o.dur, ease: EASE.entry }, at); break;
+        case "squash":
+          tl.fromTo(w, { scaleX: 1.7, scaleY: 0.6, opacity: 0 }, { scaleX: 1, scaleY: 1, opacity: 1, duration: o.dur, ease: EASE.entry }, at); break;
+        case "write-on":
+          tl.fromTo(w, { clipPath: "inset(-10% 100% -15% 0)", opacity: 1 }, { clipPath: "inset(-10% 0% -15% 0)", duration: o.dur * 1.3, ease: "power1.inOut" }, at); break;
+        case "stepped":
+          tl.fromTo(w, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: o.dur, ease: "steps(4)" }, at); break;
+        case "word-blur":
+          tl.fromTo(w, { filter: "blur(10px)", opacity: 0 }, { filter: "blur(0px)", opacity: 1, duration: o.dur * 1.6, ease: EASE.entry }, at); break;
+        case "letters": case "drop": case "scramble": case "type": case "flip": {
+          const chars = splitChars(w);
+          chars.forEach((c, j) => {
+            const cat = at + j * (o.chars || 0.035);
+            if (kind === "letters") tl.fromTo(c, { y: 50, opacity: 0, rotation: (j % 2 ? 14 : -14) }, { y: 0, opacity: 1, rotation: 0, duration: o.dur, ease: EASE.entry }, cat);
+            else if (kind === "drop") tl.fromTo(c, { y: -90, opacity: 0, rotation: (j % 2 ? 28 : -28) }, { y: 0, opacity: 1, rotation: 0, duration: o.dur, ease: EASE.entry }, cat);
+            else if (kind === "flip") tl.fromTo(c, { rotationX: 90, opacity: 0, transformOrigin: "50% 100%" }, { rotationX: 0, opacity: 1, duration: o.dur, ease: EASE.entry }, cat);
+            else if (kind === "type") { tl.fromTo(c, { opacity: 0 }, { opacity: 1, duration: 0.01, ease: "none" }, cat); }
+            else { // scramble: a ghost glyph shows first, the real one snaps in
+              const g = document.createElement("span"); g.className = "ch ghost"; g.textContent = c.textContent === " " ? " " : SCR[(i * 7 + j * 3) % SCR.length];
+              g.style.position = "absolute"; g.style.left = "0"; g.style.top = "0"; c.style.position = "relative"; c.appendChild(g);
+              const gi = c.firstChild; // text node
+              tl.fromTo(c, { opacity: 0 }, { opacity: 1, duration: 0.01, ease: "none" }, cat);
+              tl.fromTo(g, { opacity: 1 }, { opacity: 0, duration: 0.01, ease: "none" }, cat + 0.12 + (j % 3) * 0.05);
+              c.classList.add("has-ghost");
+            }
+          });
+          break; }
+        default:
+          tl.fromTo(w, { y: 26, opacity: 0 }, { y: 0, opacity: 1, duration: o.dur, ease: EASE.entry }, at);
+      }
+    });
+  }
+  // ---- transitions between moments: in-stage sits above out-stage (later in DOM)
+  function transition(outStage, inStage, tb) {
+    const k = S.transition.kind, d = TD;
+    if (d <= 0 || k === "cut") {
+      if (S.transition.flash) tl.fromTo("#flash", { opacity: 0.9 }, { opacity: 0, duration: 0.22, ease: "power2.out", immediateRender: false }, tb);
+      return;
+    }
+    const a = tb - d / 2;
+    switch (k) {
+      case "crossfade":
+        tl.fromTo(inStage, { opacity: 0 }, { opacity: 1, duration: d, ease: "power2.inOut" }, a);
+        tl.to(outStage, { opacity: 0, duration: d, ease: "power2.inOut", immediateRender: false }, a); break;
+      case "blur":
+        tl.fromTo(inStage, { opacity: 0, filter: "blur(18px)" }, { opacity: 1, filter: "blur(0px)", duration: d, ease: EASE.entry }, a);
+        tl.to(outStage, { opacity: 0, filter: "blur(14px)", duration: d * 0.7, ease: "power2.in", immediateRender: false }, a); break;
+      case "wipe":
+        tl.fromTo(inStage, { clipPath: "inset(0 100% 0 0)" }, { clipPath: "inset(0 0% 0 0)", duration: d, ease: EASE.wipe || "power3.inOut" }, a);
+        if (S.transition.band) tl.fromTo("#band", { xPercent: -100 }, { xPercent: 100, duration: d, ease: EASE.wipe || "power3.inOut" }, a - d * 0.08);
+        break;
+      case "wipe-up":
+        tl.fromTo(inStage, { clipPath: "inset(100% 0 0 0)" }, { clipPath: "inset(0% 0 0 0)", duration: d, ease: EASE.wipe || "expo.inOut" }, a); break;
+      case "iris":
+        tl.fromTo(inStage, { clipPath: "circle(0% at 50% 50%)" }, { clipPath: "circle(80% at 50% 50%)", duration: d, ease: EASE.wipe || "power2.in" }, a); break;
+      case "push":
+        tl.fromTo(inStage, { x: 1280 }, { x: 0, duration: d, ease: EASE.wipe || "power3.inOut" }, a);
+        tl.to(outStage, { x: -1280, duration: d, ease: EASE.wipe || "power3.inOut", immediateRender: false }, a); break;
+      case "zoom":
+        tl.fromTo(inStage, { scale: 0.82, opacity: 0 }, { scale: 1, opacity: 1, duration: d, ease: EASE.entry }, a);
+        tl.to(outStage, { scale: 1.25, opacity: 0, duration: d, ease: "power3.in", immediateRender: false }, a); break;
+      case "glitch": {
+        const j = [[-18, 3], [14, -2], [-7, 1], [0, 0]];
+        j.forEach((v, i) => tl.set(outStage, { x: v[0], skewX: v[1] }, a + i * 0.035));
+        tl.set(inStage, { x: 16, skewX: -3 }, tb); tl.set(inStage, { x: -10, skewX: 2 }, tb + 0.035); tl.set(inStage, { x: 0, skewX: 0 }, tb + 0.07);
+        if (S.transition.flash) tl.fromTo("#flash", { opacity: 0.55 }, { opacity: 0, duration: 0.1, ease: "none", immediateRender: false }, tb);
+        break; }
+      case "slide-down":
+        tl.fromTo(inStage, { y: -720 }, { y: 0, duration: d, ease: EASE.wipe || "power4.out" }, a); break;
+      default:
+        tl.fromTo(inStage, { opacity: 0 }, { opacity: 1, duration: d, ease: "power2.inOut" }, a);
+        tl.to(outStage, { opacity: 0, duration: d, ease: "power2.inOut", immediateRender: false }, a);
+    }
+  }
+  // ---- time-driven content (counter, typing, caret, timecode): pure functions of t, written on every render
+  const R = []; // renderers: fn(t)
+  function renderAt(t) { for (const f of R) f(t); }
+  {
+    const words = splitWords(document.getElementById("hook"), 3);
+    // accent-word highlight bar sits behind the accent word (only when the style asks for it)
+    const aw = document.querySelector("#hook .accent-word");
+    const hi = document.createElement("span"); hi.id = "hi"; aw.parentNode.insertBefore(hi, aw);
+    gsap.set("#hi", { scaleX: 0 });
+    tl.fromTo("#kicker .w", { y: 14, opacity: 0 }, { y: 0, opacity: 1, duration: S.rhythm.entrance, ease: EASE.entry }, 0.1);
+    textIn(words, 0.22);
+    const settled = 0.22 + 3 * S.rhythm.stagger + S.rhythm.entrance;
+    tl.fromTo("#hi", { scaleX: 0 }, { scaleX: 1, duration: 0.4, ease: "power3.out" }, Math.min(settled, 1.25));
+    tl.fromTo("#hookrule", { scaleX: 0 }, { scaleX: 1, duration: 0.5, ease: EASE.entry }, Math.min(settled + 0.05, 1.3));
+    // a slow settle keeps the hook alive until the boundary
+    tl.fromTo("#hook", { scale: 1.0 }, { scale: 1.02, duration: 1.2, ease: "sine.inOut" }, 0.8);
+  }
+
+  {
+    const t0 = M[1][0] - TD / 2 + 0.05, e = S.rhythm.entrance, st = S.rhythm.stagger;
+    tl.fromTo("#card", { y: 46, opacity: 0, scale: 0.97 }, { y: 0, opacity: 1, scale: 1, duration: e * 1.2, ease: EASE.entry }, t0);
+    tl.fromTo(["#card .ck", "#card .title"], { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: e, ease: EASE.entry, stagger: st }, t0 + 0.15);
+    tl.fromTo("#pill", { scale: 0.5, opacity: 0 }, { scale: 1, opacity: 1, duration: e, ease: EASE.pop }, t0 + 0.35);
+    tl.fromTo(".thumb", { y: 22, opacity: 0, scale: 0.94 }, { y: 0, opacity: 1, scale: 1, duration: e, ease: EASE.entry, stagger: st * 1.2 }, t0 + 0.4);
+    tl.fromTo("#btn", { y: 14, opacity: 0 }, { y: 0, opacity: 1, duration: e, ease: EASE.entry, stagger: st }, t0 + 0.55);
+    // the one action: Re-run pressed, the thumbnails refresh in turn
+    const p = M[1][1] - 0.75;
+    tl.fromTo("#btn", { scale: 1 }, { scale: 0.94, duration: 0.09, ease: "power2.in" }, p);
+    tl.to("#btn", { scale: 1, duration: 0.25, ease: EASE.pop, immediateRender: false }, p + 0.09);
+    tl.fromTo(".thumb", { opacity: 1 }, { opacity: 0.35, duration: 0.08, ease: "none", stagger: 0.07, immediateRender: false }, p + 0.12);
+    tl.to(".thumb", { opacity: 1, duration: 0.22, ease: "power2.out", stagger: 0.07, immediateRender: false }, p + 0.2);
+    if (EASE.ambient !== "none") tl.fromTo("#card", { y: 0 }, { y: -5, duration: 1.0, ease: EASE.ambient, immediateRender: false }, t0 + e * 1.2 + 0.1);
+  }
+
+  {
+    const t0 = M[2][0] - TD / 2, e = S.rhythm.entrance;
+    const c0 = t0 + 0.1, cd = 1.25, easeFn = gsap.parseEase(EASE.counter);
+    const numEl = document.getElementById("num");
+    R.push(t => { const p = Math.max(0, Math.min(1, (t - c0) / cd)); numEl.textContent = String(Math.round(easeFn(p) * 12)); });
+    tl.fromTo("#num", { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: e, ease: EASE.entry }, t0);
+    textIn([document.getElementById("unit")], t0 + 0.12);
+    tl.fromTo("#numfill", { scaleX: 0 }, { scaleX: 1, duration: cd, ease: EASE.counter }, c0);
+    tl.fromTo("#numlabel", { y: 14, opacity: 0 }, { y: 0, opacity: 1, duration: e, ease: EASE.entry }, c0 + cd * 0.55);
+    tl.fromTo("#num", { scale: 1.0 }, { scale: 1.03, duration: 0.6, ease: "sine.inOut", immediateRender: false }, c0 + cd);
+  }
+
+  {
+    const t0 = M[3][0] - TD / 2, e = S.rhythm.entrance;
+    tl.fromTo("#term", { y: 34, opacity: 0, scale: 0.98 }, { y: 0, opacity: 1, scale: 1, duration: e * 1.1, ease: EASE.entry }, t0);
+    const TEXT = "make the launch video for orbit.app", CPS = 48, ty0 = t0 + 0.25, tyEnd = ty0 + TEXT.length / CPS;
+    const typed = document.getElementById("typed"), caret = document.getElementById("caret"), caret2 = document.getElementById("caret2");
+    const promptW = document.querySelector("#tl1 .p").getBoundingClientRect().width;
+    const probe = document.createElement("span"); probe.style.visibility = "hidden"; typed.parentNode.appendChild(probe);
+    const edges = []; for (let i = 0; i <= TEXT.length; i++) { probe.textContent = TEXT.slice(0, i); edges.push(promptW + probe.getBoundingClientRect().width); }
+    probe.remove();
+    const r1 = tyEnd + 0.28, r2 = r1 + 0.32, r3 = r2 + 0.32, p2 = r3 + 0.3;
+    R.push(t => {
+      const n = Math.max(0, Math.min(TEXT.length, Math.floor((t - ty0) * CPS)));
+      typed.textContent = TEXT.slice(0, n);
+      const blink = (Math.floor(t * 2.5) % 2) === 0;
+      caret.style.transform = "translateX(" + edges[n] + "px)";
+      caret.style.opacity = t < r1 ? (t < ty0 ? (blink ? 1 : 0) : 1) : 0;
+      caret2.style.opacity = (t >= p2 && blink) ? 1 : 0;
+    });
+    gsap.set("#caret2", { x: promptW });
+    tl.fromTo("#tl2", { y: 10, opacity: 0 }, { y: 0, opacity: 1, duration: 0.3, ease: "power2.out" }, r1);
+    tl.fromTo("#tl3", { y: 10, opacity: 0 }, { y: 0, opacity: 1, duration: 0.3, ease: "power2.out" }, r2);
+    tl.fromTo("#tl4", { y: 10, opacity: 0 }, { y: 0, opacity: 1, duration: 0.3, ease: "power2.out" }, r3);
+    tl.fromTo("#tl5", { opacity: 0 }, { opacity: 1, duration: 0.1, ease: "none" }, p2);
+  }
+
+  {
+    const t0 = M[4][0] - TD / 2 + 0.05, e = S.rhythm.entrance;
+    textIn([document.querySelector("#mark .w")], t0, { chars: 0.045 });
+    tl.fromTo("#markrule", { scaleX: 0 }, { scaleX: 1, duration: 0.5, ease: EASE.entry }, t0 + e * 0.8);
+    tl.fromTo("#url", { y: 12, opacity: 0 }, { y: 0, opacity: 1, duration: e, ease: EASE.entry }, t0 + e * 0.8 + 0.15);
+    tl.fromTo("#mark", { scale: 1 }, { scale: 1.025, duration: 1.1, ease: "sine.inOut", immediateRender: false }, 8.9);
+  }
+
+  // transitions at each boundary
+  const stages = ["#st1", "#st2", "#st3", "#st4", "#st5"];
+  for (let i = 0; i < 4; i++) transition(stages[i], stages[i + 1], M[i][1]);
+  gsap.set('#band', { xPercent: -100 });
+  tl.to({}, { duration: 10 }, 0); // full-span anchor
+  // the time-driven writers run on update and on every seek
+  tl.to({ k: 0 }, { k: 1, duration: 10, ease: "none", onUpdate: () => renderAt(tl.time()) }, 0);
+  const baseRender = tl.render; tl.render = function () { const r = baseRender.apply(this, arguments); renderAt(this.time()); return r; };
+  renderAt(0);
+  window.__timelines = window.__timelines || {};
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

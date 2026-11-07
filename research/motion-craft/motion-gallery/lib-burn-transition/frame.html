@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-burn-transition</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #171a21; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #171a21; color: #ece8df;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; overflow: hidden; }
+  .panel { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  .panel.pa { background: #2a2f3a; }
+  .panel.pb { background: #171a21; }
+  .card { position: absolute; left: 264px; top: 110px; width: 640px; height: 360px; background: #1f232c; border: 2px solid #ece8df; border-radius: 24px; }
+  .card .lab { position: absolute; left: 56px; top: 48px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #a7adbb; }
+  .card .h1 { position: absolute; left: 56px; top: 80px; font-size: 56px; font-weight: 700; line-height: 64px; white-space: nowrap; }
+  .card .sub { position: absolute; left: 56px; top: 160px; font-size: 22px; color: #a7adbb; white-space: nowrap; }
+  .card .btn { position: absolute; left: 56px; top: 240px; width: 200px; height: 60px; border-radius: 14px; background: #f2c200; border: 2px solid #ece8df;
+    font-size: 20px; font-weight: 700; line-height: 56px; text-align: center; color: #1d1c1a; }
+  .card.b .h1 { font-size: 96px; line-height: 104px; top: 74px; font-variant-numeric: tabular-nums; }
+  .card.b .sub { top: 190px; }
+  .card .av { position: absolute; top: 44px; width: 56px; height: 56px; border-radius: 50%; border: 2px solid #ece8df; background: #2a2f3a;
+    font-size: 18px; font-weight: 700; line-height: 52px; text-align: center; will-change: transform; }
+  .card .av.v1 { left: 396px; } .card .av.v2 { left: 456px; } .card .av.v3 { left: 516px; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #a7adbb; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #ece8df; font-weight: 700; }
+  #label .l-sep { color: #6d7380; }
+
+  #cv { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div class="panel pb" id="B" data-layout-allow-overlap data-layout-allow-overflow><div class="card b" data-layout-allow-overlap data-layout-allow-occlusion><div class="lab" data-layout-allow-overlap data-layout-allow-occlusion>This month</div><div class="h1" data-layout-allow-overlap data-layout-allow-occlusion>12,480</div><div class="sub" data-layout-allow-overlap data-layout-allow-occlusion>invites sent</div><div class="av v1" data-layout-allow-overlap data-layout-allow-occlusion>JD</div><div class="av v2" data-layout-allow-overlap data-layout-allow-occlusion>SK</div><div class="av v3" data-layout-allow-overlap data-layout-allow-occlusion>ML</div></div></div>
+      <canvas id="cv" width="1168" height="580" data-layout-allow-overlap></canvas>
+    </div>
+    <div id="label"><span class="l-name">Burn transition</span><span class="l-sep">·</span><span>Transitions</span><span class="l-sep">·</span><span>high</span></div>
+  </section>
+</div>
+<script>
+  const A_HTML = "<div class=\"card a\" data-layout-allow-overlap data-layout-allow-occlusion><div class=\"lab\" data-layout-allow-overlap data-layout-allow-occlusion>Orbit</div><div class=\"h1\" data-layout-allow-overlap data-layout-allow-occlusion>Invite your team</div><div class=\"sub\" data-layout-allow-overlap data-layout-allow-occlusion>3 seats left on this plan</div><div class=\"btn\" data-layout-allow-overlap data-layout-allow-occlusion>Continue</div></div>";
+  const B_HTML = "<div class=\"card b\" data-layout-allow-overlap data-layout-allow-occlusion><div class=\"lab\" data-layout-allow-overlap data-layout-allow-occlusion>This month</div><div class=\"h1\" data-layout-allow-overlap data-layout-allow-occlusion>12,480</div><div class=\"sub\" data-layout-allow-overlap data-layout-allow-occlusion>invites sent</div><div class=\"av v1\" data-layout-allow-overlap data-layout-allow-occlusion>JD</div><div class=\"av v2\" data-layout-allow-overlap data-layout-allow-occlusion>SK</div><div class=\"av v3\" data-layout-allow-overlap data-layout-allow-occlusion>ML</div></div>";
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+  // Second beat: the three avatars on the new card pop in so the clip keeps moving after the transition.
+  function avatars(at) {
+    tl.fromTo(".av.v1", { scale: 0.4, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.5, ease: "back.out(1.8)" }, at);
+    tl.fromTo(".av.v2", { scale: 0.4, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.5, ease: "back.out(1.8)" }, at + 0.1);
+    tl.fromTo(".av.v3", { scale: 0.4, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.5, ease: "back.out(1.8)" }, at + 0.2);
+  }
+
+  // Burn transition: scene A is drawn once as pixels; a seeded value-noise field plus the distance from the button
+  // gives every pixel a burn time; the threshold rises with the timeline and a rim just ahead of it is tinted hot.
+  const W = 1168, H = 580, RIM = 0.035;
+  const FONT = '-apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif';
+  const cv = document.getElementById("cv"), ctx = cv.getContext("2d");
+  const off = document.createElement("canvas"); off.width = W; off.height = H;
+  const o = off.getContext("2d");
+  o.fillStyle = "#2a2f3a"; o.fillRect(0, 0, W, H);
+  o.fillStyle = "#1f232c"; o.strokeStyle = "#ece8df"; o.lineWidth = 2; o.beginPath(); o.roundRect(265, 111, 638, 358, 24); o.fill(); o.stroke();
+  o.fillStyle = "#a7adbb"; o.font = "13px " + FONT; o.fillText("O R B I T", 320, 168);
+  o.fillStyle = "#ece8df"; o.font = "700 56px " + FONT; o.fillText("Invite your team", 318, 242);
+  o.fillStyle = "#a7adbb"; o.font = "22px " + FONT; o.fillText("3 seats left on this plan", 320, 294);
+  o.fillStyle = "#f2c200"; o.beginPath(); o.roundRect(321, 351, 200, 60, 14); o.fill(); o.stroke();
+  o.fillStyle = "#1d1c1a"; o.font = "700 20px " + FONT; o.textAlign = "center"; o.fillText("Continue", 421, 388); o.textAlign = "left";
+  const A = o.getImageData(0, 0, W, H).data;
+  function rand(seed){ let a = seed >>> 0 || 1; return function(){ a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+  const rnd = rand(1);
+  const NZ = new Float32Array(W * H);
+  const sm = t => t * t * (3 - 2 * t);
+  [[150, 0.5], [70, 0.3], [32, 0.14], [12, 0.06]].forEach(([g, amp]) => {
+    const gw = Math.ceil(W / g) + 2, gh = Math.ceil(H / g) + 2, L = new Float32Array(gw * gh);
+    for (let i = 0; i < L.length; i++) L[i] = rnd();
+    for (let y = 0; y < H; y++) {
+      const fy = y / g, iy = fy | 0, ty = sm(fy - iy);
+      for (let x = 0; x < W; x++) {
+        const fx = x / g, ix = fx | 0, tx = sm(fx - ix), k = iy * gw + ix;
+        const a = L[k] + (L[k + 1] - L[k]) * tx, b = L[k + gw] + (L[k + gw + 1] - L[k + gw]) * tx;
+        NZ[y * W + x] += (a + (b - a) * ty) * amp;
+      }
+    }
+  });
+  // Burn time per pixel: 0.62 distance from the button centre (421, 381) + 0.38 noise, normalised to 0..1.
+  const OX = 421, OY = 381, MAXD = Math.hypot(W - OX, OY) ;
+  let lo = 1e9, hi = -1e9;
+  for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
+    const i = y * W + x, v = 0.62 * Math.hypot(x - OX, y - OY) / MAXD + 0.38 * NZ[i];
+    NZ[i] = v; if (v < lo) lo = v; if (v > hi) hi = v;
+  }
+  for (let i = 0; i < NZ.length; i++) NZ[i] = (NZ[i] - lo) / (hi - lo);
+  const out = ctx.createImageData(W, H);
+  const HOT = [255, 217, 160], ORG = [255, 138, 61], YEL = [242, 194, 0], CHAR = [40, 24, 14];
+  function draw(p) {
+    const th = -RIM - 0.01 + p * (1 + RIM + 0.02), d = out.data;
+    for (let i = 0, j = 0; i < NZ.length; i++, j += 4) {
+      const e = NZ[i] - th;
+      if (e < 0) { d[j + 3] = 0; continue; }
+      if (e < RIM) {
+        const k = e / RIM;  // 0 at the burning edge, 1 at the untouched side
+        let c;
+        if (k < 0.18) c = HOT; else if (k < 0.5) c = ORG; else c = YEL;
+        const mix = k < 0.5 ? 1 : 1 - (k - 0.5) / 0.5;  // yellow fades into the charred scene
+        const base = k < 0.75 ? CHAR : [A[j], A[j + 1], A[j + 2]];
+        d[j] = c[0] * mix + base[0] * (1 - mix); d[j + 1] = c[1] * mix + base[1] * (1 - mix); d[j + 2] = c[2] * mix + base[2] * (1 - mix);
+        d[j + 3] = k < 0.04 ? 140 : 255; continue;
+      }
+      d[j] = A[j]; d[j + 1] = A[j + 1]; d[j + 2] = A[j + 2]; d[j + 3] = 255;
+    }
+    ctx.putImageData(out, 0, 0);
+  }
+  const T0 = 0.45, DUR = 1.4, easeP = gsap.parseEase("power1.inOut");
+  let last = -1;
+  function renderAt(t) {
+    const p = easeP(Math.max(0, Math.min(1, (t - T0) / DUR)));
+    if (p === last) return; last = p; draw(p);
+  }
+  renderAt(0);
+  tl.to({ k: 0 }, { k: 1, duration: 3, ease: "none", onUpdate: () => renderAt(tl.time()) }, 0);
+  const baseRender = tl.render; tl.render = function () { const r = baseRender.apply(this, arguments); renderAt(this.time()); return r; };
+  avatars(2.1);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

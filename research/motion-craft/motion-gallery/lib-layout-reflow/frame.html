@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-layout-reflow</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  .headline { position: absolute; left: 80px; top: 60px; font-size: 42px; font-weight: 700; }
+  .grid { position: absolute; left: 80px; top: 155px; width: 1008px; height: 310px; }
+  .item { position: absolute; width: 320px; height: 140px; will-change: transform; }
+  .item .bg { position: absolute; left: 0; top: 0; width: 320px; height: 140px; background: #fffdf8; border: 2px solid #1d1c1a; border-radius: 20px; will-change: transform; }
+  .item .num { position: absolute; left: 25px; top: 40px; font-size: 44px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .item .text { position: absolute; left: 100px; top: 52px; font-size: 25px; }
+  .item.cut .bg { border-color: #f2c200; }
+  .item .marker { position: absolute; right: 20px; top: 14px; color: #f2c200; font-size: 28px; font-weight: 700; }
+  .item.hi .num { color: #f2c200; }
+  .after { position: absolute; right: 80px; top: 500px; font-size: 18px; color: #6d6a63; opacity: 0; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div class="headline">Invite your team</div>
+      <div class="grid">
+        <div class="item" id="i1" style="left:0px;top:0px"><div class="bg"></div><span class="num">01</span><span class="text">Invite</span></div>
+        <div class="item cut" id="i2" style="left:344px;top:0px"><div class="bg"></div><span class="num">02</span><span class="text">Duplicate</span><span class="marker">×</span></div>
+        <div class="item" id="i3" style="left:688px;top:0px"><div class="bg"></div><span class="num">03</span><span class="text">Review</span></div>
+        <div class="item hi" id="i4" style="left:0px;top:164px"><div class="bg"></div><span class="num">04</span><span class="text">3 seats left</span></div>
+        <div class="item" id="i5" style="left:344px;top:164px"><div class="bg"></div><span class="num">05</span><span class="text">Send</span></div>
+        <div class="item" id="i6" style="left:688px;top:164px"><div class="bg" id="bg6"></div><span class="num">06</span><span class="text">12,480 invites sent</span></div>
+      </div>
+      <div class="after" id="after">6 cards to 5</div>
+    </div>
+    <div id="label"><span class="l-name">Layout reflow</span><span class="l-sep">·</span><span>UI Demo</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+  // Card 02 is removed; the others glide into the freed slots (transforms only) and the last card grows to fill two columns by scaling its surface from its left edge.
+  tl.fromTo("#i2", { opacity: 1, scale: 1, transformOrigin: "50% 50%" }, { opacity: 0, scale: 0.86, duration: 0.25 }, 0.4);
+  const moves = { "#i1": [0, 0], "#i3": [-344, 0], "#i4": [688, -164], "#i5": [-344, 0], "#i6": [-344, 0] };
+  Object.keys(moves).forEach((id) => {
+    const [x, y] = moves[id];
+    if (x === 0 && y === 0) return;
+    tl.fromTo(id, { x: 0, y: 0 }, { x, y, duration: 0.65, ease: "power2.inOut" }, 0.75);
+  });
+  tl.fromTo("#bg6", { scaleX: 1, transformOrigin: "0% 50%" }, { scaleX: 664 / 320, duration: 0.65, ease: "power2.inOut" }, 0.75);
+  tl.fromTo("#after", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 1.6);
+  // Settle beat: the grown card lifts a little and rests.
+  tl.fromTo("#i6", { y: 0 }, { y: -8, duration: 0.45, ease: "sine.inOut", yoyo: true, repeat: 1, immediateRender: false }, 2.0);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+{
+  "name": "Card stack shuffle",
+  "family": "UI Demo",
+  "purpose": [
+    "Sequence"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "gsap",
+  "tags": [
+    "stack shuffle",
+    "rotating card stack",
+    "ui",
+    "cards",
+    "lift",
+    "reorder",
+    "depth swap"
+  ],
+  "one_line": "Three member cards sit in an offset stack; the rear card lifts and tilts, travels over the others and settles at the front while they step back, then the next rear card does the same."
+}

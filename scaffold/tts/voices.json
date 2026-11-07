@@ -1,0 +1,157 @@
+{
+ "note": "The voices a user can pick at intake (D-71). Each has one sample reading the same line, made by scripts/voice-samples.mjs into tts/samples/. ElevenLabs voices show only when the project has an ElevenLabs key; free voices always. house: the recommended voice for that gender (ElevenLabs Rachelle and Killian when a key is present; otherwise Mary and James). Notes are audition verdicts (2026-11-01), in plain words for the user.",
+ "sample_line": "Did you ship a new feature? Let Ultrademo turn your product into a launch video, ready to post.",
+ "sample_say": "Did you ship a new feature? Let Ultra-demo turn your product into a launch video, ready to post.",
+ "voices": [
+  {
+   "id": "rachelle",
+   "name": "Rachelle",
+   "provider": "elevenlabs",
+   "spec": "elevenlabs:G3Il95iGz0lclzMySk7L",
+   "gender": "female",
+   "accent": "American",
+   "house": true,
+   "desc": "Confident and emotive, made for ads and launches."
+  },
+  {
+   "id": "killian",
+   "name": "Killian",
+   "provider": "elevenlabs",
+   "spec": "elevenlabs:Whez8hBysHW6IVGRgjGA",
+   "gender": "male",
+   "accent": "American",
+   "house": true,
+   "desc": "Clear, warm and emotive, made for ads and launches."
+  },
+  {
+   "id": "jesse",
+   "name": "Jesse",
+   "provider": "elevenlabs",
+   "spec": "elevenlabs:sXcl1NoQHcU7NRh6Na5D",
+   "gender": "male",
+   "accent": "American",
+   "desc": "Confident and warm, a little older."
+  },
+  {
+   "id": "asher",
+   "name": "Asher",
+   "provider": "elevenlabs",
+   "spec": "elevenlabs:UaYTS0wayjmO9KD1LR4R",
+   "gender": "male",
+   "accent": "British",
+   "desc": "Confident and playful, social-media style."
+  },
+  {
+   "id": "kristen",
+   "name": "Kristen",
+   "provider": "elevenlabs",
+   "spec": "elevenlabs:dfeOmy6Uay63tNhyO99j",
+   "gender": "female",
+   "accent": "American",
+   "desc": "Natural and focused; an unhurried pace, better for longer videos."
+  },
+  {
+   "id": "cherry",
+   "name": "Cherry",
+   "provider": "elevenlabs",
+   "spec": "elevenlabs:CKIFaViQ01w5KSowrs6X",
+   "gender": "female",
+   "accent": "American",
+   "desc": "High energy, buy-now excitement; best for short ads."
+  },
+  {
+   "id": "amelia",
+   "name": "Amelia",
+   "provider": "elevenlabs",
+   "spec": "elevenlabs:ZF6FPAbjXT4488VcRRnw",
+   "gender": "female",
+   "accent": "British",
+   "desc": "Enthusiastic and expressive storyteller."
+  },
+  {
+   "id": "tiffany",
+   "name": "Tiffany",
+   "provider": "elevenlabs",
+   "spec": "elevenlabs:UM3TOcm5kcELI84GFoAz",
+   "gender": "female",
+   "accent": "American",
+   "desc": "Conversational and relaxed; suits feature walkthroughs more than launches."
+  },
+  {
+   "id": "eve",
+   "name": "Eve",
+   "provider": "pocket",
+   "spec": "pocket:eve",
+   "gender": "female",
+   "accent": "American",
+   "desc": "Free voice, runs on your computer."
+  },
+  {
+   "id": "mary",
+   "name": "Mary",
+   "provider": "pocket",
+   "spec": "pocket:mary",
+   "gender": "female",
+   "accent": "American",
+   "desc": "Free voice, conversational; runs on your computer.",
+   "house": true
+  },
+  {
+   "id": "maria-kasper",
+   "name": "Maria",
+   "provider": "chatterbox",
+   "spec": "chatterbox:clone=tts/references/maria-kasper.wav",
+   "gender": "female",
+   "accent": "American",
+   "desc": "Free and expressive, from an openly licensed reader; slower to make on a laptop.",
+   "credit": "Hi-Fi TTS speaker 8051 (Maria Kasper, LibriVox), CC BY 4.0; tts/references/ATTRIBUTION.md"
+  },
+  {
+   "id": "cori-samuel",
+   "name": "Cori",
+   "provider": "chatterbox",
+   "spec": "chatterbox:clone=tts/references/cori-samuel.wav",
+   "gender": "female",
+   "accent": "British",
+   "desc": "Free and expressive, from an openly licensed reader; slower to make on a laptop.",
+   "credit": "Hi-Fi TTS speaker 92 (Cori Samuel, LibriVox), CC BY 4.0; tts/references/ATTRIBUTION.md"
+  },
+  {
+   "id": "george",
+   "name": "George",
+   "provider": "pocket",
+   "spec": "pocket:george",
+   "gender": "male",
+   "accent": "American",
+   "desc": "Free voice, runs on your computer."
+  },
+  {
+   "id": "alba",
+   "name": "Alba",
+   "provider": "pocket",
+   "spec": "pocket:alba",
+   "gender": "male",
+   "accent": "American",
+   "desc": "Free voice, runs on your computer."
+  },
+  {
+   "id": "stuart-bell",
+   "name": "Stuart",
+   "provider": "pocket",
+   "spec": "pocket:stuart_bell",
+   "gender": "male",
+   "accent": "British",
+   "desc": "Free voice, runs on your computer."
+  },
+  {
+   "id": "james",
+   "name": "James",
+   "provider": "chatterbox",
+   "spec": "chatterbox:default",
+   "gender": "male",
+   "accent": "American",
+   "desc": "Free and more expressive; slower to make on a laptop.",
+   "house": true
+  }
+ ]
+}

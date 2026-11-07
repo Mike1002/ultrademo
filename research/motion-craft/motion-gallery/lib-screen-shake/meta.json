@@ -1,0 +1,23 @@
+{
+  "name": "Screen shake",
+  "family": "Camera",
+  "purpose": [
+    "Emphasis",
+    "Feedback"
+  ],
+  "energy": "high",
+  "tier": 3,
+  "runtime": "gsap",
+  "tags": [
+    "camera",
+    "shake",
+    "impact",
+    "tremble",
+    "stamp",
+    "decay"
+  ],
+  "one_line": "A SENT stamp slams onto a product card and the whole frame trembles side to side for a quarter second with a decaying amplitude, returning exactly to rest; a lighter second hit lands with a +3 chip.",
+  "aliases": [
+    "awesome-ai-motion:camera-shake"
+  ]
+}

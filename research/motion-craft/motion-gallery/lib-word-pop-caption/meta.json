@@ -1,0 +1,19 @@
+{
+  "name": "Word pop caption",
+  "family": "Captions",
+  "purpose": [
+    "Attention",
+    "Feedback"
+  ],
+  "energy": "high",
+  "tier": 2,
+  "runtime": "gsap",
+  "tags": [
+    "word pop captions",
+    "single word caption replacement",
+    "caption",
+    "pop",
+    "short-form"
+  ],
+  "one_line": "Caption words pop in one at a time in groups of three, each overshooting slightly before settling; when a group is done the next replaces it at once, the last word on a yellow pill."
+}

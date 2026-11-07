@@ -1,0 +1,117 @@
+{
+  "id": "acid-chrome",
+  "name": "Acid Chrome",
+  "canvas": "dark",
+  "mood": [
+    "loud",
+    "confident",
+    "glossy"
+  ],
+  "suits": [
+    "brand reels",
+    "portfolio pieces",
+    "hype launches"
+  ],
+  "palette": {
+    "bg": "#0b0b0a",
+    "bg_alt": "#d4ff3a",
+    "surface": "#161615",
+    "surface_2": "#222221",
+    "ink": "#f2f1ea",
+    "muted": "#8d8e88",
+    "line": "rgba(242,241,234,0.2)",
+    "accent": "#d4ff3a",
+    "accent_2": "#b6dc1c",
+    "on_accent": "#0b0b0a",
+    "pill_bg": "#d4ff3a",
+    "pill_ink": "#0b0b0a",
+    "pill_dot": "#0b0b0a"
+  },
+  "type": {
+    "display": {
+      "family": "Inter Tight",
+      "weight": 900,
+      "hook_px": 120,
+      "stat_px": 280,
+      "mark_px": 150,
+      "transform": "uppercase",
+      "tracking": "-0.03em",
+      "line_height": "0.9",
+      "style": "normal",
+      "generic": "sans",
+      "card_title_px": 28,
+      "card_title_tracking": "-0.02em"
+    },
+    "body": {
+      "family": "Inter Tight",
+      "weight": 500,
+      "generic": "sans"
+    },
+    "mono": {
+      "family": "JetBrains Mono",
+      "weight": 700
+    },
+    "label": {
+      "family": "JetBrains Mono",
+      "weight": 500,
+      "transform": "uppercase",
+      "tracking": "0.08em",
+      "generic": "sans",
+      "px": 13
+    }
+  },
+  "easing": {
+    "entry": "expo.out",
+    "exit": "power3.in",
+    "ambient": "none",
+    "pop": "back.out(1.4)",
+    "counter": "power3.out",
+    "wipe": null
+  },
+  "rhythm": {
+    "energy": "high",
+    "entrance": 0.42,
+    "stagger": 0.07
+  },
+  "transition": {
+    "kind": "cut",
+    "duration": 0,
+    "flash": false,
+    "band": false
+  },
+  "text_animation": "rise-mask",
+  "accent_word": "none",
+  "layout": "left",
+  "atmosphere": [
+    "hud"
+  ],
+  "shape": {
+    "radius_card": 0,
+    "radius_button": 999,
+    "radius_pill": 999,
+    "border": "none",
+    "border_px": 0,
+    "shadow": "none",
+    "rule_px": 8
+  },
+  "stat_colour": "ink",
+  "direction_settings": {
+    "energy": "high",
+    "density": "balanced",
+    "ground": "alternating",
+    "depth": "flat",
+    "camera": "locked",
+    "type": "loud",
+    "texture": "clean",
+    "colour": "one-accent",
+    "product_presence": "illustrated",
+    "sound": "beat-driven",
+    "voice": "spoken-headline"
+  },
+  "notes": "Hard cuts on the beat with a full background swap (black to acid lime), Inter Tight 900 uppercase statements, mono HUD; the chrome object is left out.",
+  "transitions": {
+    "between_moments": "cut",
+    "duration_s": 0,
+    "text": "rise-mask"
+  }
+}

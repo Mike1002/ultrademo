@@ -1,0 +1,21 @@
+{
+  "name": "Unit-to-aggregate transition",
+  "family": "Data",
+  "purpose": [
+    "Explanation",
+    "Comparison"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "svg",
+  "tags": [
+    "individual-to-aggregate continuum",
+    "data",
+    "units",
+    "bins",
+    "bar chart",
+    "aggregate",
+    "svg"
+  ],
+  "one_line": "Thirty-six scattered invite squares travel into four team bins and stack into the shape of a bar chart; the bar outlines appear around them, then the bars fill yellow and their counts land on top."
+}

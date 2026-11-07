@@ -1,0 +1,25 @@
+{
+  "name": "Chromatic glitch",
+  "family": "Text & Typography",
+  "purpose": [
+    "entrance",
+    "emphasis",
+    "punctuation"
+  ],
+  "energy": "high",
+  "tags": [
+    "glitch",
+    "rgb-split",
+    "chromatic",
+    "slice",
+    "jitter",
+    "stutter",
+    "text",
+    "snap",
+    "distortion"
+  ],
+  "one_line": "A headline stretches in while yellow and grey ghost copies stutter behind it, snaps sharp, then twitches twice more in short bursts and holds clean (the colour-split form).",
+  "aliases": [
+    "awesome-ai-motion:glitch-rgb-split"
+  ]
+}

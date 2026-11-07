@@ -1,0 +1,21 @@
+{
+  "name": "Track data race",
+  "family": "Data",
+  "purpose": [
+    "Data evidence",
+    "Comparison"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "svg",
+  "tags": [
+    "sports track data race",
+    "data",
+    "race",
+    "track",
+    "checkpoints",
+    "lanes",
+    "svg"
+  ],
+  "one_line": "Three named runner dots travel one lap of an oval track at speeds set by their recorded checkpoint times, the leader's dot and lane turning yellow as the lead changes and a clock counts to the finish."
+}

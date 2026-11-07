@@ -1,0 +1,21 @@
+{
+  "name": "Reaction cut",
+  "family": "Transitions",
+  "purpose": [
+    "Feedback",
+    "Explanation"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "gsap",
+  "tags": [
+    "reaction cut",
+    "transitions",
+    "cutaway",
+    "hard cut",
+    "face",
+    "avatar",
+    "feedback"
+  ],
+  "one_line": "The seats tag on the invite card turns yellow and pops; the view cuts straight to a shape-avatar face for Sam Kim whose brows lift, eyes widen and mouth opens while the shot eases in, then cuts back to the card."
+}

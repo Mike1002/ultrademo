@@ -1,0 +1,24 @@
+{
+  "name": "SVG path draw",
+  "family": "SVG & Icons",
+  "purpose": [
+    "entrance",
+    "icon",
+    "data",
+    "reveal"
+  ],
+  "energy": "steady",
+  "tags": [
+    "svg",
+    "stroke",
+    "draw",
+    "path",
+    "reveal",
+    "icon",
+    "vector"
+  ],
+  "one_line": "A yellow ring traces itself from the top, a check mark is drawn inside it, then a chart line draws across to a yellow end dot, and the text fades in once the last stroke has settled.",
+  "aliases": [
+    "awesome-ai-motion:line-draw"
+  ]
+}

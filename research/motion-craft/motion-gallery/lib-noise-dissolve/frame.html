@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-noise-dissolve</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; overflow: hidden; }
+  .panel { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  .art { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  .art.a { background: #ece7da; }
+  .art.b { background: #f6f3ec; }
+  .card { position: absolute; left: 204px; top: 100px; width: 760px; height: 380px; background: #fffdf8;
+    border: 2px solid #1d1c1a; border-radius: 24px; }
+  .card .eyebrow { position: absolute; left: 56px; top: 44px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  .card .h1 { position: absolute; left: 56px; top: 84px; font-size: 56px; font-weight: 700; line-height: 1.1; white-space: nowrap; }
+  .card .sub { position: absolute; left: 56px; top: 164px; font-size: 22px; color: #6d6a63; }
+  .card .btn { position: absolute; left: 56px; top: 254px; width: 200px; height: 60px; background: #f2c200; border: 2px solid #1d1c1a;
+    border-radius: 14px; font-size: 20px; font-weight: 700; line-height: 56px; text-align: center; color: #1d1c1a; }
+  .card .av { position: absolute; top: 44px; width: 64px; height: 64px; border-radius: 50%; border: 2px solid #1d1c1a; background: #ece7da;
+    font-size: 20px; font-weight: 700; line-height: 60px; text-align: center; }
+  .card .av.v1 { left: 540px; } .card .av.v2 { left: 592px; } .card .av.v3 { left: 644px; }
+  .art.b .num { position: absolute; left: 92px; top: 86px; font-size: 136px; font-weight: 700; line-height: 1; letter-spacing: -.02em;
+    font-variant-numeric: tabular-nums; }
+  .art.b .cap { position: absolute; left: 100px; top: 236px; font-size: 22px; color: #6d6a63; }
+  .art.b .row { position: absolute; left: 96px; width: 520px; height: 60px; border-top: 2px solid #e3ded2; font-size: 22px; line-height: 58px;
+    padding-left: 30px; will-change: transform; }
+  .art.b .row .dot { position: absolute; left: 0; top: 24px; width: 12px; height: 12px; border-radius: 50%; background: #f2c200; }
+  .art.b .row.r1 { top: 320px; } .art.b .row.r2 { top: 384px; } .art.b .row.r3 { top: 448px; }
+  .art.b .disc { will-change: transform; position: absolute; left: 780px; top: 150px; width: 280px; height: 280px; border-radius: 50%; background: #f2c200;
+    border: 2px solid #1d1c1a; text-align: center; color: #1d1c1a; }
+  .art.b .disc .pct { position: absolute; left: 0; width: 276px; top: 86px; font-size: 72px; font-weight: 700; line-height: 1; }
+  .art.b .disc .pl { position: absolute; left: 0; width: 276px; top: 166px; font-size: 18px; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+
+  #cv { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div class="panel" id="B"><div class="art b" data-layout-allow-overlap data-layout-allow-occlusion data-layout-allow-overflow><div class="num" data-layout-allow-overlap data-layout-allow-occlusion>12,480</div><div class="cap" data-layout-allow-overlap data-layout-allow-occlusion>invites sent</div><div class="row r1" data-layout-allow-overlap data-layout-allow-occlusion><span class="dot"></span>Jamie Dalton</div><div class="row r2" data-layout-allow-overlap data-layout-allow-occlusion><span class="dot"></span>Sam Kim</div><div class="row r3" data-layout-allow-overlap data-layout-allow-occlusion><span class="dot"></span>Morgan Lee</div><div class="disc" data-layout-allow-overlap data-layout-allow-occlusion><div class="pct" data-layout-allow-overlap data-layout-allow-occlusion>98%</div><div class="pl" data-layout-allow-overlap data-layout-allow-occlusion>accepted</div></div></div></div>
+      <canvas id="cv" width="1168" height="580" data-layout-allow-overlap></canvas>
+    </div>
+    <div id="label"><span class="l-name">Noise dissolve</span><span class="l-sep">·</span><span>Transitions</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const W = 1168, H = 580, RIM = 0.022;
+  const INK = [29, 28, 26], PAPER = [246, 243, 236], YEL = [242, 194, 0], MUTED = [161, 157, 147];
+  const cv = document.getElementById("cv"), ctx = cv.getContext("2d");
+  // Scene A (the dark cover) is drawn once and kept as pixels.
+  const off = document.createElement("canvas"); off.width = W; off.height = H;
+  const o = off.getContext("2d");
+  const FONT = '-apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif';
+  o.fillStyle = "rgb(" + INK + ")"; o.fillRect(0, 0, W, H);
+  o.fillStyle = "rgb(" + MUTED + ")"; o.font = "13px " + FONT; o.fillText("O R B I T", 112, 92);
+  o.fillStyle = "rgb(" + PAPER + ")"; o.font = "700 96px " + FONT; o.fillText("Invite your team", 108, 232);
+  o.font = "22px " + FONT; o.fillStyle = "rgb(" + MUTED + ")"; o.fillText("3 seats left", 112, 290);
+  o.fillStyle = "rgb(" + YEL + ")"; o.beginPath(); o.roundRect(112, 348, 200, 60, 14); o.fill();
+  o.fillStyle = "rgb(" + INK + ")"; o.font = "700 20px " + FONT; o.textAlign = "center"; o.fillText("Continue", 212, 385); o.textAlign = "left";
+  o.strokeStyle = "rgba(246,243,236,0.25)"; o.lineWidth = 2;
+  for (let i = 0; i < 3; i++) { o.beginPath(); o.arc(940 + i * 56, 120, 30, 0, Math.PI * 2); o.stroke(); }
+  o.fillStyle = "rgba(246,243,236,0.12)"; o.fillRect(112, 470, 944, 2);
+  const A = o.getImageData(0, 0, W, H).data;
+
+  // Value noise, four octaves (190, 95, 48, 16 px), seed 71, then rank-equalised to 0..1.
+  function rand(seed){ let a = seed >>> 0 || 1; return function(){ a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+  const rnd = rand(71);
+  const NZ = new Float32Array(W * H);
+  const sm = t => t * t * (3 - 2 * t);
+  [[190, 0.6], [95, 0.26], [48, 0.1], [16, 0.04]].forEach(([g, amp]) => {
+    const gw = Math.ceil(W / g) + 2, gh = Math.ceil(H / g) + 2, L = new Float32Array(gw * gh);
+    for (let i = 0; i < L.length; i++) L[i] = rnd();
+    for (let y = 0; y < H; y++) {
+      const fy = y / g, iy = fy | 0, ty = sm(fy - iy);
+      for (let x = 0; x < W; x++) {
+        const fx = x / g, ix = fx | 0, tx = sm(fx - ix), k = iy * gw + ix;
+        const a = L[k] + (L[k + 1] - L[k]) * tx, b = L[k + gw] + (L[k + gw + 1] - L[k + gw]) * tx;
+        NZ[y * W + x] += (a + (b - a) * ty) * amp;
+      }
+    }
+  });
+  let lo = 1e9, hi = -1e9;
+  for (let i = 0; i < NZ.length; i++) { if (NZ[i] < lo) lo = NZ[i]; if (NZ[i] > hi) hi = NZ[i]; }
+  const BIN = 2048, hist = new Float32Array(BIN + 1);
+  for (let i = 0; i < NZ.length; i++) hist[Math.round((NZ[i] - lo) / (hi - lo) * BIN)]++;
+  for (let b = 1; b <= BIN; b++) hist[b] += hist[b - 1];
+  for (let i = 0; i < NZ.length; i++) NZ[i] = hist[Math.round((NZ[i] - lo) / (hi - lo) * BIN)] / NZ.length;
+  const out = ctx.createImageData(W, H);
+
+  const T0 = 0.3, DUR = 1.9, easeP = gsap.parseEase("power1.inOut");
+  function draw(p) {
+    const th = -RIM - 0.01 + p * (1 + RIM + 0.02);
+    const d = out.data;
+    for (let i = 0, j = 0; i < NZ.length; i++, j += 4) {
+      const e = NZ[i] - th;
+      if (e < 0) { d[j + 3] = 0; continue; }
+      if (e < RIM) {
+        const k = e < RIM * 0.6 ? 1 : 1 - (e - RIM * 0.6) / (RIM * 0.4);
+        d[j] = YEL[0] + (A[j] - YEL[0]) * (1 - k); d[j + 1] = YEL[1] + (A[j + 1] - YEL[1]) * (1 - k);
+        d[j + 2] = YEL[2] + (A[j + 2] - YEL[2]) * (1 - k); d[j + 3] = e < 0.002 ? 150 : 255; continue;
+      }
+      d[j] = A[j]; d[j + 1] = A[j + 1]; d[j + 2] = A[j + 2]; d[j + 3] = 255;
+    }
+    ctx.putImageData(out, 0, 0);
+  }
+  let last = -1;
+  function renderAt(t) {
+    const p = easeP(Math.max(0, Math.min(1, (t - T0) / DUR)));
+    if (p === last) return; last = p; draw(p);
+  }
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+  renderAt(0);
+  tl.to({ k: 0 }, { k: 1, duration: 3, ease: "none", onUpdate: () => renderAt(tl.time()) }, 0);
+  const baseRender = tl.render; tl.render = function () { const r = baseRender.apply(this, arguments); renderAt(this.time()); return r; };
+  const ROWS_AT = 2.15;
+  // Second beat: the three rows of the new scene settle in so the clip keeps moving.
+  tl.fromTo(".art.b .row.r1", { opacity: 0, x: 28 }, { opacity: 1, x: 0, duration: 0.5 }, ROWS_AT);
+  tl.fromTo(".art.b .row.r2", { opacity: 0, x: 28 }, { opacity: 1, x: 0, duration: 0.5 }, ROWS_AT + 0.1);
+  tl.fromTo(".art.b .row.r3", { opacity: 0, x: 28 }, { opacity: 1, x: 0, duration: 0.5 }, ROWS_AT + 0.2);
+  tl.fromTo(".art.b .disc", { scale: 0.6, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.7, ease: "back.out(1.5)" }, ROWS_AT + 0.05);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+{
+  "name": "Histogram rebinning",
+  "family": "Data",
+  "purpose": [
+    "Explanation",
+    "Comparison"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "svg",
+  "tags": [
+    "histogram bin redistribution",
+    "data",
+    "histogram",
+    "bins",
+    "dots",
+    "distribution",
+    "svg"
+  ],
+  "one_line": "Forty invites-per-day observations stacked in eight narrow bins, two clear peaks, travel to their places in four wider bins where the peaks merge into one flat block, outlines and edge labels changing with them; then they return to the finer bins."
+}

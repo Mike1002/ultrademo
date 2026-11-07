@@ -1,0 +1,125 @@
+{
+  "id": "dot-field",
+  "name": "Dot Field",
+  "canvas": "dark",
+  "mood": [
+    "energetic",
+    "crafted",
+    "showy"
+  ],
+  "suits": [
+    "showreels",
+    "portfolio pieces",
+    "kinetic launches"
+  ],
+  "palette": {
+    "bg": "#0c0c0d",
+    "bg_alt": "#2b45ff",
+    "surface": "#18181a",
+    "surface_2": "#242427",
+    "ink": "#f4f4f0",
+    "muted": "rgba(244,244,240,0.75)",
+    "line": "rgba(244,244,240,0.2)",
+    "accent": "#ff5a1f",
+    "accent_2": "#d4ff3a",
+    "on_accent": "#0c0c0d",
+    "button_bg": "#d4ff3a",
+    "button_ink": "#0c0c0d",
+    "pill_bg": "#ff5a1f",
+    "pill_ink": "#0c0c0d",
+    "pill_dot": "#0c0c0d",
+    "term_bg": "#0c0c0d",
+    "term_ink": "#f4f4f0",
+    "term_muted": "#8a8a86",
+    "term_line": "rgba(244,244,240,0.2)",
+    "term_prompt": "#d4ff3a",
+    "term_ok": "#ff5a1f"
+  },
+  "type": {
+    "display": {
+      "family": "Archivo Black",
+      "weight": 400,
+      "hook_px": 112,
+      "stat_px": 270,
+      "mark_px": 148,
+      "transform": "uppercase",
+      "tracking": "-0.01em",
+      "line_height": "0.9",
+      "style": "normal",
+      "generic": "sans",
+      "card_title_px": 26
+    },
+    "body": {
+      "family": "JetBrains Mono",
+      "weight": 500,
+      "generic": "sans"
+    },
+    "mono": {
+      "family": "JetBrains Mono",
+      "weight": 500
+    },
+    "label": {
+      "family": "JetBrains Mono",
+      "weight": 500,
+      "transform": "uppercase",
+      "tracking": "0.1em",
+      "generic": "sans",
+      "px": 13
+    }
+  },
+  "easing": {
+    "entry": "back.out(1.8)",
+    "exit": "power3.in",
+    "ambient": "none",
+    "pop": "expo.out",
+    "counter": "power3.out",
+    "wipe": null
+  },
+  "rhythm": {
+    "energy": "high",
+    "entrance": 0.45,
+    "stagger": 0.05
+  },
+  "transition": {
+    "kind": "cut",
+    "duration": 0,
+    "flash": false,
+    "band": false
+  },
+  "text_animation": "drop",
+  "accent_word": "script",
+  "layout": "center",
+  "atmosphere": [
+    "hud",
+    "dots:24"
+  ],
+  "shape": {
+    "radius_card": 0,
+    "radius_button": 0,
+    "radius_pill": 999,
+    "border": "none",
+    "border_px": 0,
+    "shadow": "none",
+    "rule_px": 8
+  },
+  "stat_colour": "accent",
+  "direction_settings": {
+    "energy": "high",
+    "density": "dense",
+    "ground": "alternating",
+    "depth": "flat",
+    "camera": "handheld",
+    "type": "loud",
+    "texture": "textured",
+    "colour": "full-palette",
+    "product_presence": "illustrated",
+    "sound": "beat-driven",
+    "voice": "spoken-headline"
+  },
+  "notes": "Viewfinder HUD over everything, hard cuts that switch the whole background colour, Archivo Black letters tumbling in, an Instrument Serif italic accent word, a dot field.",
+  "transitions": {
+    "between_moments": "cut",
+    "duration_s": 0,
+    "text": "drop"
+  }
+}

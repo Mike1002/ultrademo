@@ -1,0 +1,20 @@
+{
+  "name": "Time compression",
+  "family": "Transitions",
+  "purpose": [
+    "Explanation",
+    "Sequence"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "gsap",
+  "tags": [
+    "time compression / ellipsis",
+    "transitions",
+    "speed-up",
+    "ellipsis",
+    "progress",
+    "jump cut"
+  ],
+  "one_line": "An upload bar that would take minutes creeps at real speed, then races ahead under a ×8 badge and an ellipsis marker while the clock readout skips, and the result lands as Done."
+}

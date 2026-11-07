@@ -1,0 +1,21 @@
+{
+  "name": "Hold to confirm",
+  "family": "UI Demo",
+  "purpose": [
+    "Feedback",
+    "Emphasis"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "gsap",
+  "tags": [
+    "hold progress confirmation",
+    "ui",
+    "button",
+    "fill",
+    "progress",
+    "check mark",
+    "cursor"
+  ],
+  "one_line": "A cursor presses and holds a Continue button; a yellow fill grows across it for 1.2 s, then the label pops into a check mark reading Confirmed and the three invitees light up."
+}

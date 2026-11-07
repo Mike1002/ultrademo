@@ -1,0 +1,46 @@
+{
+  "name": "Capsule",
+  "fonts": {
+    "display": "Bodoni Moda",
+    "body": "Space Grotesk",
+    "mono": "Space Grotesk",
+    "label": "Space Grotesk"
+  },
+  "font_families": [
+    "Bodoni Moda",
+    "Space Grotesk"
+  ],
+  "font_substitutions": {},
+  "canvas": "light",
+  "mood": [
+    "candy",
+    "crafted",
+    "friendly"
+  ],
+  "suits": [
+    "consumer apps",
+    "creator tools",
+    "playful SaaS"
+  ],
+  "direction_settings": {
+    "energy": "steady",
+    "density": "balanced",
+    "ground": "light",
+    "depth": "layered",
+    "camera": "locked",
+    "type": "display",
+    "texture": "grain",
+    "colour": "full-palette",
+    "product_presence": "illustrated",
+    "sound": "scored",
+    "voice": "narrated"
+  },
+  "duration_s": 10,
+  "size": [
+    1280,
+    720
+  ],
+  "fps": 30,
+  "strip": "D-58 style strip: hook · project card · number · agent · close",
+  "one_line": ""
+}

@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>stat-bars-and-fills</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  /* split-frame card: 840x400 at (220,160) */
+  .card { position: absolute; left: 220px; top: 160px; width: 840px; height: 400px; background: #fffdf8;
+    border: 2px solid #1d1c1a; border-radius: 24px; }
+  .label { position: absolute; left: 48px; top: 52px; font-size: 20px; color: #6d6a63; }
+  .num { position: absolute; left: 48px; top: 88px; font-size: 120px; font-weight: 800; letter-spacing: -0.03em; line-height: 1;
+    font-variant-numeric: tabular-nums; }
+  .sub { position: absolute; left: 48px; top: 226px; font-size: 20px; color: #6d6a63; }
+  /* progress bar: track 360x16, fill width:100% scaled from left */
+  .track { position: absolute; left: 48px; top: 290px; width: 360px; height: 16px; background: #e3ded2; border-radius: 8px; overflow: hidden; }
+  .fill { position: absolute; left: 0; top: 0; width: 100%; height: 100%; background: #f2c200; transform-origin: left center; will-change: transform; }
+  /* growth bars: 5 bars, authored heights, grow up from baseline */
+  .bars { position: absolute; left: 500px; top: 60px; width: 296px; height: 280px; display: flex; align-items: flex-end; gap: 14px; }
+  .bar { width: 48px; background: #1d1c1a; border-radius: 6px 6px 0 0; transform-origin: bottom center; will-change: transform; }
+  .bar.accent { background: #f2c200; }
+  .base { position: absolute; left: 500px; top: 342px; width: 296px; height: 2px; background: #1d1c1a; }
+  .ticks { position: absolute; left: 500px; top: 352px; width: 296px; display: flex; gap: 14px; }
+  .tick { width: 48px; text-align: center; font-size: 16px; color: #6d6a63; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div class="card" id="card">
+      <div class="label">Every frame is code</div>
+      <div class="num" id="num">0%</div>
+      <div class="sub">of frames rendered</div>
+      <div class="track"><div class="fill" id="fill"></div></div>
+      <div class="bars" id="bars">
+        <div class="bar" style="height: 96px"></div>
+        <div class="bar" style="height: 140px"></div>
+        <div class="bar" style="height: 124px"></div>
+        <div class="bar" style="height: 196px"></div>
+        <div class="bar accent" style="height: 262px"></div>
+      </div>
+      <div class="base"></div>
+      <div class="ticks"><div class="tick">Mon</div><div class="tick">Tue</div><div class="tick">Wed</div><div class="tick">Thu</div><div class="tick">Fri</div></div>
+    </div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true });
+  const PCT = 0.92, PCT2 = 0.98, START = 0.3, FILL_DUR = 1.0;
+  // 1 — growth bars: scaleY 0 -> 1, stagger 0.08, last bar is the accent (heights authored in CSS).
+  tl.fromTo(".bar", { scaleY: 0 }, { scaleY: 1, duration: 0.7, ease: "power3.out", stagger: 0.08 }, START);
+  // 2 — progress fill: scaleX from the left origin, same start and ease as the number so they land together.
+  tl.fromTo("#fill", { scaleX: 0 }, { scaleX: PCT, duration: FILL_DUR, ease: "power2.out" }, START);
+  // Second beat: the stat updates 92 -> 98 and the accent bar nudges, so the clip never sits still.
+  tl.to("#fill", { scaleX: PCT2, duration: 0.5, ease: "power2.out" }, 2.0);
+  tl.to(".bar.accent", { scaleY: 1.06, duration: 0.25, ease: "power2.out", yoyo: true, repeat: 1 }, 2.0);
+  // Paired counter as a pure function of time (matches the fill's start, duration and ease).
+  const numEl = document.getElementById("num");
+  const e1 = gsap.parseEase("power2.out");
+  function renderAt(t) {
+    let v;
+    if (t <= START) v = 0;
+    else if (t < START + FILL_DUR) v = PCT * 100 * e1((t - START) / FILL_DUR);
+    else if (t < 2.0) v = PCT * 100;
+    else if (t < 2.5) v = PCT * 100 + (PCT2 - PCT) * 100 * e1((t - 2.0) / 0.5);
+    else v = PCT2 * 100;
+    numEl.textContent = Math.round(v) + "%";
+  }
+  renderAt(0);
+  tl.to({ k: 0 }, { k: 1, duration: 3, ease: "none", onUpdate: () => renderAt(tl.time()) }, 0);
+  const baseRender = tl.render; tl.render = function () { const r = baseRender.apply(this, arguments); renderAt(this.time()); return r; };
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

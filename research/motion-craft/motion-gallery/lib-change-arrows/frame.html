@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-change-arrows</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  #chart { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  #cap { position: absolute; left: 260px; top: 8px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  text { font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .grid { stroke: #e3ded2; stroke-width: 2; }
+  .axis { stroke: #1d1c1a; stroke-width: 2; }
+  .tx { font-size: 16px; fill: #6d6a63; }
+  .name { font-size: 22px; font-weight: 700; fill: #1d1c1a; }
+  .row line.arrow { stroke: #1d1c1a; stroke-width: 3; }
+  .row polygon { fill: #1d1c1a; }
+  .row .was { fill: #fffdf8; stroke: #a19d93; stroke-width: 3; }
+  .row .now { fill: #1d1c1a; stroke: #1d1c1a; stroke-width: 3; }
+  .row.acc line.arrow { stroke: #f2c200; stroke-width: 7; }
+  .row.acc polygon { fill: #f2c200; stroke: #1d1c1a; stroke-width: 2; }
+  .row.acc .now { fill: #f2c200; }
+  .delta { font-size: 20px; font-weight: 700; fill: #1d1c1a; font-variant-numeric: tabular-nums; }
+  .legend { font-size: 15px; fill: #6d6a63; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div id="cap">This month vs last · invites accepted</div>
+      <svg id="chart" viewBox="0 0 1168 580" width="1168" height="580">
+        <g id="grid"></g>
+        <line class="axis" x1="260" y1="530" x2="1080" y2="530"/>
+        <g id="rows"></g>
+        <circle class="was" cx="860" cy="46" r="7" fill="#fffdf8" stroke="#a19d93" stroke-width="3"/><text class="legend" x="876" y="51">Last month</text>
+        <circle cx="990" cy="46" r="7" fill="#1d1c1a"/><text class="legend" x="1006" y="51">This month</text>
+      </svg>
+    </div>
+    <div id="label"><span class="l-name">Connected change arrows</span><span class="l-sep">·</span><span>Data</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const SVG = "http://www.w3.org/2000/svg";
+  const X = v => 260 + v * 8.2, RY = [150, 265, 380, 495];
+  // Four members: last month's value (fixed) and this month's value (the arrow's destination).
+  const rows = [
+    { n: "Jamie Dalton", a: 42, b: 78, acc: true },
+    { n: "Sam Kim", a: 55, b: 63 },
+    { n: "Morgan Lee", a: 30, b: 48 },
+    { n: "Support", a: 61, b: 52 }
+  ];
+  const grid = document.getElementById("grid"), rowsG = document.getElementById("rows");
+  const mk = (tag, cls, a, parent) => { const e = document.createElementNS(SVG, tag); if (cls) e.setAttribute("class", cls); for (const k in a) e.setAttribute(k, a[k]); parent.appendChild(e); return e; };
+  [0, 25, 50, 75, 100].forEach(v => { mk("line", "grid", { x1: X(v), x2: X(v), y1: 80, y2: 530 }, grid); const t = mk("text", "tx", { x: X(v), y: 556, "text-anchor": "middle" }, grid); t.textContent = v; });
+  rows.forEach((r, i) => {
+    const g = mk("g", "row" + (r.acc ? " acc" : ""), {}, rowsG), y = RY[i], dir = r.b >= r.a ? 1 : -1;
+    const t = mk("text", "name", { x: 236, y: y + 8, "text-anchor": "end" }, g); t.textContent = r.n;
+    mk("line", "grid", { x1: 260, x2: 1080, y1: y, y2: y }, g);
+    r.line = mk("line", "arrow", { x1: X(r.a), y1: y, x2: X(r.a), y2: y }, g);
+    r.head = mk("polygon", "", { points: dir > 0 ? "-18,-9 0,0 -18,9" : "18,-9 0,0 18,9" }, g);
+    r.was = mk("circle", "was", { cx: X(r.a), cy: y, r: 10 }, g);
+    r.now = mk("circle", "now", { cx: X(r.b), cy: y, r: 10, opacity: 0 }, g);
+    r.delta = mk("text", "delta", { x: X(Math.max(r.a, r.b)) + 26, y: y + 7, opacity: 0 }, g); r.delta.textContent = (r.b >= r.a ? "+" : "−") + Math.abs(r.b - r.a);
+    r.g = g; r.dir = dir;
+  });
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power2.inOut", duration: 0.9 } });
+  rows.forEach((r, i) => {
+    const t0 = 0.3 + i * 0.1, y = RY[i];
+    // The previous point stays fixed; the line's far end and the arrowhead travel together to the updated value.
+    tl.fromTo(r.line, { attr: { x2: X(r.a) } }, { attr: { x2: X(r.b) - r.dir * 12 }, duration: 0.9 }, t0);
+    tl.fromTo(r.head, { x: X(r.a), y: y, opacity: 0 }, { x: X(r.b), y: y, opacity: 1, duration: 0.9 }, t0);
+    tl.fromTo(r.head, { opacity: 0 }, { opacity: 1, duration: 0.12, ease: "none", immediateRender: false }, t0);
+    tl.fromTo(r.now, { opacity: 0 }, { opacity: 1, duration: 0.2, ease: "none" }, t0 + 0.8);
+    tl.fromTo(r.delta, { opacity: 0, x: -10 }, { opacity: 1, x: 0, duration: 0.3, ease: "power2.out" }, t0 + 0.9);
+  });
+  // Second beat: the yellow row is singled out; the other rows dim and the yellow head rings once.
+  rows.forEach(r => { if (!r.acc) tl.fromTo(r.g, { opacity: 1 }, { opacity: 0.45, duration: 0.4, ease: "none", immediateRender: false }, 2.1); });
+  tl.fromTo(rows[0].now, { attr: { r: 10 } }, { attr: { r: 16 }, duration: 0.3, ease: "power2.inOut", yoyo: true, repeat: 1, immediateRender: false }, 2.2);
+  tl.fromTo(rows[0].delta, { x: 0 }, { x: 8, duration: 0.3, ease: "power2.inOut", yoyo: true, repeat: 1, immediateRender: false }, 2.2);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

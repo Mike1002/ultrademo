@@ -1,0 +1,21 @@
+{
+  "name": "Frame border transition",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Branding"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "svg",
+  "tags": [
+    "frame border transition",
+    "transitions",
+    "frame",
+    "border",
+    "cover",
+    "iris",
+    "branded"
+  ],
+  "one_line": "A thick ink frame grows inward from every edge until it covers an invite card, then pulls back outward and stops as a wide border enclosing the stats card, which settles into place and the frame breathes once."
+}

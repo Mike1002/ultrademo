@@ -1,0 +1,22 @@
+{
+  "name": "Object-constant update",
+  "family": "Data",
+  "purpose": [
+    "Explanation",
+    "Data evidence"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "svg",
+  "tags": [
+    "object-constant update",
+    "object permanence",
+    "object constancy / keyed identity",
+    "object constancy / persistent anchor",
+    "data",
+    "identity",
+    "keyed",
+    "svg"
+  ],
+  "one_line": "Six named, coloured member dots keep their colour and name while gliding from a ranked bar list into a scatter plot of invites against reply rate, and back again."
+}

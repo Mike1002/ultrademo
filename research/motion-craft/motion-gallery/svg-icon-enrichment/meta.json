@@ -1,0 +1,20 @@
+{
+  "name": "SVG icon enrichment",
+  "family": "SVG & Icons",
+  "purpose": [
+    "icon",
+    "idle",
+    "micro-animation"
+  ],
+  "energy": "steady",
+  "tags": [
+    "svg",
+    "icon",
+    "animation",
+    "internal",
+    "micro-animation",
+    "pulse",
+    "rotation"
+  ],
+  "one_line": "Three icons wake up from the inside: the clock's hands turn at different speeds, the fan blades spin, the check badge pulses with a lagging ring, and a dashed line beneath them streams left to right."
+}

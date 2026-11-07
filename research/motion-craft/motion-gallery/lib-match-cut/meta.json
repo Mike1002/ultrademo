@@ -1,0 +1,19 @@
+{
+  "name": "Match cut",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Sequence"
+  ],
+  "energy": "steady",
+  "tier": 2,
+  "runtime": "gsap",
+  "tags": [
+    "graphic match",
+    "match cut",
+    "position carry",
+    "hard cut",
+    "transitions"
+  ],
+  "one_line": "A sentence's yellow full stop grows, then a hard cut lands on a chart dot at the same position and size, so the eye stays in place."
+}

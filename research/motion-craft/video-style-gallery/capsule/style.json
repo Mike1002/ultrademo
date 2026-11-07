@@ -1,0 +1,128 @@
+{
+  "id": "capsule",
+  "name": "Capsule",
+  "canvas": "light",
+  "mood": [
+    "candy",
+    "crafted",
+    "friendly"
+  ],
+  "suits": [
+    "consumer apps",
+    "creator tools",
+    "playful SaaS"
+  ],
+  "palette": {
+    "bg": "#F5F5F0",
+    "bg_alt": "#F5F5F0",
+    "surface": "#FFFFFF",
+    "surface_2": "#F2D160",
+    "ink": "#1A1A1A",
+    "muted": "#5c5c5c",
+    "line": "#1E1E1E",
+    "accent": "#E85D4E",
+    "accent_2": "#C5B5E0",
+    "on_accent": "#ffffff",
+    "shadow": "rgba(26,26,26,0.12)",
+    "pill_bg": "#C4D94E",
+    "pill_ink": "#1A1A1A",
+    "pill_dot": "#1A1A1A",
+    "thumb": "#C5B5E0",
+    "glow_1": "#8BB4F7",
+    "glow_2": "#C5B5E0",
+    "term_bg": "#1A1A1A",
+    "term_ink": "#F5F5F0",
+    "term_muted": "#8f8f8f",
+    "term_line": "#1E1E1E",
+    "term_prompt": "#F2D160",
+    "term_ok": "#A8E6CF"
+  },
+  "type": {
+    "display": {
+      "family": "Bodoni Moda",
+      "weight": 700,
+      "hook_px": 92,
+      "stat_px": 240,
+      "mark_px": 136,
+      "transform": "none",
+      "tracking": "-0.02em",
+      "line_height": "1.02",
+      "style": "normal",
+      "generic": "serif",
+      "card_title_px": 30
+    },
+    "body": {
+      "family": "Space Grotesk",
+      "weight": 400,
+      "generic": "sans"
+    },
+    "mono": {
+      "family": "Space Grotesk",
+      "weight": 500
+    },
+    "label": {
+      "family": "Space Grotesk",
+      "weight": 600,
+      "transform": "uppercase",
+      "tracking": "0.12em",
+      "generic": "sans",
+      "px": 13
+    }
+  },
+  "easing": {
+    "entry": "back.out(1.4)",
+    "exit": "power2.in",
+    "ambient": "sine.inOut",
+    "pop": "back.out(2)",
+    "counter": "power2.out",
+    "wipe": null
+  },
+  "rhythm": {
+    "energy": "steady",
+    "entrance": 0.5,
+    "stagger": 0.08
+  },
+  "transition": {
+    "kind": "iris",
+    "duration": 0.5,
+    "flash": false,
+    "band": false
+  },
+  "text_animation": "scale-in",
+  "accent_word": "none",
+  "layout": "center",
+  "atmosphere": [
+    "glow:0.5",
+    "grain:0.08"
+  ],
+  "shape": {
+    "radius_card": 32,
+    "radius_button": 999,
+    "radius_pill": 999,
+    "border": "bold",
+    "border_px": 2,
+    "shadow": "hard",
+    "rule_px": 6,
+    "hard_offset": 6
+  },
+  "stat_colour": "accent",
+  "direction_settings": {
+    "energy": "steady",
+    "density": "balanced",
+    "ground": "light",
+    "depth": "layered",
+    "camera": "locked",
+    "type": "display",
+    "texture": "grain",
+    "colour": "full-palette",
+    "product_presence": "illustrated",
+    "sound": "scored",
+    "voice": "narrated"
+  },
+  "notes": "Pill geometry with a 2 px ink outline on everything, soft hard-offset shadows, Bodoni Moda against Space Grotesk, grain; iris cuts.",
+  "transitions": {
+    "between_moments": "iris",
+    "duration_s": 0.5,
+    "text": "scale-in"
+  }
+}

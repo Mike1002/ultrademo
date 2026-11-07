@@ -1,0 +1,22 @@
+{
+  "name": "Cube transition",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Explanation"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "webgl",
+  "tags": [
+    "cube rotation",
+    "transitions",
+    "cube",
+    "3d",
+    "rotate",
+    "perspective",
+    "reflection",
+    "dark"
+  ],
+  "one_line": "The invite scene and the stats scene sit on neighbouring faces of a cube that steps back and turns ninety degrees in perspective, with a faint reflection following on the floor."
+}

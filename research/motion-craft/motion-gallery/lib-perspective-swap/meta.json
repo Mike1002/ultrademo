@@ -1,0 +1,22 @@
+{
+  "name": "Perspective swap",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Comparison"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "webgl",
+  "tags": [
+    "perspective swap",
+    "transitions",
+    "swap",
+    "3d",
+    "depth",
+    "cards",
+    "reflection",
+    "dark"
+  ],
+  "one_line": "The invite card in front and the stats card behind it trade places: one slides right and sinks back, the other comes forward to the centre, with their floor reflections following."
+}

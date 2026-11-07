@@ -1,0 +1,19 @@
+{
+  "name": "Split slide",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Sequence"
+  ],
+  "energy": "steady",
+  "tier": 2,
+  "runtime": "gsap",
+  "tags": [
+    "split slide",
+    "transitions",
+    "halves",
+    "doors",
+    "clip-path"
+  ],
+  "one_line": "The first scene is cut into a left and a right half that slide apart like doors, in opposite directions at the same time, uncovering the next scene already sitting underneath."
+}

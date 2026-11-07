@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-shape-morph</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; overflow: hidden; }
+  .shot { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; will-change: transform; }
+  .shot.a { background: #f6f3ec; }
+  .shot.b { background: #ece7da; }
+  .card { position: absolute; left: 324px; top: 120px; width: 520px; height: 330px; background: #fffdf8;
+    border: 2px solid #1d1c1a; border-radius: 22px; }
+  .card .h { position: absolute; left: 44px; top: 46px; font-size: 44px; font-weight: 700; letter-spacing: -0.01em; white-space: nowrap; }
+  .card .s { position: absolute; left: 44px; top: 112px; font-size: 20px; color: #6d6a63; white-space: nowrap; }
+  .card .btn { position: absolute; left: 44px; top: 204px; width: 200px; height: 60px; background: #f2c200;
+    border: 2px solid #1d1c1a; border-radius: 14px; font-size: 20px; font-weight: 700; line-height: 56px; text-align: center; }
+  .big { position: absolute; left: 0; width: 1168px; top: 150px; text-align: center; font-size: 132px; font-weight: 700;
+    font-variant-numeric: tabular-nums; letter-spacing: -0.02em; line-height: 1; will-change: transform; }
+  .big-l { position: absolute; left: 0; width: 1168px; top: 300px; text-align: center; font-size: 22px; color: #6d6a63; }
+  .names { position: absolute; left: 0; width: 1168px; top: 372px; height: 56px; display: flex; justify-content: center; gap: 24px; }
+  .name { width: 190px; height: 50px; line-height: 46px; text-align: center; border: 2px solid #1d1c1a; border-radius: 999px;
+    font-size: 20px; background: #fffdf8; will-change: transform; }
+  .lab { position: absolute; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; white-space: nowrap; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+  #morph { position: absolute; left: 64px; top: 190px; width: 200px; height: 200px; background: #1d1c1a; transform-origin: 0 50%; will-change: transform; }
+  #alab { left: 64px; top: 48px; }
+  #Bm { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; opacity: 0; }
+  #Bm .title { position: absolute; left: 64px; top: 110px; font-size: 56px; font-weight: 700; letter-spacing: -0.01em; white-space: nowrap; }
+  .bar { position: absolute; left: 64px; height: 32px; background: #1d1c1a; transform-origin: 0 50%; will-change: transform; }
+  .bar .bl { position: absolute; left: 100%; top: 0; margin-left: 16px; font-size: 20px; line-height: 32px; color: #6d6a63; white-space: nowrap; }
+  #bval { position: absolute; left: 920px; top: 262px; font-size: 96px; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; line-height: 1; will-change: transform; }
+  #bval span { font-size: 22px; font-weight: 400; color: #6d6a63; margin-left: 10px; letter-spacing: 0; }
+  #jlab { position: absolute; left: 700px; top: 274px; font-size: 20px; line-height: 32px; color: #6d6a63; white-space: nowrap; opacity: 0; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div class="lab" id="alab">Invite your team</div>
+      <div id="Bm" data-layout-allow-overlap data-layout-allow-occlusion><div class="title">12,480 invites sent</div>
+        <div class="bar" id="bar2" style="top:336px;width:210px"><div class="bl">Sam Kim</div></div>
+        <div class="bar" id="bar3" style="top:392px;width:90px"><div class="bl">Morgan Lee</div></div>
+        <div id="bval">98<span>%</span></div></div>
+      <div id="morph" data-layout-allow-overlap data-layout-allow-occlusion></div>
+      <div id="jlab">Jamie Dalton</div>
+    </div>
+    <div id="label"><span class="l-name">Morph</span><span class="l-sep">·</span><span>Transitions</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+  // One element: an ink square turns into a yellow circle, then into the first bar of the chart (620x32), while scene B appears around it.
+  tl.fromTo("#morph", { x: 420, scaleX: 1, scaleY: 1, borderRadius: "0%", backgroundColor: "#1d1c1a" },
+    { borderRadius: "50%", backgroundColor: "#f2c200", duration: 0.6, ease: "power2.inOut" }, 0.3);
+  tl.to("#morph", { x: 0, scaleX: 3.1, scaleY: 0.16, borderRadius: "0%", duration: 0.75, ease: "power3.inOut" }, 1.05);
+  tl.fromTo("#alab", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 1.3);
+  tl.fromTo("#Bm", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 1.55);
+  // Second move: the two smaller bars grow from the left and the row label appears.
+  tl.fromTo("#bar2", { scaleX: 0 }, { scaleX: 1, duration: 0.5, ease: "power3.out" }, 1.85);
+  tl.fromTo("#bar3", { scaleX: 0 }, { scaleX: 1, duration: 0.5, ease: "power3.out" }, 2.0);
+  tl.fromTo("#jlab", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 1.9);
+  tl.fromTo("#bval", { scale: 1 }, { scale: 1.04, duration: 0.6, ease: "sine.inOut" }, 2.4);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

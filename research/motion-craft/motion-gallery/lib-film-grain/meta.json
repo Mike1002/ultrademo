@@ -1,0 +1,27 @@
+{
+  "name": "Film grain",
+  "family": "Texture & Style",
+  "purpose": [
+    "Mood",
+    "Branding"
+  ],
+  "energy": "calm",
+  "tier": 2,
+  "runtime": "canvas",
+  "tags": [
+    "film grain",
+    "film-grain-seeded-flip",
+    "animated noise grain",
+    "animated grain",
+    "noise texture",
+    "noise background",
+    "noise",
+    "grainient",
+    "noise-texture",
+    "noise-background",
+    "texture",
+    "seeded tiles",
+    "12 fps"
+  ],
+  "one_line": "A headline and a yellow disc on paper; a fine grain layer, swapped between eight seeded tiles at 12 fps, slides over the right half so the clean and textured versions sit side by side."
+}

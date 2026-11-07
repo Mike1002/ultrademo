@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-tangent-blur-spin</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; overflow: hidden; }
+  .card { position: absolute; left: 264px; top: 110px; width: 640px; height: 360px; background: #fffdf8; border: 2px solid #1d1c1a; border-radius: 24px; will-change: transform, filter, opacity; }
+  .card .lab { position: absolute; left: 56px; top: 48px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  .card .h1 { position: absolute; left: 56px; top: 80px; font-size: 56px; font-weight: 700; line-height: 64px; white-space: nowrap; }
+  .card .sub { position: absolute; left: 56px; top: 160px; font-size: 22px; color: #6d6a63; }
+  .card .btn { position: absolute; left: 56px; top: 240px; width: 200px; height: 60px; border-radius: 14px; background: #f2c200; border: 2px solid #1d1c1a;
+    font-size: 20px; font-weight: 700; line-height: 56px; text-align: center; }
+  .card.b .h1 { font-size: 96px; line-height: 104px; top: 74px; font-variant-numeric: tabular-nums; }
+  .card.b .sub { top: 190px; }
+  .ghost { pointer-events: none; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage"></div>
+    <div id="label"><span class="l-name">Tangent blur spin</span><span class="l-sep">·</span><span>Transitions</span><span class="l-sep">·</span><span>high</span></div>
+  </section>
+</div>
+<script>
+  const AT = ' data-layout-allow-overlap data-layout-allow-occlusion';
+  const A_INNER = '<div class="lab"' + AT + '>Orbit</div><div class="h1"' + AT + '>Invite your team</div><div class="sub"' + AT + '>3 seats left on this plan</div><div class="btn"' + AT + '>Continue</div>';
+  const B_INNER = '<div class="lab"' + AT + '>This month</div><div class="h1"' + AT + '>12,480</div><div class="sub"' + AT + '>invites sent</div>';
+  // Two trailing ghost copies behind each card smear the motion along the tangent of the spin; the real card sits on top.
+  let html = '';
+  html += '<div class="card ghost" id="ga2"' + AT + '>' + A_INNER + '</div>';
+  html += '<div class="card ghost" id="ga1"' + AT + '>' + A_INNER + '</div>';
+  html += '<div class="card" id="a"' + AT + '>' + A_INNER + '</div>';
+  html += '<div class="card b ghost" id="gb2"' + AT + '>' + B_INNER + '</div>';
+  html += '<div class="card b ghost" id="gb1"' + AT + '>' + B_INNER + '</div>';
+  html += '<div class="card b" id="b"' + AT + '>' + B_INNER + '</div>';
+  document.getElementById("stage").innerHTML = html;
+
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+  // A spins 0 to 90 degrees around its bottom-left corner (falls out of frame, speeding up); B spins -90 to 0 around its
+  // bottom-right corner (rises in, slowing down). Blur and skew follow the speed curve; ghosts lag by 40 and 80 ms.
+  const A0 = 0.8, AD = 0.6, B0 = 1.05, BD = 0.7;
+  const aOrigin = "0% 100%", bOrigin = "100% 100%";
+  [["#a", 0, 1], ["#ga1", 0.04, 0.4], ["#ga2", 0.08, 0.2]].forEach(([sel, lag, op]) => {
+    tl.fromTo(sel, { rotation: 0, skewX: 0, transformOrigin: aOrigin, opacity: sel === "#a" ? 1 : 0, filter: "blur(0px)" },
+      { rotation: 90, duration: AD, ease: "power2.in" }, A0 + lag);
+    tl.fromTo(sel, { skewX: 0 }, { skewX: -14, duration: AD, ease: "power2.in", immediateRender: false }, A0 + lag);
+    tl.fromTo(sel, { filter: "blur(0px)" }, { filter: "blur(7px)", duration: AD, ease: "power2.in", immediateRender: false }, A0 + lag);
+    if (sel !== "#a") {
+      tl.fromTo(sel, { opacity: 0 }, { opacity: op, duration: 0.12, ease: "none", immediateRender: false }, A0 + lag);
+      tl.to(sel, { opacity: 0, duration: 0.15, ease: "none" }, A0 + lag + AD - 0.15);
+    }
+  });
+  [["#b", 0, 1], ["#gb1", 0.04, 0.4], ["#gb2", 0.08, 0.2]].forEach(([sel, lag, op]) => {
+    tl.fromTo(sel, { rotation: -90, skewX: 12, transformOrigin: bOrigin, opacity: 0, filter: "blur(7px)" },
+      { rotation: 0, duration: BD, ease: "power3.out" }, B0 + lag);
+    tl.fromTo(sel, { skewX: 12 }, { skewX: 0, duration: BD, ease: "power3.out", immediateRender: false }, B0 + lag);
+    tl.fromTo(sel, { filter: "blur(7px)" }, { filter: "blur(0px)", duration: BD * 0.8, ease: "power2.out", immediateRender: false }, B0 + lag);
+    if (sel !== "#b") {
+      tl.fromTo(sel, { opacity: 0 }, { opacity: op, duration: 0.06, ease: "none", immediateRender: false }, B0 + lag);
+      tl.to(sel, { opacity: 0, duration: 0.25, ease: "power1.in" }, B0 + lag + 0.3);
+    }
+  });
+  // Cards are out of sight when parked at 90 degrees: A goes dark as it leaves, B appears as it starts to rise.
+  tl.fromTo("#a", { opacity: 1 }, { opacity: 0, duration: 0.034, ease: "none", immediateRender: false }, A0 + AD - 0.02);
+  tl.fromTo("#b", { opacity: 0 }, { opacity: 1, duration: 0.034, ease: "none" }, B0);
+  // Inertia beat: B rocks back a couple of degrees around the same corner and settles, with a touch of blur.
+  tl.to("#b", { rotation: -2.5, duration: 0.3, ease: "power2.out" }, 2.05);
+  tl.to("#b", { rotation: 0, duration: 0.55, ease: "elastic.out(1, 0.5)" }, 2.35);
+  tl.to("#b", { filter: "blur(1.5px)", duration: 0.2, ease: "sine.inOut", yoyo: true, repeat: 1 }, 2.1);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

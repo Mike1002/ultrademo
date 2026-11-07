@@ -1,0 +1,22 @@
+{
+  "name": "Confidence band reveal",
+  "family": "Data",
+  "purpose": [
+    "Explanation",
+    "Comparison"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "svg",
+  "tags": [
+    "confidence-band reveal",
+    "data",
+    "chart",
+    "forecast",
+    "interval",
+    "uncertainty",
+    "clip reveal",
+    "svg"
+  ],
+  "one_line": "An invites forecast line and the translucent yellow band around it unfold together from left to right, the band widening toward December; then more data arrives and the band narrows around the same line."
+}

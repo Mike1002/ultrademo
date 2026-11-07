@@ -1,0 +1,21 @@
+{
+  "name": "Font shuffle",
+  "family": "Typography",
+  "purpose": [
+    "Mood",
+    "Attention"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "css",
+  "tags": [
+    "font shuffle",
+    "typeface shuffle",
+    "type",
+    "beat",
+    "typeface",
+    "steps",
+    "rhythm"
+  ],
+  "one_line": "A sentence stays still while one word swaps typeface on every beat, serif then mono then heavy sans, with a beat dot pulsing under it, and lands back on the original face."
+}

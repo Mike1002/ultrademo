@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-axis-rescale</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  #chart { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  #cap { position: absolute; left: 160px; top: 8px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  text { font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .tick line { stroke: #e3ded2; stroke-width: 2; }
+  .tick text { font-size: 18px; fill: #6d6a63; }
+  .axis { stroke: #1d1c1a; stroke-width: 2; }
+  .mark circle { fill: #f2c200; stroke: #1d1c1a; stroke-width: 3; }
+  .mark text { font-size: 20px; font-weight: 700; fill: #1d1c1a; }
+  #line { fill: none; stroke: #1d1c1a; stroke-width: 3; stroke-linejoin: round; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div id="cap">Invites per week</div>
+      <svg id="chart" viewBox="0 0 1168 580" width="1168" height="580">
+        <g id="ticks">
+          <g class="tick" id="t0"><line x1="160" y1="0" x2="1080" y2="0"/><text x="140" y="6" text-anchor="end">0</text></g>
+          <g class="tick" id="t25"><line x1="160" y1="0" x2="1080" y2="0"/><text x="140" y="6" text-anchor="end">25</text></g>
+          <g class="tick" id="t50"><line x1="160" y1="0" x2="1080" y2="0"/><text x="140" y="6" text-anchor="end">50</text></g>
+          <g class="tick" id="t75"><line x1="160" y1="0" x2="1080" y2="0"/><text x="140" y="6" text-anchor="end">75</text></g>
+          <g class="tick" id="t100"><line x1="160" y1="0" x2="1080" y2="0"/><text x="140" y="6" text-anchor="end">100</text></g>
+          <g class="tick" id="t150"><line x1="160" y1="0" x2="1080" y2="0"/><text x="140" y="6" text-anchor="end">150</text></g>
+          <g class="tick" id="t200"><line x1="160" y1="0" x2="1080" y2="0"/><text x="140" y="6" text-anchor="end">200</text></g>
+        </g>
+        <line class="axis" x1="160" y1="60" x2="160" y2="500"/>
+        <line class="axis" x1="160" y1="500" x2="1080" y2="500"/>
+        <polyline id="line" points=""/>
+        <g id="marks">
+          <g class="mark" id="m0"><circle cx="200" cy="0" r="12"/></g>
+          <g class="mark" id="m1"><circle cx="330" cy="0" r="12"/></g>
+          <g class="mark" id="m2"><circle cx="460" cy="0" r="12"/></g>
+          <g class="mark" id="m3"><circle cx="590" cy="0" r="12"/></g>
+          <g class="mark" id="m4"><circle cx="720" cy="0" r="12"/></g>
+          <g class="mark" id="m5"><circle cx="850" cy="0" r="12"/><text x="850" y="-26" text-anchor="middle">184</text></g>
+          <g class="mark" id="m6"><circle cx="980" cy="0" r="12"/><text x="980" y="-26" text-anchor="middle">150</text></g>
+        </g>
+      </svg>
+    </div>
+    <div id="label"><span class="l-name">Axis rescaling</span><span class="l-sep">·</span><span>Data</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power2.inOut", duration: 0.7 } });
+  const yA = v => 500 - v * 4.4;      // scale 0-100
+  const yB = v => 500 - v * 2.2;      // scale 0-200
+  const xs = [200, 330, 460, 590, 720, 850, 980];
+  const vals = [32, 48, 41, 66, 58, 184, 150];
+  const R0 = 0.7, D = 0.7;            // rescale start and primary interval
+  const pts = (ys, n) => ys.map((y, i) => xs[Math.min(i, n - 1)] + "," + y).join(" ");  // extra points sit on the last real mark
+  // Resting scale 0-100: five ticks; the two new ticks wait invisible at their final rows.
+  [["#t0", 0], ["#t25", 25], ["#t50", 50], ["#t75", 75], ["#t100", 100]].forEach(([s, v]) => tl.fromTo(s, { y: yA(v) }, { y: yA(v), duration: 0.01 }, 0));
+  [["#t150", 150], ["#t200", 200]].forEach(([s, v]) => tl.fromTo(s, { y: yB(v), opacity: 0 }, { y: yB(v), opacity: 0, duration: 0.01 }, 0));
+  vals.slice(0, 5).forEach((v, i) => tl.fromTo("#m" + i, { y: yA(v) }, { y: yA(v), duration: 0.01 }, 0));
+  // A value of 184 arrives, pinned above the top of the 0-100 chart.
+  tl.fromTo("#m5", { y: 60, opacity: 0 }, { y: 60, opacity: 1, duration: 0.25, ease: "power2.out" }, 0.35);
+  tl.fromTo("#m6", { y: yB(150), opacity: 0 }, { y: yB(150), opacity: 0, duration: 0.01 }, 0);
+  const yA5 = vals.slice(0, 5).map(yA);
+  tl.fromTo("#line", { attr: { points: pts(yA5.concat([yA5[4], yA5[4]]), 5) } }, { attr: { points: pts(yA5.concat([60, 60]), 6) }, duration: 0.25, ease: "power2.out" }, 0.35);
+  // Rescale to 0-200: the kept ticks slide to their new rows, 25 and 75 fade out, 150 and 200 fade in; every mark and the line move with them.
+  tl.to("#t50", { y: yB(50), duration: D }, R0);
+  tl.to("#t100", { y: yB(100), duration: D }, R0);
+  tl.to("#t25", { y: yB(25), opacity: 0, duration: D }, R0);
+  tl.to("#t75", { y: yB(75), opacity: 0, duration: D }, R0);
+  tl.to("#t150", { opacity: 1, duration: 0.25, ease: "power2.out" }, R0 + 0.45);
+  tl.to("#t200", { opacity: 1, duration: 0.25, ease: "power2.out" }, R0 + 0.45);
+  vals.slice(0, 6).forEach((v, i) => tl.to("#m" + i, { y: yB(v), duration: D }, R0));
+  const yB6 = vals.slice(0, 6).map(yB);
+  tl.to("#line", { attr: { points: pts(yB6.concat([yB6[5]]), 6) }, duration: D }, R0);
+  // Second beat: the next value lands inside the new scale and the line extends to it.
+  tl.to("#m6", { opacity: 1, duration: 0.25, ease: "power2.out" }, 2.0);
+  tl.to("#line", { attr: { points: pts(yB6.concat([yB(150)]), 7) }, duration: 0.5, ease: "power2.out" }, 2.0);
+  tl.fromTo("#m6 circle", { attr: { r: 12 } }, { attr: { r: 16 }, duration: 0.3, ease: "power2.out", yoyo: true, repeat: 1 }, 2.3);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

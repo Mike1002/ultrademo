@@ -1,0 +1,22 @@
+{
+  "name": "Boxplot update",
+  "family": "Data",
+  "purpose": [
+    "Data evidence",
+    "Comparison"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "svg",
+  "tags": [
+    "boxplot summary transition",
+    "data",
+    "boxplot",
+    "median",
+    "quartiles",
+    "whiskers",
+    "update",
+    "svg"
+  ],
+  "one_line": "Three boxplots of days to accept an invite slide their boxes, yellow medians and whiskers to the next month's summary, an outlier fading out and a new one in, then update once more."
+}

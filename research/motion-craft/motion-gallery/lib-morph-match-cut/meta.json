@@ -1,0 +1,22 @@
+{
+  "name": "Morph match cut",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Attention",
+    "Data evidence"
+  ],
+  "energy": "steady",
+  "tier": 2,
+  "runtime": "svg",
+  "tags": [
+    "shape match cut",
+    "graphic match",
+    "match cut into morph",
+    "transitions",
+    "svg",
+    "morph",
+    "donut"
+  ],
+  "one_line": "A yellow circle grows into place, hard-cuts to a letter O of the same height and centre, then the O morphs into a 98% donut chart while the camera pushes in and pans."
+}

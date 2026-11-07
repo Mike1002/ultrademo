@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-sequence-message-draw</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  .lab { position: absolute; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  #diagram { position: absolute; left: 40px; top: 110px; width: 1088px; height: 420px; overflow: visible; }
+  #diagram text { fill: #1d1c1a; font-size: 22px; text-anchor: middle; }
+  #diagram text.actor { font-weight: 700; font-size: 24px; }
+  .life { stroke: #a19d93; stroke-dasharray: 4 7; fill: none; }
+  .bar { fill: #1d1c1a; }
+  .message { stroke: #1d1c1a; stroke-width: 2.5; fill: none; }
+  .head { fill: #1d1c1a; }
+  .hit { fill: #f2c200; stroke: #1d1c1a; stroke-width: 2; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div class="lab" style="left:48px;top:50px">Who sends what, and when</div>
+      <svg id="diagram" viewBox="0 0 1088 420" data-layout-allow-overlap>
+        <text class="actor" x="140" y="30">Jamie Dalton</text><path class="life" d="M140 55V410"/><rect class="bar" id="r0" x="132" y="65" width="16" height="330" opacity=".12"/>
+        <text class="actor" x="540" y="30">Orbit</text><path class="life" d="M540 55V410"/><rect class="bar" id="r1" x="532" y="65" width="16" height="330" opacity=".12"/>
+        <text class="actor" x="940" y="30">Sam Kim</text><path class="life" d="M940 55V410"/><rect class="bar" id="r2" x="932" y="65" width="16" height="330" opacity=".12"/>
+        <g id="m0"><path class="message" id="l0" d="M148 110H518"/><path class="head" id="h0" d="M518 102L532 110L518 118Z"/><text id="x0" x="335" y="96">Invite</text><circle class="hit" id="d0" cx="532" cy="110" r="8"/></g>
+        <g id="m1"><path class="message" id="l1" d="M548 195H918"/><path class="head" id="h1" d="M918 187L932 195L918 203Z"/><text id="x1" x="735" y="181">Deliver</text><circle class="hit" id="d1" cx="932" cy="195" r="8"/></g>
+        <g id="m2"><path class="message" id="l2" d="M932 280H562"/><path class="head" id="h2" d="M562 272L548 280L562 288Z"/><text id="x2" x="745" y="266">Accept</text><circle class="hit" id="d2" cx="548" cy="280" r="8"/></g>
+        <g id="m3"><path class="message" id="l3" d="M532 365H162"/><path class="head" id="h3" d="M162 357L148 365L162 373Z"/><text id="x3" x="345" y="351">Joined</text><circle class="hit" id="d3" cx="148" cy="365" r="8"/></g>
+      </svg>
+    </div>
+    <div id="label"><span class="l-name">Sequence message draw</span><span class="l-sep">·</span><span>Explainer</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+  // Each message draws left-to-right or right-to-left in chronological order (600 ms apart, 400 ms per line, linear).
+  const receivers = ["#r1", "#r2", "#r1", "#r0"];
+  for (let i = 0; i < 4; i++) {
+    const t = 0.2 + i * 0.6;
+    const L = document.querySelector("#l" + i).getTotalLength();
+    tl.fromTo("#l" + i, { strokeDasharray: `${L} ${L + 20}`, strokeDashoffset: L + 10 }, { strokeDashoffset: 0, duration: 0.4, ease: "none" }, t);
+    tl.fromTo("#x" + i, { opacity: 0 }, { opacity: 1, duration: 0.25 }, t);
+    tl.fromTo("#h" + i, { opacity: 0 }, { opacity: 1, duration: 0.08 }, t + 0.36);
+    // Arrival: a yellow dot pops at the receiver and its activation bar lights up.
+    tl.fromTo("#d" + i, { opacity: 0, scale: 0, transformOrigin: "center center" }, { opacity: 1, scale: 1, duration: 0.18, ease: "back.out(2)" }, t + 0.4);
+    tl.to("#d" + i, { opacity: 0, duration: 0.2 }, t + 0.63);
+    tl.to(receivers[i], { opacity: 0.45, duration: 0.2 }, t + 0.4);
+    if (i > 0) tl.to(receivers[i - 1], { opacity: 0.12, duration: 0.2 }, t + 0.4);
+  }
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

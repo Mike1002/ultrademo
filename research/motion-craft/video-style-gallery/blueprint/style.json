@@ -1,0 +1,124 @@
+{
+  "id": "blueprint",
+  "name": "Blueprint",
+  "canvas": "dark",
+  "mood": [
+    "calm",
+    "curious",
+    "clear"
+  ],
+  "suits": [
+    "explainers",
+    "education",
+    "technical diagrams"
+  ],
+  "palette": {
+    "bg": "#0f1626",
+    "bg_alt": "#0f1626",
+    "surface": "rgba(122,140,170,0.06)",
+    "surface_2": "rgba(122,140,170,0.12)",
+    "ink": "#e8edf5",
+    "muted": "#7a869c",
+    "line": "rgba(232,237,245,0.35)",
+    "accent": "#7fd3ff",
+    "accent_2": "#ffc857",
+    "on_accent": "#0f1626",
+    "button_bg": "#ffc857",
+    "button_ink": "#0f1626",
+    "pill_bg": "rgba(127,211,255,0.12)",
+    "pill_ink": "#7fd3ff",
+    "pill_dot": "#7fd3ff",
+    "term_bg": "#0b1120",
+    "term_ink": "#e8edf5",
+    "term_muted": "#7a869c",
+    "term_line": "rgba(232,237,245,0.35)",
+    "term_prompt": "#ffc857",
+    "term_ok": "#7fd3ff"
+  },
+  "type": {
+    "display": {
+      "family": "STIX Two Text",
+      "weight": 500,
+      "hook_px": 88,
+      "stat_px": 230,
+      "mark_px": 126,
+      "transform": "none",
+      "tracking": "-0.01em",
+      "line_height": "1.08",
+      "style": "normal",
+      "generic": "serif",
+      "card_title_px": 30
+    },
+    "body": {
+      "family": "IBM Plex Sans",
+      "weight": 400,
+      "generic": "sans"
+    },
+    "mono": {
+      "family": "IBM Plex Mono",
+      "weight": 500
+    },
+    "label": {
+      "family": "IBM Plex Mono",
+      "weight": 500,
+      "transform": "uppercase",
+      "tracking": "0.12em",
+      "generic": "sans",
+      "px": 13
+    }
+  },
+  "easing": {
+    "entry": "power2.inOut",
+    "exit": "power1.out",
+    "ambient": "none",
+    "pop": "back.out(1.6)",
+    "counter": "none",
+    "wipe": null
+  },
+  "rhythm": {
+    "energy": "calm",
+    "entrance": 0.7,
+    "stagger": 0.1
+  },
+  "transition": {
+    "kind": "crossfade",
+    "duration": 0.7,
+    "flash": false,
+    "band": false
+  },
+  "text_animation": "type",
+  "accent_word": "none",
+  "layout": "center",
+  "atmosphere": [
+    "grid:60"
+  ],
+  "shape": {
+    "radius_card": 4,
+    "radius_button": 4,
+    "radius_pill": 999,
+    "border": "bold",
+    "border_px": 2,
+    "shadow": "none",
+    "rule_px": 3
+  },
+  "stat_colour": "accent",
+  "direction_settings": {
+    "energy": "calm",
+    "density": "balanced",
+    "ground": "dark",
+    "depth": "flat",
+    "camera": "locked",
+    "type": "editorial",
+    "texture": "clean",
+    "colour": "two-accent",
+    "product_presence": "illustrated",
+    "sound": "ambient",
+    "voice": "narrated"
+  },
+  "notes": "Navy with a faint grid, strokes instead of fills, STIX Two Text for display, cyan for the subject and amber for measurements; no cuts, text writes on character by character.",
+  "transitions": {
+    "between_moments": "crossfade",
+    "duration_s": 0.7,
+    "text": "type"
+  }
+}

@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-facet-single-transition</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  #chart { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  text { font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .frame { fill: #fffdf8; stroke: #1d1c1a; stroke-width: 2; }
+  .paxis { stroke: #a19d93; stroke-width: 2; }
+  .ptitle { font-size: 20px; font-weight: 700; fill: #1d1c1a; }
+  .axis { stroke: #1d1c1a; stroke-width: 2; }
+  .grid { stroke: #e3ded2; stroke-width: 2; }
+  .tick { font-size: 16px; fill: #6d6a63; }
+  .line { fill: none; stroke-width: 4; stroke-linejoin: round; }
+  .dot { stroke: #1d1c1a; stroke-width: 2.5; }
+  .lg { font-size: 18px; font-weight: 700; }
+  .title { font-size: 34px; font-weight: 700; fill: #1d1c1a; }
+  .lab { font-size: 13px; letter-spacing: .06em; fill: #6d6a63; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <svg id="chart" viewBox="0 0 1168 580" width="1168" height="580">
+        <text class="title" x="60" y="56">Three teams → one axis</text>
+        <text class="lab" x="60" y="84">ACTIVE MEMBERS PER MONTH · SAME 0 TO 100 SCALE</text>
+        <g id="panels"></g>
+        <g id="common">
+          <line class="grid" x1="220" y1="140" x2="1080" y2="140"/><line class="grid" x1="220" y1="305" x2="1080" y2="305"/>
+          <line class="axis" x1="220" y1="470" x2="1080" y2="470"/><line class="axis" x1="220" y1="130" x2="220" y2="470"/>
+          <text class="tick" x="206" y="146" text-anchor="end">100</text><text class="tick" x="206" y="311" text-anchor="end">50</text><text class="tick" x="206" y="476" text-anchor="end">0</text>
+          <g id="months"></g>
+        </g>
+        <g id="marks"></g>
+        <g id="legend"></g>
+      </svg>
+    </div>
+    <div id="label"><span class="l-name">Facet-to-single transition</span><span class="l-sep">·</span><span>Data</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const SVGNS = "http://www.w3.org/2000/svg";
+  const el = (tag, attrs, cls) => { const e = document.createElementNS(SVGNS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (cls) e.setAttribute("class", cls); return e; };
+  const months = ["Jan", "Feb", "Mar", "Apr", "May"];
+  const T = [
+    { name: "Design",  col: "#1d1c1a", v: [32, 45, 51, 68, 74] },
+    { name: "Sales",   col: "#f2c200", v: [20, 38, 62, 70, 92] },
+    { name: "Support", col: "#6d6a63", v: [55, 48, 60, 52, 66] }
+  ];
+  // Both layouts use the same scale functions over the same 0..100 range; only the plot rectangle differs.
+  const PX = [80, 434, 788], PY = 130, PW = 300, PH = 260;
+  const small = (i, k, v) => [PX[i] + 30 + k * (PW - 60) / 4, PY + 30 + (1 - v / 100) * (PH - 60)];
+  const big = (k, v) => [220 + k * (1080 - 220) / 4, 470 - (v / 100) * (470 - 140)];
+  const pts = arr => arr.map(p => p[0].toFixed(1) + "," + p[1].toFixed(1)).join(" ");
+  const panels = document.getElementById("panels"), marks = document.getElementById("marks"), legend = document.getElementById("legend"), mo = document.getElementById("months");
+  months.forEach((m, k) => { const t = el("text", { x: big(k, 0)[0], y: 498, "text-anchor": "middle" }, "tick"); t.textContent = m; mo.appendChild(t); });
+  const frames = T.map((t, i) => { const g = el("g", {});
+    g.appendChild(el("rect", { x: PX[i], y: PY, width: PW, height: PH, rx: 16 }, "frame"));
+    g.appendChild(el("line", { x1: PX[i] + 30, y1: PY + 30, x2: PX[i] + 30, y2: PY + PH - 30 }, "paxis"));
+    g.appendChild(el("line", { x1: PX[i] + 30, y1: PY + PH - 30, x2: PX[i] + PW - 30, y2: PY + PH - 30 }, "paxis"));
+    const tt = el("text", { x: PX[i] + 30, y: PY + PH + 30 }, "ptitle"); tt.textContent = t.name; g.appendChild(tt);
+    panels.appendChild(g); return g; });
+  const series = T.map((t, i) => { const A = t.v.map((v, k) => small(i, k, v)), B = t.v.map((v, k) => big(k, v));
+    const line = el("polyline", { points: pts(A) }, "line"); line.style.stroke = t.col; marks.appendChild(line);
+    const dots = A.map(p => { const c = el("circle", { cx: p[0], cy: p[1], r: 7 }, "dot"); c.style.fill = t.col; marks.appendChild(c); return c; });
+    const lg = el("text", { x: B[4][0] + 16, y: B[4][1] + 6 }, "lg"); lg.textContent = t.name; lg.style.fill = t.col === "#f2c200" ? "#1d1c1a" : t.col; legend.appendChild(lg);
+    return { A, B, line, dots, lg }; });
+
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.inOut", duration: 1.1 } });
+  tl.fromTo("#common", { opacity: 0 }, { opacity: 0, duration: 0.01 }, 0);
+  series.forEach(s => tl.fromTo(s.lg, { opacity: 0 }, { opacity: 0, duration: 0.01 }, 0));
+  // Panels -> one axis at 0.4 s: frames fade in the first 400 ms, every mark travels to its shared-axis position over 1.1 s, the common axis fades in from +0.5 s.
+  function go(to, at, dur, merge) {
+    series.forEach(s => { const P = s[to];
+      tl.to(s.line, { attr: { points: pts(P) }, duration: dur }, at);
+      s.dots.forEach((d, k) => tl.to(d, { attr: { cx: P[k][0], cy: P[k][1] }, duration: dur }, at)); });
+    frames.forEach(f => tl.to(f, { opacity: merge ? 0 : 1, duration: 0.4, ease: "none" }, merge ? at : at + dur - 0.4));
+    tl.to("#common", { opacity: merge ? 1 : 0, duration: 0.4, ease: "none" }, merge ? at + 0.5 : at);
+    series.forEach(s => tl.to(s.lg, { opacity: merge ? 1 : 0, duration: 0.3, ease: "none" }, merge ? at + dur - 0.3 : at));
+  }
+  go("B", 0.4, 1.1, true);
+  go("A", 2.2, 0.8, false);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

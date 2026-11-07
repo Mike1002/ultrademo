@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-stacked-grouped-transition</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  #chart { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  #chart text { font-size: 22px; fill: #1d1c1a; font-weight: 600; }
+  #chart .small { font-size: 16px; fill: #6d6a63; font-weight: 400; }
+  #chart .mode { font-size: 26px; font-weight: 700; }
+  #chart .grid { stroke: #e3ded2; stroke-width: 2; }
+  #chart .axis { stroke: #1d1c1a; stroke-width: 2; }
+  .heading { position: absolute; left: 32px; top: 26px; font-size: 34px; font-weight: 700; }
+  .sub { position: absolute; left: 34px; top: 72px; font-size: 16px; color: #6d6a63; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div class="heading">From totals to series</div>
+      <div class="sub">Same values and colours; the bars spread sideways, then drop to one baseline</div>
+      <svg id="chart" viewBox="0 0 1168 580" xmlns="http://www.w3.org/2000/svg">
+        <line class="grid" x1="180" y1="180" x2="1040" y2="180"/><line class="grid" x1="180" y1="270" x2="1040" y2="270"/>
+        <line class="grid" x1="180" y1="360" x2="1040" y2="360"/><line class="grid" x1="180" y1="450" x2="1040" y2="450"/>
+        <line class="axis" x1="180" y1="450" x2="1040" y2="450"/>
+        <text class="small" x="180" y="157">Invites · shared scale</text>
+        <text id="modeA" class="mode" x="1040" y="140" text-anchor="end">Stacked</text>
+        <text id="modeB" class="mode" x="1040" y="140" text-anchor="end">Grouped</text>
+        <circle cx="770" cy="543" r="7" fill="#1d1c1a"/><text class="small" x="786" y="549">Email</text>
+        <circle cx="870" cy="543" r="7" fill="#f2c200" stroke="#1d1c1a" stroke-width="2"/><text class="small" x="886" y="549">Link</text>
+        <text x="305" y="490" text-anchor="middle">Q1</text>
+        <rect id="seg00" x="265" y="288" width="80" height="162" fill="#1d1c1a"/>
+        <rect id="seg01" x="265" y="207" width="80" height="81" fill="#f2c200" stroke="#1d1c1a" stroke-width="2"/>
+        <text x="575" y="490" text-anchor="middle">Q2</text>
+        <rect id="seg10" x="535" y="328.5" width="80" height="121.5" fill="#1d1c1a"/>
+        <rect id="seg11" x="535" y="193.5" width="80" height="135" fill="#f2c200" stroke="#1d1c1a" stroke-width="2"/>
+        <text x="845" y="490" text-anchor="middle">Q3</text>
+        <rect id="seg20" x="805" y="247.5" width="80" height="202.5" fill="#1d1c1a"/>
+        <rect id="seg21" x="805" y="180" width="80" height="67.5" fill="#f2c200" stroke="#1d1c1a" stroke-width="2"/>
+      </svg>
+    </div>
+    <div id="label"><span class="l-name">Stacked-to-grouped transition</span><span class="l-sep">·</span><span>Data</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+  // Phase 1 (0.5..1.1 s): each segment narrows and slides sideways into its own slot.
+  // Phase 2 (1.25..1.95 s): the upper segments drop onto the shared baseline (y + height = 450).
+  const segs = [
+    ["#seg00", 265, 288, 240], ["#seg01", 265, 207, 310, 369],
+    ["#seg10", 535, 328.5, 510], ["#seg11", 535, 193.5, 580, 315],
+    ["#seg20", 805, 247.5, 780], ["#seg21", 805, 180, 850, 382.5]
+  ];
+  segs.forEach(([id, x0, y0, x1, y1]) => {
+    tl.fromTo(id, { attr: { x: x0, width: 80 } }, { attr: { x: x1, width: 55 }, duration: 0.6, ease: "power2.inOut" }, 0.5);
+    tl.fromTo(id, { attr: { y: y0 } }, { attr: { y: y1 === undefined ? y0 : y1 }, duration: 0.7, ease: "power2.inOut" }, 1.25);
+  });
+  tl.fromTo("#modeA", { opacity: 1 }, { opacity: 0, duration: 0.3 }, 1.95);
+  tl.fromTo("#modeB", { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.35 }, 2.05);
+  // Second beat: the yellow series lifts once to say "compare these".
+  tl.to(["#seg01", "#seg11", "#seg21"], { y: -8, duration: 0.3, ease: "power2.out", stagger: 0.06 }, 2.4);
+  tl.to(["#seg01", "#seg11", "#seg21"], { y: 0, duration: 0.3, ease: "power2.inOut", stagger: 0.06 }, 2.7);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

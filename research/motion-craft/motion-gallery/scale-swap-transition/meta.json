@@ -1,0 +1,22 @@
+{
+  "name": "Scale swap transition",
+  "family": "Transition & Motion",
+  "purpose": [
+    "transition",
+    "state change",
+    "swap"
+  ],
+  "energy": "steady",
+  "tags": [
+    "transition",
+    "morph",
+    "scale",
+    "swap",
+    "spring",
+    "pop"
+  ],
+  "one_line": "One card shrinks and fades away while the next pops up in its place with a small overshoot, then its subtitle slides in; shown twice as Draft, Review, Live.",
+  "aliases": [
+    "awesome-ai-motion:scale-swap"
+  ]
+}

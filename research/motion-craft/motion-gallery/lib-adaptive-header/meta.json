@@ -1,0 +1,22 @@
+{
+  "name": "Adaptive header",
+  "family": "UI Demo",
+  "purpose": [
+    "Feedback",
+    "Emphasis"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "gsap",
+  "tags": [
+    "direction aware header",
+    "adaptive navigation",
+    "ui",
+    "header",
+    "scroll",
+    "hide",
+    "compact",
+    "return"
+  ],
+  "one_line": "On a members page, scrolling the list down slides the header bar out of view; a scroll back up brings it back compact, and reaching the top restores it in full."
+}

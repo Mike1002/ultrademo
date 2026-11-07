@@ -1,0 +1,45 @@
+{
+  "name": "Topo Credits",
+  "fonts": {
+    "display": "Cormorant Garamond",
+    "body": "Cormorant Garamond",
+    "mono": "Cormorant Garamond",
+    "label": "Cormorant Garamond"
+  },
+  "font_families": [
+    "Cormorant Garamond"
+  ],
+  "font_substitutions": {},
+  "canvas": "dark",
+  "mood": [
+    "cinematic",
+    "brooding",
+    "elegant"
+  ],
+  "suits": [
+    "title sequences",
+    "film-like brand pieces",
+    "credits"
+  ],
+  "direction_settings": {
+    "energy": "calm",
+    "density": "sparse",
+    "ground": "dark",
+    "depth": "layered",
+    "camera": "drift",
+    "type": "editorial",
+    "texture": "grain",
+    "colour": "one-accent",
+    "product_presence": "illustrated",
+    "sound": "scored",
+    "voice": "narrated"
+  },
+  "duration_s": 10,
+  "size": [
+    1280,
+    720
+  ],
+  "fps": 30,
+  "strip": "D-58 style strip: hook · project card · number · agent · close",
+  "one_line": ""
+}

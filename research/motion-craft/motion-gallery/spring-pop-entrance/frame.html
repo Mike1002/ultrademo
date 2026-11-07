@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>spring-pop-entrance</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  /* hero: 760x120 centred at (640,230) */
+  .pop-hero { position: absolute; left: 260px; top: 170px; width: 760px; height: 120px; display: grid; place-items: center;
+    font-size: 64px; font-weight: 800; letter-spacing: -0.02em; transform-origin: 50% 50%; will-change: transform, opacity; }
+  /* three items 300x150, gap 40: left 160 / 490 / 820, top 340 */
+  .pop-item { position: absolute; top: 340px; width: 300px; height: 150px; background: #fffdf8; border: 2px solid #1d1c1a;
+    border-radius: 24px; transform-origin: 50% 50%; will-change: transform, opacity; }
+  #item-1 { left: 160px; } #item-2 { left: 490px; } #item-3 { left: 820px; }
+  .k { position: absolute; left: 28px; top: 24px; font-size: 18px; color: #6d6a63; }
+  .v { position: absolute; left: 28px; top: 56px; font-size: 60px; font-weight: 800; letter-spacing: -0.03em; line-height: 1; }
+  /* button pops last: 200x60 centred at (640,560) */
+  .btn { position: absolute; left: 540px; top: 530px; width: 200px; height: 60px; border-radius: 14px; background: #f2c200;
+    border: 2px solid #1d1c1a; font-size: 22px; font-weight: 700; display: grid; place-items: center;
+    transform-origin: 50% 50%; will-change: transform, opacity; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div class="pop-hero" id="hero">Every frame is code</div>
+    <div class="pop-item" id="item-1"><div class="k">Members</div><div class="v">1,284</div></div>
+    <div class="pop-item" id="item-2"><div class="k">Unchanged</div><div class="v">98%</div></div>
+    <div class="pop-item" id="item-3"><div class="k">Videos</div><div class="v">42</div></div>
+    <div class="btn" id="btn">Continue</div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true });
+  // Rule defaults: scale 0 -> 1 on power3.out (smooth long-tail settle, no overshoot), POP_DUR 0.6, Y_RISE 24, STAGGER 0.06, hero by t <= 0.5.
+  const POP_DUR = 0.6, STAGGER = 0.06, Y_RISE = 24, ENTRY_AT = 0.15, GROUP_ENTRY_AT = 0.75;
+  // Single hero pop
+  tl.fromTo("#hero", { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: POP_DUR, ease: "power3.out" }, ENTRY_AT);
+  // Staggered group pop: one arriving beat (3 x 0.06 = 0.18 s window)
+  gsap.utils.toArray(".pop-item").forEach((el, i) => {
+    tl.fromTo(el, { scale: 0, opacity: 0, y: Y_RISE }, { scale: 1, opacity: 1, y: 0, duration: POP_DUR, ease: "power3.out" }, GROUP_ENTRY_AT + i * STAGGER);
+  });
+  // A last arrival late in the clip so the preview keeps moving: the button pops in (firm settle, expo.out).
+  tl.fromTo("#btn", { scale: 0, opacity: 0, y: Y_RISE }, { scale: 1, opacity: 1, y: 0, duration: 0.55, ease: "expo.out" }, 1.9);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

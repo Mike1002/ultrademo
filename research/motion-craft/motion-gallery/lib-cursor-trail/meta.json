@@ -1,0 +1,20 @@
+{
+  "name": "Cursor trail",
+  "family": "UI Demo",
+  "purpose": [
+    "Sequence"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "svg",
+  "tags": [
+    "cursor trail",
+    "ui",
+    "cursor",
+    "path",
+    "trail",
+    "fade",
+    "polyline"
+  ],
+  "one_line": "A pointer sweeps across an invite card to the Continue button leaving a trail of short segments that fade behind it, clicks, then moves off again with a fresh trail."
+}

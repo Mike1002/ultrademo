@@ -1,0 +1,20 @@
+{
+  "name": "Insert shot",
+  "family": "Transitions",
+  "purpose": [
+    "Explanation",
+    "Emphasis"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "gsap",
+  "tags": [
+    "insert shot",
+    "cut-in",
+    "transitions",
+    "close-up",
+    "detail",
+    "cut"
+  ],
+  "one_line": "A wide view of the invite card, a straight cut into a three-times close-up of the Continue button as the cursor presses it and it turns dark, then a straight cut back to the wide card with the button now dark and the line beneath the title updated."
+}

@@ -1,0 +1,22 @@
+{
+  "name": "Gravitational lens transition",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Mood"
+  ],
+  "energy": "high",
+  "tier": 3,
+  "runtime": "webgl",
+  "tags": [
+    "gravitational lens",
+    "transitions",
+    "lens",
+    "warp",
+    "ring",
+    "bend",
+    "glow",
+    "dark"
+  ],
+  "one_line": "The invite card bends toward its centre in concentric rings as light gathers into a bright yellow ring, the stats card takes over at the peak of the warp and relaxes back to flat as the ring releases."
+}

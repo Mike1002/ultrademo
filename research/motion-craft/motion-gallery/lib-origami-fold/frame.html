@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-origami-fold</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #171a21; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #171a21; color: #ece8df;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; overflow: hidden; }
+  .panel { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  .art { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  .art.a { background: #1f232c; }
+  .art.b { background: #171a21; }
+  .card { position: absolute; left: 204px; top: 100px; width: 760px; height: 380px; background: #262c38;
+    border: 2px solid #3a404d; border-radius: 24px; }
+  .card .eyebrow { position: absolute; left: 56px; top: 44px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #a7adbb; }
+  .card .h1 { position: absolute; left: 56px; top: 84px; font-size: 56px; font-weight: 700; line-height: 1.1; white-space: nowrap; }
+  .card .sub { position: absolute; left: 56px; top: 164px; font-size: 22px; color: #a7adbb; }
+  .card .btn { position: absolute; left: 56px; top: 254px; width: 200px; height: 60px; background: #f2c200; border: 2px solid #1d1c1a;
+    border-radius: 14px; font-size: 20px; font-weight: 700; line-height: 56px; text-align: center; color: #1d1c1a; }
+  .card .av { position: absolute; top: 44px; width: 64px; height: 64px; border-radius: 50%; border: 2px solid #a7adbb; background: #2a2f3a;
+    font-size: 20px; font-weight: 700; line-height: 60px; text-align: center; }
+  .card .av.v1 { left: 540px; } .card .av.v2 { left: 592px; } .card .av.v3 { left: 644px; }
+  .art.b .num { position: absolute; left: 92px; top: 86px; font-size: 136px; font-weight: 700; line-height: 1; letter-spacing: -.02em;
+    font-variant-numeric: tabular-nums; }
+  .art.b .cap { position: absolute; left: 100px; top: 236px; font-size: 22px; color: #a7adbb; }
+  .art.b .row { position: absolute; left: 96px; width: 520px; height: 60px; border-top: 2px solid #2a2f3a; font-size: 22px; line-height: 58px;
+    padding-left: 30px; will-change: transform; }
+  .art.b .row .dot { position: absolute; left: 0; top: 24px; width: 12px; height: 12px; border-radius: 50%; background: #f2c200; }
+  .art.b .row.r1 { top: 320px; } .art.b .row.r2 { top: 384px; } .art.b .row.r3 { top: 448px; }
+  .art.b .disc { will-change: transform; position: absolute; left: 780px; top: 150px; width: 280px; height: 280px; border-radius: 50%; background: #f2c200;
+    border: 2px solid #1d1c1a; text-align: center; color: #1d1c1a; }
+  .art.b .disc .pct { position: absolute; left: 0; width: 276px; top: 86px; font-size: 72px; font-weight: 700; line-height: 1; }
+  .art.b .disc .pl { position: absolute; left: 0; width: 276px; top: 166px; font-size: 18px; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #a7adbb; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #ece8df; font-weight: 700; }
+  #label .l-sep { color: #6d7380; }
+
+  #stage { perspective: 2000px; }
+  .fold { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; transform-style: preserve-3d; transform-origin: 50% 50%; will-change: transform; }
+  .pan { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; will-change: transform; backface-visibility: hidden; }
+  .art.a { background: #242933; }
+  .card { background: #2c3340; border-color: #4a5160; }
+  .shade { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; background: #05070c; }
+  .sheen { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; background: #ece8df; }
+  .crease { position: absolute; top: 0; width: 2px; height: 580px; background: #4a5160; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <template id="tplA"><div class="art a" data-layout-allow-overlap data-layout-allow-occlusion data-layout-allow-overflow><div class="card"><div class="eyebrow" data-layout-allow-overlap data-layout-allow-occlusion>Orbit</div><div class="h1" data-layout-allow-overlap data-layout-allow-occlusion>Invite your team</div><div class="sub" data-layout-allow-overlap data-layout-allow-occlusion>3 seats left</div><div class="btn" data-layout-allow-overlap data-layout-allow-occlusion>Continue</div><div class="av v1" data-layout-allow-overlap data-layout-allow-occlusion>JD</div><div class="av v2" data-layout-allow-overlap data-layout-allow-occlusion>SK</div><div class="av v3" data-layout-allow-overlap data-layout-allow-occlusion>ML</div></div></div></template>
+      <template id="tplB"><div class="art b" data-layout-allow-overlap data-layout-allow-occlusion data-layout-allow-overflow><div class="num" data-layout-allow-overlap data-layout-allow-occlusion>12,480</div><div class="cap" data-layout-allow-overlap data-layout-allow-occlusion>invites sent</div><div class="row r1" data-layout-allow-overlap data-layout-allow-occlusion><span class="dot"></span>Jamie Dalton</div><div class="row r2" data-layout-allow-overlap data-layout-allow-occlusion><span class="dot"></span>Sam Kim</div><div class="row r3" data-layout-allow-overlap data-layout-allow-occlusion><span class="dot"></span>Morgan Lee</div><div class="disc" data-layout-allow-overlap data-layout-allow-occlusion><div class="pct" data-layout-allow-overlap data-layout-allow-occlusion>98%</div><div class="pl" data-layout-allow-overlap data-layout-allow-occlusion>accepted</div></div></div></template>
+      <div class="fold" id="foldB" data-layout-allow-overlap></div>
+      <div class="fold" id="foldA" data-layout-allow-overlap></div>
+    </div>
+    <div id="label"><span class="l-name">Origami fold</span><span class="l-sep">·</span><span>Transitions</span><span class="l-sep">·</span><span>high</span></div>
+  </section>
+</div>
+<script>
+  // Four 292 px panels per scene, each a full copy clipped to its column; even panels hinge on the column's left edge, odd ones on its right (zigzag).
+  // The hinge is given in px because the element is the full 1168 px copy, so a percentage origin would sit at the stage edge.
+  const hinge = i => (i % 2 ? (i + 1) * PW : i * PW) + "px 50%";
+  const N = 4, PW = 1168 / N;
+  function build(host, html, key) {
+    for (let i = 0; i < N; i++) {
+      const l = i * PW, r = 1168 - (i + 1) * PW;
+      host.insertAdjacentHTML("beforeend", '<div class="pan" id="' + key + i + '" data-layout-allow-overlap data-layout-allow-overflow style="clip-path:inset(0 ' + r + 'px 0 ' + l + 'px)">' + html +
+        '<div class="crease" style="left:' + l + 'px"></div><div class="' + (i % 2 ? 'shade' : 'sheen') + '" id="' + key + 'sh' + i + '" data-layout-allow-overlap></div></div>');
+    }
+  }
+  build(document.getElementById("foldA"), document.getElementById("tplA").innerHTML, "a");
+  build(document.getElementById("foldB"), document.getElementById("tplB").innerHTML, "b");
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+  const F0 = 0.8, FD = 0.6, ST = 0.1, U0 = 1.7;
+  // Fold: panel i starts i * 100 ms later and turns to -90 (even) or +90 (odd) over 0.6 s power2.inOut; odd faces darken to 0.3, even faces catch light; the sheet shrinks to 0.75.
+  for (let i = 0; i < N; i++) {
+    tl.fromTo("#a" + i, { rotationY: 0, transformOrigin: hinge(i) }, { rotationY: i % 2 ? 90 : -90, duration: FD, ease: "power2.inOut" }, F0 + i * ST);
+    tl.fromTo("#ash" + i, { opacity: 0 }, { opacity: i % 2 ? 0.3 : 0.12, duration: FD, ease: "none" }, F0 + i * ST);
+  }
+  tl.fromTo("#foldA", { scale: 1, opacity: 1 }, { scale: 0.75, duration: FD + ST * (N - 1), ease: "power2.inOut" }, F0);
+  tl.to("#foldA", { opacity: 0, duration: 0.02, ease: "none" }, U0 - 0.03);
+  // Unfold: the stats scene starts on the folded faces (edge-on, shaded, at 0.6) and opens the same way in reverse, growing back to full size.
+  tl.fromTo("#foldB", { scale: 0.75, opacity: 0 }, { opacity: 1, duration: 0.02, ease: "none" }, U0 - 0.03);
+  tl.to("#foldB", { scale: 1, duration: FD + ST * (N - 1), ease: "power2.inOut" }, U0);
+  for (let i = 0; i < N; i++) {
+    const k = N - 1 - i;
+    tl.fromTo("#b" + k, { rotationY: k % 2 ? 90 : -90, transformOrigin: hinge(k) }, { rotationY: 0, duration: FD, ease: "power2.inOut" }, U0 + i * ST);
+    tl.fromTo("#bsh" + k, { opacity: k % 2 ? 0.3 : 0.12 }, { opacity: 0, duration: FD, ease: "none" }, U0 + i * ST);
+  }
+  // Second beat, compressed to fit: the rows and the disc settle in before the clip ends.
+  tl.fromTo(".art.b .row.r1", { opacity: 0, x: 28 }, { opacity: 1, x: 0, duration: 0.4 }, 2.35);
+  tl.fromTo(".art.b .row.r2", { opacity: 0, x: 28 }, { opacity: 1, x: 0, duration: 0.4 }, 2.43);
+  tl.fromTo(".art.b .row.r3", { opacity: 0, x: 28 }, { opacity: 1, x: 0, duration: 0.4 }, 2.51);
+  tl.fromTo(".art.b .disc", { scale: 0.6, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.55, ease: "back.out(1.5)" }, 2.4);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-reaction-cut</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; overflow: hidden; }
+  .panel { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  .art { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  .art.a { background: #ece7da; }
+  .art.b { background: #f6f3ec; }
+  .card { position: absolute; left: 204px; top: 100px; width: 760px; height: 380px; background: #fffdf8;
+    border: 2px solid #1d1c1a; border-radius: 24px; }
+  .card .eyebrow { position: absolute; left: 56px; top: 44px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  .card .h1 { position: absolute; left: 56px; top: 84px; font-size: 56px; font-weight: 700; line-height: 1.1; white-space: nowrap; }
+  .card .sub { position: absolute; left: 56px; top: 164px; font-size: 22px; color: #6d6a63; }
+  .card .btn { position: absolute; left: 56px; top: 254px; width: 200px; height: 60px; background: #f2c200; border: 2px solid #1d1c1a;
+    border-radius: 14px; font-size: 20px; font-weight: 700; line-height: 56px; text-align: center; color: #1d1c1a; }
+  .card .av { position: absolute; top: 44px; width: 64px; height: 64px; border-radius: 50%; border: 2px solid #1d1c1a; background: #ece7da;
+    font-size: 20px; font-weight: 700; line-height: 60px; text-align: center; }
+  .card .av.v1 { left: 540px; } .card .av.v2 { left: 592px; } .card .av.v3 { left: 644px; }
+  .art.b .num { position: absolute; left: 92px; top: 86px; font-size: 136px; font-weight: 700; line-height: 1; letter-spacing: -.02em;
+    font-variant-numeric: tabular-nums; }
+  .art.b .cap { position: absolute; left: 100px; top: 236px; font-size: 22px; color: #6d6a63; }
+  .art.b .row { position: absolute; left: 96px; width: 520px; height: 60px; border-top: 2px solid #e3ded2; font-size: 22px; line-height: 58px;
+    padding-left: 30px; will-change: transform; }
+  .art.b .row .dot { position: absolute; left: 0; top: 24px; width: 12px; height: 12px; border-radius: 50%; background: #f2c200; }
+  .art.b .row.r1 { top: 320px; } .art.b .row.r2 { top: 384px; } .art.b .row.r3 { top: 448px; }
+  .art.b .disc { will-change: transform; position: absolute; left: 780px; top: 150px; width: 280px; height: 280px; border-radius: 50%; background: #f2c200;
+    border: 2px solid #1d1c1a; text-align: center; color: #1d1c1a; }
+  .art.b .disc .pct { position: absolute; left: 0; width: 276px; top: 86px; font-size: 72px; font-weight: 700; line-height: 1; }
+  .art.b .disc .pl { position: absolute; left: 0; width: 276px; top: 166px; font-size: 18px; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+
+  .card .sub { display: none; }
+  .tag { position: absolute; left: 56px; top: 160px; height: 40px; padding: 0 18px; border-radius: 20px; border: 2px solid #1d1c1a; background: #fffdf8;
+    font-size: 18px; font-weight: 700; line-height: 36px; white-space: nowrap; transform-origin: 0% 50%; will-change: transform; }
+  /* The reaction panel: a shape avatar for Sam Kim, big, with brows, eyes and a mouth that move. */
+  #R { background: #f6f3ec; }
+  #face { position: absolute; left: 434px; top: 70px; width: 300px; height: 300px; transform-origin: 50% 50%; will-change: transform; }
+  #face .head { position: absolute; left: 0; top: 0; width: 300px; height: 300px; border-radius: 50%; background: #fffdf8; border: 2px solid #1d1c1a; }
+  #face .brow { position: absolute; top: 108px; width: 52px; height: 8px; border-radius: 4px; background: #1d1c1a; will-change: transform; }
+  #face .brow.l { left: 84px; } #face .brow.r { left: 164px; }
+  #face .eye { position: absolute; top: 134px; width: 20px; height: 20px; border-radius: 50%; background: #1d1c1a; will-change: transform; }
+  #face .eye.l { left: 100px; } #face .eye.r { left: 180px; }
+  #face .mouth { position: absolute; left: 120px; top: 186px; width: 60px; height: 44px; border-radius: 50%; background: #1d1c1a; transform-origin: 50% 0%; will-change: transform; }
+  #face .mouth .tongue { position: absolute; left: 14px; top: 24px; width: 32px; height: 20px; border-radius: 50% 50% 0 0; background: #f2c200; }
+  #rname { position: absolute; left: 0; width: 1168px; top: 400px; text-align: center; font-size: 34px; font-weight: 700; }
+  #rlab { position: absolute; left: 0; width: 1168px; top: 450px; text-align: center; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  #rseat { position: absolute; left: 0; width: 1168px; top: 486px; text-align: center; font-size: 22px; color: #6d6a63; }
+  #rseat b { color: #1d1c1a; background: #f2c200; padding: 2px 10px; border-radius: 8px; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div class="panel" id="A"><div class="art a"><div class="card"><div class="eyebrow">Orbit</div><div class="h1">Invite your team</div><div class="tag" id="tag">3 seats left</div><div class="btn">Continue</div><div class="av v1">JD</div><div class="av v2">SK</div><div class="av v3">ML</div></div></div></div>
+      <div class="panel" id="R" data-layout-allow-overlap>
+        <div id="face" data-layout-allow-overlap><div class="head"></div><div class="brow l" id="bl"></div><div class="brow r" id="br"></div><div class="eye l" id="el"></div><div class="eye r" id="er"></div><div class="mouth" id="mouth"><div class="tongue"></div></div></div>
+        <div id="rname" data-layout-allow-overlap data-layout-allow-occlusion>Sam Kim</div>
+        <div id="rlab" data-layout-allow-overlap data-layout-allow-occlusion>Reaction</div>
+        <div id="rseat" data-layout-allow-overlap data-layout-allow-occlusion>saw <b>3 seats left</b></div>
+      </div>
+    </div>
+    <div id="label"><span class="l-name">Reaction cut</span><span class="l-sep">·</span><span>Transitions</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+  const CUT = 0.95, BACK = 2.0;
+  // The event: the seats tag turns yellow and pops on the invite card.
+  tl.fromTo("#tag", { backgroundColor: "#fffdf8", scale: 1 }, { backgroundColor: "#f2c200", duration: 0.2, ease: "none" }, 0.5);
+  tl.to("#tag", { scale: 1.14, duration: 0.14, ease: "power2.out" }, 0.5);
+  tl.to("#tag", { scale: 1, duration: 0.3, ease: "power3.out" }, 0.64);
+  // The reaction cut, 0.1 s after the event lands: instant swap to the face, which eases from 1.05 to 1 over 0.8 s while brows lift, eyes widen and the mouth opens.
+  tl.fromTo("#A", { opacity: 1 }, { opacity: 0, duration: 0.02, ease: "none" }, CUT - 0.03);
+  tl.fromTo("#R", { opacity: 0 }, { opacity: 1, duration: 0.02, ease: "none" }, CUT - 0.03);
+  tl.fromTo("#face", { scale: 1.05 }, { scale: 1, duration: 0.8, ease: "none" }, CUT);
+  tl.fromTo("#bl", { y: 0, rotation: 0 }, { y: -14, rotation: -8, duration: 0.18, ease: "power2.out" }, CUT + 0.05);
+  tl.fromTo("#br", { y: 0, rotation: 0 }, { y: -14, rotation: 8, duration: 0.18, ease: "power2.out" }, CUT + 0.05);
+  tl.fromTo("#el", { scale: 1 }, { scale: 1.5, duration: 0.18, ease: "power2.out" }, CUT + 0.05);
+  tl.fromTo("#er", { scale: 1 }, { scale: 1.5, duration: 0.18, ease: "power2.out" }, CUT + 0.05);
+  tl.fromTo("#mouth", { scaleY: 0.25, scaleX: 0.8 }, { scaleY: 1, scaleX: 1, duration: 0.22, ease: "back.out(1.6)" }, CUT + 0.1);
+  // A blink keeps the hold alive, then the view cuts back to the card, where the tag settles with one more nudge.
+  tl.to("#el", { scaleY: 0.1, duration: 0.07, ease: "none", yoyo: true, repeat: 1 }, 1.55);
+  tl.to("#er", { scaleY: 0.1, duration: 0.07, ease: "none", yoyo: true, repeat: 1 }, 1.55);
+  tl.to("#R", { opacity: 0, duration: 0.02, ease: "none" }, BACK - 0.03);
+  tl.to("#A", { opacity: 1, duration: 0.02, ease: "none" }, BACK - 0.03);
+  tl.to("#tag", { scale: 1.08, duration: 0.14, ease: "power2.out" }, 2.25);
+  tl.to("#tag", { scale: 1, duration: 0.4, ease: "power3.out" }, 2.39);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

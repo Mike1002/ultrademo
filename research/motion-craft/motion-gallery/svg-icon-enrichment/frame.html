@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>svg-icon-enrichment</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  .title { position: absolute; left: 0; top: 70px; width: 1280px; text-align: center; font-size: 44px; font-weight: 700; letter-spacing: -0.01em; }
+  /* three 300x300 cards at y 170: x 130, 490, 850 */
+  .card { position: absolute; top: 170px; width: 300px; height: 300px; background: #fffdf8; border: 2px solid #1d1c1a; border-radius: 24px; will-change: transform; }
+  .card svg { position: absolute; left: 70px; top: 40px; width: 160px; height: 160px; display: block; }
+  .card .cap { position: absolute; left: 0; top: 224px; width: 300px; text-align: center; font-size: 20px; color: #6d6a63; }
+  .flow { position: absolute; left: 0; top: 0; width: 1280px; height: 720px; display: block; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div class="title">Every frame is code</div>
+    <!-- dash flow: a dashed data line that runs from the first card to the last, under the row -->
+    <svg class="flow" viewBox="0 0 1280 720">
+      <line id="data-flow" x1="280" y1="540" x2="1000" y2="540" stroke="#1d1c1a" stroke-width="5" stroke-linecap="round" stroke-dasharray="14 12" />
+      <circle cx="280" cy="540" r="9" fill="#1d1c1a" /><circle cx="1000" cy="540" r="9" fill="#f2c200" stroke="#1d1c1a" stroke-width="3" />
+    </svg>
+    <div class="card" id="c1" style="left: 130px;">
+      <svg viewBox="0 0 120 120">
+        <circle cx="60" cy="60" r="50" fill="none" stroke="#1d1c1a" stroke-width="6" />
+        <line id="hand-min" x1="60" y1="60" x2="60" y2="22" stroke="#1d1c1a" stroke-width="6" stroke-linecap="round" />
+        <line id="hand-sec" x1="60" y1="60" x2="60" y2="30" stroke="#f2c200" stroke-width="4" stroke-linecap="round" />
+        <circle cx="60" cy="60" r="6" fill="#1d1c1a" />
+      </svg>
+      <div class="cap">Clock: rotation</div>
+    </div>
+    <div class="card" id="c2" style="left: 490px;">
+      <svg viewBox="0 0 120 120">
+        <g id="fan">
+          <path d="M60 60 C 40 20, 70 8, 72 36 C 73 48, 66 56, 60 60 Z" fill="#1d1c1a" />
+          <path d="M60 60 C 40 20, 70 8, 72 36 C 73 48, 66 56, 60 60 Z" fill="#1d1c1a" transform="rotate(120 60 60)" />
+          <path d="M60 60 C 40 20, 70 8, 72 36 C 73 48, 66 56, 60 60 Z" fill="#1d1c1a" transform="rotate(240 60 60)" />
+        </g>
+        <circle cx="60" cy="60" r="10" fill="#f2c200" stroke="#1d1c1a" stroke-width="4" />
+      </svg>
+      <div class="cap">Fan: spin</div>
+    </div>
+    <div class="card" id="c3" style="left: 850px;">
+      <svg viewBox="0 0 120 120">
+        <circle id="rec-ring" cx="60" cy="60" r="44" fill="none" stroke="#f2c200" stroke-width="6" />
+        <circle id="rec-dot" cx="60" cy="60" r="30" fill="#f2c200" stroke="#1d1c1a" stroke-width="4" />
+        <path d="M44 61 L55 72 L78 48" fill="none" stroke="#1d1c1a" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+      <div class="cap">Check: pulse</div>
+    </div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true });
+  const TOTAL_DURATION = 3;
+  // Per-icon entry stagger; each icon's enrichment runs for the whole clip (sin(0)=0, hands at 12, so t=0 is clean).
+  tl.fromTo(["#c1", "#c2", "#c3"], { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out", stagger: 0.15 }, 0.1);
+  // Pattern 1: rotation via the SVG transform ATTRIBUTE around an explicit centre (never CSS transform-origin on a thin line).
+  const MIN_REVOLUTIONS = 0.75, SEC_REVOLUTIONS = 6;
+  const handMin = document.getElementById("hand-min"), handSec = document.getElementById("hand-sec");
+  const minState = { deg: 0 }, secState = { deg: 0 };
+  tl.fromTo(minState, { deg: 0 }, { deg: 360 * MIN_REVOLUTIONS, duration: TOTAL_DURATION, ease: "none", onUpdate: () => handMin.setAttribute("transform", `rotate(${minState.deg} 60 60)`) }, 0);
+  tl.fromTo(secState, { deg: 0 }, { deg: 360 * SEC_REVOLUTIONS, duration: TOTAL_DURATION, ease: "none", onUpdate: () => handSec.setAttribute("transform", `rotate(${secState.deg} 60 60)`) }, 0);
+  // Fan: same rotation pattern on a group, 2.5 revolutions (non-integer so the end frame does not land on the start).
+  const fan = document.getElementById("fan"), fanState = { deg: 0 };
+  tl.fromTo(fanState, { deg: 0 }, { deg: 360 * 2.5, duration: TOTAL_DURATION, ease: "none", onUpdate: () => fan.setAttribute("transform", `rotate(${fanState.deg} 60 60)`) }, 0);
+  // Pattern 3: pulse. One phase proxy drives dot + ring; the ring lags the dot by pi/2.
+  const PULSE_CYCLES = 3, PULSE_DOT_AMP = 0.10, PULSE_RING_AMP = 0.07, RING_OP_BASE = 0.5, RING_OP_AMP = 0.4;
+  const dot = document.getElementById("rec-dot"), ring = document.getElementById("rec-ring");
+  const pulse = { p: 0 };
+  function applyPulse() {
+    const sD = 1 + Math.sin(pulse.p) * PULSE_DOT_AMP;
+    const sR = 1 + Math.sin(pulse.p + Math.PI / 2) * PULSE_RING_AMP;
+    dot.setAttribute("transform", `translate(60 60) scale(${sD}) translate(-60 -60)`);
+    ring.setAttribute("transform", `translate(60 60) scale(${sR}) translate(-60 -60)`);
+    ring.style.opacity = String(RING_OP_BASE + Math.sin(pulse.p) * RING_OP_AMP);
+  }
+  tl.fromTo(pulse, { p: 0 }, { p: Math.PI * 2 * PULSE_CYCLES, duration: TOTAL_DURATION, ease: "none", onUpdate: applyPulse }, 0);
+  // Pattern 4: dash flow. Linear offset, an integer multiple of the dash period (14+12=26) so the end frame has no phase jump.
+  const flowLine = document.getElementById("data-flow"), flowState = { offset: 0 };
+  tl.fromTo(flowState, { offset: 0 }, { offset: -26 * 8, duration: TOTAL_DURATION, ease: "none", onUpdate: () => { flowLine.style.strokeDashoffset = String(flowState.offset); } }, 0);
+  // Seek safety for the attribute/style writes.
+  function renderAll() {
+    handMin.setAttribute("transform", `rotate(${minState.deg} 60 60)`);
+    handSec.setAttribute("transform", `rotate(${secState.deg} 60 60)`);
+    fan.setAttribute("transform", `rotate(${fanState.deg} 60 60)`);
+    applyPulse();
+    flowLine.style.strokeDashoffset = String(flowState.offset);
+  }
+  renderAll();
+  const baseRender = tl.render; tl.render = function () { const r = baseRender.apply(this, arguments); renderAll(); return r; };
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

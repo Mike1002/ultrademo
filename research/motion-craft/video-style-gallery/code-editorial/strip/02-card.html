@@ -1,0 +1,44 @@
+<!-- code-editorial · 02-card.html · one moment of the style strip (D-58). Assembled into ../frame.html by _tools/gen.py -->
+<style>
+  #card { position: absolute; left: 330px; top: 160px; width: 620px; height: 400px; background: var(--card-fill); border: var(--border-px) solid var(--card-border); border-radius: var(--r-card); box-shadow: none; padding: 34px 36px; will-change: transform, opacity; --ink: var(--card-ink); --muted: var(--card-muted); --line: var(--card-line); color: var(--card-ink); }
+  #card .ck { font-size: 14px; }
+  #card .title { margin-top: 10px; font-family: var(--f-display); font-weight: var(--w-display); text-transform: none; letter-spacing: -0.005em; font-size: 32px; line-height: 1.1; color: var(--ink); white-space: nowrap; }
+  #pill { position: absolute; right: 34px; top: 34px; height: 34px; padding: 0 14px 0 12px; border-radius: var(--r-pill); background: var(--pill-bg); color: var(--pill-ink); border: 1px solid rgba(20,20,19,0.18); font-family: var(--f-label); font-weight: var(--w-label); font-size: 14px; letter-spacing: 0.16em; text-transform: uppercase; line-height: 34px; white-space: nowrap; will-change: transform, opacity; }
+  #pill i { display: inline-block; width: 9px; height: 9px; border-radius: 50%; background: #CC785C; margin-right: 8px; vertical-align: 1px; }
+  #thumbs { position: absolute; left: 36px; top: 150px; width: 548px; height: 106px; }
+  .thumb { position: absolute; top: 0; width: 170px; height: 106px; background: var(--thumb); border-radius: var(--r-thumb); border: 0 solid transparent; will-change: transform, opacity; }
+  .thumb i { position: absolute; left: 14px; bottom: 14px; height: 6px; border-radius: 3px; background: var(--line); display: block; }
+  #btn { position: absolute; left: 36px; bottom: 34px; width: 150px; height: 50px; border-radius: var(--r-button); background: var(--button-bg); color: var(--button-ink); border: 0 solid transparent; font-family: var(--f-body); font-weight: 600; font-size: 18px; line-height: 50px; text-align: center; box-shadow: none; will-change: transform; }
+</style>
+  <section id="s2" class="clip" data-start="1.750" data-duration="3.000">
+    <div id="st2" class="stage ">
+      <div id="card">
+        <div class="ck label">Project</div>
+        <div class="title">Launch video · Orbit</div>
+        <div id="pill"><i></i>Up to date</div>
+        <div id="thumbs">
+          <div class="thumb" id="th1" style="left:0"><i style="width:70px"></i></div>
+          <div class="thumb" id="th2" style="left:189px"><i style="width:48px"></i></div>
+          <div class="thumb" id="th3" style="left:378px"><i style="width:92px"></i></div>
+        </div>
+        <div id="btn">Re-run</div>
+      </div>
+    </div>
+  </section>
+<script>
+  {
+    const t0 = M[1][0] - TD / 2 + 0.05, e = S.rhythm.entrance, st = S.rhythm.stagger;
+    tl.fromTo("#card", { y: 46, opacity: 0, scale: 0.97 }, { y: 0, opacity: 1, scale: 1, duration: e * 1.2, ease: EASE.entry }, t0);
+    tl.fromTo(["#card .ck", "#card .title"], { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: e, ease: EASE.entry, stagger: st }, t0 + 0.15);
+    tl.fromTo("#pill", { scale: 0.5, opacity: 0 }, { scale: 1, opacity: 1, duration: e, ease: EASE.pop }, t0 + 0.35);
+    tl.fromTo(".thumb", { y: 22, opacity: 0, scale: 0.94 }, { y: 0, opacity: 1, scale: 1, duration: e, ease: EASE.entry, stagger: st * 1.2 }, t0 + 0.4);
+    tl.fromTo("#btn", { y: 14, opacity: 0 }, { y: 0, opacity: 1, duration: e, ease: EASE.entry, stagger: st }, t0 + 0.55);
+    // the one action: Re-run pressed, the thumbnails refresh in turn
+    const p = M[1][1] - 0.75;
+    tl.fromTo("#btn", { scale: 1 }, { scale: 0.94, duration: 0.09, ease: "power2.in" }, p);
+    tl.to("#btn", { scale: 1, duration: 0.25, ease: EASE.pop, immediateRender: false }, p + 0.09);
+    tl.fromTo(".thumb", { opacity: 1 }, { opacity: 0.35, duration: 0.08, ease: "none", stagger: 0.07, immediateRender: false }, p + 0.12);
+    tl.to(".thumb", { opacity: 1, duration: 0.22, ease: "power2.out", stagger: 0.07, immediateRender: false }, p + 0.2);
+    if (EASE.ambient !== "none") tl.fromTo("#card", { y: 0 }, { y: -5, duration: 1.0, ease: EASE.ambient, immediateRender: false }, t0 + e * 1.2 + 0.1);
+  }
+</script>

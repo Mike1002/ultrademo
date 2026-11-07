@@ -1,0 +1,26 @@
+{
+  "name": "Depth of field blur",
+  "family": "Camera & Viewport",
+  "purpose": [
+    "focus",
+    "emphasis",
+    "proof"
+  ],
+  "energy": "calm",
+  "tags": [
+    "blur",
+    "focus",
+    "depth-of-field",
+    "dof",
+    "rack-focus",
+    "filter",
+    "dim",
+    "spotlight",
+    "cinematic",
+    "push-in"
+  ],
+  "one_line": "A grid of six stat cards: five of them soften and dim while the camera pushes in a little, leaving the one metric card crisp in the middle, then the whole grid comes back into focus.",
+  "aliases": [
+    "awesome-ai-motion:rack-focus"
+  ]
+}

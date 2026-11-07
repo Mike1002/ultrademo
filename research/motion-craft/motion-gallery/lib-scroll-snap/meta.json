@@ -1,0 +1,21 @@
+{
+  "name": "Scroll snap",
+  "family": "UI Demo",
+  "purpose": [
+    "Feedback",
+    "Emphasis"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "gsap",
+  "tags": [
+    "scroll snap chapters",
+    "ui",
+    "scroll",
+    "snap",
+    "chapters",
+    "settle",
+    "dot rail"
+  ],
+  "one_line": "A page of three chapters scrolls part of the way twice and each time settles smoothly onto the nearest chapter boundary, while a yellow marker on a dot rail moves to the chapter that snapped into view."
+}

@@ -1,0 +1,23 @@
+{
+  "name": "Anticipation",
+  "family": "Principles",
+  "purpose": [
+    "Attention",
+    "Explanation",
+    "Comparison"
+  ],
+  "energy": "steady",
+  "tier": 2,
+  "runtime": "gsap",
+  "tags": [
+    "wind-up",
+    "anticipation-windup-chain",
+    "nudge-curve",
+    "anticipatory back motion",
+    "anticipation pose",
+    "principles",
+    "squash",
+    "launch"
+  ],
+  "one_line": "Two dots cross the same track: the grey one just goes, the yellow one first pulls back and squashes for a beat, then launches, so the viewer knows where it is headed."
+}

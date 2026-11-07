@@ -1,0 +1,21 @@
+{
+  "name": "Word relay",
+  "family": "Typography",
+  "purpose": [
+    "Sequence",
+    "Attention",
+    "Emphasis"
+  ],
+  "energy": "high",
+  "tier": 3,
+  "runtime": "gsap",
+  "tags": [
+    "word relay",
+    "type",
+    "sequence",
+    "slogan",
+    "baton",
+    "slide"
+  ],
+  "one_line": "Three huge words take turns: each slides in from the right, holds at centre and slides out left as the next arrives; the last word, in yellow, stays as the conclusion while a dot row tracks the handoff."
+}

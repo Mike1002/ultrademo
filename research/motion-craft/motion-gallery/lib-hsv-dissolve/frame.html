@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-hsv-dissolve</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; overflow: hidden; }
+  .shot { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; will-change: transform, opacity, filter; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+  .card { position: absolute; left: 264px; top: 110px; width: 640px; height: 360px; background: #fffdf8; border: 2px solid #1d1c1a; border-radius: 24px; will-change: transform, filter, opacity; }
+  .card .lab { position: absolute; left: 56px; top: 48px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; white-space: nowrap; }
+  .card h1 { position: absolute; left: 56px; top: 80px; font-size: 56px; font-weight: 700; line-height: 64px; white-space: nowrap; }
+  .card .sub { position: absolute; left: 56px; top: 160px; font-size: 22px; color: #6d6a63; white-space: nowrap; }
+  .card .btn { position: absolute; left: 56px; top: 240px; width: 200px; height: 60px; border-radius: 14px; background: #f2c200; border: 2px solid #1d1c1a; color: #1d1c1a;
+    font-size: 20px; font-weight: 700; line-height: 56px; text-align: center; will-change: transform; }
+  .card.b h1 { font-size: 96px; line-height: 104px; top: 74px; font-variant-numeric: tabular-nums; }
+  .card.b .sub { top: 190px; }
+  .card.b .bar { position: absolute; left: 56px; top: 250px; width: 300px; height: 14px; border-radius: 7px; background: #f2c200; border: 2px solid #1d1c1a; transform-origin: 0 50%; will-change: transform; }
+  .cursor { position: absolute; width: 28px; height: 38px; z-index: 10; pointer-events: none; transform-origin: 2px 2px; will-change: transform; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.25)); }
+  .cursor svg { width: 28px; height: 38px; display: block; }
+
+  .shot.a { background: #f6f3ec; }
+  .shot.b { background: #ece7da; opacity: 0; }
+  .card.b .pct { position: absolute; left: 400px; top: 76px; width: 184px; height: 184px; border-radius: 50%; background: #f2c200; border: 2px solid #1d1c1a;
+    font-size: 48px; font-weight: 700; line-height: 180px; text-align: center; color: #1d1c1a; will-change: transform; }
+
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+
+      <div data-layout-allow-overlap data-layout-allow-occlusion class="shot a" id="A"><div class="card a " id="a" data-layout-allow-overlap ><div data-layout-allow-overlap data-layout-allow-occlusion class="lab">Orbit</div><h1 data-layout-allow-overlap data-layout-allow-occlusion>Invite your team</h1><div data-layout-allow-overlap data-layout-allow-occlusion class="sub">3 seats left on this plan</div><div data-layout-allow-overlap data-layout-allow-occlusion class="btn">Continue</div></div></div>
+      <div data-layout-allow-overlap data-layout-allow-occlusion class="shot b" id="B"><div data-layout-allow-overlap data-layout-allow-occlusion class="card b" id="b"><div data-layout-allow-overlap data-layout-allow-occlusion class="lab">This month</div><h1 data-layout-allow-overlap data-layout-allow-occlusion>12,480</h1><div data-layout-allow-overlap data-layout-allow-occlusion class="sub">invites sent</div><div data-layout-allow-overlap data-layout-allow-occlusion class="bar"></div><div data-layout-allow-overlap data-layout-allow-occlusion class="pct">98%</div></div></div>
+
+    </div>
+    <div id="label"><span class="l-name">HSV dissolve</span><span class="l-sep">·</span><span>Transitions</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "none" } });
+  const F0 = "hue-rotate(0deg) saturate(1) brightness(1)";
+  function hsv(from, to, t, dur) {
+    // The outgoing scene's hue travels half the wheel while it fades, with saturation up and brightness down at the midpoint;
+    // the incoming scene arrives from the opposite side of the wheel and lands clean.
+    tl.fromTo(from, { filter: F0, opacity: 1 }, { filter: "hue-rotate(180deg) saturate(1.3) brightness(0.85)", opacity: 0, duration: dur, ease: "none", immediateRender: false }, t);
+    tl.fromTo(to, { filter: "hue-rotate(-180deg) saturate(1.3) brightness(0.85)", opacity: 0 }, { filter: F0, opacity: 1, duration: dur, ease: "none", immediateRender: false }, t);
+  }
+  tl.fromTo("#A", { opacity: 1, filter: F0 }, { opacity: 1, duration: 0.01 }, 0);
+  tl.fromTo("#B", { opacity: 0, filter: F0 }, { opacity: 0, duration: 0.01 }, 0);
+  tl.fromTo("#b .bar", { scaleX: 1 }, { scaleX: 1, duration: 0.01 }, 0);
+  hsv("#A", "#B", 0.75, 0.7);
+  // The new scene settles: its disc pops once.
+  tl.fromTo("#b .pct", { scale: 1 }, { scale: 1.06, duration: 0.25, ease: "sine.inOut", yoyo: true, repeat: 1 }, 1.65);
+  // And the same colour-wheel dissolve carries it back.
+  hsv("#B", "#A", 2.25, 0.7);
+
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

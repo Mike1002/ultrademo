@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-ripple-rings</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  .heading { position: absolute; left: 80px; top: 50px; font-size: 18px; color: #6d6a63; }
+  .copy { position: absolute; left: 650px; top: 160px; }
+  .copy .t-xl { font-size: 72px; font-weight: 700; line-height: 1.1; letter-spacing: -0.02em; white-space: nowrap; }
+  .copy p { font-size: 22px; color: #6d6a63; margin-top: 18px; white-space: nowrap; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+  .pool { position: absolute; left: 65px; top: 30px; width: 500px; height: 500px; }
+  .ring { position: absolute; left: 100px; top: 100px; width: 300px; height: 300px; border: 2px solid #1d1c1a; border-radius: 50%; will-change: transform, opacity; }
+  .pool .core { position: absolute; left: 232px; top: 232px; width: 36px; height: 36px; border-radius: 50%; background: #f2c200; border: 2px solid #1d1c1a; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div class="pool"><div class="ring" id="r1"></div><div class="ring" id="r2"></div><div class="ring" id="r3"></div><div class="core"></div></div>
+      <div class="copy"><div class="t-xl">A small signal</div><div class="t-xl">travels far</div><p>From the centre outward · three rings</p></div>
+    </div>
+    <div id="label"><span class="l-name">Ripple rings</span><span class="l-sep">·</span><span>Loop &amp; Ambient</span><span class="l-sep">·</span><span>calm</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+  // Three rings 0.4 s apart on a 1.6 s cycle: scale 0.2 -> 1.5 while fading out, baked for the whole 3 s so every seek lands on a full cycle state.
+  ["#r1", "#r2", "#r3"].forEach((r, i) => {
+    const phase = i * 0.4, remain = 1.6 - phase;
+    tl.fromTo(r, { scale: 0.2 + 1.3 * (phase / 1.6), opacity: 1 - phase / 1.6 }, { scale: 1.5, opacity: 0, duration: remain, ease: "none" }, 0);
+    for (let at = remain; at < 3; at += 1.6) tl.fromTo(r, { scale: 0.2, opacity: 1 }, { scale: 1.5, opacity: 0, duration: 1.6, ease: "none", immediateRender: false }, at);
+  });
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

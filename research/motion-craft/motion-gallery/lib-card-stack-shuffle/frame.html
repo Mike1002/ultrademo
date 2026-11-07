@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-card-stack-shuffle</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  #title { position: absolute; left: 0; top: 556px; width: 1168px; text-align: center; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  .card { position: absolute; left: 344px; top: 250px; width: 480px; height: 280px; background: #fffdf8; border: 2px solid #1d1c1a; border-radius: 24px;
+    will-change: transform; box-shadow: 0 10px 30px rgba(29,28,26,0.10); }
+  .card .av { position: absolute; left: 40px; top: 40px; width: 72px; height: 72px; border-radius: 50%; background: #ece7da; border: 2px solid #1d1c1a; }
+  .card .av.y { background: #f2c200; }
+  .card .nm { position: absolute; left: 136px; top: 48px; font-size: 34px; font-weight: 700; white-space: nowrap; }
+  .card .rl { position: absolute; left: 136px; top: 94px; font-size: 20px; color: #6d6a63; white-space: nowrap; }
+  .card .hr { position: absolute; left: 40px; top: 150px; width: 396px; height: 2px; background: #e3ded2; }
+  .card .ln { position: absolute; left: 40px; top: 178px; font-size: 18px; color: #6d6a63; white-space: nowrap; }
+  .card .ln2 { position: absolute; left: 40px; top: 212px; font-size: 18px; color: #1d1c1a; font-weight: 600; white-space: nowrap; }
+  .card .tag { position: absolute; right: 40px; top: 48px; height: 32px; line-height: 28px; padding: 0 14px; border-radius: 16px; border: 2px solid #e3ded2; font-size: 14px; color: #6d6a63; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div id="title">Orbit · Members · 3 of 6 seats</div>
+      <div class="card" id="c3" data-layout-allow-overlap data-layout-allow-occlusion>
+        <div class="av"></div><div class="nm" data-layout-allow-overlap data-layout-allow-occlusion>Morgan Lee</div><div class="rl" data-layout-allow-overlap data-layout-allow-occlusion>Member</div>
+        <div class="tag" data-layout-allow-overlap data-layout-allow-occlusion>Joined</div><div class="hr"></div>
+        <div class="ln" data-layout-allow-overlap data-layout-allow-occlusion>Invited by</div><div class="ln2" data-layout-allow-overlap data-layout-allow-occlusion>Sam Kim</div>
+      </div>
+      <div class="card" id="c2" data-layout-allow-overlap data-layout-allow-occlusion>
+        <div class="av"></div><div class="nm" data-layout-allow-overlap data-layout-allow-occlusion>Sam Kim</div><div class="rl" data-layout-allow-overlap data-layout-allow-occlusion>Admin</div>
+        <div class="tag" data-layout-allow-overlap data-layout-allow-occlusion>Joined</div><div class="hr"></div>
+        <div class="ln" data-layout-allow-overlap data-layout-allow-occlusion>Invited by</div><div class="ln2" data-layout-allow-overlap data-layout-allow-occlusion>Jamie Dalton</div>
+      </div>
+      <div class="card" id="c1" data-layout-allow-overlap data-layout-allow-occlusion>
+        <div class="av y"></div><div class="nm" data-layout-allow-overlap data-layout-allow-occlusion>Jamie Dalton</div><div class="rl" data-layout-allow-overlap data-layout-allow-occlusion>Owner</div>
+        <div class="tag" data-layout-allow-overlap data-layout-allow-occlusion>Joined</div><div class="hr"></div>
+        <div class="ln" data-layout-allow-overlap data-layout-allow-occlusion>Invited by</div><div class="ln2" data-layout-allow-overlap data-layout-allow-occlusion>Workspace owner</div>
+      </div>
+    </div>
+    <div id="label"><span class="l-name">Card stack shuffle</span><span class="l-sep">·</span><span>UI Demo</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power2.inOut", duration: 0.45 } });
+  // Params: 3 cards, lift 180 px, 900 ms per shuffle (450 lift + 450 settle), rest of the stack compressed by 5% while the card is in the air.
+  const F = { y: 0, scale: 1, rotation: 0 }, M = { y: -28, scale: 0.96, rotation: 0 }, R = { y: -56, scale: 0.92, rotation: 0 };
+  const LIFT = 180;
+  // Resting state: Jamie in front, Sam in the middle, Morgan at the rear.
+  tl.fromTo("#c1", { ...F, zIndex: 3 }, { ...F, zIndex: 3, duration: 0.01, ease: "none" }, 0);
+  tl.fromTo("#c2", { ...M, zIndex: 2 }, { ...M, zIndex: 2, duration: 0.01, ease: "none" }, 0);
+  tl.fromTo("#c3", { ...R, zIndex: 1 }, { ...R, zIndex: 1, duration: 0.01, ease: "none" }, 0);
+  // One shuffle at time t: the rear card lifts and tilts, the rest compress, depth swaps at the top of the arc,
+  // then the lifted card settles at the front while the others step back one place.
+  function shuffle(rear, mid, front, t) {
+    tl.to(rear, { y: R.y - LIFT, rotation: -8, scale: 1.02, duration: 0.45, ease: "power2.out" }, t);
+    tl.to(mid, { scale: M.scale * 0.95, duration: 0.45, ease: "power2.out" }, t);
+    tl.to(front, { scale: F.scale * 0.95, duration: 0.45, ease: "power2.out" }, t);
+    tl.to(rear, { zIndex: 3, duration: 0.01, ease: "none" }, t + 0.45);
+    tl.to(front, { zIndex: 2, duration: 0.01, ease: "none" }, t + 0.45);
+    tl.to(mid, { zIndex: 1, duration: 0.01, ease: "none" }, t + 0.45);
+    tl.to(rear, { ...F, duration: 0.45, ease: "power2.inOut" }, t + 0.46);
+    tl.to(front, { ...M, duration: 0.45, ease: "power2.inOut" }, t + 0.46);
+    tl.to(mid, { ...R, duration: 0.45, ease: "power2.inOut" }, t + 0.46);
+  }
+  shuffle("#c3", "#c2", "#c1", 0.75);   // Morgan comes to the front; the card is at the top of its arc at 1.2 s (poster)
+  shuffle("#c2", "#c1", "#c3", 1.95);   // Sam comes to the front
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

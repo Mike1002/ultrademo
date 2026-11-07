@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-handwriting-write-on</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  #ink { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  #ink .s { fill: none; stroke: #1d1c1a; stroke-width: 9; stroke-linecap: round; stroke-linejoin: round; }
+  #rule { position: absolute; left: 160px; top: 430px; width: 848px; height: 2px; background: #e3ded2; }
+  #cap { position: absolute; left: 160px; top: 456px; font-size: 18px; color: #6d6a63; letter-spacing: .06em; text-transform: uppercase; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div id="rule"></div>
+      <div id="cap">written by hand, stroke by stroke</div>
+      <svg id="ink" viewBox="0 0 1168 580" data-layout-allow-overlap>
+        <g transform="translate(-84 36)">
+          <path class="s" id="p0" d="M 312 198 C 290 240 268 300 278 336 C 290 360 332 352 354 338"/>
+          <path class="s" id="p1" d="M 414 290 C 388 266 358 280 358 310 C 358 340 390 348 412 326 C 414 316 414 302 414 292 C 414 320 416 345 436 338 C 446 312 450 284 452 280 C 450 310 448 342 470 338 C 486 334 492 310 494 282 C 492 312 494 346 514 338 C 518 310 520 284 522 280 C 520 300 520 330 522 338 C 528 290 560 270 572 290 C 582 306 578 326 582 338 C 586 348 600 340 606 330 C 612 300 640 274 652 284 C 640 270 606 274 604 306 C 604 338 630 348 652 332 C 660 300 672 240 676 208 C 680 232 666 300 664 338 C 666 300 700 268 712 292 C 720 310 712 330 716 340 C 720 352 740 342 744 330"/>
+          <path class="s" id="p2" d="M 846 288 C 822 268 790 280 792 312 C 794 344 828 348 846 326 C 850 290 852 240 858 210 C 856 260 852 320 862 340 C 868 352 886 344 892 330"/>
+          <path class="s" id="p3" d="M 950 290 C 924 266 896 280 896 310 C 896 340 926 348 950 326 C 952 316 952 302 952 292 C 952 320 954 345 974 338 C 982 310 986 284 988 280 C 986 310 984 342 1006 338 C 1022 334 1028 310 1030 282 C 1028 320 1026 370 1014 400 C 1004 420 980 416 982 396"/>
+          <path class="s" id="p4" d="M 1064 330 C 1070 326 1076 334 1068 338 C 1062 340 1060 332 1064 330"/>
+          <circle id="pen" cx="0" cy="0" r="11" fill="#f2c200" stroke="#1d1c1a" stroke-width="2.5" opacity="0"/>
+        </g>
+      </svg>
+    </div>
+    <div id="label"><span class="l-name">Handwriting write-on</span><span class="l-sep">·</span><span>Typography</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  // Params: strokes drawn in array order with power2.inOut, 60 ms between strokes, 9 px round caps; stroke time scales with length
+  // so the whole phrase writes in ~1.7 s. Dash boundary is parked mid-gap (dasharray "L L+20") so no cap dot shows on frame 0.
+  // A yellow pen tip leads the stroke from a pure renderAt(t) (getPointAtLength), with tl.render wrapped so cold seeks still place it.
+  const paths = ["#p0", "#p1", "#p2", "#p3", "#p4"].map(s => document.querySelector(s));
+  const pen = document.getElementById("pen");
+  const lens = paths.map(p => p.getTotalLength());
+  const total = lens.reduce((a, b) => a + b, 0);
+  const BUDGET = 1.6, GAP = 0.06, T0 = 0.2;
+  const ease = gsap.parseEase("power2.inOut");
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power2.inOut", duration: 0.4 } });
+  const seg = [];     // { i, start, dur, dir }
+  let t = T0;
+  paths.forEach((p, i) => {
+    const L = lens[i];
+    const dur = Math.max(0.14, BUDGET * L / total);
+    p.style.strokeDasharray = L + " " + (L + 20);
+    tl.fromTo(p, { strokeDashoffset: L + 10 }, { strokeDashoffset: 0, duration: dur, ease: "power2.inOut" }, t);
+    seg.push({ i, start: t, dur, dir: 1 });
+    t += dur + GAP;
+  });
+  // second beat: the full stop is unwritten and written again
+  const Ld = lens[4];
+  tl.to(paths[4], { strokeDashoffset: Ld + 10, duration: 0.22, ease: "power2.inOut" }, 2.25);
+  seg.push({ i: 4, start: 2.25, dur: 0.22, dir: -1 });
+  tl.to(paths[4], { strokeDashoffset: 0, duration: 0.26, ease: "power2.inOut" }, 2.62);
+  seg.push({ i: 4, start: 2.62, dur: 0.26, dir: 1 });
+  const writeEnd = t - GAP;
+  function renderAt(time) {
+    let on = time >= T0 - 0.05;
+    let cur = seg[0], frac = 0;
+    for (const s of seg) {
+      if (time >= s.start) { cur = s; frac = Math.min(1, (time - s.start) / s.dur); }
+    }
+    let u = ease(frac);
+    if (cur.dir < 0) u = 1 - u;
+    const pt = paths[cur.i].getPointAtLength(lens[cur.i] * u);
+    pen.setAttribute("cx", pt.x.toFixed(2));
+    pen.setAttribute("cy", pt.y.toFixed(2));
+    pen.setAttribute("opacity", on ? "1" : "0");
+  }
+  renderAt(0);
+  tl.to({ k: 0 }, { k: 1, duration: 3, ease: "none", onUpdate: () => renderAt(tl.time()) }, 0);
+  const baseRender = tl.render; tl.render = function () { const r = baseRender.apply(this, arguments); renderAt(this.time()); return r; };
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>svg-path-draw</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  /* card 900x460 at (190,130) */
+  .card { position: absolute; left: 190px; top: 130px; width: 900px; height: 460px; background: #fffdf8; border: 2px solid #1d1c1a; border-radius: 24px; }
+  .mark { position: absolute; left: 48px; top: 48px; width: 200px; height: 200px; display: block; }
+  .mark .stroke { fill: none; stroke: #1d1c1a; stroke-width: 12; stroke-linecap: round; stroke-linejoin: round; }
+  .mark #ring { stroke: #f2c200; transform-origin: 100px 100px; transform: rotate(-90deg); }
+  .mark #disc { fill: #f2c200; fill-opacity: 0; }
+  .line { position: absolute; left: 48px; top: 280px; font-size: 44px; font-weight: 700; letter-spacing: -0.01em; opacity: 0; }
+  .sub { position: absolute; left: 48px; top: 344px; font-size: 20px; color: #6d6a63; opacity: 0; }
+  .chart { position: absolute; left: 300px; top: 40px; width: 560px; height: 220px; display: block; }
+  .chart .series { fill: none; stroke: #1d1c1a; stroke-width: 6; stroke-linecap: round; stroke-linejoin: round; }
+  .chart .axis { stroke: #e3ded2; stroke-width: 2; }
+  .chart #end-dot { fill: #f2c200; stroke: #1d1c1a; stroke-width: 3; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div class="card" id="card">
+      <svg class="mark" viewBox="0 0 200 200">
+        <circle id="disc" cx="100" cy="100" r="70" />
+        <circle id="ring" class="stroke" cx="100" cy="100" r="70" />
+        <path id="check" class="stroke" d="M 62 104 L 90 132 L 142 72" />
+      </svg>
+      <svg class="chart" viewBox="0 0 560 220" width="560" height="220">
+        <line class="axis" x1="20" y1="200" x2="540" y2="200" />
+        <polyline id="series" class="series" points="20,180 80,150 140,160 200,120 260,128 320,90 380,96 440,60 500,40 540,28" />
+        <circle id="end-dot" cx="540" cy="28" r="12" opacity="0" />
+      </svg>
+      <div class="line" id="line">Every frame is code</div>
+      <div class="sub" id="sub">Drawn by hand, one stroke after another</div>
+    </div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true });
+  // Setup: measure each path and make it one dash shifted fully out of view.
+  const LENS = {};
+  ["ring", "check", "series"].forEach((id) => {
+    const p = document.getElementById(id);
+    const len = p.getTotalLength();
+    // Gap longer than the dash and the start offset parked mid-gap: with round caps, an offset exactly equal to
+    // the length puts a dash END at path position 0 and renders a cap dot before the draw starts.
+    LENS[id] = len + 10;
+    p.style.strokeDasharray = `${len} ${len + 20}`;
+    p.style.strokeDashoffset = `${len + 10}`;
+  });
+  // Stagger: each segment starts at ~75% of the previous one's duration. Stroke draws use power2.out (a hand lifting).
+  const SEG_1_START = 0.2, RING_DUR = 0.7;
+  const SEG_2_START = SEG_1_START + RING_DUR * 0.75, CHECK_DUR = 0.5;
+  const SEG_3_START = SEG_2_START + CHECK_DUR * 0.75, SERIES_DUR = 0.9;
+  tl.fromTo("#ring", { strokeDashoffset: LENS.ring }, { strokeDashoffset: 0, duration: RING_DUR, ease: "power2.out" }, SEG_1_START);
+  tl.fromTo("#check", { strokeDashoffset: LENS.check }, { strokeDashoffset: 0, duration: CHECK_DUR, ease: "power2.out" }, SEG_2_START);
+  tl.fromTo("#series", { strokeDashoffset: LENS.series }, { strokeDashoffset: 0, duration: SERIES_DUR, ease: "power2.out" }, SEG_3_START);
+  // Draw then fill: the disc behind the check fades in after the ring completes.
+  tl.fromTo("#disc", { fillOpacity: 0 }, { fillOpacity: 1, duration: 0.4, ease: "power1.out" }, SEG_1_START + RING_DUR);
+  // The line lands on something: the end dot pops where the series finishes.
+  tl.fromTo("#end-dot", { opacity: 0, attr: { r: 2 } }, { opacity: 1, attr: { r: 12 }, duration: 0.3, ease: "back.out(2)" }, SEG_3_START + SERIES_DUR - 0.1);
+  // Companion text fades in only after the last stroke settles (+0.2 s beat).
+  tl.fromTo("#line", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power1.out" }, SEG_3_START + SERIES_DUR + 0.2);
+  tl.fromTo("#sub", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power1.out" }, SEG_3_START + SERIES_DUR + 0.35);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

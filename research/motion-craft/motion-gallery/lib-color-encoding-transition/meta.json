@@ -1,0 +1,22 @@
+{
+  "name": "Color encoding transition",
+  "family": "Data",
+  "purpose": [
+    "Data evidence",
+    "Comparison"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "svg",
+  "tags": [
+    "animated mark color encoding",
+    "data",
+    "chart",
+    "recolour",
+    "legend",
+    "category",
+    "value ramp",
+    "svg"
+  ],
+  "one_line": "A grid of 24 member dots stays exactly where it is while the dots take on three team colours, then recolour again on a yellow ramp by invites sent; the legend and title change with them."
+}

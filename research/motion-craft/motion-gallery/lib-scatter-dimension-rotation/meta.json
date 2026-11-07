@@ -1,0 +1,22 @@
+{
+  "name": "Scatter dimension rotation",
+  "family": "Data",
+  "purpose": [
+    "Explanation",
+    "Data evidence"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "webgl",
+  "tags": [
+    "scatter dimension rotation",
+    "scatter depth expansion staging",
+    "data",
+    "scatter",
+    "3d",
+    "rotate",
+    "dimensions",
+    "dark"
+  ],
+  "one_line": "Scatter points spread out in depth along a third variable, the whole cloud and its axis frame turn 90 degrees, and the points settle into the plane of the new variable pair, the Sales points pulsing once."
+}

@@ -1,0 +1,21 @@
+{
+  "name": "Connected particle network",
+  "family": "Generative",
+  "purpose": [
+    "Mood",
+    "Explanation"
+  ],
+  "energy": "calm",
+  "tier": 2,
+  "runtime": "canvas",
+  "tags": [
+    "constellation background",
+    "linked particles",
+    "generative",
+    "nodes",
+    "distance threshold",
+    "links form and break",
+    "dark"
+  ],
+  "one_line": "Eighty-four pale dots sway slowly on a dark stage and join to any neighbour within reach by a line that fades with distance; one yellow node draws its links in yellow."
+}

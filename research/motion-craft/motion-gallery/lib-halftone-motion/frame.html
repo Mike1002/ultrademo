@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-halftone-motion</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; overflow: hidden; }
+  #cv { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage"><canvas id="cv" width="1168" height="580"></canvas></div>
+    <div id="label"><span class="l-name">Halftone motion</span><span class="l-sep">·</span><span>Generative</span><span class="l-sep">·</span><span>calm</span></div>
+  </section>
+</div>
+<script>
+  const cv = document.getElementById("cv"), ctx = cv.getContext("2d");
+  const W = 1168, H = 580, INK = "#1d1c1a", ACC = "#f2c200", MUTED = "#6d6a63";
+  const SANS = '-apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif';
+  function circle(x, y, r, color, alpha) { ctx.globalAlpha = alpha; ctx.fillStyle = color; ctx.beginPath(); ctx.arc(x, y, Math.max(0.01, r), 0, Math.PI * 2); ctx.fill(); ctx.globalAlpha = 1; }
+  // Dot centres are fixed on a 16 px grid; only the radius changes, so a wave rolls across a printed halftone.
+  const dots = []; for (let y = 150; y <= 465; y += 16) for (let x = 110; x <= 1060; x += 16) dots.push([x, y]);
+  function renderAt(t) {
+    ctx.clearRect(0, 0, W, H); ctx.globalAlpha = 1;
+    ctx.fillStyle = INK; ctx.font = "24px " + SANS; ctx.textAlign = "left"; ctx.fillText("A wave carried by dot size", 104, 95);
+    ctx.fillStyle = MUTED; ctx.font = "18px " + SANS; ctx.fillText("Halftone motion", 104, 540);
+    for (const [x, y] of dots) {
+      const wave = (Math.sin(x / 65 + y / 100 - t * 2.2) + 1) / 2;
+      const envelope = 0.65 + 0.35 * Math.cos((y - 305) / 200);
+      circle(x, y, 0.6 + 5.6 * wave * envelope, INK, 1);
+    }
+    circle(1050, 82, 9, ACC, 1);
+  }
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+  renderAt(0);
+  tl.to({ k: 0 }, { k: 1, duration: 3, ease: "none", onUpdate: () => renderAt(tl.time()) }, 0);
+  const baseRender = tl.render; tl.render = function () { const r = baseRender.apply(this, arguments); renderAt(this.time()); return r; };
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

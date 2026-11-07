@@ -1,0 +1,28 @@
+{
+  "name": "Flow field",
+  "family": "Generative",
+  "purpose": [
+    "Mood",
+    "Branding",
+    "Explanation"
+  ],
+  "energy": "calm",
+  "tier": 2,
+  "runtime": "canvas",
+  "tags": [
+    "bg-flow-field",
+    "vector-field phase flow",
+    "phaseflow",
+    "noise flow field",
+    "flow-field advection",
+    "perlin flow field",
+    "curl noise swirl",
+    "divergence-free particle flow",
+    "generative",
+    "particles",
+    "trails",
+    "precomputed",
+    "dark"
+  ],
+  "one_line": "Six hundred pale points with short trails drift across a dark stage along the curves of an invisible, slowly turning flow field."
+}

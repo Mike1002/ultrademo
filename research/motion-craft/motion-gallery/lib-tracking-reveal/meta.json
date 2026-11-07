@@ -1,0 +1,23 @@
+{
+  "name": "Tracking reveal",
+  "family": "Typography",
+  "purpose": [
+    "Mood",
+    "Branding"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "gsap",
+  "tags": [
+    "tracking reveal",
+    "tracking converge",
+    "tracking-kerning-tween",
+    "tracking animation",
+    "text tracking expansion",
+    "type",
+    "letter spacing",
+    "converge",
+    "title"
+  ],
+  "one_line": "The letters of a big title start widely spaced and fade in as they tighten into one compact word; a rule draws beneath and a subtitle tightens in the same way."
+}

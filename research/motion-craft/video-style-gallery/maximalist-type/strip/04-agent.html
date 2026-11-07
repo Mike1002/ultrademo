@@ -1,0 +1,50 @@
+<!-- maximalist-type · 04-agent.html · one moment of the style strip (D-58). Assembled into ../frame.html by _tools/gen.py -->
+<style>
+  #term { position: absolute; left: 200px; top: 150px; width: 880px; height: 420px; background: var(--term-bg); color: var(--term-ink); border: var(--border-px) solid var(--term-line); border-radius: var(--r-card); overflow: hidden; box-shadow: none; will-change: transform, opacity; font-family: var(--f-mono); font-weight: var(--w-mono); font-size: 22px; }
+  #tbar { position: absolute; left: 0; top: 0; width: 100%; height: 48px; border-bottom: 1px solid var(--term-line); }
+  #tbar .d { position: absolute; top: 17px; width: 13px; height: 13px; border-radius: 50%; background: var(--term-muted); opacity: 0.6; }
+  #tbar .ttl { position: absolute; left: 0; width: 100%; top: 13px; text-align: center; font-size: 15px; color: var(--term-muted); letter-spacing: 0.06em; }
+  .tln { position: absolute; left: 36px; height: 34px; line-height: 34px; white-space: pre; will-change: transform, opacity; }
+  .tln .p { color: var(--term-prompt); }
+  .tln .ok { color: var(--term-ok); }
+  .tln .dim { color: var(--term-muted); }
+  #caret { position: absolute; top: 5px; width: 12px; height: 26px; background: var(--term-prompt); will-change: transform; }
+</style>
+  <section id="s4" class="clip" data-start="6.500" data-duration="2.000">
+    <div id="st4" class="stage alt">
+      <div id="term">
+        <div id="tbar"><div class="d" style="left:18px"></div><div class="d" style="left:40px"></div><div class="d" style="left:62px"></div><div class="ttl">agent · mcp</div></div>
+        <div class="tln" id="tl1" style="top:78px"><span class="p">› </span><span id="typed"></span><div id="caret" data-layout-allow-overlap></div></div>
+        <div class="tln" id="tl2" style="top:132px"><span class="ok">ultrademo</span><span class="dim"> · </span>storyboard ready <span class="dim">(6 moments)</span></div>
+        <div class="tln" id="tl3" style="top:172px"><span class="ok">ultrademo</span><span class="dim"> · </span>render queued</div>
+        <div class="tln" id="tl4" style="top:212px"><span class="ok">ultrademo</span><span class="dim"> · </span>preview ready</div>
+        <div class="tln" id="tl5" style="top:280px"><span class="p">› </span><div id="caret2" data-layout-allow-overlap style="position:absolute;top:5px;width:12px;height:26px;background:var(--term-prompt);will-change:transform;"></div></div>
+      </div>
+    </div>
+  </section>
+<script>
+  {
+    const t0 = M[3][0] - TD / 2, e = S.rhythm.entrance;
+    tl.fromTo("#term", { y: 34, opacity: 0, scale: 0.98 }, { y: 0, opacity: 1, scale: 1, duration: e * 1.1, ease: EASE.entry }, t0);
+    const TEXT = "make the launch video for orbit.app", CPS = 48, ty0 = t0 + 0.25, tyEnd = ty0 + TEXT.length / CPS;
+    const typed = document.getElementById("typed"), caret = document.getElementById("caret"), caret2 = document.getElementById("caret2");
+    const promptW = document.querySelector("#tl1 .p").getBoundingClientRect().width;
+    const probe = document.createElement("span"); probe.style.visibility = "hidden"; typed.parentNode.appendChild(probe);
+    const edges = []; for (let i = 0; i <= TEXT.length; i++) { probe.textContent = TEXT.slice(0, i); edges.push(promptW + probe.getBoundingClientRect().width); }
+    probe.remove();
+    const r1 = tyEnd + 0.28, r2 = r1 + 0.32, r3 = r2 + 0.32, p2 = r3 + 0.3;
+    R.push(t => {
+      const n = Math.max(0, Math.min(TEXT.length, Math.floor((t - ty0) * CPS)));
+      typed.textContent = TEXT.slice(0, n);
+      const blink = (Math.floor(t * 2.5) % 2) === 0;
+      caret.style.transform = "translateX(" + edges[n] + "px)";
+      caret.style.opacity = t < r1 ? (t < ty0 ? (blink ? 1 : 0) : 1) : 0;
+      caret2.style.opacity = (t >= p2 && blink) ? 1 : 0;
+    });
+    gsap.set("#caret2", { x: promptW });
+    tl.fromTo("#tl2", { y: 10, opacity: 0 }, { y: 0, opacity: 1, duration: 0.3, ease: "power2.out" }, r1);
+    tl.fromTo("#tl3", { y: 10, opacity: 0 }, { y: 0, opacity: 1, duration: 0.3, ease: "power2.out" }, r2);
+    tl.fromTo("#tl4", { y: 10, opacity: 0 }, { y: 0, opacity: 1, duration: 0.3, ease: "power2.out" }, r3);
+    tl.fromTo("#tl5", { opacity: 0 }, { opacity: 1, duration: 0.1, ease: "none" }, p2);
+  }
+</script>

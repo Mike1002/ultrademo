@@ -1,0 +1,21 @@
+{
+  "name": "J-cut and L-cut",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Sequence"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "gsap",
+  "tags": [
+    "sound bridge / j-cut / l-cut",
+    "transitions",
+    "j-cut",
+    "l-cut",
+    "sound bridge",
+    "waveform",
+    "hard cut"
+  ],
+  "one_line": "A picture strip sits over a drawn waveform strip scrolling under a playhead: the sound switches to the next scene's pattern 0.4 s before the picture cuts to it, then the picture cuts back while the old sound lingers 0.4 s."
+}

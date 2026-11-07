@@ -1,0 +1,19 @@
+{
+  "name": "Context window",
+  "family": "Explainer",
+  "purpose": [
+    "Explanation",
+    "Sequence"
+  ],
+  "energy": "steady",
+  "tier": 2,
+  "runtime": "gsap",
+  "tags": [
+    "sliding window",
+    "explainer",
+    "tokens",
+    "shift",
+    "counter"
+  ],
+  "one_line": "New letter tokens drop into a 16-slot window every 0.19 s; once it is full, everything shifts one slot left and the oldest token falls out bottom-left."
+}

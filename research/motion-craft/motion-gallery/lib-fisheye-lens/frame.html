@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-fisheye-lens</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  #chart { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  text { font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .bar { fill: #1d1c1a; }
+  .band { fill: #fbf3cf; }
+  .axis { stroke: #1d1c1a; stroke-width: 2; }
+  .grid { stroke: #e3ded2; stroke-width: 2; }
+  .tick { font-size: 15px; fill: #6d6a63; text-anchor: middle; font-variant-numeric: tabular-nums; }
+  .val { font-size: 22px; font-weight: 700; fill: #1d1c1a; text-anchor: middle; font-variant-numeric: tabular-nums; }
+  .title { font-size: 34px; font-weight: 700; fill: #1d1c1a; }
+  .lab { font-size: 13px; letter-spacing: .06em; fill: #6d6a63; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <svg id="chart" viewBox="0 0 1168 580" width="1168" height="580">
+        <text class="title" x="60" y="56">Invites by day</text>
+        <text class="lab" x="60" y="84">20 DAYS · THE LENS SWEEPS THE SAME EXTENT</text>
+        <rect class="band" id="band" x="0" y="130" width="360" height="360" rx="12"/>
+        <line class="grid" x1="120" y1="160" x2="1080" y2="160"/><line class="grid" x1="120" y1="310" x2="1080" y2="310"/>
+        <g id="bars"></g>
+        <line class="axis" x1="110" y1="460" x2="1090" y2="460"/>
+        <g id="ticks"></g>
+        <text class="val" id="val" x="0" y="0"></text>
+      </svg>
+    </div>
+    <div id="label"><span class="l-name">Fisheye lens</span><span class="l-sep">·</span><span>Data</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const SVGNS = "http://www.w3.org/2000/svg";
+  const el = (tag, attrs, cls) => { const e = document.createElementNS(SVGNS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (cls) e.setAttribute("class", cls); return e; };
+  function rand(seed){ let a = seed >>> 0 || 1; return function(){ a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+  const N = 20, X0 = 120, SLOT = 48, BW = 32, BASE = 460, HMAX = 300, RADIUS = 180, STRENGTH = 2;
+  const r = rand(11);
+  const vals = Array.from({ length: N }, (_, i) => Math.round(30 + 50 * Math.abs(Math.sin(i * 0.7)) + r() * 20));
+  const bars = document.getElementById("bars"), ticks = document.getElementById("ticks");
+  const B = vals.map((v, i) => { const h = HMAX * v / 100;
+    const b = el("rect", { x: X0 + i * SLOT + 8, y: BASE - h, width: BW, height: h, rx: 4 }, "bar"); bars.appendChild(b);
+    const t = el("text", { x: X0 + i * SLOT + 8 + BW / 2, y: 488 }, "tick"); t.textContent = i + 1; ticks.appendChild(t);
+    return { b, t, L: X0 + i * SLOT + 8, R: X0 + i * SLOT + 8 + BW, v }; });
+  const band = document.getElementById("band"), val = document.getElementById("val");
+  // Bounded fisheye: inside the radius, distance from the focus is stretched by (strength+1)a/(strength*a+radius); outside it, x is unchanged.
+  const lensAt = focus => x => { const d = x - focus, a = Math.abs(d); return a >= RADIUS ? x : focus + Math.sign(d) * RADIUS * (STRENGTH + 1) * a / (STRENGTH * a + RADIUS); };
+  const io1 = x => x < 0.5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2;   // power1.inOut-like sweep
+  const clamp = x => Math.max(0, Math.min(1, x));
+  function renderAt(t) {
+    // The lens settles in over the first 0.3 s (strength blends from 0), sweeps from day 2 to day 19 until 2.7 s, then eases out.
+    const p = io1(clamp((t - 0.3) / 2.4));
+    const focus = 190 + p * (1010 - 190);
+    const k = Math.min(clamp(t / 0.3), clamp((3 - t) / 0.3));
+    const lens = lensAt(focus); const map = x => x + k * (lens(x) - x);
+    let near = 0;
+    B.forEach((bar, i) => { const l = map(bar.L), rr = map(bar.R);
+      bar.b.setAttribute("x", l); bar.b.setAttribute("width", rr - l); bar.t.setAttribute("x", (l + rr) / 2);
+      if (Math.abs((bar.L + bar.R) / 2 - focus) < Math.abs((B[near].L + B[near].R) / 2 - focus)) near = i; });
+    B.forEach((bar, i) => { bar.b.style.fill = i === near && k > 0.5 ? "#f2c200" : "#1d1c1a"; bar.t.style.fontWeight = i === near && k > 0.5 ? "700" : "400"; });
+    band.setAttribute("x", focus - RADIUS); band.setAttribute("width", 2 * RADIUS); band.style.opacity = k;
+    const nb = B[near]; val.textContent = nb.v; val.setAttribute("x", (map(nb.L) + map(nb.R)) / 2); val.setAttribute("y", BASE - HMAX * nb.v / 100 - 12); val.style.opacity = k > 0.5 ? 1 : 0;
+  }
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power1.inOut", duration: 0.8 } });
+  renderAt(0);
+  tl.to({ k: 0 }, { k: 1, duration: 3, ease: "none", onUpdate: () => renderAt(tl.time()) }, 0);
+  const baseRender = tl.render; tl.render = function () { const r = baseRender.apply(this, arguments); renderAt(this.time()); return r; };
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

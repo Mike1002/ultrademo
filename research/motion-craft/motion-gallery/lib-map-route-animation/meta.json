@@ -1,0 +1,24 @@
+{
+  "name": "Map route animation",
+  "family": "Data",
+  "purpose": [
+    "Data evidence",
+    "Comparison"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "svg",
+  "tags": [
+    "flow map",
+    "map connection draw",
+    "animated geographic route marker",
+    "point along route",
+    "data",
+    "map",
+    "route",
+    "path draw",
+    "marker",
+    "pulse"
+  ],
+  "one_line": "A yellow marker travels along a route across an abstract dotted map from Jamie to Sam to Morgan while the route line draws behind it, with a ring pulse at each pin it reaches."
+}

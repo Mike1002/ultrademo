@@ -1,0 +1,24 @@
+{
+  "name": "Theme crossfade morph",
+  "family": "Transition & Motion",
+  "purpose": [
+    "reskin",
+    "transition",
+    "theme",
+    "proof"
+  ],
+  "energy": "steady",
+  "tags": [
+    "theme",
+    "skin",
+    "crossfade",
+    "morph",
+    "anchor",
+    "reskin",
+    "cycle",
+    "ui",
+    "stacked-layers",
+    "dark"
+  ],
+  "one_line": "The whole card re-skins in quick blends from light and rounded to dark and square to yellow and pill-shaped, while the Continue button stays exactly where it is."
+}

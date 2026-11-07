@@ -1,0 +1,22 @@
+{
+  "name": "Tinted burn dissolve",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Mood"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "webgl",
+  "tags": [
+    "tinted burn dissolve",
+    "transitions",
+    "dissolve",
+    "tint",
+    "burn",
+    "warm",
+    "filter",
+    "dark"
+  ],
+  "one_line": "An invite card runs hot yellow-orange, as if lit from behind by a warm glow, while it blends into a stats card that comes in clean; then the burn runs back the other way."
+}

@@ -1,0 +1,22 @@
+{
+  "name": "Animated size encoding",
+  "family": "Data",
+  "purpose": [
+    "Data evidence",
+    "Comparison"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "svg",
+  "tags": [
+    "bubble map",
+    "animated size encoding",
+    "data",
+    "bubbles",
+    "area",
+    "scale from centre",
+    "radius",
+    "svg attr"
+  ],
+  "one_line": "Five yellow circles, one per team member, grow from their fixed centres to areas proportional to each person's invite count, then resize together to a second week's numbers while the counts tick alongside."
+}

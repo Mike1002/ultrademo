@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-matrix-sort</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  #chart { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  #chart text { font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .rl { font-size: 20px; font-weight: 600; fill: #1d1c1a; }
+  .cl { font-size: 16px; font-weight: 600; fill: #6d6a63; }
+  .cluster { fill: none; stroke: #f2c200; stroke-width: 5; opacity: 0; }
+  .heading { position: absolute; left: 32px; top: 20px; font-size: 34px; font-weight: 700; }
+  .sub { position: absolute; left: 34px; top: 68px; font-size: 18px; color: #6d6a63; }
+  #sorted { position: absolute; left: 34px; top: 100px; font-size: 18px; color: #1d1c1a; font-weight: 600; opacity: 0; }
+  .legend { position: absolute; left: 34px; top: 500px; font-size: 14px; color: #6d6a63; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div class="heading">Who invited whom</div>
+      <div class="sub">Rows invite columns</div>
+      <div id="sorted">Sorted: two clusters</div>
+      <div class="legend">Darker cell = more invites</div>
+      <svg id="chart" viewBox="0 0 1168 580" xmlns="http://www.w3.org/2000/svg">
+        <g id="cells"></g>
+        <g id="rowLabels"></g>
+        <g id="colLabels"></g>
+        <rect id="clusterA" class="cluster" rx="10"/>
+        <rect id="clusterB" class="cluster" rx="10"/>
+      </svg>
+    </div>
+    <div id="label"><span class="l-name">Matrix row-column sorting</span><span class="l-sep">·</span><span>Data</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const NS = "http://www.w3.org/2000/svg";
+  const OX = 470, OY = 86, P = 72, C = 64;
+  // Sorted order and the matrix in that order (two 3x3 clusters). pos[] is where each sorted item starts.
+  const names = ["Jamie", "Sam", "Morgan", "Alex", "Riley", "Noor"];
+  const pos = [1, 3, 5, 0, 2, 4];
+  const M = [
+    [0, .9, .7, .1, 0, .15],
+    [.8, 0, .85, 0, .1, 0],
+    [.75, .9, 0, .2, 0, .1],
+    [.1, 0, .15, 0, .8, .9],
+    [0, .1, 0, .85, 0, .7],
+    [.2, 0, .1, .9, .8, 0]];
+  const gC = document.getElementById("cells"), gR = document.getElementById("rowLabels"), gK = document.getElementById("colLabels");
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power2.inOut", duration: 1 } });
+  const T0 = 0.4, DUR = 1.0;
+  for (let r = 0; r < 6; r++) for (let c = 0; c < 6; c++) {
+    const v = M[r][c];
+    const el = document.createElementNS(NS, "rect");
+    el.id = "c" + r + c; el.setAttribute("x", OX + pos[c] * P); el.setAttribute("y", OY + pos[r] * P); el.setAttribute("width", C); el.setAttribute("height", C); el.setAttribute("rx", 6);
+    el.setAttribute("fill", v === 0 ? "#ece7da" : "#1d1c1a"); el.setAttribute("fill-opacity", v === 0 ? 1 : 0.12 + 0.88 * v);
+    gC.appendChild(el);
+    // Each cell keeps its identity and glides from its starting rank to its sorted rank (1 s, power2.inOut).
+    tl.fromTo(el, { attr: { x: OX + pos[c] * P, y: OY + pos[r] * P } }, { attr: { x: OX + c * P, y: OY + r * P } }, T0);
+  }
+  names.forEach((n, i) => {
+    const t = document.createElementNS(NS, "text"); t.id = "r" + i; t.setAttribute("class", "rl"); t.setAttribute("data-layout-allow-overlap", ""); t.setAttribute("x", OX - 18); t.setAttribute("text-anchor", "end"); t.textContent = n; gR.appendChild(t);
+    tl.fromTo(t, { attr: { y: OY + pos[i] * P + 39 } }, { attr: { y: OY + i * P + 39 } }, T0);
+    const k = document.createElementNS(NS, "text"); k.id = "k" + i; k.setAttribute("class", "cl"); k.setAttribute("data-layout-allow-overlap", ""); k.setAttribute("y", OY - 14); k.setAttribute("text-anchor", "middle"); k.textContent = n; gK.appendChild(k);
+    tl.fromTo(k, { attr: { x: OX + pos[i] * P + 32 } }, { attr: { x: OX + i * P + 32 } }, T0);
+  });
+  // Once sorted, the two clusters are outlined in yellow; the outline then breathes so the frame keeps moving.
+  const A = document.getElementById("clusterA"), B = document.getElementById("clusterB");
+  A.setAttribute("x", OX - 5); A.setAttribute("y", OY - 5); A.setAttribute("width", 3 * P - 8 + 10); A.setAttribute("height", 3 * P - 8 + 10);
+  B.setAttribute("x", OX + 3 * P - 5); B.setAttribute("y", OY + 3 * P - 5); B.setAttribute("width", 3 * P - 8 + 10); B.setAttribute("height", 3 * P - 8 + 10);
+  tl.fromTo([A, B], { opacity: 0 }, { opacity: 1, duration: 0.35, ease: "none", stagger: 0.15 }, 1.6);
+  tl.fromTo("#sorted", { opacity: 0 }, { opacity: 1, duration: 0.35, ease: "none" }, 1.6);
+  tl.fromTo([A, B], { opacity: 1 }, { opacity: 0.45, duration: 0.3, ease: "power1.inOut", yoyo: true, repeat: 1, immediateRender: false }, 2.3);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+{
+  "name": "Smash cut",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Attention"
+  ],
+  "energy": "high",
+  "tier": 3,
+  "runtime": "gsap",
+  "tags": [
+    "smash cut",
+    "gilligan cut",
+    "transitions",
+    "hard cut",
+    "contrast",
+    "shock",
+    "shake"
+  ],
+  "one_line": "A quiet invite card with a slowly drifting cursor cuts without warning to a loud black panel with a huge yellow number that shakes and settles, then cuts back just as hard and the cursor clicks Continue."
+}

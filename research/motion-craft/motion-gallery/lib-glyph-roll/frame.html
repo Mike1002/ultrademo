@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-glyph-roll</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  #card { position: absolute; left: 224px; top: 110px; width: 720px; height: 360px; background: #fffdf8; border: 2px solid #1d1c1a; border-radius: 24px; }
+  #card .lab { position: absolute; left: 56px; top: 48px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  #card h1 { position: absolute; left: 56px; top: 76px; font-size: 44px; font-weight: 700; white-space: nowrap; }
+  #card .hr { position: absolute; left: 56px; top: 160px; width: 608px; height: 2px; background: #e3ded2; }
+  #card .k { position: absolute; left: 56px; top: 214px; font-size: 22px; color: #6d6a63; }
+  #pill { position: absolute; left: 180px; top: 194px; width: 300px; height: 76px; border-radius: 38px; border: 2px solid #1d1c1a; background: #fffdf8; }
+  #dot { position: absolute; left: 22px; top: 30px; width: 14px; height: 14px; border-radius: 50%; background: #1d1c1a; }
+  #slots { position: absolute; left: 50px; top: 10px; height: 54px; display: flex; }
+  .slot { position: relative; width: 36px; height: 54px; overflow: hidden; }
+  .col { position: absolute; left: 0; top: 0; width: 36px; height: 162px; will-change: transform; }
+  .col div { width: 36px; height: 54px; line-height: 54px; text-align: center; font-size: 40px; font-weight: 700; letter-spacing: -0.01em; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div id="card">
+        <div class="lab">Orbit</div>
+        <h1>Invite your team</h1>
+        <div class="hr"></div>
+        <div class="k">Status</div>
+        <div id="pill"><div id="dot"></div><div id="slots"></div></div>
+      </div>
+    </div>
+    <div id="label"><span class="l-name">Glyph roll</span><span class="l-sep">·</span><span>Typography</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  // Params: roll 0.7 s power3.out, 0.05 s between slots, slot height 1.35em, direction up.
+  // Each slot holds a column of the three words' glyphs (blank-padded); a roll moves the column up one glyph height.
+  const WORDS = ["Draft", "Review", "Live"];
+  const N = 6, H = 54;
+  const slots = document.getElementById("slots");
+  let html = "";
+  for (let i = 0; i < N; i++) {
+    html += '<div class="slot"><div class="col" id="s' + i + '">';
+    WORDS.forEach(w => { html += "<div>" + (w[i] || "") + "</div>"; });
+    html += "</div></div>";
+  }
+  slots.innerHTML = html;
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.7 } });
+  for (let i = 0; i < N; i++) {
+    const col = "#s" + i;
+    tl.fromTo(col, { y: 0 }, { y: -H, duration: 0.7, ease: "power3.out" }, 0.35 + i * 0.05);            // Draft -> Review
+    tl.fromTo(col, { y: -H }, { y: -2 * H, duration: 0.7, ease: "power3.out", immediateRender: false }, 1.8 + i * 0.05); // Review -> Live
+  }
+  tl.fromTo("#dot", { backgroundColor: "#1d1c1a", scale: 1 }, { backgroundColor: "#1d1c1a", scale: 1, duration: 0.01 }, 0);
+  tl.to("#dot", { scale: 1.5, duration: 0.2, ease: "power2.out" }, 0.35);
+  tl.to("#dot", { scale: 1, duration: 0.3, ease: "power2.out" }, 0.55);
+  tl.to("#dot", { backgroundColor: "#f2c200", scale: 1.5, duration: 0.2, ease: "power2.out" }, 1.8);
+  tl.to("#dot", { scale: 1, duration: 0.3, ease: "power2.out" }, 2.0);
+  tl.fromTo("#pill", { backgroundColor: "#fffdf8" }, { backgroundColor: "#fbf3cf", duration: 0.5, ease: "power2.out", immediateRender: false }, 1.9);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

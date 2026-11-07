@@ -1,0 +1,21 @@
+{
+  "name": "Ring zoom",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Attention"
+  ],
+  "energy": "high",
+  "tier": 3,
+  "runtime": "webgl",
+  "tags": [
+    "ring zoom",
+    "transitions",
+    "concentric",
+    "rings",
+    "zoom",
+    "clip-path",
+    "tunnel"
+  ],
+  "one_line": "Three concentric rings show the invite scene at growing magnifications toward the centre, like a tunnel, and the stats scene replaces it ring by ring from the centre outward; its rows then settle in."
+}

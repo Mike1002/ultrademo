@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-chat-thread</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  .headline { position: absolute; left: 48px; top: 150px; font-size: 56px; font-weight: 700; width: 400px; line-height: 1.1; }
+  .sub { position: absolute; left: 48px; top: 290px; font-size: 22px; color: #6d6a63; }
+  .chat { position: absolute; left: 480px; top: 55px; width: 570px; height: 460px; background: #fffdf8; border: 2px solid #1d1c1a; border-radius: 20px; }
+  .bar { position: absolute; left: 0; top: 0; width: 566px; height: 56px; padding: 16px 24px; border-bottom: 1px solid #e3ded2; font-size: 18px; font-weight: 700; }
+  .viewport { position: absolute; left: 0; top: 56px; width: 566px; height: 400px; overflow: hidden; border-radius: 0 0 18px 18px; }
+  .thread { position: absolute; left: 24px; top: 219px; width: 518px; height: 424px; will-change: transform; }
+  .bubble { position: absolute; left: 0; width: 440px; height: 88px; padding: 18px 24px; font-size: 23px; background: #ece7da; border-radius: 16px; will-change: transform; }
+  .bubble.reply { left: 78px; border: 2px solid #1d1c1a; background: #fffdf8; }
+  .bubble .speaker { display: block; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; margin-bottom: 5px; }
+  .m1 { top: 0; } .m2 { top: 106px; } .m3 { top: 212px; } .m4 { top: 318px; }
+  .bubble.reply .speaker { color: #1d1c1a; }
+  .dot { position: absolute; left: 95px; top: 48px; width: 60px; height: 60px; border-radius: 50%; background: #f2c200; border: 2px solid #1d1c1a; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div class="dot"></div>
+      <div class="headline">Invite your team</div>
+      <div class="sub">12,480 invites sent</div>
+      <div class="chat">
+        <div class="bar">Orbit</div>
+        <div class="viewport"><div class="thread" id="thread" data-layout-allow-overflow>
+          <div class="bubble m1" id="m1"><span class="speaker">Jamie Dalton</span>Can you invite Sam and Morgan?</div>
+          <div class="bubble reply m2" id="m2"><span class="speaker">Orbit</span>Done. 2 invites sent.</div>
+          <div class="bubble m3" id="m3"><span class="speaker">Jamie Dalton</span>How many seats are left?</div>
+          <div class="bubble reply m4" id="m4"><span class="speaker">Orbit</span>3 seats left on your plan.</div>
+        </div></div>
+      </div>
+    </div>
+    <div id="label"><span class="l-name">Chat thread</span><span class="l-sep">·</span><span>UI Demo</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+  // One message every 0.7 s: the bubble pops in from its bottom corner while the whole thread shifts up one slot (106 px).
+  const ids = ["#m1", "#m2", "#m3", "#m4"], STEP = 0.7, START = 0.3;
+  ids.forEach((id, i) => {
+    const origin = i % 2 ? "100% 100%" : "0% 100%";
+    tl.fromTo(id, { opacity: 0, scale: 0.8, y: 12, transformOrigin: origin }, { opacity: 1, scale: 1, y: 0, duration: 0.25, ease: "power2.out" }, START + i * STEP);
+  });
+  ids.forEach((id, i) => {
+    if (i === 0) return;
+    tl.fromTo("#thread", { y: -(i - 1) * 106 }, { y: -i * 106, duration: 0.35, ease: "power2.out", immediateRender: false }, START + i * STEP);
+  });
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+{
+  "name": "Kaleidoscope transition",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Attention"
+  ],
+  "energy": "high",
+  "tier": 3,
+  "runtime": "webgl",
+  "tags": [
+    "kaleidoscope",
+    "transitions",
+    "mirror",
+    "wedge",
+    "fold",
+    "symmetry",
+    "rotate"
+  ],
+  "one_line": "The invite card folds into six mirrored wedge fragments that turn a quarter circle around the centre, the fragments switch to the stats card at the peak, and the picture unfolds back to a plain frame."
+}

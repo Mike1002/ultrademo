@@ -1,0 +1,22 @@
+{
+  "name": "Tracked redaction",
+  "family": "UI Demo",
+  "purpose": [
+    "Explanation",
+    "Feedback"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "css",
+  "tags": [
+    "sensitive-region animated blur",
+    "ui",
+    "redaction",
+    "blur",
+    "privacy",
+    "tracking",
+    "follow",
+    "reflow"
+  ],
+  "one_line": "A blurred pill hides the email value in an account form; when a note expands above and the rows move down, the pill moves with the field, widens as the address gets longer, and rides back up when the note collapses."
+}

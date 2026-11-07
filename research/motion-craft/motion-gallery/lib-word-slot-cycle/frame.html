@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-word-slot-cycle</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  #line { position: absolute; left: 90px; top: 220px; height: 120px; font-size: 92px; font-weight: 700; line-height: 120px; white-space: nowrap; letter-spacing: -0.01em; }
+  #fixed { position: absolute; left: 0; top: 0; }
+  #slot { position: absolute; left: 540px; top: 0; width: 420px; height: 120px; overflow: hidden; }
+  #slot .w { position: absolute; left: 0; top: 0; height: 120px; line-height: 120px; color: #1d1c1a; will-change: transform, filter; }
+  #ul { position: absolute; left: 540px; top: 118px; width: 420px; height: 8px; border-radius: 4px; background: #f2c200; }
+  #sub { position: absolute; left: 90px; top: 380px; font-size: 22px; color: #6d6a63; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div id="line">
+        <div id="fixed">Invite your</div>
+        <div id="slot">
+          <div class="w" id="w0" data-layout-allow-overlap>team</div>
+          <div class="w" id="w1" data-layout-allow-overlap>clients</div>
+          <div class="w" id="w2" data-layout-allow-overlap>partners</div>
+          <div class="w" id="w3" data-layout-allow-overlap>team</div>
+        </div>
+        <div id="ul"></div>
+      </div>
+      <div id="sub">One sentence, one slot, three audiences.</div>
+    </div>
+    <div id="label"><span class="l-name">Word slot cycle</span><span class="l-sep">·</span><span>Typography</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power2.inOut", duration: 0.25 } });
+  // Hold 0.6 s, swap 0.25 s: the outgoing word rises 0.6em and blurs out while the incoming one comes up from below.
+  const words = ["#w0", "#w1", "#w2", "#w3"];
+  const HOLD = 0.6, SWAP = 0.25, MOVE = 60; // 0.6em of 92 px... rounded to the slot's travel
+  words.forEach((w, i) => {
+    const t = 0.4 + i * (HOLD + SWAP);
+    if (i === 0) {
+      tl.fromTo(w, { yPercent: 0, opacity: 1, filter: "blur(0px)" }, { yPercent: 0, opacity: 1, duration: 0.01 }, 0);
+    } else {
+      tl.to(words[i - 1], { yPercent: -60, opacity: 0, filter: "blur(4px)", duration: SWAP, ease: "power2.in" }, t - SWAP);
+      tl.fromTo(w, { yPercent: 60, opacity: 0, filter: "blur(0px)" }, { yPercent: 0, opacity: 1, duration: SWAP, ease: "power2.out" }, t - SWAP);
+    }
+  });
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

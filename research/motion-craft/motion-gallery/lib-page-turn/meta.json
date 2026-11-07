@@ -1,0 +1,21 @@
+{
+  "name": "Page turn",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Sequence"
+  ],
+  "energy": "steady",
+  "tier": 2,
+  "runtime": "webgl",
+  "tags": [
+    "book page turn",
+    "bookflip()",
+    "page curl",
+    "cc page turn",
+    "transitions",
+    "3d",
+    "fold"
+  ],
+  "one_line": "The right half of the first scene lifts at the centre like a book page and folds over to the left in perspective, with a soft shadow; its back carries the next scene, which is left in place when the page lands."
+}

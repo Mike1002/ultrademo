@@ -1,0 +1,21 @@
+{
+  "name": "Chromatic wipe",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Attention"
+  ],
+  "energy": "high",
+  "tier": 3,
+  "runtime": "css",
+  "tags": [
+    "chromatic wipe",
+    "transitions",
+    "chromatic",
+    "rgb split",
+    "wipe",
+    "screen blend",
+    "dark"
+  ],
+  "one_line": "The invite scene splits into red, green and blue copies that slide away left at different speeds while a wipe uncovers the stats scene, whose colour copies drift back together."
+}

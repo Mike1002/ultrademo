@@ -1,0 +1,20 @@
+{
+  "name": "Next-token pick",
+  "family": "Explainer",
+  "purpose": [
+    "Explanation",
+    "Sequence"
+  ],
+  "energy": "steady",
+  "tier": 2,
+  "runtime": "gsap",
+  "tags": [
+    "next token prediction",
+    "next-token probability bars",
+    "autoregressive generation loop",
+    "explainer",
+    "bars",
+    "scaley"
+  ],
+  "one_line": "Four candidate words grow probability bars under the sentence \"Invite your ___\", then the 62% winner, \"team\", lights up yellow and slides into the blank."
+}

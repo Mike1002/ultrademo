@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-follow-through</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  .lab { font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  .heading { position: absolute; left: 120px; top: 45px; }
+  .track { position: absolute; left: 120px; width: 928px; top: 480px; height: 3px; background: #1d1c1a; }
+  .target { position: absolute; left: 814px; top: 145px; width: 2px; height: 335px; border-left: 2px dashed #a19d93; }
+  #body { position: absolute; left: 150px; top: 320px; width: 30px; height: 160px; background: #1d1c1a; border-radius: 6px 6px 0 0; will-change: transform; }
+  #flag { position: absolute; left: 4px; top: -140px; width: 22px; height: 142px; background: #f2c200; border: 2px solid #1d1c1a; border-radius: 6px; transform-origin: 50% 100%; will-change: transform; }
+  .cap { position: absolute; left: 845px; }
+  #stop { top: 452px; } #settle { top: 180px; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div class="lab heading">The body stops; the tip keeps going and settles later</div>
+      <div class="track"></div><div class="target"></div>
+      <div id="body" data-layout-allow-overlap><div id="flag" data-layout-allow-overlap></div></div>
+      <div class="lab cap" id="stop">Body stops at 1.05 s</div>
+      <div class="lab cap" id="settle">Tip settles at 2.23 s</div>
+    </div>
+    <div id="label"><span class="l-name">Follow-through</span><span class="l-sep">·</span><span>Principles</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+  // Body: one linear move and an abrupt stop. Flag: trails at -24 deg, overshoots to 38 deg, then damps out.
+  tl.fromTo("#body", { x: 0 }, { x: 650, duration: 0.75, ease: "none" }, 0.3);
+  tl.fromTo("#flag", { rotation: 0 }, { rotation: -24, duration: 0.25, ease: "power2.out" }, 0.3);
+  tl.to("#flag", { rotation: 38, duration: 0.18, ease: "power2.out" }, 1.05);
+  [[-20, 0.22], [11, 0.2], [-6, 0.2], [3, 0.18], [0, 0.2]].forEach(([rotation, duration], i) => {
+    const start = [1.23, 1.45, 1.65, 1.85, 2.03][i];
+    tl.to("#flag", { rotation, duration, ease: "power1.inOut" }, start);
+  });
+  tl.fromTo("#stop", { opacity: 0 }, { opacity: 1, duration: 0.15 }, 1.05);
+  tl.fromTo("#settle", { opacity: 0 }, { opacity: 1, duration: 0.2 }, 2.25);
+  // Tail: a last faint breath of the tip so the clip keeps moving.
+  tl.to("#flag", { rotation: -1.5, duration: 0.25, ease: "sine.inOut" }, 2.5);
+  tl.to("#flag", { rotation: 0, duration: 0.25, ease: "sine.inOut" }, 2.75);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

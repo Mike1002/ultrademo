@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-streaming-chart</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; overflow: hidden; }
+  #cv { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage"><canvas id="cv" width="1168" height="580"></canvas></div>
+    <div id="label"><span class="l-name">Streaming chart</span><span class="l-sep">·</span><span>Data</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  function rand(seed){ let a = seed >>> 0 || 1; return function(){ a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+  const cv = document.getElementById("cv"), ctx = cv.getContext("2d");
+  const W = 1168, H = 580, INK = "#1d1c1a", ACC = "#f2c200", MUTED = "#6d6a63", RULE = "#e3ded2", SOFT = "#fbf3cf";
+  const SANS = '-apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif';
+  // Rolling window: 20 samples visible across the plot; one new sample every 0.25 s of clip time (12 arrive over 3 s).
+  const X0 = 150, X1 = 1100, Y0 = 120, Y1 = 470, N = 20, STEP = (X1 - X0) / N, RATE = 4;
+  const r = rand(7);
+  const series = Array.from({ length: 60 }, (_, i) => Math.round(48 + 24 * Math.sin(i * 0.55) + (r() - 0.5) * 26));
+  const yOf = v => Y1 - (v / 100) * (Y1 - Y0);
+  const pad = n => (n < 10 ? "0" : "") + n;
+  const tickLabel = i => "10:" + pad(i % 60);
+  function renderAt(t) {
+    ctx.clearRect(0, 0, W, H);
+    ctx.font = "700 34px " + SANS; ctx.fillStyle = INK; ctx.textAlign = "left"; ctx.fillText("Live invites", X0, 62);
+    ctx.font = "13px " + SANS; ctx.fillStyle = MUTED; ctx.fillText("PER MINUTE · ROLLING WINDOW", X0 + 220, 62);
+    const head = N + t * RATE;                     // fractional index of the newest sample reaching the right edge
+    const xOf = i => X1 - (head - i) * STEP;
+    ctx.strokeStyle = RULE; ctx.lineWidth = 2;
+    [0, 50, 100].forEach(v => { const y = yOf(v); ctx.beginPath(); ctx.moveTo(X0, y); ctx.lineTo(X1, y); ctx.stroke();
+      ctx.fillStyle = MUTED; ctx.font = "18px " + SANS; ctx.textAlign = "right"; ctx.fillText(String(v), X0 - 14, y + 6); });
+    ctx.strokeStyle = INK; ctx.beginPath(); ctx.moveTo(X0, Y1); ctx.lineTo(X1, Y1); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(X1, Y0 - 10); ctx.lineTo(X1, Y1); ctx.stroke();
+    ctx.save(); ctx.beginPath(); ctx.rect(X0 - 2, Y0 - 30, X1 - X0 + 18, Y1 - Y0 + 80); ctx.clip();
+    const last = Math.floor(head), first = Math.max(0, Math.ceil(head - N) - 1);
+    // Time ticks every 5 samples travel left with the data.
+    ctx.textAlign = "center"; ctx.font = "18px " + SANS;
+    for (let i = first; i <= last; i++) if (i % 5 === 0) { const x = xOf(i); ctx.strokeStyle = RULE; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(x, Y0); ctx.lineTo(x, Y1 + 10); ctx.stroke(); ctx.fillStyle = MUTED; ctx.fillText(tickLabel(i), x, Y1 + 36); }
+    ctx.beginPath(); ctx.moveTo(xOf(first), Y1);
+    for (let i = first; i <= last; i++) ctx.lineTo(xOf(i), yOf(series[i]));
+    ctx.lineTo(xOf(last), Y1); ctx.closePath(); ctx.fillStyle = SOFT; ctx.fill();
+    ctx.beginPath(); for (let i = first; i <= last; i++) { const x = xOf(i), y = yOf(series[i]); if (i === first) ctx.moveTo(x, y); else ctx.lineTo(x, y); }
+    ctx.strokeStyle = INK; ctx.lineWidth = 4; ctx.lineJoin = "round"; ctx.stroke();
+    // Older samples as small dots; the newest as a yellow ring that has just entered from the right.
+    for (let i = first; i <= last; i++) { const x = xOf(i), y = yOf(series[i]);
+      ctx.beginPath(); ctx.arc(x, y, i === last ? 11 : 5, 0, Math.PI * 2); ctx.fillStyle = i === last ? ACC : INK; ctx.fill();
+      if (i === last) { ctx.lineWidth = 3; ctx.strokeStyle = INK; ctx.stroke(); } }
+    ctx.restore();
+    const v = series[last];
+    ctx.font = "700 26px " + SANS; ctx.fillStyle = INK; ctx.textAlign = "right"; ctx.fillText(v + " / min", X1, Y0 - 36);
+    ctx.font = "13px " + SANS; ctx.fillStyle = MUTED; ctx.textAlign = "left"; ctx.fillText("NEWEST SAMPLE ENTERS ON THE RIGHT", X0, Y1 + 72);
+  }
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "none", duration: 0.5 } });
+  renderAt(0);
+  tl.to({ k: 0 }, { k: 1, duration: 3, ease: "none", onUpdate: () => renderAt(tl.time()) }, 0);
+  const baseRender = tl.render; tl.render = function () { const r = baseRender.apply(this, arguments); renderAt(this.time()); return r; };
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

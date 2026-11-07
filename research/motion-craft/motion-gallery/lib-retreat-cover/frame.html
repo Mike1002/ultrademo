@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-retreat-cover</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; overflow: hidden; }
+  .card { position: absolute; left: 264px; top: 110px; width: 640px; height: 360px; background: #fffdf8; border: 2px solid #1d1c1a; border-radius: 24px; will-change: transform, filter; }
+  .card .lab { position: absolute; left: 56px; top: 48px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  .card h1 { position: absolute; left: 56px; top: 80px; font-size: 56px; font-weight: 700; line-height: 64px; white-space: nowrap; }
+  .card .sub { position: absolute; left: 56px; top: 160px; font-size: 22px; color: #6d6a63; }
+  .card .btn { position: absolute; left: 56px; top: 240px; width: 200px; height: 60px; border-radius: 14px; background: #f2c200; border: 2px solid #1d1c1a;
+    font-size: 20px; font-weight: 700; line-height: 56px; text-align: center; }
+  #b h1 { font-size: 96px; line-height: 104px; top: 74px; font-variant-numeric: tabular-nums; }
+  #b .sub { top: 190px; }
+  #c .av { position: absolute; left: 56px; top: 48px; width: 64px; height: 64px; border-radius: 50%; border: 2px solid #1d1c1a; background: #ece7da;
+    font-size: 20px; font-weight: 700; line-height: 60px; text-align: center; }
+  #c .lab { left: 136px; top: 56px; }
+  #c .sub2 { position: absolute; left: 136px; top: 78px; font-size: 22px; font-weight: 700; }
+  #c h1 { top: 140px; }
+  #c .sub { top: 224px; }
+  #c .pill { position: absolute; left: 56px; top: 272px; width: 150px; height: 40px; border-radius: 20px; background: #f2c200; border: 2px solid #1d1c1a;
+    font-size: 16px; font-weight: 700; line-height: 36px; text-align: center; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div class="card" id="a" data-layout-allow-overlap>
+        <div class="lab" data-layout-allow-overlap data-layout-allow-occlusion>Orbit</div>
+        <h1 data-layout-allow-overlap data-layout-allow-occlusion>Invite your team</h1>
+        <div class="sub" data-layout-allow-overlap data-layout-allow-occlusion>3 seats left on this plan</div>
+        <div class="btn" data-layout-allow-overlap data-layout-allow-occlusion>Continue</div>
+      </div>
+      <div class="card" id="b" data-layout-allow-overlap>
+        <div class="lab" data-layout-allow-overlap data-layout-allow-occlusion>This month</div>
+        <h1 data-layout-allow-overlap data-layout-allow-occlusion>12,480</h1>
+        <div class="sub" data-layout-allow-overlap data-layout-allow-occlusion>invites sent</div>
+      </div>
+      <div class="card" id="c" data-layout-allow-overlap>
+        <div class="av" data-layout-allow-overlap data-layout-allow-occlusion>SK</div>
+        <div class="lab" data-layout-allow-overlap data-layout-allow-occlusion>Just now</div>
+        <div class="sub2" data-layout-allow-overlap data-layout-allow-occlusion>Sam Kim</div>
+        <h1 data-layout-allow-overlap data-layout-allow-occlusion>joined your team</h1>
+        <div class="sub" data-layout-allow-overlap data-layout-allow-occlusion>2 seats left on this plan</div>
+        <div class="pill" data-layout-allow-overlap data-layout-allow-occlusion>Accepted</div>
+      </div>
+    </div>
+    <div id="label"><span class="l-name">Retreat and cover</span><span class="l-sep">·</span><span>Transitions</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power1.inOut", duration: 0.7 } });
+  // Resting state: A in place, B and C parked off the right edge (x 1168 = one stage width).
+  tl.fromTo("#a", { scale: 1, filter: "brightness(1)" }, { scale: 1, duration: 0.01 }, 0);
+  tl.fromTo("#b", { x: 1168, scale: 1, filter: "brightness(1)" }, { x: 1168, duration: 0.01 }, 0);
+  tl.fromTo("#c", { x: 1168 }, { x: 1168, duration: 0.01 }, 0);
+  // Retreat and cover 1: over 0.7 s A shrinks to 0.85 and darkens to brightness 0.7 while B slides in from the right and covers it (same clock, power1.inOut).
+  tl.to("#a", { scale: 0.85, filter: "brightness(0.7)", duration: 0.7, ease: "power1.inOut" }, 0.7);
+  tl.to("#b", { x: 0, duration: 0.7, ease: "power1.inOut" }, 0.7);
+  // Retreat and cover 2: B retreats the same way (A falls one more step back) and a third card covers it, so the stack reads as layers.
+  tl.to("#b", { scale: 0.85, filter: "brightness(0.7)", duration: 0.7, ease: "power1.inOut" }, 2.05);
+  tl.to("#a", { scale: 0.72, filter: "brightness(0.5)", duration: 0.7, ease: "power1.inOut" }, 2.05);
+  tl.to("#c", { x: 0, duration: 0.7, ease: "power1.inOut" }, 2.05);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

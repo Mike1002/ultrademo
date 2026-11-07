@@ -1,0 +1,22 @@
+{
+  "name": "Temporal network transition",
+  "family": "Data",
+  "purpose": [
+    "Data evidence",
+    "Comparison"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "canvas",
+  "tags": [
+    "temporal network birth and death",
+    "data",
+    "network",
+    "graph",
+    "snapshots",
+    "enter",
+    "leave",
+    "canvas"
+  ],
+  "one_line": "A team graph steps through three monthly snapshots: members and their links fade in or out and drift to new positions, newcomers shown in yellow, while the month label and counts update."
+}

@@ -1,0 +1,20 @@
+{
+  "name": "3D page scroll",
+  "family": "Layout & Network",
+  "purpose": [
+    "product tour",
+    "camera",
+    "reveal"
+  ],
+  "energy": "steady",
+  "tags": [
+    "3d",
+    "page",
+    "scroll",
+    "webpage",
+    "tilt",
+    "product-demo",
+    "perspective"
+  ],
+  "one_line": "A tall page sits in a tilted card; it scrolls down in two spring-eased steps to a section with a yellow button, and a spotlight dims everything but that section."
+}

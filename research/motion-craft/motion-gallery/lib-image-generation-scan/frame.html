@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-image-generation-scan</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  #cv { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; display: block; }
+  #card { position: absolute; left: 244px; top: 60px; width: 680px; height: 470px; border: 2px solid #1d1c1a; border-radius: 24px; background: transparent; }
+  #ttl { position: absolute; left: 286px; top: 94px; font-size: 26px; font-weight: 700; letter-spacing: -0.01em; }
+  #pct { position: absolute; left: 760px; top: 96px; width: 120px; text-align: right; font-size: 22px; color: #6d6a63; font-variant-numeric: tabular-nums; }
+  #pill { position: absolute; left: 758px; top: 90px; width: 120px; height: 36px; border-radius: 18px; background: #f2c200; border: 2px solid #1d1c1a;
+    font-size: 15px; font-weight: 700; line-height: 32px; text-align: center; will-change: transform; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <canvas id="cv" width="1168" height="580"></canvas>
+      <div id="card"></div>
+      <div id="ttl">Generating…</div>
+      <div id="pct" data-layout-allow-overlap>0%</div>
+      <div id="pill" data-layout-allow-overlap>Ready</div>
+    </div>
+    <div id="label"><span class="l-name">Image generation scan</span><span class="l-sep">·</span><span>UI Demo</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  // Image area inside the card (stage coordinates), drawn as a 37x21 grid of 16 px blocks.
+  const IX = 286, IY = 144, IW = 592, IH = 336, B = 16, COLS = IW / B, ROWS = IH / B;
+  const cv = document.getElementById("cv"), ctx = cv.getContext("2d");
+  // The "generated" picture: a small product screen, drawn once to an offscreen canvas (sharp source).
+  const off = document.createElement("canvas"); off.width = IW; off.height = IH;
+  const o = off.getContext("2d");
+  function drawMock(c) {
+    c.fillStyle = "#fffdf8"; c.fillRect(0, 0, IW, IH);
+    c.fillStyle = "#ece7da"; c.fillRect(0, 0, IW, 40);
+    c.fillStyle = "#1d1c1a"; c.fillRect(0, 40, IW, 2);
+    [18, 38, 58].forEach(x => { c.fillStyle = "#a19d93"; c.beginPath(); c.arc(x, 20, 6, 0, Math.PI * 2); c.fill(); });
+    c.fillStyle = "#f6f3ec"; c.fillRect(0, 42, 140, IH - 42);
+    c.fillStyle = "#e3ded2"; c.fillRect(140, 42, 2, IH - 42);
+    for (let k = 0; k < 6; k++) { c.fillStyle = k === 1 ? "#1d1c1a" : "#d9d3c4"; c.fillRect(20, 66 + k * 34, 96, 12); }
+    c.fillStyle = "#1d1c1a"; c.fillRect(164, 64, 236, 20);
+    c.fillStyle = "#d9d3c4"; c.fillRect(164, 94, 330, 10); c.fillRect(164, 110, 280, 10);
+    for (let k = 0; k < 3; k++) {
+      const x = 164 + k * 140;
+      c.fillStyle = "#fffdf8"; c.fillRect(x, 138, 124, 84);
+      c.strokeStyle = "#1d1c1a"; c.lineWidth = 2; c.strokeRect(x + 1, 139, 122, 82);
+      c.fillStyle = "#d9d3c4"; c.fillRect(x + 14, 154, 70, 10); c.fillRect(x + 14, 170, 50, 10);
+      c.fillStyle = k === 0 ? "#f2c200" : "#ece7da"; c.fillRect(x + 14, 192, 60, 16);
+    }
+    const hs = [38, 62, 48, 80, 70, 96, 58];
+    hs.forEach((h, k) => { c.fillStyle = k === 5 ? "#f2c200" : "#1d1c1a"; c.fillRect(170 + k * 46, 322 - h, 28, h); });
+    c.fillStyle = "#e3ded2"; c.fillRect(164, 322, 400, 2);
+  }
+  drawMock(o);
+  // Block colours: average of each 16 px block of the sharp source, computed once.
+  const data = o.getImageData(0, 0, IW, IH).data;
+  const blocks = [];
+  for (let r = 0; r < ROWS; r++) for (let col = 0; col < COLS; col++) {
+    let R = 0, G = 0, Bl = 0;
+    for (let y = 0; y < B; y++) for (let x = 0; x < B; x++) {
+      const i = (((r * B + y) * IW) + col * B + x) * 4; R += data[i]; G += data[i + 1]; Bl += data[i + 2];
+    }
+    const n = B * B; blocks.push("rgb(" + Math.round(R / n) + "," + Math.round(G / n) + "," + Math.round(Bl / n) + ")");
+  }
+  const ttl = document.getElementById("ttl"), pct = document.getElementById("pct");
+  const clamp = v => Math.max(0, Math.min(1, v));
+  function renderAt(t) {
+    const p = clamp((t - 0.2) / 2.2);              // scan progress, linear (ease none)
+    const bandY = -50 + p * 400;                    // band position inside the image
+    const bandA = t < 2.4 ? 1 : clamp(1 - (t - 2.4) / 0.15);
+    ctx.clearRect(0, 0, 1168, 580);
+    ctx.save(); ctx.beginPath(); ctx.rect(IX, IY, IW, IH); ctx.clip();
+    // Empty area: faint 16 px grid.
+    ctx.fillStyle = "#fbf9f3"; ctx.fillRect(IX, IY, IW, IH);
+    ctx.strokeStyle = "#e3ded2"; ctx.lineWidth = 1; ctx.beginPath();
+    for (let x = 0; x <= IW; x += B) { ctx.moveTo(IX + x + 0.5, IY); ctx.lineTo(IX + x + 0.5, IY + IH); }
+    for (let y = 0; y <= IH; y += B) { ctx.moveTo(IX, IY + y + 0.5); ctx.lineTo(IX + IW, IY + y + 0.5); }
+    ctx.stroke();
+    // Coarse blocks: rows just behind the band, fading in as the band approaches, then sharpened above it.
+    for (let r = 0; r < ROWS; r++) {
+      const by = r * B, d = by - (bandY - 10);        // distance below the sharp edge
+      if (d < 0) continue;
+      const a = clamp(1 - d / 96); if (a <= 0) continue;
+      ctx.globalAlpha = a;
+      for (let col = 0; col < COLS; col++) { ctx.fillStyle = blocks[r * COLS + col]; ctx.fillRect(IX + col * B, IY + by, B, B); }
+    }
+    ctx.globalAlpha = 1;
+    // Sharp picture above the band.
+    const sharpH = Math.max(0, Math.min(IH, bandY - 10));
+    if (sharpH > 0) ctx.drawImage(off, 0, 0, IW, sharpH, IX, IY, IW, sharpH);
+    // The yellow scan band.
+    if (bandA > 0) {
+      const g = ctx.createLinearGradient(0, IY + bandY - 44, 0, IY + bandY + 6);
+      g.addColorStop(0, "rgba(242,194,0,0)"); g.addColorStop(1, "rgba(242,194,0,0.55)");
+      ctx.globalAlpha = bandA; ctx.fillStyle = g; ctx.fillRect(IX, IY + bandY - 44, IW, 50);
+      ctx.fillStyle = "#f2c200"; ctx.fillRect(IX, IY + bandY + 4, IW, 4);
+      ctx.fillStyle = "#1d1c1a"; ctx.fillRect(IX, IY + bandY + 8, IW, 2);
+      ctx.globalAlpha = 1;
+    }
+    ctx.restore();
+    const pc = Math.round(p * 100);
+    pct.textContent = pc + "%";
+    ttl.textContent = t < 2.45 ? "Generating…" : "Ready";
+  }
+  const tl = gsap.timeline({ paused: true });
+  renderAt(0);
+  tl.to({ k: 0 }, { k: 1, duration: 3, ease: "none", onUpdate: () => renderAt(tl.time()) }, 0);
+  // The percent counter steps aside and the Ready pill pops once the scan has passed.
+  tl.fromTo("#pct", { opacity: 1 }, { opacity: 0, duration: 0.1, ease: "none" }, 2.45);
+  tl.fromTo("#pill", { scale: 0.6, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.4, ease: "back.out(1.8)" }, 2.5);
+  const baseRender = tl.render; tl.render = function () { const r = baseRender.apply(this, arguments); renderAt(this.time()); return r; };
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+{
+  "name": "Text half split",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Emphasis"
+  ],
+  "energy": "high",
+  "tier": 3,
+  "runtime": "css",
+  "tags": [
+    "split text half separation",
+    "transitions",
+    "headline",
+    "split",
+    "halves",
+    "clip-path",
+    "swap"
+  ],
+  "one_line": "The top and bottom halves of a headline tear apart upward and downward, and the next phrase's halves close in from the opposite sides a tenth of a second later; the swap runs again for a third phrase."
+}

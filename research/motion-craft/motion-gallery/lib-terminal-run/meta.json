@@ -1,0 +1,20 @@
+{
+  "name": "Terminal run",
+  "family": "UI Demo",
+  "purpose": [
+    "Explanation"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "gsap",
+  "tags": [
+    "terminal run",
+    "ui",
+    "terminal",
+    "typing",
+    "command",
+    "log lines",
+    "sequence"
+  ],
+  "one_line": "In a dark terminal window a command is typed character by character, pauses, then prints three result lines one after another and a summary; a new prompt appears and a second command is typed."
+}

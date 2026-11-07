@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-squash-stretch</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  .lab { font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  .note { position: absolute; left: 150px; top: 35px; }
+  .volume { position: absolute; left: 664px; top: 440px; }
+  .guide { position: absolute; left: 583px; top: 70px; width: 2px; height: 420px; border-left: 2px dashed #e3ded2; }
+  .floor { position: absolute; left: 150px; width: 868px; top: 490px; height: 3px; background: #1d1c1a; }
+  #fall { position: absolute; left: 544px; top: 70px; width: 80px; height: 80px; will-change: transform; }
+  #ball { width: 80px; height: 80px; border-radius: 50%; background: #f2c200; border: 2px solid #1d1c1a; transform-origin: 50% 100%; will-change: transform; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div class="lab note">Stretch on the way down · squash on impact · bounce</div>
+      <div class="guide"></div><div class="floor"></div>
+      <div id="fall" data-layout-allow-overlap><div id="ball"></div></div>
+      <div class="lab volume" id="volume">Width × height stays constant</div>
+    </div>
+    <div id="label"><span class="l-name">Squash &amp; stretch</span><span class="l-sep">·</span><span>Principles</span><span class="l-sep">·</span><span>high</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+  // One vertical-scale proxy; the horizontal scale is always its reciprocal, origin at the bottom.
+  const shape = { s: 1 };
+  const deform = () => gsap.set("#ball", { scaleX: 1 / shape.s, scaleY: shape.s });
+  deform();
+  tl.fromTo("#fall", { y: 0 }, { y: 340, duration: 0.85, ease: "power2.in" }, 0.3);
+  tl.to(shape, { s: 1.55, duration: 0.55, ease: "power2.inOut", onUpdate: deform }, 0.3);
+  tl.to(shape, { s: 0.55, duration: 0.1, ease: "power2.out", onUpdate: deform }, 1.15);
+  tl.to("#fall", { y: 130, duration: 0.4, ease: "power2.out" }, 1.36);
+  tl.to(shape, { s: 1.35, duration: 0.15, ease: "power2.out", onUpdate: deform }, 1.36);
+  tl.to(shape, { s: 1, duration: 0.2, ease: "power2.out", onUpdate: deform }, 1.51);
+  tl.to("#fall", { y: 340, duration: 0.37, ease: "power2.in" }, 1.76);
+  tl.to(shape, { s: 1.35, duration: 0.37, ease: "power2.in", onUpdate: deform }, 1.76);
+  tl.to(shape, { s: 0.68, duration: 0.1, ease: "power2.out", onUpdate: deform }, 2.13);
+  tl.to(shape, { s: 1, duration: 0.2, ease: "power2.out", onUpdate: deform }, 2.26);
+  // Small third hop so the clip keeps moving to the end.
+  tl.to("#fall", { y: 290, duration: 0.22, ease: "power2.out" }, 2.5);
+  tl.to(shape, { s: 1.15, duration: 0.12, ease: "power2.out", onUpdate: deform }, 2.5);
+  tl.to(shape, { s: 1, duration: 0.1, ease: "power2.out", onUpdate: deform }, 2.62);
+  tl.to("#fall", { y: 340, duration: 0.2, ease: "power2.in" }, 2.72);
+  tl.to(shape, { s: 0.85, duration: 0.06, ease: "power2.out", onUpdate: deform }, 2.92);
+  tl.fromTo("#volume", { opacity: 0 }, { opacity: 1, duration: 0.2 }, 2.3);
+  // Seeks render with events suppressed, so re-apply the proxy after every render.
+  const baseRender = tl.render;
+  tl.render = function () { const r = baseRender.apply(this, arguments); deform(); return r; };
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

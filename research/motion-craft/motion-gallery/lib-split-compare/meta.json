@@ -1,0 +1,21 @@
+{
+  "name": "Split compare",
+  "family": "Explainer",
+  "purpose": [
+    "Comparison",
+    "Explanation"
+  ],
+  "energy": "steady",
+  "tier": 2,
+  "runtime": "gsap",
+  "tags": [
+    "before after split",
+    "comparison reveal slider",
+    "image comparison wipe",
+    "before after wipe",
+    "explainer",
+    "clip-path",
+    "divider"
+  ],
+  "one_line": "A blurred before and a sharp after of the same number and line sit at identical coordinates while a vertical divider slides 50% → 35% → 65% → 50%, revealing each side through complementary clip-paths."
+}

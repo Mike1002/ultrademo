@@ -1,0 +1,22 @@
+{
+  "name": "Image generation scan",
+  "family": "UI Demo",
+  "purpose": [
+    "Feedback",
+    "Emphasis"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "canvas",
+  "tags": [
+    "ui",
+    "scan",
+    "band",
+    "pixel grid",
+    "blocks",
+    "reveal",
+    "generating",
+    "canvas"
+  ],
+  "one_line": "A yellow scan band sweeps down an empty grid inside a card; coarse 16 px blocks appear just ahead of it and sharpen into a product screen as it passes, the percent counts up and a Ready pill pops at the end."
+}

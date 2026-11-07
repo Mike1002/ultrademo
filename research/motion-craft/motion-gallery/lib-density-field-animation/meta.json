@@ -1,0 +1,21 @@
+{
+  "name": "Density field animation",
+  "family": "Data",
+  "purpose": [
+    "Data evidence",
+    "Comparison"
+  ],
+  "energy": "calm",
+  "tier": 3,
+  "runtime": "canvas",
+  "tags": [
+    "spatiotemporal density field",
+    "data",
+    "heatmap",
+    "density",
+    "blobs",
+    "canvas",
+    "activity"
+  ],
+  "one_line": "On an hours-by-weekday grid, soft yellow density blobs of team activity drift, swell and fade over the week, the densest cores darkening, instead of showing individual events."
+}

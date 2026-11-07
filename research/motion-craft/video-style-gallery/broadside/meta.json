@@ -1,0 +1,46 @@
+{
+  "name": "Broadside",
+  "fonts": {
+    "display": "Barlow",
+    "body": "Barlow",
+    "mono": "IBM Plex Mono",
+    "label": "IBM Plex Mono"
+  },
+  "font_families": [
+    "Barlow",
+    "IBM Plex Mono"
+  ],
+  "font_substitutions": {},
+  "canvas": "dark",
+  "mood": [
+    "graphic",
+    "lowercase",
+    "direct"
+  ],
+  "suits": [
+    "bold statements",
+    "developer launches",
+    "manifesto-style videos"
+  ],
+  "direction_settings": {
+    "energy": "brisk",
+    "density": "sparse",
+    "ground": "alternating",
+    "depth": "flat",
+    "camera": "locked",
+    "type": "loud",
+    "texture": "clean",
+    "colour": "one-accent",
+    "product_presence": "illustrated",
+    "sound": "beat-driven",
+    "voice": "spoken-headline"
+  },
+  "duration_s": 10,
+  "size": [
+    1280,
+    720
+  ],
+  "fps": 30,
+  "strip": "D-58 style strip: hook · project card · number · agent · close",
+  "one_line": ""
+}

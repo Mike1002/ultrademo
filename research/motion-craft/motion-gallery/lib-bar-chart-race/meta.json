@@ -1,0 +1,21 @@
+{
+  "name": "Bar chart race",
+  "family": "Data",
+  "purpose": [
+    "Data evidence",
+    "Comparison"
+  ],
+  "energy": "steady",
+  "tier": 2,
+  "runtime": "svg",
+  "tags": [
+    "bar chart race",
+    "racing bars",
+    "data",
+    "rank swap",
+    "interpolation",
+    "counter",
+    "svg attr"
+  ],
+  "one_line": "Five horizontal bars lengthen through three yearly snapshots and swap vertical rank as their values cross, the leader turning yellow while the year counter and values update."
+}

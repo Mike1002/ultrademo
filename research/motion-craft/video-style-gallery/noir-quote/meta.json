@@ -1,0 +1,46 @@
+{
+  "name": "Noir Quote",
+  "fonts": {
+    "display": "Playfair Display",
+    "body": "Cormorant Garamond",
+    "mono": "Cormorant Garamond",
+    "label": "Cormorant Garamond"
+  },
+  "font_families": [
+    "Cormorant Garamond",
+    "Playfair Display"
+  ],
+  "font_substitutions": {},
+  "canvas": "dark",
+  "mood": [
+    "cinematic",
+    "moody",
+    "elegant"
+  ],
+  "suits": [
+    "trailers",
+    "brand films",
+    "quote-led reveals"
+  ],
+  "direction_settings": {
+    "energy": "calm",
+    "density": "sparse",
+    "ground": "dark",
+    "depth": "deep",
+    "camera": "drift",
+    "type": "editorial",
+    "texture": "grain",
+    "colour": "mono",
+    "product_presence": "illustrated",
+    "sound": "scored",
+    "voice": "narrated"
+  },
+  "duration_s": 10,
+  "size": [
+    1280,
+    720
+  ],
+  "fps": 30,
+  "strip": "D-58 style strip: hook · project card · number · agent · close",
+  "one_line": ""
+}

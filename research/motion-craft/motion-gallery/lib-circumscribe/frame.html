@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-circumscribe</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px;  }
+  .lab { font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  .kicker { position: absolute; left: 64px; top: 40px; }
+  .value { position: absolute; left: 140px; top: 203px; width: 390px; font-size: 144px; font-weight: 700; text-align: center; font-variant-numeric: tabular-nums; line-height: 1; }
+  .explain { position: absolute; left: 690px; top: 222px; }
+  .explain .t-m { margin-top: 18px; font-size: 34px; font-weight: 700; }
+  svg.canvas { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  .caption { position: absolute; left: 64px; top: 500px; font-size: 18px; color: #6d6a63; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <span class="lab kicker">Picking one item out of several</span>
+      <div class="value">98%</div>
+      <div class="explain"><span class="lab">Delivery rate</span><div class="t-m">12,480 invites sent</div></div>
+      <svg class="canvas" viewBox="0 0 1168 580" data-layout-allow-overlap>
+        <rect id="boxA" x="128" y="191" width="414" height="168" rx="8" pathLength="1" fill="none" stroke="#f2c200" stroke-width="4" stroke-dasharray="1" stroke-dashoffset="1"/>
+        <rect id="boxB" x="676" y="206" width="400" height="106" rx="8" pathLength="1" fill="none" stroke="#f2c200" stroke-width="4" stroke-dasharray="1" stroke-dashoffset="1"/>
+      </svg>
+      <div class="caption">Draw it while you explain, erase it after.</div>
+    </div>
+    <div id="label"><span class="l-name">Circumscribe</span><span class="l-sep">·</span><span>Emphasis</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+  // Box A: draw 0.6 s from 0.4 s, hold, fade out 0.3 s at 1.5 s.
+  tl.fromTo("#boxA", { strokeDashoffset: 1, opacity: 1 }, { strokeDashoffset: 0, opacity: 1, duration: 0.6, ease: "power2.inOut", autoRound: false }, 0.4);
+  tl.to("#boxA", { opacity: 0, duration: 0.3, ease: "none" }, 1.5);
+  // Box B: the next item gets the same treatment.
+  tl.fromTo("#boxB", { strokeDashoffset: 1, opacity: 1 }, { strokeDashoffset: 0, opacity: 1, duration: 0.6, ease: "power2.inOut", autoRound: false }, 1.85);
+  tl.to("#boxB", { opacity: 0, duration: 0.25, ease: "none" }, 2.75);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

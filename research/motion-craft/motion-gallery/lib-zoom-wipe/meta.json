@@ -1,0 +1,19 @@
+{
+  "name": "Zoom wipe",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Sequence"
+  ],
+  "energy": "steady",
+  "tier": 2,
+  "runtime": "gsap",
+  "tags": [
+    "zoom wipe",
+    "transitions",
+    "scale",
+    "clip-path",
+    "camera"
+  ],
+  "one_line": "The first scene zooms in toward the centre while a straight vertical edge sweeps left to right and uncovers the next scene, which zooms out to rest at the same time."
+}

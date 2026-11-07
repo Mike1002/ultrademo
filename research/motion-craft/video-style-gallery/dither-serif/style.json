@@ -1,0 +1,121 @@
+{
+  "id": "dither-serif",
+  "name": "Dither Serif",
+  "canvas": "light",
+  "mood": [
+    "crisp",
+    "playful",
+    "premium"
+  ],
+  "suits": [
+    "product UI launches",
+    "commerce",
+    "mascot brands"
+  ],
+  "palette": {
+    "bg": "#ffffff",
+    "bg_alt": "#07080c",
+    "surface": "#ffffff",
+    "surface_2": "#f1f4fa",
+    "ink": "#0b0d14",
+    "muted": "#6b7385",
+    "line": "#dfe4ee",
+    "accent": "#0f4cff",
+    "accent_2": "#5b86ff",
+    "on_accent": "#ffffff",
+    "pill_bg": "#e5ecff",
+    "pill_ink": "#0f4cff",
+    "pill_dot": "#0f4cff",
+    "thumb": "#eef2fc",
+    "term_bg": "#07080c",
+    "term_ink": "#ffffff",
+    "term_muted": "#6b7385",
+    "term_line": "#07080c",
+    "term_prompt": "#5b86ff",
+    "term_ok": "#5b86ff"
+  },
+  "type": {
+    "display": {
+      "family": "DM Serif Display",
+      "weight": 400,
+      "hook_px": 100,
+      "stat_px": 270,
+      "mark_px": 150,
+      "transform": "none",
+      "tracking": "-0.01em",
+      "line_height": "1.0",
+      "style": "normal",
+      "generic": "serif",
+      "card_title_px": 32
+    },
+    "body": {
+      "family": "Inter",
+      "weight": 500,
+      "generic": "sans"
+    },
+    "mono": {
+      "family": "Inter",
+      "weight": 500
+    },
+    "label": {
+      "family": "Inter",
+      "weight": 600,
+      "transform": "uppercase",
+      "tracking": "0.1em",
+      "generic": "sans",
+      "px": 13
+    }
+  },
+  "easing": {
+    "entry": "expo.out",
+    "exit": "power3.in",
+    "ambient": "sine.inOut",
+    "pop": "back.out(1.6)",
+    "counter": "power2.out",
+    "wipe": "power2.in"
+  },
+  "rhythm": {
+    "energy": "brisk",
+    "entrance": 0.5,
+    "stagger": 0.12
+  },
+  "transition": {
+    "kind": "iris",
+    "duration": 0.55,
+    "flash": false,
+    "band": false
+  },
+  "text_animation": "slam",
+  "accent_word": "script",
+  "layout": "center",
+  "atmosphere": [],
+  "shape": {
+    "radius_card": 12,
+    "radius_button": 10,
+    "radius_pill": 999,
+    "border": "hairline",
+    "border_px": 1,
+    "shadow": "none",
+    "rule_px": 5
+  },
+  "stat_colour": "accent",
+  "direction_settings": {
+    "energy": "brisk",
+    "density": "dense",
+    "ground": "alternating",
+    "depth": "flat",
+    "camera": "locked",
+    "type": "display",
+    "texture": "clean",
+    "colour": "one-accent",
+    "product_presence": "illustrated",
+    "sound": "beat-driven",
+    "voice": "spoken-headline"
+  },
+  "notes": "White, cobalt and black scenes alternating, DM Serif Display with one handwritten accent word in cobalt, iris cuts; the ordered dithering of the subject is left out.",
+  "transitions": {
+    "between_moments": "iris",
+    "duration_s": 0.55,
+    "text": "slam"
+  }
+}

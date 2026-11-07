@@ -1,0 +1,22 @@
+{
+  "name": "Choropleth transition",
+  "family": "Data",
+  "purpose": [
+    "Data evidence",
+    "Comparison"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "svg",
+  "tags": [
+    "choropleth reveal",
+    "choropleth time transition",
+    "data",
+    "map",
+    "hex grid",
+    "colour ramp",
+    "regions",
+    "svg"
+  ],
+  "one_line": "A hex map of 19 regions colours in west to east from pale to a yellow-to-ink ramp of invites sent, the legend fading in with it, then re-colours to the next month's values."
+}

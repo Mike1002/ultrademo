@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-additive-dissolve</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #171a21; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #171a21; color: #ece8df;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; overflow: hidden; }
+  .card { position: absolute; left: 264px; top: 110px; width: 640px; height: 360px; background: #1f232c; border: 2px solid #ece8df; border-radius: 24px; overflow: hidden; will-change: opacity, filter; }
+  .card .lab { position: absolute; left: 56px; top: 48px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #a7adbb; }
+  .card .h1 { position: absolute; left: 56px; top: 80px; font-size: 56px; font-weight: 700; line-height: 64px; white-space: nowrap; color: #ece8df; }
+  .card .sub { position: absolute; left: 56px; top: 160px; font-size: 22px; color: #a7adbb; }
+  .card .btn { position: absolute; left: 56px; top: 240px; width: 200px; height: 60px; border-radius: 14px; background: #f2c200; border: 2px solid #1d1c1a;
+    font-size: 20px; font-weight: 700; line-height: 56px; text-align: center; color: #1d1c1a; }
+  .card.b .h1 { font-size: 96px; line-height: 104px; top: 74px; font-variant-numeric: tabular-nums; }
+  .card.b .sub { top: 190px; }
+  /* a soft pool of light in each card: the two pools add up to a bright middle during the dissolve */
+  .glow { position: absolute; width: 420px; height: 420px; border-radius: 50%; will-change: transform, opacity; }
+  .card.a .glow { left: 360px; top: 60px; background: radial-gradient(circle, rgba(242,194,0,0.55) 0%, rgba(242,194,0,0.18) 40%, rgba(242,194,0,0) 70%); }
+  .card.b .glow { left: -60px; top: -140px; background: radial-gradient(circle, rgba(236,232,223,0.55) 0%, rgba(236,232,223,0.16) 40%, rgba(236,232,223,0) 70%); }
+  #bscreen { mix-blend-mode: screen; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #a7adbb; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #ece8df; font-weight: 700; }
+  #label .l-sep { color: #6d7380; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage"></div>
+    <div id="label"><span class="l-name">Additive dissolve</span><span class="l-sep">·</span><span>Transitions</span><span class="l-sep">·</span><span>calm</span></div>
+  </section>
+</div>
+<script>
+  const AT = ' data-layout-allow-overlap data-layout-allow-occlusion';
+  const A_INNER = '<div class="glow"' + AT + '></div><div class="lab"' + AT + '>Orbit</div><div class="h1"' + AT + '>Invite your team</div><div class="sub"' + AT + '>3 seats left on this plan</div><div class="btn"' + AT + '>Continue</div>';
+  const B_INNER = '<div class="glow"' + AT + '></div><div class="lab"' + AT + '>This month</div><div class="h1"' + AT + '>12,480</div><div class="sub"' + AT + '>invites sent</div>';
+  let html = '';
+  html += '<div class="card a" id="a"' + AT + '>' + A_INNER + '</div>';
+  html += '<div class="card b" id="bscreen"' + AT + '>' + B_INNER + '</div>';   // screen-blended copy used during the dissolve
+  html += '<div class="card b" id="bnormal"' + AT + '>' + B_INNER + '</div>';   // normally blended copy that B settles into
+  document.getElementById("stage").innerHTML = html;
+
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "none", duration: 0.6 } });
+  const T0 = 0.6, D = 1.0;
+  // Rest: A visible, both B copies hidden.
+  tl.fromTo("#a", { opacity: 1, filter: "brightness(1)" }, { opacity: 1, duration: 0.01 }, 0);
+  tl.fromTo("#bscreen", { opacity: 0, filter: "brightness(1)" }, { opacity: 0, duration: 0.01 }, 0);
+  tl.fromTo("#bnormal", { opacity: 0 }, { opacity: 0, duration: 0.01 }, 0);
+  // Additive dissolve: linear crossfade; B is screen-blended, so where both scenes are bright the middle adds up brighter.
+  tl.to("#a", { opacity: 0, duration: D, ease: "none" }, T0);
+  tl.to("#bscreen", { opacity: 1, duration: D, ease: "none" }, T0);
+  // A brightness lift that peaks at the midpoint gives the "spreading light" feel.
+  tl.to(["#a", "#bscreen"], { filter: "brightness(1.35)", duration: D / 2, yoyo: true, repeat: 1, ease: "sine.inOut" }, T0);
+  // Settle: the screen copy hands over to the normally blended copy.
+  tl.to("#bnormal", { opacity: 1, duration: 0.35, ease: "power1.inOut" }, T0 + D);
+  tl.to("#bscreen", { opacity: 0, duration: 0.35, ease: "power1.inOut" }, T0 + D + 0.1);
+  // Light pools drift through the whole clip so the frame never sits still.
+  tl.fromTo("#a .glow", { x: 0, y: 0, scale: 1 }, { x: -60, y: 30, scale: 1.2, duration: 1.8, ease: "sine.inOut" }, 0);
+  tl.fromTo(["#bscreen .glow", "#bnormal .glow"], { x: 0, y: 0, scale: 1.1 }, { x: 70, y: 50, scale: 1, duration: 2.4, ease: "sine.inOut" }, 0.6);
+  tl.to(["#bscreen .glow", "#bnormal .glow"], { scale: 1.12, duration: 0.5, ease: "sine.inOut", yoyo: true, repeat: 1 }, 2.0);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

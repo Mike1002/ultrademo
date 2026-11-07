@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-kaleidoscope-transition</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; overflow: hidden; }
+  .shot { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; will-change: transform, opacity, filter; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+  .card { position: absolute; left: 264px; top: 110px; width: 640px; height: 360px; background: #fffdf8; border: 2px solid #1d1c1a; border-radius: 24px; will-change: transform, filter, opacity; }
+  .card .lab { position: absolute; left: 56px; top: 48px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; white-space: nowrap; }
+  .card h1 { position: absolute; left: 56px; top: 80px; font-size: 56px; font-weight: 700; line-height: 64px; white-space: nowrap; }
+  .card .sub { position: absolute; left: 56px; top: 160px; font-size: 22px; color: #6d6a63; white-space: nowrap; }
+  .card .btn { position: absolute; left: 56px; top: 240px; width: 200px; height: 60px; border-radius: 14px; background: #f2c200; border: 2px solid #1d1c1a; color: #1d1c1a;
+    font-size: 20px; font-weight: 700; line-height: 56px; text-align: center; will-change: transform; }
+  .card.b h1 { font-size: 96px; line-height: 104px; top: 74px; font-variant-numeric: tabular-nums; }
+  .card.b .sub { top: 190px; }
+  .card.b .bar { position: absolute; left: 56px; top: 250px; width: 300px; height: 14px; border-radius: 7px; background: #f2c200; border: 2px solid #1d1c1a; transform-origin: 0 50%; will-change: transform; }
+  .cursor { position: absolute; width: 28px; height: 38px; z-index: 10; pointer-events: none; transform-origin: 2px 2px; will-change: transform; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.25)); }
+  .cursor svg { width: 28px; height: 38px; display: block; }
+
+  .shot.a { background: #f6f3ec; }
+  .shot.b { background: #ece7da; }
+  #baseB { opacity: 0; }
+  #kal { position: absolute; left: -116px; top: -410px; width: 1400px; height: 1400px; transform-origin: 50% 50%; opacity: 0; will-change: transform, opacity; }
+  .wedge, .lv { position: absolute; left: 0; top: 0; width: 1400px; height: 1400px; transform-origin: 50% 50%; will-change: transform; }
+  .wedge { background: #f6f3ec; }
+  .wedge .shot { left: 116px; top: 410px; transform-origin: 584px 290px; }
+  .wedge .shot.b { opacity: 0; }
+
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+
+      <div data-layout-allow-overlap data-layout-allow-occlusion class="shot a" id="baseA"><div class="card a " id="a" data-layout-allow-overlap ><div data-layout-allow-overlap data-layout-allow-occlusion class="lab">Orbit</div><h1 data-layout-allow-overlap data-layout-allow-occlusion>Invite your team</h1><div data-layout-allow-overlap data-layout-allow-occlusion class="sub">3 seats left on this plan</div><div data-layout-allow-overlap data-layout-allow-occlusion class="btn">Continue</div></div></div>
+      <div data-layout-allow-overlap data-layout-allow-occlusion class="shot b" id="baseB"><div class="card b " id="b" data-layout-allow-overlap ><div data-layout-allow-overlap data-layout-allow-occlusion class="lab">This month</div><h1 data-layout-allow-overlap data-layout-allow-occlusion>12,480</h1><div data-layout-allow-overlap data-layout-allow-occlusion class="sub">invites sent</div><div data-layout-allow-overlap data-layout-allow-occlusion class="bar"></div></div></div>
+      <div data-layout-allow-overlap data-layout-allow-occlusion id="kal" data-layout-allow-overflow>
+<div data-layout-allow-overlap data-layout-allow-occlusion class="wedge" style="clip-path: polygon(700px 700px, 2100.0px 700.0px, 1400.0px 1912.4px)" data-layout-allow-overflow>
+  <div data-layout-allow-overlap data-layout-allow-occlusion class="lv" id="wa0"><div data-layout-allow-overlap data-layout-allow-occlusion class="lv" id="wf0"><div data-layout-allow-overlap data-layout-allow-occlusion class="lv" id="wr0">
+    <div data-layout-allow-overlap data-layout-allow-occlusion class="shot a" id="ka0"><div class="card a " id="ca0" data-layout-allow-overlap ><div data-layout-allow-overlap data-layout-allow-occlusion class="lab">Orbit</div><h1 data-layout-allow-overlap data-layout-allow-occlusion>Invite your team</h1><div data-layout-allow-overlap data-layout-allow-occlusion class="sub">3 seats left on this plan</div><div data-layout-allow-overlap data-layout-allow-occlusion class="btn">Continue</div></div></div><div data-layout-allow-overlap data-layout-allow-occlusion class="shot b" id="kb0"><div class="card b " id="cb0" data-layout-allow-overlap ><div data-layout-allow-overlap data-layout-allow-occlusion class="lab">This month</div><h1 data-layout-allow-overlap data-layout-allow-occlusion>12,480</h1><div data-layout-allow-overlap data-layout-allow-occlusion class="sub">invites sent</div><div data-layout-allow-overlap data-layout-allow-occlusion class="bar"></div></div></div>
+  </div></div></div>
+</div>
+<div data-layout-allow-overlap data-layout-allow-occlusion class="wedge" style="clip-path: polygon(700px 700px, 1400.0px 1912.4px, 0.0px 1912.4px)" data-layout-allow-overflow>
+  <div data-layout-allow-overlap data-layout-allow-occlusion class="lv" id="wa1"><div data-layout-allow-overlap data-layout-allow-occlusion class="lv" id="wf1"><div data-layout-allow-overlap data-layout-allow-occlusion class="lv" id="wr1">
+    <div data-layout-allow-overlap data-layout-allow-occlusion class="shot a" id="ka1"><div class="card a " id="ca1" data-layout-allow-overlap ><div data-layout-allow-overlap data-layout-allow-occlusion class="lab">Orbit</div><h1 data-layout-allow-overlap data-layout-allow-occlusion>Invite your team</h1><div data-layout-allow-overlap data-layout-allow-occlusion class="sub">3 seats left on this plan</div><div data-layout-allow-overlap data-layout-allow-occlusion class="btn">Continue</div></div></div><div data-layout-allow-overlap data-layout-allow-occlusion class="shot b" id="kb1"><div class="card b " id="cb1" data-layout-allow-overlap ><div data-layout-allow-overlap data-layout-allow-occlusion class="lab">This month</div><h1 data-layout-allow-overlap data-layout-allow-occlusion>12,480</h1><div data-layout-allow-overlap data-layout-allow-occlusion class="sub">invites sent</div><div data-layout-allow-overlap data-layout-allow-occlusion class="bar"></div></div></div>
+  </div></div></div>
+</div>
+<div data-layout-allow-overlap data-layout-allow-occlusion class="wedge" style="clip-path: polygon(700px 700px, 0.0px 1912.4px, -700.0px 700.0px)" data-layout-allow-overflow>
+  <div data-layout-allow-overlap data-layout-allow-occlusion class="lv" id="wa2"><div data-layout-allow-overlap data-layout-allow-occlusion class="lv" id="wf2"><div data-layout-allow-overlap data-layout-allow-occlusion class="lv" id="wr2">
+    <div data-layout-allow-overlap data-layout-allow-occlusion class="shot a" id="ka2"><div class="card a " id="ca2" data-layout-allow-overlap ><div data-layout-allow-overlap data-layout-allow-occlusion class="lab">Orbit</div><h1 data-layout-allow-overlap data-layout-allow-occlusion>Invite your team</h1><div data-layout-allow-overlap data-layout-allow-occlusion class="sub">3 seats left on this plan</div><div data-layout-allow-overlap data-layout-allow-occlusion class="btn">Continue</div></div></div><div data-layout-allow-overlap data-layout-allow-occlusion class="shot b" id="kb2"><div class="card b " id="cb2" data-layout-allow-overlap ><div data-layout-allow-overlap data-layout-allow-occlusion class="lab">This month</div><h1 data-layout-allow-overlap data-layout-allow-occlusion>12,480</h1><div data-layout-allow-overlap data-layout-allow-occlusion class="sub">invites sent</div><div data-layout-allow-overlap data-layout-allow-occlusion class="bar"></div></div></div>
+  </div></div></div>
+</div>
+<div data-layout-allow-overlap data-layout-allow-occlusion class="wedge" style="clip-path: polygon(700px 700px, -700.0px 700.0px, -0.0px -512.4px)" data-layout-allow-overflow>
+  <div data-layout-allow-overlap data-layout-allow-occlusion class="lv" id="wa3"><div data-layout-allow-overlap data-layout-allow-occlusion class="lv" id="wf3"><div data-layout-allow-overlap data-layout-allow-occlusion class="lv" id="wr3">
+    <div data-layout-allow-overlap data-layout-allow-occlusion class="shot a" id="ka3"><div class="card a " id="ca3" data-layout-allow-overlap ><div data-layout-allow-overlap data-layout-allow-occlusion class="lab">Orbit</div><h1 data-layout-allow-overlap data-layout-allow-occlusion>Invite your team</h1><div data-layout-allow-overlap data-layout-allow-occlusion class="sub">3 seats left on this plan</div><div data-layout-allow-overlap data-layout-allow-occlusion class="btn">Continue</div></div></div><div data-layout-allow-overlap data-layout-allow-occlusion class="shot b" id="kb3"><div class="card b " id="cb3" data-layout-allow-overlap ><div data-layout-allow-overlap data-layout-allow-occlusion class="lab">This month</div><h1 data-layout-allow-overlap data-layout-allow-occlusion>12,480</h1><div data-layout-allow-overlap data-layout-allow-occlusion class="sub">invites sent</div><div data-layout-allow-overlap data-layout-allow-occlusion class="bar"></div></div></div>
+  </div></div></div>
+</div>
+<div data-layout-allow-overlap data-layout-allow-occlusion class="wedge" style="clip-path: polygon(700px 700px, -0.0px -512.4px, 1400.0px -512.4px)" data-layout-allow-overflow>
+  <div data-layout-allow-overlap data-layout-allow-occlusion class="lv" id="wa4"><div data-layout-allow-overlap data-layout-allow-occlusion class="lv" id="wf4"><div data-layout-allow-overlap data-layout-allow-occlusion class="lv" id="wr4">
+    <div data-layout-allow-overlap data-layout-allow-occlusion class="shot a" id="ka4"><div class="card a " id="ca4" data-layout-allow-overlap ><div data-layout-allow-overlap data-layout-allow-occlusion class="lab">Orbit</div><h1 data-layout-allow-overlap data-layout-allow-occlusion>Invite your team</h1><div data-layout-allow-overlap data-layout-allow-occlusion class="sub">3 seats left on this plan</div><div data-layout-allow-overlap data-layout-allow-occlusion class="btn">Continue</div></div></div><div data-layout-allow-overlap data-layout-allow-occlusion class="shot b" id="kb4"><div class="card b " id="cb4" data-layout-allow-overlap ><div data-layout-allow-overlap data-layout-allow-occlusion class="lab">This month</div><h1 data-layout-allow-overlap data-layout-allow-occlusion>12,480</h1><div data-layout-allow-overlap data-layout-allow-occlusion class="sub">invites sent</div><div data-layout-allow-overlap data-layout-allow-occlusion class="bar"></div></div></div>
+  </div></div></div>
+</div>
+<div data-layout-allow-overlap data-layout-allow-occlusion class="wedge" style="clip-path: polygon(700px 700px, 1400.0px -512.4px, 2100.0px 700.0px)" data-layout-allow-overflow>
+  <div data-layout-allow-overlap data-layout-allow-occlusion class="lv" id="wa5"><div data-layout-allow-overlap data-layout-allow-occlusion class="lv" id="wf5"><div data-layout-allow-overlap data-layout-allow-occlusion class="lv" id="wr5">
+    <div data-layout-allow-overlap data-layout-allow-occlusion class="shot a" id="ka5"><div class="card a " id="ca5" data-layout-allow-overlap ><div data-layout-allow-overlap data-layout-allow-occlusion class="lab">Orbit</div><h1 data-layout-allow-overlap data-layout-allow-occlusion>Invite your team</h1><div data-layout-allow-overlap data-layout-allow-occlusion class="sub">3 seats left on this plan</div><div data-layout-allow-overlap data-layout-allow-occlusion class="btn">Continue</div></div></div><div data-layout-allow-overlap data-layout-allow-occlusion class="shot b" id="kb5"><div class="card b " id="cb5" data-layout-allow-overlap ><div data-layout-allow-overlap data-layout-allow-occlusion class="lab">This month</div><h1 data-layout-allow-overlap data-layout-allow-occlusion>12,480</h1><div data-layout-allow-overlap data-layout-allow-occlusion class="sub">invites sent</div><div data-layout-allow-overlap data-layout-allow-occlusion class="bar"></div></div></div>
+  </div></div></div>
+</div>
+      </div>
+
+    </div>
+    <div id="label"><span class="l-name">Kaleidoscope transition</span><span class="l-sep">·</span><span>Transitions</span><span class="l-sep">·</span><span>high</span></div>
+  </section>
+</div>
+<script>
+
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "sine.inOut" } });
+  const N = 6, T0 = 0.5, UP = 0.55, DOWN = 0.55, PEAK = T0 + UP, END = PEAK + DOWN;
+  tl.fromTo("#baseA", { opacity: 1 }, { opacity: 1, duration: 0.01, ease: "none" }, 0);
+  tl.fromTo("#baseB", { opacity: 0 }, { opacity: 0, duration: 0.01, ease: "none" }, 0);
+  tl.fromTo("#kal", { opacity: 0, rotation: 0 }, { opacity: 0, duration: 0.01, ease: "none" }, 0);
+  tl.fromTo(".card.b .bar", { scaleX: 0 }, { scaleX: 0, duration: 0.01, ease: "none" }, 0);
+  // Six wedges tile the frame. Unfolded (fold 0) every wedge shows the picture as it is, so the stack can switch on invisibly at T0.
+  tl.set("#kal", { opacity: 1 }, T0);
+  // Fold 0 to 1 (sine.in): even wedges rotate their content by i*60 deg; odd wedges reflect it across their leading edge
+  // (rotate phi, flip Y, rotate -phi, each on its own element) so the six fragments become mirror-symmetric. The whole stack turns 90 deg.
+  for (let i = 0; i < N; i++) {
+    const a = "#wa" + i, f = "#wf" + i, r = "#wr" + i;
+    if (i % 2 === 0) {
+      tl.fromTo(a, { rotation: 0 }, { rotation: i * 60, duration: UP, ease: "sine.in" }, T0);
+      tl.to(a, { rotation: 0, duration: DOWN, ease: "sine.out" }, PEAK);
+    } else {
+      const phi = (i + 1) * 30;
+      tl.fromTo(a, { rotation: 0 }, { rotation: phi, duration: UP, ease: "sine.in" }, T0);
+      tl.fromTo(f, { scaleY: 1 }, { scaleY: -1, duration: UP, ease: "sine.in" }, T0);
+      tl.fromTo(r, { rotation: 0 }, { rotation: -phi, duration: UP, ease: "sine.in" }, T0);
+      tl.to(a, { rotation: 0, duration: DOWN, ease: "sine.out" }, PEAK);
+      tl.to(f, { scaleY: 1, duration: DOWN, ease: "sine.out" }, PEAK);
+      tl.to(r, { rotation: 0, duration: DOWN, ease: "sine.out" }, PEAK);
+    }
+    // The copies grow and drift with the fold (scale 1 to 1.9, the headline and button pulled under the centre) so every fragment carries texture, and shrink back to 1 so the seams stay invisible at both ends.
+    tl.fromTo("#ka" + i, { scale: 1, x: 0, y: 0 }, { scale: 1.9, x: 198, y: -19, duration: UP, ease: "sine.in" }, T0);
+    tl.fromTo("#kb" + i, { scale: 1.9, x: 198, y: -19 }, { scale: 1, x: 0, y: 0, duration: DOWN, ease: "sine.out", immediateRender: false }, PEAK);
+    // At the peak the fragments switch from A to B, then unfold back to a plain frame.
+    tl.set("#ka" + i, { opacity: 0 }, PEAK);
+    tl.set("#kb" + i, { opacity: 1 }, PEAK);
+  }
+  tl.to("#kal", { rotation: 90, duration: UP, ease: "sine.in" }, T0);
+  tl.to("#kal", { rotation: 0, duration: DOWN, ease: "sine.out" }, PEAK);
+  tl.set("#baseA", { opacity: 0 }, PEAK);
+  tl.set("#baseB", { opacity: 1 }, PEAK);
+  tl.set("#kal", { opacity: 0 }, END);
+  // The new scene lives on: the bar fills and the number breathes.
+  tl.to("#b .bar", { scaleX: 1, duration: 0.6, ease: "power3.out" }, 1.85);
+  tl.fromTo("#b h1", { scale: 1 }, { scale: 1.03, transformOrigin: "0% 50%", duration: 0.6, ease: "sine.inOut" }, 2.4);
+
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

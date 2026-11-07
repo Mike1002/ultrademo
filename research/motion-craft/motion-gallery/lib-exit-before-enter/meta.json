@@ -1,0 +1,21 @@
+{
+  "name": "Exit before enter",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Sequence"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "gsap",
+  "tags": [
+    "exit before enter",
+    "transitions",
+    "sequential",
+    "no overlap",
+    "fade",
+    "lift",
+    "swap"
+  ],
+  "one_line": "An invite card lifts and fades out completely, the ground sits empty for a beat, then a stats card rises and fades in to the same spot; no frame shows both, and the swap runs back the other way."
+}

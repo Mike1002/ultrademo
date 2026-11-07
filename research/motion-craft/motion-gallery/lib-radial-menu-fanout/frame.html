@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-radial-menu-fanout</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  #card { position: absolute; left: 284px; top: 60px; width: 600px; height: 460px; background: #fffdf8; border: 2px solid #1d1c1a; border-radius: 24px; }
+  #card .lab { position: absolute; left: 40px; top: 32px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  #card .t { position: absolute; left: 40px; top: 56px; font-size: 26px; font-weight: 700; }
+  #card .ln { position: absolute; left: 40px; height: 12px; border-radius: 6px; background: #e3ded2; }
+  #plus { position: absolute; left: 548px; top: 404px; width: 72px; height: 72px; border-radius: 50%; background: #f2c200; border: 2px solid #1d1c1a; z-index: 5; will-change: transform; }
+  #plus svg { position: absolute; left: 0; top: 0; width: 68px; height: 68px; display: block; }
+  .item { position: absolute; left: 556px; top: 412px; width: 56px; height: 56px; border-radius: 50%; background: #fffdf8; border: 2px solid #1d1c1a; z-index: 4; will-change: transform, opacity; }
+  .item svg { position: absolute; left: 0; top: 0; width: 52px; height: 52px; display: block; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div id="card">
+        <div class="lab">Orbit</div>
+        <div class="t">Invite your team</div>
+        <div class="ln" style="top:110px;width:300px"></div>
+        <div class="ln" style="top:138px;width:220px"></div>
+      </div>
+      <div class="item" id="i0" data-layout-allow-overlap data-layout-allow-occlusion><svg viewBox="0 0 52 52"><rect x="15" y="17" width="22" height="18" rx="3" fill="none" stroke="#1d1c1a" stroke-width="2.5"/><circle cx="26" cy="26" r="4" fill="none" stroke="#1d1c1a" stroke-width="2.5"/></svg></div>
+      <div class="item" id="i1" data-layout-allow-overlap data-layout-allow-occlusion><svg viewBox="0 0 52 52"><path d="M16 18h20M26 18v18" fill="none" stroke="#1d1c1a" stroke-width="2.5" stroke-linecap="round"/></svg></div>
+      <div class="item" id="i2" data-layout-allow-overlap data-layout-allow-occlusion><svg viewBox="0 0 52 52"><rect x="15" y="15" width="22" height="22" rx="3" fill="none" stroke="#1d1c1a" stroke-width="2.5"/><path d="M17 33l7-8 5 5 4-4 6 7" fill="none" stroke="#1d1c1a" stroke-width="2.5" stroke-linejoin="round"/></svg></div>
+      <div class="item" id="i3" data-layout-allow-overlap data-layout-allow-occlusion><svg viewBox="0 0 52 52"><rect x="21" y="13" width="10" height="18" rx="5" fill="none" stroke="#1d1c1a" stroke-width="2.5"/><path d="M16 26a10 10 0 0 0 20 0M26 36v5" fill="none" stroke="#1d1c1a" stroke-width="2.5" stroke-linecap="round"/></svg></div>
+      <div class="item" id="i4" data-layout-allow-overlap data-layout-allow-occlusion><svg viewBox="0 0 52 52"><path d="M22 30l8-8M20 24l-4 4a5 5 0 0 0 7 7l4-4M32 28l4-4a5 5 0 0 0-7-7l-4 4" fill="none" stroke="#1d1c1a" stroke-width="2.5" stroke-linecap="round"/></svg></div>
+      <div class="item" id="i5" data-layout-allow-overlap data-layout-allow-occlusion><svg viewBox="0 0 52 52"><path d="M26 34V16M19 23l7-7 7 7M17 36h18" fill="none" stroke="#1d1c1a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div id="plus" data-layout-allow-overlap><svg viewBox="0 0 68 68"><path d="M34 20v28M20 34h28" fill="none" stroke="#1d1c1a" stroke-width="4" stroke-linecap="round"/></svg></div>
+    </div>
+    <div id="label"><span class="l-name">Radial menu fanout</span><span class="l-sep">·</span><span>UI Demo</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power2.out", duration: 0.4 } });
+  // Params: 0.4 s per item, radius 150 px here, power2.out, 40 ms stagger; six items along a 120-degree arc above the + button.
+  const R = 150, N = 6;
+  for (let i = 0; i < N; i++) {
+    const a = (30 + i * (120 / (N - 1))) * Math.PI / 180;
+    const x = Math.round(R * Math.cos(a)), y = -Math.round(R * Math.sin(a));
+    // Open: out from the shared centre along the arc, staggered.
+    tl.fromTo("#i" + i, { x: 0, y: 0, scale: 0.4, opacity: 0 }, { x: x, y: y, scale: 1, opacity: 1, duration: 0.4, ease: "power2.out" }, 0.4 + i * 0.04);
+    // Fold back: reverse order, into the centre.
+    tl.to("#i" + i, { x: 0, y: 0, scale: 0.4, opacity: 0, duration: 0.35, ease: "power2.in" }, 2.05 + (N - 1 - i) * 0.04);
+  }
+  // The + turns into a close mark while the menu is open, and back.
+  tl.fromTo("#plus", { rotation: 0, scale: 1 }, { rotation: 45, scale: 1.08, duration: 0.4, ease: "power2.out" }, 0.4);
+  tl.to("#plus", { rotation: 0, scale: 1, duration: 0.35, ease: "power2.in" }, 2.05);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

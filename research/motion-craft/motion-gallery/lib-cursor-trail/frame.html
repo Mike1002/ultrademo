@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-cursor-trail</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  #card { position: absolute; left: 164px; top: 40px; width: 840px; height: 500px; background: #fffdf8; border: 2px solid #1d1c1a; border-radius: 24px; }
+  #card .lab { position: absolute; left: 48px; top: 40px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  #card h1 { position: absolute; left: 48px; top: 66px; font-size: 44px; font-weight: 700; line-height: 52px; white-space: nowrap; }
+  #card .sub { position: absolute; left: 48px; top: 128px; font-size: 20px; color: #6d6a63; white-space: nowrap; }
+  .row { position: absolute; left: 48px; width: 744px; height: 64px; border-top: 2px solid #e3ded2; }
+  .row .av { position: absolute; left: 0; top: 14px; width: 36px; height: 36px; border-radius: 50%; background: #ece7da; border: 2px solid #1d1c1a; }
+  .row .nm { position: absolute; left: 54px; top: 18px; font-size: 20px; font-weight: 600; white-space: nowrap; }
+  .row .rl { position: absolute; right: 0; top: 20px; font-size: 16px; color: #6d6a63; white-space: nowrap; }
+  #btn { position: absolute; left: 592px; top: 396px; width: 200px; height: 60px; border-radius: 14px; background: #f2c200; border: 2px solid #1d1c1a;
+    font-size: 20px; font-weight: 700; line-height: 56px; text-align: center; will-change: transform; }
+  #trail { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; pointer-events: none; }
+  #trail line { stroke: #1d1c1a; stroke-width: 5; stroke-linecap: round; }
+  .cursor { position: absolute; left: 0; top: 0; width: 28px; height: 38px; z-index: 10; pointer-events: none;
+    transform-origin: 2px 2px; will-change: transform; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.25)); }
+  .cursor svg { width: 28px; height: 38px; display: block; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div id="card">
+        <div class="lab" data-layout-allow-occlusion>Orbit</div>
+        <h1 data-layout-allow-occlusion>Invite your team</h1>
+        <div class="sub" data-layout-allow-occlusion>3 seats left on this plan</div>
+        <div class="row" style="top:184px"><div class="av"></div><div class="nm" data-layout-allow-occlusion>Jamie Dalton</div><div class="rl" data-layout-allow-occlusion>Owner</div></div>
+        <div class="row" style="top:248px"><div class="av"></div><div class="nm" data-layout-allow-occlusion>Sam Kim</div><div class="rl" data-layout-allow-occlusion>Admin</div></div>
+        <div class="row" style="top:312px"><div class="av"></div><div class="nm" data-layout-allow-occlusion>Morgan Lee</div><div class="rl" data-layout-allow-occlusion>Member</div></div>
+        <div id="btn" data-layout-allow-occlusion>Continue</div>
+      </div>
+      <svg id="trail" viewBox="0 0 1168 580" data-layout-allow-overlap></svg>
+      <div class="cursor" id="cur" data-layout-allow-overlap>
+        <svg viewBox="0 0 28 38"><path d="M2.5 2.5 L2.5 29.5 L9.6 23 L14.4 33.6 L19 31.6 L14.3 21.4 L23.8 21.4 Z" fill="#ffffff" stroke="#1d1c1a" stroke-width="2" stroke-linejoin="round"/></svg>
+      </div>
+    </div>
+    <div id="label"><span class="l-name">Cursor trail</span><span class="l-sep">·</span><span>UI Demo</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  // Params: trail points every 12 px along the path, each fading over 500 ms; the pointer moves at constant speed
+  // (1.1 s for the first ~950 px path, 0.8 s for the second). Segments between consecutive points carry the opacity.
+  const SPACING = 12, FADE = 0.5, PEAK = 0.6;
+  function cubic(p0, p1, p2, p3, u) {
+    const v = 1 - u;
+    return [v*v*v*p0[0] + 3*v*v*u*p1[0] + 3*v*u*u*p2[0] + u*u*u*p3[0], v*v*v*p0[1] + 3*v*v*u*p1[1] + 3*v*u*u*p2[1] + u*u*u*p3[1]];
+  }
+  // sample a cubic at even arc length
+  function samplePath(p0, p1, p2, p3) {
+    const fine = []; for (let i = 0; i <= 400; i++) fine.push(cubic(p0, p1, p2, p3, i / 400));
+    const out = [fine[0]]; let acc = 0;
+    for (let i = 1; i < fine.length; i++) {
+      const dx = fine[i][0] - fine[i-1][0], dy = fine[i][1] - fine[i-1][1]; acc += Math.hypot(dx, dy);
+      if (acc >= SPACING) { out.push(fine[i]); acc = 0; }
+    }
+    out.push(fine[fine.length - 1]);
+    return out;
+  }
+  const moves = [
+    { pts: samplePath([120, 110], [560, 30], [500, 540], [852, 466]), t0: 0.25, T: 1.1 },
+    { pts: samplePath([852, 466], [1040, 330], [700, 150], [980, 110]), t0: 1.95, T: 0.8 },
+  ];
+  const svg = document.getElementById("trail");
+  const segs = [];   // { el, t }: the time the pointer passes this segment
+  moves.forEach(m => {
+    let L = 0; const cum = [0];
+    for (let i = 1; i < m.pts.length; i++) { L += Math.hypot(m.pts[i][0] - m.pts[i-1][0], m.pts[i][1] - m.pts[i-1][1]); cum.push(L); }
+    m.L = L; m.cum = cum;
+    for (let i = 1; i < m.pts.length; i++) {
+      const el = document.createElementNS("http://www.w3.org/2000/svg", "line");
+      el.setAttribute("x1", m.pts[i-1][0].toFixed(1)); el.setAttribute("y1", m.pts[i-1][1].toFixed(1));
+      el.setAttribute("x2", m.pts[i][0].toFixed(1)); el.setAttribute("y2", m.pts[i][1].toFixed(1));
+      el.setAttribute("opacity", "0"); svg.appendChild(el);
+      segs.push({ el, t: m.t0 + m.T * (cum[i] / L) });
+    }
+  });
+  function renderAt(t) {
+    for (const s of segs) {
+      const a = t < s.t ? 0 : Math.max(0, PEAK * (1 - (t - s.t) / FADE));
+      s.el.setAttribute("opacity", a.toFixed(3));
+    }
+  }
+  renderAt(0);
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "none", duration: 0.5 } });
+  tl.to({ k: 0 }, { k: 1, duration: 3, ease: "none", onUpdate: () => renderAt(tl.time()) }, 0);
+  tl.fromTo("#cur", { x: 120, y: 110, scale: 1 }, { x: 120, y: 110, duration: 0.01, ease: "none" }, 0);
+  moves.forEach(m => {
+    const kf = [];
+    for (let i = 1; i < m.pts.length; i++) kf.push({ x: m.pts[i][0], y: m.pts[i][1], duration: m.T * (m.cum[i] - m.cum[i-1]) / m.L, ease: "none" });
+    tl.to("#cur", { keyframes: kf }, m.t0);
+  });
+  // Click on Continue at the end of the first move.
+  tl.to("#cur", { scale: 0.85, duration: 0.1, ease: "power2.in", yoyo: true, repeat: 1 }, 1.5);
+  tl.fromTo("#btn", { scale: 1 }, { scale: 0.96, duration: 0.1, ease: "power2.in", yoyo: true, repeat: 1, immediateRender: false }, 1.5);
+  const baseRender = tl.render; tl.render = function () { const r = baseRender.apply(this, arguments); renderAt(this.time()); return r; };
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

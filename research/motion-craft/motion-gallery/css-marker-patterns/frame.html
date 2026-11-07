@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>css-marker-patterns</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  .card { position: absolute; left: 160px; top: 170px; width: 960px; height: 380px; background: #fffdf8; border: 2px solid #1d1c1a;
+    border-radius: 24px; padding: 64px 72px; }
+  .h { font-size: 64px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.25; }
+  .sub { margin-top: 28px; font-size: 32px; font-weight: 600; color: #6d6a63; line-height: 1.3; }
+  /* marker scaffold: inline wrap, the bar absolutely positioned behind the text copy */
+  .mh-highlight-wrap { position: relative; display: inline; }
+  .mh-highlight-bar { position: absolute; inset: 2px -8px; background: #f2c200; opacity: 0.5; border-radius: 4px; z-index: 0; will-change: transform; }
+  .mh-highlight-text { position: relative; z-index: 1; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div class="card">
+      <div class="h">Every <span class="mh-highlight-wrap"><span class="mh-highlight-bar" id="hl-1"></span><span class="mh-highlight-text">frame</span></span> is <span class="mh-highlight-wrap"><span class="mh-highlight-bar" id="hl-2"></span><span class="mh-highlight-text">code</span></span></div>
+      <div class="sub">Invite your team, then <span class="mh-highlight-wrap"><span class="mh-highlight-bar" id="hl-3"></span><span class="mh-highlight-text">re-run when the UI ships</span></span>.</div>
+    </div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true });
+  // highlight sweep: the bar scales from the left edge behind the word; a hand-drawn skew on the second
+  tl.fromTo("#hl-1", { scaleX: 0, transformOrigin: "left center" }, { scaleX: 1, duration: 0.5, ease: "power2.out" }, 0.6);
+  tl.fromTo("#hl-2", { scaleX: 0, skewX: -2, transformOrigin: "left center" }, { scaleX: 1, duration: 0.5, ease: "power2.out" }, 1.4);
+  tl.fromTo("#hl-3", { scaleX: 0, transformOrigin: "left center" }, { scaleX: 1, duration: 0.6, ease: "power2.out" }, 2.2);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

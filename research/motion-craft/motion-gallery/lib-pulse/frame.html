@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-pulse</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px;  }
+  .lab { font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  .kicker { position: absolute; left: 64px; top: 40px; }
+  .head { position: absolute; left: 64px; top: 70px; font-size: 56px; font-weight: 700; }
+  .sub { position: absolute; left: 64px; top: 146px; font-size: 22px; color: #6d6a63; }
+  .ring { position: absolute; left: 424px; top: 300px; width: 320px; height: 100px; border-radius: 24px; background: #f2c200; opacity: 0; will-change: transform; }
+  .cta { position: absolute; left: 424px; top: 300px; width: 320px; height: 100px; border-radius: 24px; background: #f2c200; border: 2px solid #1d1c1a;
+    color: #1d1c1a; font-size: 40px; font-weight: 700; display: flex; align-items: center; justify-content: center; will-change: transform; }
+  .line { position: absolute; left: 164px; right: 164px; top: 470px; height: 1px; background: #e3ded2; }
+  .note { position: absolute; right: 64px; top: 520px; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <span class="lab kicker">Orbit · Invite your team</span>
+      <div class="head">3 seats left</div>
+      <div class="sub">Press the action that matters now.</div>
+      <div class="ring" id="ring" data-layout-allow-overlap></div>
+      <div class="cta" id="cta" data-layout-allow-overlap>Continue</div>
+      <div class="line"></div>
+      <span class="lab note">three beats, then still</span>
+    </div>
+    <div id="label"><span class="l-name">Pulse</span><span class="l-sep">·</span><span>Emphasis</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+  // Three heartbeats: scale 1 -> 1.05 and back, sine.inOut, in place (period 0.74 s, from 0.75 s to 2.97 s).
+  tl.fromTo("#cta", { scale: 1 }, { scale: 1.05, duration: 0.37, ease: "sine.inOut", repeat: 5, yoyo: true }, 0.75);
+  // A soft ring spreads out of the button on each beat so the pulse reads at thumbnail size.
+  tl.fromTo("#ring", { scale: 1, opacity: 0.6 }, { scale: 1.4, opacity: 0, duration: 0.74, ease: "sine.out", repeat: 2 }, 0.75);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

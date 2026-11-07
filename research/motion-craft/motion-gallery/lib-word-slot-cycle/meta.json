@@ -1,0 +1,24 @@
+{
+  "name": "Word slot cycle",
+  "family": "Typography",
+  "purpose": [
+    "Explanation",
+    "Branding",
+    "Attention"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "gsap",
+  "tags": [
+    "fixed slot word cycle",
+    "line swap",
+    "rotating word loop",
+    "headline slot ticker",
+    "shared axis text swap",
+    "type",
+    "headline",
+    "slot",
+    "blur"
+  ],
+  "one_line": "The headline \"Invite your ___\" stays put while the last word cycles team, clients, partners: each outgoing word rises and blurs away as the next one comes up from below into the same slot."
+}

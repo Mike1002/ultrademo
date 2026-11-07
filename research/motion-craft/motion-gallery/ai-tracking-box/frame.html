@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>ai-tracking-box</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #11152a; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; color: #ece8df;
+    background: radial-gradient(ellipse 70% 70% at 50% 50%, #1a2040 0%, #11152a 100%);
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  /* target: a 110px circle whose box is centred on the stage centre; GSAP x/y move it */
+  .target { position: absolute; left: 585px; top: 305px; width: 110px; height: 110px; border-radius: 50%; background: #ece8df;
+    will-change: transform; }
+  /* box group: a zero-size anchor at the stage centre; corners and label are offset from it by transforms only */
+  .track-box { position: absolute; left: 640px; top: 360px; width: 0; height: 0; pointer-events: none; will-change: transform; }
+  .corner { position: absolute; left: -24px; top: -24px; width: 48px; height: 48px; will-change: transform; }
+  .corner.tl { border-top: 6px solid #f2c200; border-left: 6px solid #f2c200; }
+  .corner.tr { border-top: 6px solid #f2c200; border-right: 6px solid #f2c200; }
+  .corner.bl { border-bottom: 6px solid #f2c200; border-left: 6px solid #f2c200; }
+  .corner.br { border-bottom: 6px solid #f2c200; border-right: 6px solid #f2c200; }
+  .label { position: absolute; left: 0; top: 0; height: 40px; padding: 0 14px; background: #f2c200; color: #11152a;
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 22px; font-weight: 700; line-height: 40px;
+    white-space: nowrap; border-radius: 6px; will-change: transform; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div class="target" id="target"></div>
+    <div class="track-box" id="track-box">
+      <div class="corner tl" id="c-tl"></div>
+      <div class="corner tr" id="c-tr"></div>
+      <div class="corner bl" id="c-bl"></div>
+      <div class="corner br" id="c-br"></div>
+      <div class="label" id="label">OBJECT · 97%</div>
+    </div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true });
+  const ENTRY_START = 0.1, ENTRY_DUR = 0.5, ENTRY_SCALE = 0.7, ENTRY_BOUNCE = 1.8;
+  const TRACK_START = 0.6, TRACK_DUR = 2.4, CYCLES = 1.2;                 // 0.5 Hz
+  const DRIFT_X = 190, DRIFT_Y = 80, SIZE_BASE = 230, SIZE_VAR = 14;        // ~6% jitter
+  const SIZE_FREQ_MULT = 2.3, CONFIDENCE_MEAN = 97, CONFIDENCE_VAR = 2, CONFIDENCE_FREQ_MULT = 4.7, LABEL_TEXT = "OBJECT";
+  const box = document.getElementById("track-box"), target = document.getElementById("target"), label = document.getElementById("label");
+  const corners = { tl: document.getElementById("c-tl"), tr: document.getElementById("c-tr"), bl: document.getElementById("c-bl"), br: document.getElementById("c-br") };
+  // every frame, in this order: phase from time -> target position -> box derived from the target
+  function renderAt(t) {
+    const u = Math.min(Math.max((t - TRACK_START) / TRACK_DUR, 0), 1);
+    const p = u * Math.PI * 2 * CYCLES;
+    const mx = Math.cos(p) * DRIFT_X, my = Math.sin(p) * DRIFT_Y;              // offsets from the stage centre
+    gsap.set(target, { x: mx, y: my });
+    const w = SIZE_BASE + Math.sin(p * SIZE_FREQ_MULT) * SIZE_VAR;
+    const h = SIZE_BASE + Math.sin(p * SIZE_FREQ_MULT + Math.PI / 2) * SIZE_VAR;
+    gsap.set(box, { x: mx, y: my });
+    gsap.set(corners.tl, { x: -w / 2 + 16, y: -h / 2 + 16 });
+    gsap.set(corners.tr, { x: w / 2 - 16, y: -h / 2 + 16 });
+    gsap.set(corners.bl, { x: -w / 2 + 16, y: h / 2 - 16 });
+    gsap.set(corners.br, { x: w / 2 - 16, y: h / 2 - 16 });
+    gsap.set(label, { x: -w / 2 - 8, y: -h / 2 - 64 });
+    const conf = Math.round(CONFIDENCE_MEAN + Math.sin(p * CONFIDENCE_FREQ_MULT) * CONFIDENCE_VAR);
+    label.textContent = LABEL_TEXT + " · " + conf + "%";
+  }
+  renderAt(0);
+  // entry: the box locks on (scale/opacity only; position comes from renderAt)
+  tl.fromTo(box, { opacity: 0, scale: ENTRY_SCALE }, { opacity: 1, scale: 1, duration: ENTRY_DUR, ease: "back.out(" + ENTRY_BOUNCE + ")" }, ENTRY_START);
+  // tracking driver: a dummy tween over the full clip so every seek re-renders from time
+  tl.to({ k: 0 }, { k: 1, duration: 3, ease: "none", onUpdate: () => renderAt(tl.time()) }, 0);
+  const baseRender = tl.render; tl.render = function () { const r = baseRender.apply(this, arguments); renderAt(this.time()); return r; };
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

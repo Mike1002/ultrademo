@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>theme-crossfade-morph</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  /* One complete pre-styled layer per skin, stacked; skin-0 visible at t=0. Only opacity ever tweens. */
+  .skin { position: absolute; left: 0; top: 0; width: 1280px; height: 720px; opacity: 0; }
+  .skin-0 { opacity: 1; }
+  /* shared geometry: the shell sits at the SAME coordinates in every skin: 640x400 at (320,160) */
+  .shell { position: absolute; left: 320px; top: 160px; width: 640px; height: 400px; }
+  .line { position: absolute; left: 48px; top: 52px; font-size: 44px; font-weight: 700; letter-spacing: -0.01em; }
+  .sub { position: absolute; left: 48px; top: 120px; font-size: 20px; }
+  .num { position: absolute; left: 48px; top: 176px; font-size: 88px; font-weight: 800; letter-spacing: -0.03em; line-height: 1; }
+  .chrome { position: absolute; left: 48px; top: 300px; width: 240px; height: 14px; border-radius: 7px; }
+  .dot { position: absolute; top: 36px; width: 14px; height: 14px; border-radius: 50%; }
+  /* skin 0: light, round, system sans */
+  .skin-0 { background: #f6f3ec; color: #1d1c1a; }
+  .skin-0 .shell { background: #fffdf8; border: 2px solid #1d1c1a; border-radius: 24px; }
+  .skin-0 .sub { color: #6d6a63; } .skin-0 .chrome { background: #e3ded2; } .skin-0 .dot { background: #e3ded2; }
+  /* skin 1: dark, square, serif display */
+  .skin-1 { background: #11152a; color: #ece8df; font-family: Georgia, "Times New Roman", serif; }
+  .skin-1 .shell { background: #1a1f3a; border: 2px solid #ece8df; border-radius: 6px; }
+  .skin-1 .line { font-weight: 400; letter-spacing: 0; } .skin-1 .num { font-weight: 400; letter-spacing: -0.02em; }
+  .skin-1 .sub { color: #9a9bb0; } .skin-1 .chrome { background: #2c3358; } .skin-1 .dot { background: #2c3358; }
+  /* skin 2: yellow-tinted, pill radius, monospace */
+  .skin-2 { background: #fbefb8; color: #1d1c1a; font-family: Menlo, Consolas, "Courier New", monospace; }
+  .skin-2 .shell { background: #fff8d6; border: 3px solid #1d1c1a; border-radius: 48px; }
+  .skin-2 .line { font-size: 40px; letter-spacing: -0.03em; } .skin-2 .num { font-size: 80px; }
+  .skin-2 .sub { color: #6d6a63; } .skin-2 .chrome { background: #f2c200; } .skin-2 .dot { background: #f2c200; }
+  /* THE ANCHOR: rendered once, above every skin, excluded from every skin layer. It never moves. */
+  .anchor { position: absolute; left: 700px; top: 460px; width: 200px; height: 60px; border-radius: 14px; background: #f2c200;
+    border: 2px solid #1d1c1a; color: #1d1c1a; font-size: 22px; font-weight: 700; display: grid; place-items: center; z-index: 10;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div class="skin skin-0" id="skin-0"><div class="shell">
+      <div class="line">Every frame is code</div><div class="sub">Light skin, rounded, sans</div><div class="num">1,284</div>
+      <div class="chrome"></div>
+      <div class="dot" style="right: 48px;"></div><div class="dot" style="right: 72px;"></div><div class="dot" style="right: 96px;"></div>
+    </div></div>
+    <div class="skin skin-1" id="skin-1"><div class="shell">
+      <div class="line">Every frame is code</div><div class="sub">Dark skin, square, serif</div><div class="num">1,284</div>
+      <div class="chrome"></div>
+      <div class="dot" style="right: 48px;"></div><div class="dot" style="right: 72px;"></div><div class="dot" style="right: 96px;"></div>
+    </div></div>
+    <div class="skin skin-2" id="skin-2"><div class="shell">
+      <div class="line">Every frame is code</div><div class="sub">Yellow skin, pill, mono</div><div class="num">1,284</div>
+      <div class="chrome"></div>
+      <div class="dot" style="right: 48px;"></div><div class="dot" style="right: 72px;"></div><div class="dot" style="right: 96px;"></div>
+    </div></div>
+    <div class="anchor" id="anchor">Continue</div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true });
+  // Rule values: MORPH_DUR 0.3 power2.inOut, SKIN_HOLD 0.6 (short specimen), CYCLE_START 0.1; final skin held longest (brake).
+  const CYCLE_START = 0.1, SKIN_HOLD = 0.6, MORPH_DUR = 0.3;
+  const skins = gsap.utils.toArray(".skin");
+  tl.set("#skin-0", { opacity: 1 }, 0);
+  tl.set(["#skin-1", "#skin-2"], { opacity: 0 }, 0);
+  skins.forEach((skin, k) => {
+    if (k === 0) return;
+    const at = CYCLE_START + k * (SKIN_HOLD + MORPH_DUR); // 1.0, 1.9
+    tl.fromTo(skin, { opacity: 0 }, { opacity: 1, duration: MORPH_DUR, ease: "power2.inOut", immediateRender: false }, at);
+    tl.to(skins[k - 1], { opacity: 0, duration: MORPH_DUR, ease: "power2.inOut" }, at); // same position: simultaneous blend
+  });
+  // The anchor gets NO tweens. Its absence from the timeline is the point.
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

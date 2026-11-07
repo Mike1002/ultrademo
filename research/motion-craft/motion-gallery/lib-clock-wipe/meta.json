@@ -1,0 +1,22 @@
+{
+  "name": "Clock wipe",
+  "family": "Transitions",
+  "purpose": [
+    "Transition",
+    "Sequence"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "svg",
+  "tags": [
+    "clock wipe",
+    "pinwheel wipe",
+    "radial wipe",
+    "transitions",
+    "clock",
+    "radial",
+    "pie mask",
+    "sweep"
+  ],
+  "one_line": "A pie-shaped edge sweeps clockwise from twelve o'clock around the centre, uncovering the stats scene over the invite scene; after it closes, the hand sweeps back forty degrees and returns."
+}

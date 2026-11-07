@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-density-field-animation</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  #cv { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  #cap { position: absolute; left: 120px; top: 8px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  #clock { position: absolute; left: 920px; top: 2px; width: 200px; text-align: right; font-size: 28px; font-weight: 700; font-variant-numeric: tabular-nums; color: #1d1c1a; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <canvas id="cv" width="1168" height="580"></canvas>
+      <div id="cap">Activity by hour</div>
+      <div id="clock">Week 42</div>
+    </div>
+    <div id="label"><span class="l-name">Density field animation</span><span class="l-sep">·</span><span>Data</span><span class="l-sep">·</span><span>calm</span></div>
+  </section>
+</div>
+<script>
+  const cv = document.getElementById("cv"), ctx = cv.getContext("2d");
+  // Chart area: hours 0-24 across x 120..1120, days Mon-Sun down y 70..490. Grid spacing 16 px, density radius ~ 60-110 px.
+  const X0 = 120, X1 = 1120, Y0 = 70, Y1 = 490, CELL = 16;
+  const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+  const rowH = (Y1 - Y0) / 7;
+  // Four hot spots, keyframed at t = 0, 1, 2, 3 s: [x, y, radius, amplitude]. Linear time, smooth interpolation between keys.
+  const K = [0, 1, 2, 3];
+  const blobs = [
+    [[300, 150, 70, 0.9], [420, 160, 90, 1.1], [560, 180, 110, 1.3], [640, 200, 120, 1.2]],   // morning stand-up drifting into the afternoon, growing
+    [[760, 330, 60, 0.6], [700, 300, 80, 0.9], [620, 270, 90, 1.0], [560, 250, 90, 0.9]],    // mid-week block drifting earlier
+    [[900, 440, 50, 0.5], [960, 420, 70, 0.8], [1000, 400, 85, 1.0], [1040, 380, 95, 1.1]],   // evening peak late in the week, swelling
+    [[200, 420, 60, 0.5], [230, 430, 55, 0.4], [260, 440, 45, 0.25], [280, 450, 35, 0.1]]     // early-week morning fading out
+  ];
+  const smooth = p => p * p * (3 - 2 * p);
+  function blobAt(b, t) {
+    let i = 0; while (i < K.length - 2 && t > K[i + 1]) i++;
+    const p = smooth(Math.max(0, Math.min(1, (t - K[i]) / (K[i + 1] - K[i]))));
+    const a = b[i], c = b[i + 1];
+    return [a[0] + (c[0] - a[0]) * p, a[1] + (c[1] - a[1]) * p, a[2] + (c[2] - a[2]) * p, a[3] + (c[3] - a[3]) * p];
+  }
+  function renderAt(t) {
+    ctx.clearRect(0, 0, 1168, 580);
+    ctx.font = "16px -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif";
+    ctx.fillStyle = "#6d6a63"; ctx.textBaseline = "middle";
+    ctx.textAlign = "right";
+    days.forEach((d, i) => ctx.fillText(d, X0 - 16, Y0 + rowH * (i + 0.5)));
+    ctx.textAlign = "center";
+    [0, 6, 12, 18, 24].forEach(h => ctx.fillText(h + "h", X0 + (X1 - X0) * h / 24, Y1 + 20));
+    ctx.strokeStyle = "#e3ded2"; ctx.lineWidth = 2;
+    for (let i = 0; i <= 7; i++) { ctx.beginPath(); ctx.moveTo(X0, Y0 + rowH * i); ctx.lineTo(X1, Y0 + rowH * i); ctx.stroke(); }
+    const bs = blobs.map(b => blobAt(b, t));
+    // Density field: every grid cell sums the gaussians of the hot spots; pale at the edges, solid yellow at the core, ink where densest.
+    for (let y = Y0; y < Y1; y += CELL) {
+      for (let x = X0; x < X1; x += CELL) {
+        const cx = x + CELL / 2, cy = y + CELL / 2;
+        let d = 0;
+        for (const [bx, by, r, amp] of bs) { const dx = cx - bx, dy = cy - by; d += amp * Math.exp(-(dx * dx + dy * dy) / (2 * r * r)); }
+        if (d < 0.04) continue;
+        const a = Math.min(1, d);
+        ctx.fillStyle = "rgba(242,194,0," + a.toFixed(3) + ")";
+        ctx.fillRect(x + 1, y + 1, CELL - 2, CELL - 2);
+        if (d > 1.05) { ctx.fillStyle = "rgba(29,28,26," + Math.min(0.6, (d - 1.05) * 1.2).toFixed(3) + ")"; ctx.fillRect(x + 1, y + 1, CELL - 2, CELL - 2); }
+      }
+    }
+  }
+  renderAt(0);
+  const tl = gsap.timeline({ paused: true });
+  tl.fromTo({ k: 0 }, { k: 0 }, { k: 1, duration: 3, ease: "none", onUpdate: () => renderAt(tl.time()) }, 0);
+  const baseRender = tl.render; tl.render = function () { const r = baseRender.apply(this, arguments); renderAt(this.time()); return r; };
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

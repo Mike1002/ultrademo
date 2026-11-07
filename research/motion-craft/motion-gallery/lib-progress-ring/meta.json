@@ -1,0 +1,21 @@
+{
+  "name": "Progress ring",
+  "family": "Data",
+  "purpose": [
+    "Data evidence",
+    "Comparison"
+  ],
+  "energy": "steady",
+  "tier": 2,
+  "runtime": "svg",
+  "tags": [
+    "progress-ring-radial",
+    "stat-bars-and-fills",
+    "data",
+    "stroke dashoffset",
+    "radial",
+    "counter",
+    "gauge"
+  ],
+  "one_line": "A yellow circular stroke fills clockwise from twelve o'clock to 75% while the percentage in its centre and the count beside it climb to the same value, then nudge up a little more."
+}

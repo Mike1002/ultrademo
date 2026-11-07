@@ -1,0 +1,123 @@
+{
+  "id": "bold-poster",
+  "name": "Bold Poster",
+  "canvas": "light",
+  "mood": [
+    "loud",
+    "printed",
+    "confident"
+  ],
+  "suits": [
+    "event launches",
+    "bold brands",
+    "announcements"
+  ],
+  "palette": {
+    "bg": "#FFFFFF",
+    "bg_alt": "#F5F2EF",
+    "surface": "#F5F2EF",
+    "surface_2": "#ebe6e1",
+    "ink": "#1C1410",
+    "muted": "#6b5f58",
+    "line": "#1C1410",
+    "accent": "#D8000F",
+    "accent_2": "#D8000F",
+    "on_accent": "#ffffff",
+    "pill_bg": "#F5F2EF",
+    "pill_ink": "#1C1410",
+    "pill_dot": "#D8000F",
+    "term_bg": "#1C1410",
+    "term_ink": "#F5F2EF",
+    "term_muted": "#a0958e",
+    "term_line": "#1C1410",
+    "term_prompt": "#ff5a63",
+    "term_ok": "#ff5a63"
+  },
+  "type": {
+    "display": {
+      "family": "Shrikhand",
+      "weight": 400,
+      "hook_px": 96,
+      "stat_px": 250,
+      "mark_px": 140,
+      "transform": "none",
+      "tracking": "0",
+      "line_height": "1.0",
+      "style": "normal",
+      "generic": "serif",
+      "card_title_px": 28
+    },
+    "body": {
+      "family": "Libre Baskerville",
+      "weight": 400,
+      "generic": "serif"
+    },
+    "mono": {
+      "family": "Space Grotesk",
+      "weight": 500
+    },
+    "label": {
+      "family": "Space Grotesk",
+      "weight": 600,
+      "transform": "uppercase",
+      "tracking": "0.16em",
+      "generic": "sans",
+      "px": 12
+    }
+  },
+  "easing": {
+    "entry": "expo.out",
+    "exit": "power3.in",
+    "ambient": "none",
+    "pop": "back.out(2)",
+    "counter": "power3.out",
+    "wipe": null
+  },
+  "rhythm": {
+    "energy": "high",
+    "entrance": 0.45,
+    "stagger": 0.08
+  },
+  "transition": {
+    "kind": "cut",
+    "duration": 0,
+    "flash": true,
+    "band": false,
+    "flash_colour": "#D8000F"
+  },
+  "text_animation": "slam",
+  "accent_word": "none",
+  "layout": "left",
+  "atmosphere": [
+    "rules"
+  ],
+  "shape": {
+    "radius_card": 0,
+    "radius_button": 0,
+    "radius_pill": 0,
+    "border": "bold",
+    "border_px": 3,
+    "shadow": "none",
+    "rule_px": 6
+  },
+  "stat_colour": "accent",
+  "direction_settings": {
+    "energy": "brisk",
+    "density": "balanced",
+    "ground": "light",
+    "depth": "flat",
+    "camera": "locked",
+    "type": "loud",
+    "texture": "clean",
+    "colour": "one-accent",
+    "product_presence": "illustrated",
+    "sound": "beat-driven",
+    "voice": "spoken-headline"
+  },
+  "notes": "Shrikhand at poster scale against Libre Baskerville, tomato red, double-rule borders; hard cuts with a red flash.",
+  "transitions": {
+    "between_moments": "cut",
+    "duration_s": 0,
+    "text": "slam"
+  }
+}

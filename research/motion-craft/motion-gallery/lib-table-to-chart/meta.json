@@ -1,0 +1,20 @@
+{
+  "name": "Table-to-chart transition",
+  "family": "Data",
+  "purpose": [
+    "Data evidence",
+    "Comparison"
+  ],
+  "energy": "steady",
+  "tier": 2,
+  "runtime": "svg",
+  "tags": [
+    "table values become chart marks",
+    "data",
+    "svg attr",
+    "morph",
+    "table",
+    "bar chart"
+  ],
+  "one_line": "A four-row table highlights its leading value, grows a small mark beside each number, then the marks stretch into bars of proportional length with the numbers riding out to the tips."
+}

@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-text-half-split</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; overflow: hidden; }
+  #eyebrow { position: absolute; left: 0; width: 1168px; top: 170px; text-align: center; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  .half { position: absolute; left: 0; width: 1168px; top: 220px; height: 104px; text-align: center; font-size: 84px; font-weight: 700; line-height: 104px;
+    letter-spacing: -0.01em; white-space: nowrap; will-change: transform, opacity; }
+  .half.top { clip-path: inset(0 0 50% 0); }
+  .half.bot { clip-path: inset(50% 0 0 0); }
+  #bar { position: absolute; left: 534px; top: 350px; width: 100px; height: 8px; border-radius: 4px; background: #f2c200; will-change: transform; }
+  #sub { position: absolute; left: 0; width: 1168px; top: 388px; text-align: center; font-size: 22px; color: #6d6a63; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div id="eyebrow">Orbit</div>
+      <div id="phrases"></div>
+      <div id="bar"></div>
+      <div id="sub">3 seats left on this plan</div>
+    </div>
+    <div id="label"><span class="l-name">Text half split</span><span class="l-sep">·</span><span>Transitions</span><span class="l-sep">·</span><span>high</span></div>
+  </section>
+</div>
+<script>
+  // Three phrases, each as two copies clipped to its top and bottom half.
+  const PH = ["Invite your team", "Ship it. Show it.", "Launch day."];
+  let h = "";
+  PH.forEach((p, i) => {
+    h += '<div class="half top" id="t' + i + '" data-layout-allow-overlap data-layout-allow-occlusion>' + p + '</div>' +
+         '<div class="half bot" id="b' + i + '" data-layout-allow-overlap data-layout-allow-occlusion>' + p + '</div>';
+  });
+  document.getElementById("phrases").innerHTML = h;
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.inOut", duration: 0.5 } });
+  // Resting state: phrase 0 whole; the others parked (top half below, bottom half above) and clear.
+  tl.fromTo("#t0, #b0", { yPercent: 0, opacity: 1 }, { yPercent: 0, duration: 0.01 }, 0);
+  for (let i = 1; i < PH.length; i++) {
+    tl.fromTo("#t" + i, { yPercent: 100, opacity: 0 }, { yPercent: 100, duration: 0.01 }, 0);
+    tl.fromTo("#b" + i, { yPercent: -100, opacity: 0 }, { yPercent: -100, duration: 0.01 }, 0);
+  }
+  // Half split from phrase a to phrase b at t: the old top half rises 100% and the old bottom half drops 100% over 0.5 s (power3.inOut),
+  // then, 0.1 s after they are gone, the new halves close in from the opposite sides, top from below and bottom from above, over 0.5 s.
+  function split(a, b, t) {
+    tl.to("#t" + a, { yPercent: -100, duration: 0.5 }, t);
+    tl.to("#b" + a, { yPercent: 100, duration: 0.5 }, t);
+    tl.to("#t" + a + ", #b" + a, { opacity: 0, duration: 0.12, ease: "none" }, t + 0.38);
+    tl.to("#t" + b + ", #b" + b, { opacity: 1, duration: 0.034, ease: "none" }, t + 0.6);
+    tl.to("#t" + b, { yPercent: 0, duration: 0.5 }, t + 0.6);
+    tl.to("#b" + b, { yPercent: 0, duration: 0.5 }, t + 0.6);
+    // the underline bar takes a beat with the swap
+    tl.fromTo("#bar", { scaleX: 1 }, { scaleX: 0.2, duration: 0.25, yoyo: true, repeat: 1, ease: "power2.inOut", immediateRender: false }, t + 0.45);
+  }
+  split(0, 1, 0.45);
+  split(1, 2, 1.85);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

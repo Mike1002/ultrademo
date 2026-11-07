@@ -1,0 +1,22 @@
+{
+  "name": "Text window fill",
+  "family": "Typography",
+  "purpose": [
+    "Branding",
+    "Mood"
+  ],
+  "energy": "calm",
+  "tier": 3,
+  "runtime": "svg",
+  "tags": [
+    "motion inside text",
+    "text image fill motion",
+    "type",
+    "clip",
+    "mask",
+    "fill",
+    "stripes",
+    "title"
+  ],
+  "one_line": "Huge outlined letters act as windows: diagonal yellow and ink bands drift across and slowly swell inside the letter shapes only, while the outlines never move."
+}

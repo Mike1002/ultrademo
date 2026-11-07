@@ -1,0 +1,20 @@
+{
+  "name": "Coverflow",
+  "family": "3D & Depth",
+  "purpose": [
+    "Sequence",
+    "Comparison"
+  ],
+  "energy": "steady",
+  "tier": 2,
+  "runtime": "css",
+  "tags": [
+    "coverflow depth carousel",
+    "depth gallery rotation",
+    "depth",
+    "carousel",
+    "rotatey",
+    "dark"
+  ],
+  "one_line": "Five step cards travel along a curved arrangement: the centre card faces front and large while side cards tilt 45 degrees away and shrink, the focus stepping through three cards."
+}

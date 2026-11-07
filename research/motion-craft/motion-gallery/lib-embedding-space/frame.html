@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-embedding-space</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  .axis { position: absolute; background: #e3ded2; }
+  .axis.x { left: 130px; top: 475px; width: 920px; height: 1px; }
+  .axis.y { left: 130px; top: 100px; width: 1px; height: 375px; }
+  .lab { position: absolute; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  .word { position: absolute; top: 50px; height: 52px; line-height: 38px; font-weight: 700; font-size: 32px; border-bottom: 1px solid #e3ded2; padding: 6px 12px; white-space: nowrap; will-change: transform; }
+  #ring { position: absolute; left: 246px; top: 174px; width: 288px; height: 238px; border: 2px solid #f2c200; border-radius: 50%; }
+  .group { font-size: 15px; color: #1d1c1a; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div class="axis x"></div><div class="axis y"></div>
+      <div class="lab" style="left:1020px;top:488px">axis 1</div>
+      <div class="lab" style="left:88px;top:100px">axis 2</div>
+      <div id="ring"></div>
+      <div class="word" id="m1" style="left:150px">Jamie</div>
+      <div class="word" id="m2" style="left:290px">Draft</div>
+      <div class="word" id="m3" style="left:440px">Sam</div>
+      <div class="word" id="m4" style="left:570px">Review</div>
+      <div class="word" id="m5" style="left:735px">Morgan</div>
+      <div class="word" id="m6" style="left:905px">Live</div>
+      <div class="lab group" id="g1" style="left:356px;top:433px">People</div>
+      <div class="lab group" id="g2" style="left:790px;top:433px">Steps</div>
+      <div class="lab" style="left:130px;top:535px">Illustrative coordinates · a 2D projection of the vectors</div>
+    </div>
+    <div id="label"><span class="l-name">Embedding space</span><span class="l-sep">·</span><span>Explainer</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 0.6 } });
+  // Each word travels to its semantic coordinate; people gather left, steps gather right.
+  const offsets = [[130, 170], [405, 195], [-60, 275], [225, 285], [-320, 210], [-120, 140]];
+  ["#m1", "#m2", "#m3", "#m4", "#m5", "#m6"].forEach((s, i) => {
+    tl.fromTo(s, { x: 0, y: 0 }, { x: offsets[i][0], y: offsets[i][1], duration: 1.05, ease: "power3.inOut" }, 0.3 + i * 0.09);
+  });
+  // One cluster gets the ring; group names appear.
+  tl.fromTo("#ring", { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.4 }, 1.85);
+  tl.fromTo(["#g1", "#g2"], { opacity: 0 }, { opacity: 1, duration: 0.3 }, 1.9);
+  // Quiet idle: the ring breathes so the clip never sits still.
+  tl.to("#ring", { scale: 1.05, duration: 0.35, ease: "sine.inOut" }, 2.35);
+  tl.to("#ring", { scale: 1, duration: 0.35, ease: "sine.inOut" }, 2.7);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

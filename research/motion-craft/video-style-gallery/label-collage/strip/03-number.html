@@ -1,0 +1,32 @@
+<!-- label-collage · 03-number.html · one moment of the style strip (D-58). Assembled into ../frame.html by _tools/gen.py -->
+<style>
+  #numwrap { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 0 96px; }
+  #numrow { display: flex; align-items: baseline; gap: 22px; }
+  #num { font-size: 200px; color: var(--stat); font-variant-numeric: tabular-nums; min-width: 2.1ch; text-align: right; }
+  #unit { font-size: 70px; color: var(--ink); }
+  #numlabel { margin-top: 18px; font-size: 26px; color: var(--muted); font-family: var(--f-body); font-weight: var(--w-body); }
+  #numbar { margin-top: 28px; width: 420px; height: 6px; background: var(--line); position: relative; }
+  #numfill { position: absolute; left: 0; top: 0; width: 100%; height: 100%; background: var(--accent); transform-origin: left center; will-change: transform; }
+</style>
+  <section id="s3" class="clip" data-start="4.500" data-duration="2.000">
+    <div id="st3" class="stage">
+      <div id="numwrap">
+        <div id="numrow"><div id="num" class="display">0</div><div id="unit" class="display">videos</div></div>
+        <div id="numlabel">always current</div>
+        <div id="numbar"><div id="numfill"></div></div>
+      </div>
+    </div>
+  </section>
+<script>
+  {
+    const t0 = M[2][0] - TD / 2, e = S.rhythm.entrance;
+    const c0 = t0 + 0.1, cd = 1.25, easeFn = gsap.parseEase(EASE.counter);
+    const numEl = document.getElementById("num");
+    R.push(t => { const p = Math.max(0, Math.min(1, (t - c0) / cd)); numEl.textContent = String(Math.round(easeFn(p) * 12)); });
+    tl.fromTo("#num", { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: e, ease: EASE.entry }, t0);
+    textIn([document.getElementById("unit")], t0 + 0.12);
+    tl.fromTo("#numfill", { scaleX: 0 }, { scaleX: 1, duration: cd, ease: EASE.counter }, c0);
+    tl.fromTo("#numlabel", { y: 14, opacity: 0 }, { y: 0, opacity: 1, duration: e, ease: EASE.entry }, c0 + cd * 0.55);
+    tl.fromTo("#num", { scale: 1.0 }, { scale: 1.03, duration: 0.6, ease: "sine.inOut", immediateRender: false }, c0 + cd);
+  }
+</script>

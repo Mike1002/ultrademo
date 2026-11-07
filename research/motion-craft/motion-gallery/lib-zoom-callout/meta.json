@@ -1,0 +1,23 @@
+{
+  "name": "Zoom callout",
+  "family": "UI Demo",
+  "purpose": [
+    "Explanation",
+    "Emphasis"
+  ],
+  "energy": "steady",
+  "tier": 2,
+  "runtime": "gsap",
+  "tags": [
+    "magnifying lens",
+    "magnified callout",
+    "ui focus zoom",
+    "zoom inset",
+    "detail view",
+    "chart zoomed detail inset",
+    "ui",
+    "connector line",
+    "scale from source"
+  ],
+  "one_line": "A ring marks a small value in a list, a hairline draws out to the side, and a large yellow-rimmed circular callout grows from it showing the same value 4.5 times bigger."
+}

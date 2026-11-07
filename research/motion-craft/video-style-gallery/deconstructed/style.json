@@ -1,0 +1,117 @@
+{
+  "id": "deconstructed",
+  "name": "Deconstructed",
+  "canvas": "dark",
+  "mood": [
+    "industrial",
+    "raw"
+  ],
+  "suits": [
+    "tech news",
+    "developer launches",
+    "security products",
+    "punk-energy reveals"
+  ],
+  "palette": {
+    "bg": "#1a1a1a",
+    "bg_alt": "#1a1a1a",
+    "surface": "#222222",
+    "surface_2": "#2c2c2c",
+    "ink": "#f0f0f0",
+    "muted": "#9a9a9a",
+    "line": "#f0f0f0",
+    "accent": "#D4501E",
+    "accent_2": "#D4501E",
+    "on_accent": "#f0f0f0",
+    "term_bg": "#111111",
+    "term_line": "#f0f0f0"
+  },
+  "type": {
+    "display": {
+      "family": "Space Grotesk",
+      "weight": 700,
+      "hook_px": 88,
+      "stat_px": 220,
+      "mark_px": 124,
+      "transform": "none",
+      "tracking": "-0.03em",
+      "line_height": "0.98",
+      "style": "normal",
+      "generic": "sans",
+      "card_title_px": 30
+    },
+    "body": {
+      "family": "Space Grotesk",
+      "weight": 500,
+      "generic": "sans"
+    },
+    "mono": {
+      "family": "Space Mono",
+      "weight": 700
+    },
+    "label": {
+      "family": "Space Mono",
+      "weight": 700,
+      "transform": "uppercase",
+      "tracking": "0.1em",
+      "generic": "sans",
+      "px": 13
+    }
+  },
+  "easing": {
+    "entry": "back.out(2.5)",
+    "exit": "steps(8)",
+    "ambient": "elastic.out(1.2, 0.4)",
+    "pop": "back.out(2.5)",
+    "counter": "steps(12)",
+    "wipe": null
+  },
+  "rhythm": {
+    "energy": "high",
+    "entrance": 0.35,
+    "stagger": 0.06
+  },
+  "transition": {
+    "kind": "glitch",
+    "duration": 0.3,
+    "flash": true,
+    "band": false,
+    "flash_colour": "#D4501E"
+  },
+  "text_animation": "scramble",
+  "accent_word": "none",
+  "layout": "left",
+  "atmosphere": [
+    "scanlines",
+    "grain:0.12"
+  ],
+  "shape": {
+    "radius_card": 0,
+    "radius_button": 0,
+    "radius_pill": 0,
+    "border": "bold",
+    "border_px": 2,
+    "shadow": "none",
+    "rule_px": 6
+  },
+  "stat_colour": "accent",
+  "direction_settings": {
+    "energy": "high",
+    "density": "dense",
+    "ground": "dark",
+    "depth": "flat",
+    "camera": "handheld",
+    "type": "loud",
+    "texture": "textured",
+    "colour": "one-accent",
+    "product_presence": "illustrated",
+    "sound": "beat-driven",
+    "voice": "spoken-headline"
+  },
+  "notes": "Letters scramble then snap, stepped exits, scan lines and grain; glitch cuts between moments.",
+  "transitions": {
+    "between_moments": "glitch",
+    "duration_s": 0.3,
+    "text": "scramble"
+  }
+}

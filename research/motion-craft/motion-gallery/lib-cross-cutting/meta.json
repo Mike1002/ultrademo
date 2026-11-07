@@ -1,0 +1,21 @@
+{
+  "name": "Cross cutting",
+  "family": "Transitions",
+  "purpose": [
+    "Comparison",
+    "Sequence"
+  ],
+  "energy": "high",
+  "tier": 3,
+  "runtime": "gsap",
+  "tags": [
+    "cross cutting",
+    "transitions",
+    "parallel action",
+    "hard cut",
+    "alternate",
+    "editing grammar",
+    "cursor"
+  ],
+  "one_line": "Two places alternate in four hard cuts that come faster each time: one panel where a cursor sends an invite and one inbox panel where the invite lands as a new row, each advancing its own action between cuts."
+}

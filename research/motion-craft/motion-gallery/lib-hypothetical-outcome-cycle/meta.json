@@ -1,0 +1,22 @@
+{
+  "name": "Hypothetical outcome cycle",
+  "family": "Data",
+  "purpose": [
+    "Data evidence",
+    "Comparison"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "canvas",
+  "tags": [
+    "hypothetical outcome plot cycling",
+    "hops",
+    "data",
+    "chart",
+    "uncertainty",
+    "outcomes",
+    "forecast",
+    "svg"
+  ],
+  "one_line": "On fixed axes, one possible invites-next-quarter line is hard-swapped for the next of six sampled outcomes every 0.4 s, while the dashed average of all six stays put behind them; a counter and a row of pips say which outcome is showing."
+}

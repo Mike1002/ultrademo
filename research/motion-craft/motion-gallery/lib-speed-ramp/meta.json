@@ -1,0 +1,21 @@
+{
+  "name": "Speed ramp",
+  "family": "Transitions",
+  "purpose": [
+    "Explanation",
+    "Sequence"
+  ],
+  "energy": "steady",
+  "tier": 3,
+  "runtime": "canvas",
+  "tags": [
+    "speed ramp",
+    "speed-ramp-density",
+    "transitions",
+    "time remap",
+    "slow motion",
+    "cursor",
+    "renderat"
+  ],
+  "one_line": "A cursor races across the stage, slows right down to a quarter speed for the click on Continue so the press and ripple read, then speeds back up on the way out; a readout and a speed curve with a playhead show the ramp."
+}

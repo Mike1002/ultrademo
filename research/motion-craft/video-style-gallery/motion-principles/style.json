@@ -1,0 +1,122 @@
+{
+  "id": "motion-principles",
+  "name": "Motion Principles",
+  "canvas": "light",
+  "mood": [
+    "precise",
+    "playful",
+    "craft-obsessed"
+  ],
+  "suits": [
+    "motion-design showreels",
+    "craft-led launches",
+    "annotated explainers"
+  ],
+  "palette": {
+    "bg": "#ffffff",
+    "bg_alt": "#0a0a0a",
+    "surface": "#ffffff",
+    "surface_2": "#d8d8d8",
+    "ink": "#0a0a0a",
+    "muted": "#8c8c8c",
+    "line": "#0a0a0a",
+    "accent": "#2540ff",
+    "accent_2": "#ff3b30",
+    "on_accent": "#ffffff",
+    "pill_bg": "#ffffff",
+    "pill_ink": "#0a0a0a",
+    "pill_dot": "#2540ff",
+    "thumb": "#d8d8d8",
+    "term_bg": "#0a0a0a",
+    "term_ink": "#ffffff",
+    "term_muted": "#8c8c8c",
+    "term_line": "#0a0a0a",
+    "term_prompt": "#6b82ff",
+    "term_ok": "#6b82ff"
+  },
+  "type": {
+    "display": {
+      "family": "Inter Tight",
+      "weight": 900,
+      "hook_px": 120,
+      "stat_px": 280,
+      "mark_px": 150,
+      "transform": "uppercase",
+      "tracking": "-0.03em",
+      "line_height": "0.92",
+      "style": "normal",
+      "generic": "sans",
+      "card_title_px": 28,
+      "card_title_tracking": "-0.02em"
+    },
+    "body": {
+      "family": "Inter Tight",
+      "weight": 500,
+      "generic": "sans"
+    },
+    "mono": {
+      "family": "JetBrains Mono",
+      "weight": 500
+    },
+    "label": {
+      "family": "JetBrains Mono",
+      "weight": 500,
+      "transform": "uppercase",
+      "tracking": "0.16em",
+      "generic": "sans",
+      "px": 12
+    }
+  },
+  "easing": {
+    "entry": "elastic.out(1, 0.45)",
+    "exit": "power2.in",
+    "ambient": "none",
+    "pop": "back.out(1.6)",
+    "counter": "power2.inOut",
+    "wipe": null
+  },
+  "rhythm": {
+    "energy": "high",
+    "entrance": 0.55,
+    "stagger": 0.07
+  },
+  "transition": {
+    "kind": "cut",
+    "duration": 0,
+    "flash": false,
+    "band": false
+  },
+  "text_animation": "squash",
+  "accent_word": "script",
+  "layout": "center",
+  "atmosphere": [],
+  "shape": {
+    "radius_card": 0,
+    "radius_button": 0,
+    "radius_pill": 0,
+    "border": "bold",
+    "border_px": 3,
+    "shadow": "none",
+    "rule_px": 8
+  },
+  "stat_colour": "accent",
+  "direction_settings": {
+    "energy": "high",
+    "density": "sparse",
+    "ground": "alternating",
+    "depth": "flat",
+    "camera": "locked",
+    "type": "loud",
+    "texture": "clean",
+    "colour": "one-accent",
+    "product_presence": "illustrated",
+    "sound": "beat-driven",
+    "voice": "spoken-headline"
+  },
+  "notes": "White and ink-black scenes hard-cut against each other, Inter Tight 900 statements stretched in with an elastic squash, a blue Caveat handwritten accent word, tiny mono labels.",
+  "transitions": {
+    "between_moments": "cut",
+    "duration_s": 0,
+    "text": "squash"
+  }
+}

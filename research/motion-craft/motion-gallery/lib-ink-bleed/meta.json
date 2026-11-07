@@ -1,0 +1,21 @@
+{
+  "name": "Ink bleed",
+  "family": "Texture & Style",
+  "purpose": [
+    "Mood",
+    "Branding",
+    "Transition"
+  ],
+  "energy": "steady",
+  "tier": 2,
+  "runtime": "svg",
+  "tags": [
+    "ink bleed",
+    "noise threshold ink",
+    "texture",
+    "blur to sharp",
+    "blobs merge",
+    "reveal"
+  ],
+  "one_line": "Dark ink blobs bleed into the paper and merge into one soft stain, then contract and sharpen into a crisp headline, with a yellow mark landing beside it."
+}

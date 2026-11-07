@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1280, height=720" />
+<title>lib-cartogram-transition</title>
+<script src="../_lib/gsap.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: #f6f3ec; }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f6f3ec; color: #1d1c1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .clip { position: absolute; inset: 0; }
+  #stage { position: absolute; left: 56px; top: 52px; width: 1168px; height: 580px; }
+  #chart { position: absolute; left: 0; top: 0; width: 1168px; height: 580px; }
+  #cap { position: absolute; left: 160px; top: 8px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #6d6a63; }
+  text { font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+  .reg { fill: #ece7da; stroke: #1d1c1a; stroke-width: 2; }
+  .reg.acc { fill: #f2c200; }
+  .nm { font-size: 17px; font-weight: 700; fill: #1d1c1a; }
+  .vl { font-size: 15px; fill: #6d6a63; font-variant-numeric: tabular-nums; }
+  .mode { font-size: 22px; font-weight: 700; fill: #1d1c1a; }
+  #label { position: absolute; left: 56px; top: 664px; height: 24px; display: flex; gap: 10px; align-items: center;
+    font-size: 15px; color: #6d6a63; letter-spacing: 0.01em; white-space: nowrap; }
+  #label .l-name { color: #1d1c1a; font-weight: 700; }
+  #label .l-sep { color: #a19d93; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="3" data-width="1280" data-height="720" data-fps="30">
+  <section id="scene" class="clip" data-start="0" data-duration="3">
+    <div id="stage">
+      <div id="cap">Invites by region</div>
+      <svg id="chart" viewBox="0 0 1168 580" width="1168" height="580">
+        <text class="mode" id="m0" x="1080" y="40" text-anchor="end">Map</text>
+        <text class="mode" id="m1" x="1080" y="40" text-anchor="end">Sized by invites</text>
+        <g id="regs"></g>
+        <g id="labels"></g>
+      </svg>
+    </div>
+    <div id="label"><span class="l-name">Cartogram transition</span><span class="l-sep">·</span><span>Data</span><span class="l-sep">·</span><span>steady</span></div>
+  </section>
+</div>
+<script>
+  const SVG = "http://www.w3.org/2000/svg";
+  // Twelve abstract regions: an irregular map layout (blob-like rounded shapes) and a value: invites sent from that region.
+  const regions = [
+    { n: "North", v: 42, m: [300, 70, 170, 120] }, { n: "Ridge", v: 15, m: [480, 60, 130, 100] }, { n: "Lakes", v: 9, m: [620, 90, 110, 90] },
+    { n: "West", v: 12, m: [190, 200, 140, 130] }, { n: "Plains", v: 28, m: [340, 200, 180, 140] }, { n: "Hills", v: 24, m: [530, 170, 150, 110] },
+    { n: "East", v: 31, m: [690, 190, 150, 130] }, { n: "Coast", v: 56, acc: true, m: [250, 345, 160, 130] }, { n: "Valley", v: 48, m: [420, 350, 190, 120] },
+    { n: "Delta", v: 37, m: [620, 310, 130, 100] }, { n: "South", v: 18, m: [360, 480, 170, 80] }, { n: "Isles", v: 6, m: [700, 430, 90, 80] }
+  ];
+  // Grid layout: 4 columns x 3 rows of value-sized squares, 4 px tile gaps folded into the cell pitch.
+  const COLX = [275, 505, 735, 965], ROWY = [140, 300, 460], side = v => 36 + v * 1.8;
+  const regs = document.getElementById("regs"), labels = document.getElementById("labels");
+  const mk = (tag, cls, a, parent) => { const e = document.createElementNS(SVG, tag); e.setAttribute("class", cls); for (const k in a) e.setAttribute(k, a[k]); parent.appendChild(e); return e; };
+  regions.forEach((rg, i) => {
+    const [mx, my, mw, mh] = rg.m, s = side(rg.v), gx = COLX[i % 4] - s / 2, gy = ROWY[Math.floor(i / 4)] - s / 2;
+    rg.map = { x: mx, y: my, width: mw, height: mh, rx: Math.min(mw, mh) * 0.42 };
+    rg.grid = { x: gx, y: gy, width: s, height: s, rx: 6 };
+    rg.el = mk("rect", "reg" + (rg.acc ? " acc" : ""), rg.map, regs);
+    rg.nm = mk("text", "nm", { x: mx + mw / 2, y: my + mh / 2 + 6, "text-anchor": "middle" }, labels); rg.nm.textContent = rg.n;
+    rg.vl = mk("text", "vl", { x: COLX[i % 4], y: ROWY[Math.floor(i / 4)] + s / 2 + 20, "text-anchor": "middle", opacity: 0 }, labels); rg.vl.textContent = rg.v + " invites";
+  });
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power2.inOut", duration: 1.2 } });
+  const A = 0.3, B = 2.0;
+  regions.forEach((rg, i) => {
+    const gc = { x: COLX[i % 4], y: ROWY[Math.floor(i / 4)] + 6 }, mc = { x: rg.m[0] + rg.m[2] / 2, y: rg.m[1] + rg.m[3] / 2 + 6 };
+    // Map to grid: each region keeps its identity and name; shape squares up and resizes to its value.
+    tl.fromTo(rg.el, { attr: rg.map }, { attr: rg.grid, duration: 1.2 }, A + i * 0.02);
+    tl.fromTo(rg.nm, { attr: mc }, { attr: gc, duration: 1.2 }, A + i * 0.02);
+    tl.fromTo(rg.vl, { opacity: 0 }, { opacity: 1, duration: 0.25, ease: "none" }, A + 1.1);
+    // Grid back to map, a little quicker.
+    tl.fromTo(rg.vl, { opacity: 1 }, { opacity: 0, duration: 0.2, ease: "none", immediateRender: false }, B);
+    tl.fromTo(rg.el, { attr: rg.grid }, { attr: rg.map, duration: 0.9, immediateRender: false }, B + 0.1 + (11 - i) * 0.02);
+    tl.fromTo(rg.nm, { attr: gc }, { attr: mc, duration: 0.9, immediateRender: false }, B + 0.1 + (11 - i) * 0.02);
+  });
+  tl.fromTo("#m1", { opacity: 0 }, { opacity: 0, duration: 0.01 }, 0);
+  tl.fromTo("#m0", { opacity: 1 }, { opacity: 0, duration: 0.25, ease: "none", immediateRender: false }, A + 0.4);
+  tl.fromTo("#m1", { opacity: 0 }, { opacity: 1, duration: 0.25, ease: "none", immediateRender: false }, A + 0.6);
+  tl.fromTo("#m1", { opacity: 1 }, { opacity: 0, duration: 0.25, ease: "none", immediateRender: false }, B + 0.3);
+  tl.fromTo("#m0", { opacity: 0 }, { opacity: 1, duration: 0.25, ease: "none", immediateRender: false }, B + 0.5);
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>
