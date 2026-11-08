@@ -6,6 +6,11 @@ Studio-quality video made from your real product by AI, in a fraction of the tim
 
 Point Ultrademo at your product (the live site or app, HTML mockups of a feature that is not live yet, screenshots or a Figma file) and ask for a video. Your agent writes the story, proposes directions for you to pick, builds every scene as code, looks at each frame, checks it, and fixes what is off. Then it adds the voice and music and hands you the video on a review page, where you comment on the video itself. When your product changes, run it again.
 
+
+https://github.com/user-attachments/assets/b198ca47-1d43-44b1-b622-6d1d4b60afaf
+
+
+
 [![The Ultrademo explainer: what Ultrademo does, shown inside Ultrademo. 1:44, click to watch.](https://ultrademo.net/assets/video/ultrademo-explainer-poster.jpg)](https://ultrademo.net/assets/video/ultrademo-explainer.mp4)
 
 *Made with Ultrademo, from Ultrademo's own screens. More on [ultrademo.net](https://ultrademo.net/#showcase).*
