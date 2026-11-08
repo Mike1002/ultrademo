@@ -140,7 +140,7 @@ export function buildVideo(brief, opts = {}) {
   } : null;
   // the voice the user heard and picked (D-71): a catalogue id; its source follows from the voice, not from the form
   if (voice) {
-    const picked = findVoice(str(voiceIn.id)) || defaultVoice(voice.preference, { elevenlabs: voice.source === 'own-account' || elevenlabsReady() });
+    const picked = findVoice(str(voiceIn.id)) || defaultVoice(voice.preference, { elevenlabs: voice.source === 'own-account' || (opts.elevenlabs ?? elevenlabsReady()) });
     if (picked) { voice.id = picked.id; voice.source = picked.provider === 'elevenlabs' ? 'own-account' : 'built-in'; }
   }
 

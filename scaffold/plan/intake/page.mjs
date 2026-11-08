@@ -167,7 +167,7 @@ button.quiet{box-shadow:inset 0 0 0 1px var(--line);color:var(--fg);background:v
 @media(min-width:640px){.opts.vgrid{grid-template-columns:1fr 1fr}}@media(min-width:900px){.opts.vgrid{grid-template-columns:1fr 1fr 1fr}}
 .opts.vgrid{gap:6px}.opts.vgrid .opt{padding:8px 10px;gap:8px}.opts.vgrid .opt>div{min-width:0}
 .vtop{display:flex;align-items:center;justify-content:space-between;gap:6px}.vtop b{font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.vdesc{display:block;font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.vmeta{display:block;font-size:11.5px;color:var(--muted);opacity:.8}
+.vdesc{display:block;font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.vmeta{display:block;font-size:11.5px;color:var(--muted);opacity:.8}.vsetup{display:block;font-size:11.5px;color:var(--muted);margin-top:2px}
 .vopt button.play{flex:none;min-width:30px;height:26px;padding:0 9px;font-size:12px;line-height:1;border-radius:999px}
 .vopt[hidden]{display:none}.vopt .tag{font-style:normal;font-weight:600;font-size:11px;background:var(--pale);border:1px solid var(--line);border-radius:999px;padding:1px 7px;margin-left:6px;vertical-align:1px}
 .opt{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start;border:1px solid var(--line);border-radius:var(--radius-md);padding:12px 14px;background:var(--bg);cursor:pointer}
@@ -254,12 +254,15 @@ export function renderIntakePage(opts = {}) {
   const { prefill = null, projectDir = '', today = new Date().toISOString().slice(0, 10), sample = false, brands = [] } = opts;
   // the voices to hear and pick (D-71): free ones always, ElevenLabs ones when the project has a key
   const elevenlabs = opts.elevenlabs ?? false;
-  const voices = opts.voices ?? voiceOptions({ elevenlabs });
+  const voices = opts.voices ?? voiceOptions({ elevenlabs, ...(opts.engines ? { engines: opts.engines } : {}) });
   const sampleLine = loadCatalogue().sample_line;
   const tracks = opts.music ?? musicTracks();
   const trackCard = (t) => `<label class="opt vopt"><input type="radio" name="music" value="${e(t.file)}"><div><div class="vtop"><b>${e(t.title)}</b>${t.sample ? `<button type="button" class="quiet play" data-sample="music-samples/${e(t.sample)}" aria-label="Play the ${e(t.title)} preview" title="Play a 12-second preview">▶</button>` : ''}</div><span class="vdesc" title="${e((t.mood || []).join(', '))}">${e((t.mood || []).join(', '))}</span><span class="vmeta" title="${t.creator ? `${e(t.creator)}, ${e(t.licence)}` : ''}">${t.set === 'calm' ? 'Calm' : 'Energetic'}${t.bpm ? ` · ${e(Math.round(t.bpm))} bpm` : ''}</span></div></label>`;
-  const houseOf = (g) => (voices.find((v) => v.house && v.gender === g && v.paid === elevenlabs) || voices.find((v) => v.gender === g) || {}).id || '';
-  const voiceCard = (v) => `<label class="opt vopt" data-gender="${e(v.gender)}"><input type="radio" name="voice_id" value="${e(v.id)}" data-paid="${v.paid ? 1 : 0}"><div><div class="vtop"><b>${e(v.name)}${v.house && v.paid === elevenlabs ? ' <em class="tag">recommended</em>' : ''}</b>${v.sample ? `<button type="button" class="quiet play" data-sample="voice-samples/${e(v.sample)}" aria-label="Play the ${e(v.name)} sample" title="Play the sample">▶</button>` : ''}</div><span class="vdesc" title="${e(v.desc)}">${e(v.desc)}</span><span class="vmeta">${e(v.accent)} · ${v.paid ? 'ElevenLabs' : 'Free'}</span></div></label>`;
+  const recOf = (v) => (v.recommended ?? v.house) && v.paid === elevenlabs;
+  const houseOf = (g) => (voices.find((v) => recOf(v) && v.gender === g) || voices.find((v) => v.gender === g) || {}).id || '';
+  // a free voice whose engine is not set up yet says so: picking it sets it up after the brief is saved (the agent runs it)
+  const setupNote = (v) => (!v.paid && v.ready === false && v.setup ? `<span class="vsetup">Sets up when picked · ${e(v.setup.size)}</span>` : '');
+  const voiceCard = (v) => `<label class="opt vopt" data-gender="${e(v.gender)}"><input type="radio" name="voice_id" value="${e(v.id)}" data-paid="${v.paid ? 1 : 0}"${!v.paid && v.ready === false ? ' data-setup="1"' : ''}><div><div class="vtop"><b>${e(v.name)}${recOf(v) ? ' <em class="tag">recommended</em>' : ''}</b>${v.sample ? `<button type="button" class="quiet play" data-sample="voice-samples/${e(v.sample)}" aria-label="Play the ${e(v.name)} sample" title="Play the sample">▶</button>` : ''}</div><span class="vdesc" title="${e(v.desc)}">${e(v.desc)}</span><span class="vmeta">${e(v.accent)} · ${v.paid ? 'ElevenLabs' : 'Free'}</span>${setupNote(v)}</div></label>`;
 
 
   const text = (field, label, hint, { multi = false, placeholder = '' } = {}) => `

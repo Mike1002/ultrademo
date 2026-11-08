@@ -41,12 +41,22 @@ git clone --depth 1 https://github.com/ultrademo-hq/ultrademo ~/ultrademo
 cd ~/ultrademo/scaffold && npm run setup
 ```
 
-Setup takes minutes, so give it a long timeout or run it in the background. If it stops on a ✗ line, show that line and its fix. Never patch around it or build a partial pipeline. When it finishes, it prints **What is ready**. Then offer the two optional voices in one question:
+Setup takes minutes, so give it a long timeout or run it in the background. If it stops on a ✗ line, show that line and its fix. Never patch around it or build a partial pipeline.
 
-- **Free voices:** `npm run setup -- --voices`, about 1.6 GB, needs `uv`. Setup names the install command if `uv` is missing.
-- **Paid voices (ElevenLabs):** give the absolute path of `.env` on its own line, say "paste your key after `ELEVENLABS_API_KEY=` and save". Offer to open the file (`open -e` on macOS, `xdg-open` on Linux, `code` if VS Code is there).
+**Voices: ask while setup runs, in one question** (use the host's question tool when it has one; never leave it as a list of commands for the user to run). Say that a music-only video needs no voice, and that every voice can be heard on the brief before picking. The options:
 
-A music-only video needs neither, so never hold the first video back for a voice.
+- **Free voices, small set** (about 1.6 GB): Mary, Eve, George, Alba and Stuart Bell. They run on any computer.
+- **All free voices** (about 6 GB, and about 4 GB more the first time Maria or Cori is used): adds James, Maria and Cori, the more expressive ones. Offer this one only on Apple silicon or a machine with an NVIDIA card (`uname -m` says `arm64` on a Mac, or `nvidia-smi -L` works).
+- **My ElevenLabs key**: the paid voices (Rachelle, Killian and others) from their own account.
+- **Later**: the brief marks the free voices that are not set up yet and sets one up when it is picked.
+
+What you do for each, from `<workspace>/scaffold`, once setup has finished:
+
+- Small set: run `npm run setup -- --voices` in the background. All: `npm run setup -- --voices=all`. With the packages already installed it adds only the voices. It needs `uv`: if setup says it is missing, ask before installing it (`brew install uv` on a Mac with Homebrew; on Linux, the installer page setup names), then run the voices again.
+- ElevenLabs: open the file for them (`open -e <workspace>/scaffold/.env` on macOS, `xdg-open` on Linux, `code` if VS Code is there; `.env` is created by setup, so do this once setup has made it), give its absolute path on its own line, and say "paste your key after `ELEVENLABS_API_KEY=` and save". Never ask for the key in the chat, and never read or print the file. Then ask them to tell you when it is saved (the host's question tool: "Saved" / "Skip for now"). On "Saved", run `npm run voice -- check elevenlabs`: it says whether the key is there and ElevenLabs accepts it, without showing it. Pass on its one line; if it is not accepted, offer to open the file again. The brief picks up a saved key by itself and then shows the paid voices. On "Skip for now", carry on: the free voices and music-only videos work without it.
+- Later: nothing now.
+
+Carry on with the video while the voices download; never hold the first video back for a voice. When setup prints **What is ready**, give the user its voice lines in a sentence.
 
 ## 3. Check it is current (once per session)
 

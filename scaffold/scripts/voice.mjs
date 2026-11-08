@@ -4,6 +4,8 @@
 //   npm run voice -- status
 //   npm run voice -- setup pocket | chatterbox | align        (align = word timings + audit for any local voice)
 //   npm run voice -- warm pocket | chatterbox                 (fetch the model weights now instead of on first use)
+//   npm run voice -- warm chatterbox --clone                  (the cloned voices' model too: Maria, Cori)
+//   npm run voice -- check elevenlabs                         (the key in .env is there and accepted; never printed)
 import {execFileSync, spawnSync} from 'node:child_process';
 import {existsSync, mkdirSync, mkdtempSync, writeFileSync} from 'node:fs';
 import os from 'node:os';
@@ -39,6 +41,22 @@ if (cmd === 'status') {
   process.exit(0);
 }
 
+// npm run voice -- check elevenlabs: is the key in .env there, and does ElevenLabs accept it? Never prints the key.
+if (cmd === 'check' && engine === 'elevenlabs') {
+  const key = String(process.env.ELEVENLABS_API_KEY || '').trim();
+  const where = path.join(VOICE_DIR, '..', '.env');
+  if (!key) { console.log(`No ElevenLabs key yet: paste it after ELEVENLABS_API_KEY= in ${where} and save, then run this again.`); process.exit(1); }
+  let res;
+  try { res = await fetch('https://api.elevenlabs.io/v1/models', {headers: {'xi-api-key': key}, signal: AbortSignal.timeout(15000)}); }
+  catch { console.log('Could not reach ElevenLabs (offline?). The key is in .env; it is checked again at the voiceover.'); process.exit(2); }
+  if (res.ok) { console.log('ElevenLabs key works: the paid voices are ready.'); process.exit(0); }
+  let status = '';
+  try { status = (await res.json())?.detail?.status || ''; } catch {}
+  if (status === 'missing_permissions') { console.log('ElevenLabs accepts the key, but it is restricted: allow Text to Speech, Voices and Sound Effects for it in your ElevenLabs settings (API keys).'); process.exit(1); }
+  console.log(`ElevenLabs did not accept the key (${res.status}${status ? `, ${status}` : ''}): check it was pasted whole after ELEVENLABS_API_KEY= in ${where}, with nothing else on that line.`);
+  process.exit(1);
+}
+
 if (!ENGINES[engine]) {
   console.error(`Usage: npm run voice -- setup|warm <${Object.keys(ENGINES).join('|')}>  |  npm run voice -- status`);
   process.exit(1);
@@ -72,7 +90,13 @@ if (cmd === 'warm') {
     execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-f', 'lavfi', '-i', 'anullsrc=r=16000:cl=mono', '-t', '1', wav]);
     await runJsonLines(py, path.join(VOICE_DIR, 'align.py'), {model: 'base.en', items: [{id: 'warm', wav, text: 'hello'}]});
   } else {
-    const job = engine === 'pocket' ? {engine, voice: 'eve'} : {engine, voice: 'default', params: {exaggeration: 0.5, cfg_weight: 0.5}};
+    // --clone: the cloned voices' model (Maria, Cori; about 4 GB more), warmed with one of their own references
+    const reference = path.join(VOICE_DIR, '..', 'tts', 'references', 'maria-kasper.wav');
+    const clone = engine === 'chatterbox' && process.argv.includes('--clone');
+    if (clone && !existsSync(reference)) { console.error(`The clone reference is missing: ${reference}`); process.exit(1); }
+    const job = engine === 'pocket' ? {engine, voice: 'eve'}
+      : clone ? {engine, voice: 'clone', reference, params: {exaggeration: 0.5, cfg_weight: 0.5}}
+      : {engine, voice: 'default', params: {exaggeration: 0.5, cfg_weight: 0.5}};
     await runJsonLines(py, path.join(VOICE_DIR, 'synth.py'), {...job, items: [{id: 'warm', text: 'Ready.', out: path.join(tmp, 'warm.wav')}]}, {onLine: (o) => { if (o.done) console.log(`  device ${o.device}, sample rate ${o.sample_rate}`); }});
   }
   console.log(`${engine} weights are in place.`);

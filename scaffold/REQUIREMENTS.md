@@ -12,7 +12,7 @@ No Docker and no cloud account are needed; everything runs locally. `npm run che
 
 ## Optional
 - **ElevenLabs** for the paid voices and generated sound effects: put `ELEVENLABS_API_KEY` in `scaffold/.env` yourself. The pages only learn whether the key exists, never its value.
-- **Free voices**: `npm run setup -- --voices` sets up Pocket (any CPU) and word timings in their own Python environments under `voice/.envs/`, about 1.6 GB. It needs [uv](https://docs.astral.sh/uv/). Chatterbox (`npm run voice -- setup chatterbox`, about 4 GB more) needs a GPU or Apple silicon. Without any voice set up, narration uses the computer's built-in voice as a stand-in.
+- **Free voices**: `npm run setup -- --voices` sets up the small set, Pocket (any CPU) and word timings, in their own Python environments under `voice/.envs/`, about 1.6 GB. `npm run setup -- --voices=all` adds Chatterbox (James, Maria, Cori; about 4 GB more), which needs a GPU or Apple silicon. Both need [uv](https://docs.astral.sh/uv/). The agent asks which set during setup; the brief sets one up when a voice from it is picked. Without any voice set up, narration uses the computer's built-in voice as a stand-in.
 - **Figma** as a source needs a paid Figma plan (the free plan's call limit stops an export part-way).
 
 ## What it runs

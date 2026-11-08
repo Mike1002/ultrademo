@@ -10,7 +10,7 @@ Every route below ends in the same place: a workspace at `~/ultrademo` (the code
 - **Node.js 22.12 or newer**: the LTS installer from https://nodejs.org.
 - **ffmpeg**: on a Mac, install Homebrew (https://brew.sh), then run `brew install ffmpeg` in Terminal. On Linux, use your package manager.
 - **git**: on a Mac, run `git --version` once in Terminal and accept the offer to install the command line tools.
-- **About 3 GB** of free disk space, plus 1.6 GB for the free voices.
+- **About 3 GB** of free disk space, plus 1.6 GB for the small set of free voices (about 6 GB for all of them).
 - **A coding agent.** Claude Code is the one Ultrademo is built and tested with. It comes in three forms: the `claude` command in a terminal, the Code tab of the Claude desktop app, and the VS Code extension.
 
 ## Route A: Claude Code in a terminal
@@ -71,9 +71,11 @@ The Claude chat app (claude.ai, outside the Code tab) cannot run Ultrademo. Its 
 
 ## Voices
 
-A music-only video needs no voice. For narration:
+A music-only video needs no voice. Your agent asks about voices during setup and sets up what you choose; you can also leave it for later, and the brief sets up a free voice when you pick it. You can hear every voice on the brief first.
 
-- **Free voices:** `cd ~/ultrademo/scaffold && npm run setup -- --voices` sets up the free voices on your machine (about 1.6 GB). It needs **uv**, a small Python manager: `brew install uv` on a Mac. Setup tells you if it is missing.
+- **Free voices, small set** (Mary, Eve, George, Alba, Stuart Bell; any computer; about 1.6 GB): `cd ~/ultrademo/scaffold && npm run setup -- --voices`.
+- **All free voices** (adds James, Maria and Cori; Apple silicon or an NVIDIA card; about 6 GB, plus about 4 GB the first time Maria or Cori is used): `npm run setup -- --voices=all`.
+- Both need **uv**, a small Python manager: `brew install uv` on a Mac. Setup tells you if it is missing.
 - **Paid voices (ElevenLabs):** open `~/ultrademo/scaffold/.env` in a text editor and paste your own key after `ELEVENLABS_API_KEY=`, then save. In Finder, press Cmd+Shift+. to show hidden files. **Never paste a key into the chat.** Paid voices and generated sound effects use your ElevenLabs plan.
 
 Without either one, narrated drafts use your computer's built-in voice as a stand-in.

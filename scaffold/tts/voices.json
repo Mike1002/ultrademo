@@ -122,6 +122,7 @@
    "provider": "pocket",
    "spec": "pocket:george",
    "gender": "male",
+   "house_fallback": true,
    "accent": "American",
    "desc": "Free voice, runs on your computer."
   },

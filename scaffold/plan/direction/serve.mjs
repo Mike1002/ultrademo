@@ -105,12 +105,12 @@ export function writeState(projectDir, state) {
 }
 
 /** The voice for this brief: Eve or George on the free tier, the user's own account otherwise. */
-export function voiceFor(video) {
+export function voiceFor(video, { engines } = {}) {
   if (video.narration === 'music-only' || !video.narration) return { tier: 'none', label: 'None (music only)' };
   // the voice the user heard and picked at intake (D-71), or the recommended voice for their preference and source
   const pref = video.intake?.voice?.preference || 'none';
   const source = video.intake?.voice?.source || 'built-in';
-  const v = findVoice(video.intake?.voice?.id) || defaultVoice(pref, { elevenlabs: source === 'own-account' });
+  const v = findVoice(video.intake?.voice?.id) || defaultVoice(pref, { elevenlabs: source === 'own-account', ...(engines ? { engines } : {}) });
   if (!v) return { tier: 'none', label: 'No voice available' };
   const paid = v.provider === 'elevenlabs';
   const sample = `${v.id}.mp3`;
