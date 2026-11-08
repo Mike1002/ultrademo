@@ -6,7 +6,7 @@ Every route below ends in the same place: a workspace at `~/ultrademo` (the code
 
 ## Before you start
 
-- **A Mac**, or Linux (less tested).
+- **A Mac**, or Linux (less tested). On Windows, use WSL 2 with Ubuntu. Linux and WSL need one extra step: see [Linux and WSL](#linux-and-wsl).
 - **Node.js 22.12 or newer**: the LTS installer from https://nodejs.org.
 - **ffmpeg**: on a Mac, install Homebrew (https://brew.sh), then run `brew install ffmpeg` in Terminal. On Linux, use your package manager.
 - **git**: on a Mac, run `git --version` once in Terminal and accept the offer to install the command line tools.
@@ -68,6 +68,24 @@ Ultrademo's instructions are plain files that any agent can follow, and the work
 With either one, the saved dashboard's buttons open Claude Code. Type the request into your agent instead.
 
 The Claude chat app (claude.ai, outside the Code tab) cannot run Ultrademo. Its skills run in a cloud sandbox, which cannot open pages or run the video tools on your computer.
+
+## Linux and WSL
+
+Setup downloads the browsers but not the system libraries they need. A fresh Linux or WSL install often lacks them, and every capture then fails with an error such as `libnspr4.so: cannot open shared object file`. `npm run check` does not catch this yet: it reports the browser as ready because the file is there.
+
+After setup, run this once in your own terminal (it asks for your password, so run it yourself rather than through your agent):
+
+```bash
+cd ~/ultrademo/scaffold && sudo npx playwright install-deps chromium
+```
+
+Then check that the browser really starts:
+
+```bash
+node -e "require('playwright').chromium.launch().then(b => b.close()).then(() => console.log('browser ok'))"
+```
+
+On WSL, the brief, direction and review pages open in your Windows browser: WSL 2 forwards `127.0.0.1` to Windows.
 
 ## Voices
 

@@ -31,7 +31,9 @@ Every screen in the video comes from your product. Every claim in the headlines 
 
 ## Install
 
-You need a Mac or Linux machine, [Node.js 22.12+](https://nodejs.org), ffmpeg (`brew install ffmpeg` on a Mac), git and about 3 GB of disk space. You also need a coding agent: Claude Code (terminal, desktop app or VS Code) is the one it is built and tested with.
+You need a Mac or Linux machine (on Windows, use WSL), [Node.js 22.12+](https://nodejs.org), ffmpeg (`brew install ffmpeg` on a Mac), git and about 3 GB of disk space. You also need a coding agent: Claude Code (terminal, desktop app or VS Code) is the one it is built and tested with.
+
+On Linux and WSL, also run `cd ~/ultrademo/scaffold && sudo npx playwright install-deps chromium` once after setup, in your own terminal. It installs the system libraries the browser needs; see [INSTALL.md](INSTALL.md#linux-and-wsl).
 
 **Claude Code, in a terminal:**
 
