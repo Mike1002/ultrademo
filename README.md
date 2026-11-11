@@ -12,9 +12,10 @@ https://github.com/user-attachments/assets/b198ca47-1d43-44b1-b622-6d1d4b60afaf
 
 ## What you get
 
-- **Four video types**: **Launch**, **Explainer**, **Spotlight** (one feature) and **Ad**. Each can cover the whole product or one feature.
+- **Five video types**: **Launch**, **Explainer**, **Spotlight** (one feature), **Ad** and **Tutorial**. Each can cover the whole product or one feature.
+- **Tutorials** step by step: an area of the product, a use case end to end, or one feature, with the cursor on every click and a numbered caption per step. Motion between steps from none to full, and long videos built in chapters.
 - **Landscape, vertical or both.** The vertical version is laid out again for the tall frame, not cropped.
-- **Short cuts** of 15 or 30 seconds for social posts, and **thumbnails** in every common size.
+- **Short cuts** of 15 or 30 seconds for social posts, and **thumbnails** in every common size; ask for a change to the thumbnail like any other comment.
 - **Narration or music only**, with sound effects on the moments that matter. There are free voices, plus paid voices if you bring your own ElevenLabs key.
 - **A review page**: click a moment in the video, draw a box on the frame, write what to change. Your agent fixes it, marks it done and tells you what changed.
 - **A dashboard** of your videos, your saved brands and what the agent has learned about each brand, so the next video starts closer.
@@ -24,10 +25,11 @@ Every screen in the video comes from your product. Every claim in the headlines 
 ## How it works
 
 1. **Brief.** A page opens in your browser. You say where the screens come from, what the video is for, its length, the voice and the music. You can listen to every voice and music track there.
-2. **Direction.** Your agent reads your site and proposes up to three directions, each with sketch frames. You pick one and refine it on the page.
-3. **Scenes.** Each scene is written as HTML and animation code, rendered, looked at frame by frame and checked: text fits, nothing overlaps, every join between scenes is clean.
-4. **Voice and sound.** The narration is timed to each scene, music is mixed under it, and the whole video is levelled for the web.
-5. **Review.** You watch, comment and approve. Approved videos get a dated final copy.
+2. **Outline.** The moments of your video in order, and what each needs: where its screens come from, whether it is behind a sign-in, and whether a step would create something in your product. Ultrademo tests the sign-in here, so a login problem shows before any work. Anything that would change data needs your confirmation that the sign-in is a demo or test account; without it, those steps are rebuilt from your screens.
+3. **Direction.** Your agent reads your site and proposes up to three directions, each with sketch frames. You pick one and refine it on the page.
+4. **Scenes.** Each scene is written as HTML and animation code, rendered, looked at frame by frame and checked: text fits, nothing overlaps, every join between scenes is clean.
+5. **Voice and sound.** The narration is timed to each scene, music is mixed under it, and the whole video is levelled for the web.
+6. **Review.** You watch, comment (on the video and the thumbnail) and approve. Approved videos get a dated final copy.
 
 ## Install
 

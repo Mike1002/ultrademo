@@ -16,7 +16,7 @@ import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { decodeFrames, meanAbsDiff, changedFraction, contentFraction, STILL_CHANGE, MOVING_TOL, FRAME0_MIN_CONTENT, HEADLINE_CHARS_PER_LINE, HEADLINE_MAX_LINES } from '../../scripts/lib/frames.mjs';
 import { countWords } from '../schema.mjs';
-import { BAND_NAMES } from '../direction/schema.mjs';
+import { BAND_NAMES, TUTORIAL_PACE, motionLevel } from '../direction/schema.mjs';
 import { ROOT } from './craft.mjs';
 import { probeVideo, probePage, eventTimes } from './render.mjs';
 import { measureLoudness, MIX_TARGET_LUFS, TRUE_PEAK_DBTP } from './audio.mjs';
@@ -35,11 +35,13 @@ export function targetsFor(plan) {
   const launch = plan.video.template === 'launch';
   const band = (() => { try { return JSON.parse(fs.readFileSync(BANDS, 'utf8')).by_template?.[BAND_NAMES[plan.video.template]] || null; } catch { return null; } })();
   const pb = plan.direction.pace_band;
+  // D-88/D-90: a tutorial step holds long enough to follow; how long follows the motion level between scenes
+  const tut = plan.video.template === 'tutorial' ? TUTORIAL_PACE[motionLevel(plan.video)] : null;
   return {
     template: plan.video.template,
     band_n: band?.n ?? 0,
     still_time_max: launch ? 0 : Math.min(1, (pb.still_time_max ?? 3) / 100),
-    longest_still_s_max: launch ? 0.5 : 1.0,
+    longest_still_s_max: launch ? 0.5 : tut ? tut.longest_still_s_max : 1.0,
     motion_per_s_min: launch ? 2.5 : pb.motion_per_s_min,
     words_per_second_max: band?.metrics?.words_per_second_on_screen?.high ?? 2.4,
     shots_per_min: pb.shots_per_min,
@@ -163,6 +165,18 @@ export async function probeScenes({ plan, projectDir, log = () => {} }) {
           const items = await page.evaluate(`(${PROBE_SCRIPT})()`);
           rec.times.push({ t: r2(t), items });
         }
+        // D-88: a tutorial step's clicks, each measured at its own moment
+        if (plan.video.template === 'tutorial' && s.beat === 'step') {
+          rec.clicks = [];
+          const marks = await page.evaluate(`(${CLICK_TIMES_SCRIPT})()`);
+          for (const mk of marks) {
+            const at = Number.isFinite(mk.at) ? Math.max(0, Math.min(s.duration_s - 0.03, mk.at)) : null;
+            if (at === null) { rec.clicks.push({ label: mk.label, at: '?', missing: 'it has no data-click-at time' }); continue; }
+            await page.evaluate(([id, tt]) => { const tl = window.__timelines[id]; tl.pause(); tl.seek(tt, false); if (tl.render) tl.render(tt, false, false); }, [s.id, at]);
+            await page.waitForTimeout(30);
+            rec.clicks.push({ label: mk.label, at: r2(at), ...(await page.evaluate(`(${CLICK_MEASURE_SCRIPT})(${JSON.stringify(mk.label)})`)) });
+          }
+        }
       } catch (err) {
         rec.ok = false;
         rec.error = `the frame could not be probed: ${String(err.message).split('\n')[0]}`;
@@ -173,6 +187,57 @@ export async function probeScenes({ plan, projectDir, log = () => {} }) {
   } finally { await browser.close(); }
   return out;
 }
+
+/** How far the cursor's tip may sit outside its target at the moment of a click, in px. */
+export const CLICK_TOLERANCE_PX = 6;
+
+/**
+ * D-88: the tutorial checks for one scene. A step scene's caption starts with its number ("Step 2 · Click Invite"),
+ * every click is marked on its target (data-click, with data-click-at in seconds) and the cursor (data-cursor) sits on
+ * the target at that moment; the number of steps matches the confirmed outline. Pure: `probe.clicks` comes from probeScenes.
+ * @returns {{ findings: {check: string, level: string, text: string}[], hard: string[] }}
+ */
+export function tutorialFindings(plan, s, probe) {
+  const out = { findings: [], hard: [] };
+  if (plan.video.template !== 'tutorial' || s.beat !== 'step') return out;
+  const steps = plan.scenes.filter((x) => x.beat === 'step');
+  const n = steps.indexOf(s) + 1;
+  const m = String(s.copy.headline || '').match(/^\s*Step\s+(\d+)\b/i);
+  if (!m) { out.findings.push({ check: 'tutorial', level: 'fail', text: `the caption should start with "Step ${n}" (e.g. "Step ${n} · Click Invite")` }); out.hard.push('caption without its step number'); }
+  else if (Number(m[1]) !== n) { out.findings.push({ check: 'tutorial', level: 'fail', text: `the caption says step ${m[1]} but this is step ${n}` }); out.hard.push('step number out of order'); }
+  else out.findings.push({ check: 'tutorial', level: 'pass', text: `caption numbered: step ${n}` });
+  if (probe && probe.ok) {
+    const clicks = probe.clicks || [];
+    if (!clicks.length) { out.findings.push({ check: 'click', level: 'fail', text: 'no click marked: put data-click="<what>" and data-click-at="<seconds>" on the element the cursor clicks, and data-cursor="1" on the cursor' }); out.hard.push('no click marked'); }
+    for (const c of clicks) {
+      if (c.missing) { out.findings.push({ check: 'click', level: 'fail', text: `at ${c.at} s, ${c.missing}` }); out.hard.push(`click "${c.label}": ${c.missing}`); }
+      else if (c.off > CLICK_TOLERANCE_PX) { out.findings.push({ check: 'click', level: 'fail', text: `at ${c.at} s the cursor is ${Math.round(c.off)} px off "${c.label}"` }); out.hard.push(`cursor off "${c.label}"`); }
+      else out.findings.push({ check: 'click', level: 'pass', text: `at ${c.at} s the cursor is on "${c.label}"` });
+    }
+  }
+  const o = plan.video.intake?.outline;
+  const outlineSteps = o?.status === 'confirmed' ? o.moments.filter((x) => x.beat === 'step').length : 0;
+  if (n === 1 && outlineSteps && outlineSteps !== steps.length) out.findings.push({ check: 'tutorial', level: 'warn', text: `the video has ${steps.length} step(s), the confirmed outline ${outlineSteps}` });
+  return out;
+}
+
+/** The click probe for a step scene (run inside the page): each [data-click] at its data-click-at time, the cursor's tip
+ * (its box's top-left, where an arrow points) against the target's box. */
+export const CLICK_TIMES_SCRIPT = `() => [...document.querySelectorAll('[data-click]')].map((el) => ({ label: el.getAttribute('data-click') || 'target', at: Number(el.getAttribute('data-click-at')) }))`;
+export const CLICK_MEASURE_SCRIPT = `(label) => {
+  const el = [...document.querySelectorAll('[data-click]')].find((x) => (x.getAttribute('data-click') || 'target') === label);
+  const cur = document.querySelector('[data-cursor]');
+  if (!el) return { missing: 'the target is gone' };
+  if (!cur) return { missing: 'no cursor (data-cursor) on screen' };
+  const a = el.getBoundingClientRect(), c = cur.getBoundingClientRect();
+  const vis = (n) => { const st = getComputedStyle(n); return st.visibility !== 'hidden' && st.display !== 'none' && Number(st.opacity) > 0.05; };
+  if (!vis(el) || a.width < 2 || a.height < 2) return { missing: 'the target is not visible at the click' };
+  if (!vis(cur)) return { missing: 'the cursor is not visible at the click' };
+  const x = c.left, y = c.top;
+  const dx = x < a.left ? a.left - x : x > a.right ? x - a.right : 0;
+  const dy = y < a.top ? a.top - y : y > a.bottom ? y - a.bottom : 0;
+  return { off: Math.hypot(dx, dy) };
+}`;
 
 /** The thumbnail intro's length on the first scene (D-82; the brief asks for about 1.5 s). */
 export const INTRO_S = 1.5;
@@ -391,6 +456,11 @@ export function runChecks({ plan, projectDir, outDir, probes = {}, composition =
       measured.composition_ok = fails.length === 0;
       if (fails.length) hard.push(`composition: ${fails.length} problem(s) on the rendered frames (${[...new Set(fails.map((f) => f.type))].join(', ')})`);
     }
+
+    // D-88: a tutorial step names its number and lands every click on its target
+    const tf = tutorialFindings(plan, s, probe);
+    for (const f of tf.findings) add(f.check, f.level, f.text);
+    hard.push(...tf.hard);
 
     const status = hard.length ? 'fix' : 'built';
     measured.status_reason = hard.join('; ') || 'all hard checks pass';

@@ -132,7 +132,7 @@ export function directionsPrompt(ctx) {
   return `# The brief (proposed values are marked)
 ${JSON.stringify({ product: video.product, url: video.url, template: video.template, length_s: video.length_s, viewer: video.viewer, claim: video.claim, pain_point: video.pain_point, proof_moment: video.proof_moment, cta: video.cta, narration: video.narration, tone: video.copy?.register, product_type: video.intake?.product_type, format: video.format, look_words: video.intake?.look?.words ?? '', look_chips: video.intake?.look?.chips ?? [], reference: video.reference ?? null, ...briefExtras(video) }, null, 1)}
 Narration: ${voiceLine}.${exactRule(video)}
-Template spine (${video.template}, typical ${templateLength}): ${spineLines}.
+Template spine (${video.template}, typical ${templateLength}): ${spineLines}.${tutorialSection(video)}${outlineSection(video)}
 Pace band for this template from the measured references: ${pace.shots_per_min[0]}–${pace.shots_per_min[1]} shots per minute (median ${pace.median}); by energy ${Object.entries(PACE_BY_ENERGY).map(([k, v]) => `${k} ≥ ${v.motion_per_s_min} motion/s, still ≤ ${v.still_time_max}%`).join('; ')}.
 
 # The brand, from the site
@@ -192,9 +192,54 @@ ${styles.map((s) => `${s.id} · ${s.canvas} · ${s.mood.join('/')} · ${s.suits.
 The user left the style to you: name the gallery style each direction is closest to, or null when derived from the brand.`;
 }
 
+const TUTORIAL_KINDS = {
+  interface: 'an interface tour: what you can do in one screen or area',
+  'use-case': 'a use case: a goal reached end to end, possibly across several features',
+  feature: 'a feature: how one feature works and how to use it',
+};
+const MOTION_WORDS = {
+  none: 'None: the scene transitions only (crossfade, match, zoom-through); no other motion between steps',
+  minimal: 'Minimal: the camera glides from one step\'s target to the next, the cursor carries across the cut, the step number animates in',
+  full: 'Full: animated interstitials between steps or sections (kinetic title cards, lifted UI parts, a small animated diagram, logo motion), from the motion library, in this direction\'s style',
+};
+
+/** D-88 to D-90: the tutorial part of the directions prompt, from the brief's tutorial block (and the confirmed outline's
+ * steps once it exists, D-91). Empty for every other template. */
+export function tutorialSection(video) {
+  if (video.template !== 'tutorial') return '';
+  const t = video.intake?.tutorial || {};
+  const motion = MOTION_WORDS[video.intake?.motion_between] || MOTION_WORDS.minimal;
+  const steps = (video.intake?.outline?.moments || []).filter((m) => m.beat === 'step').map((m) => m.what || m.name).filter(Boolean);
+  const given = steps.length ? steps : (t.steps || []);
+  const field = (label, v) => (v ? `\n${label}: ${v}` : '');
+  const opening = { hook: 'a hook (a moment that shows why this is worth doing)', message: 'an opening message (a title card naming what the viewer will be able to do)', none: 'none: start on the first step' }[t.opening] || 'your choice: a hook for a use case, an opening message for a feature or interface tour';
+  const closing = { message: 'a closing message that drives the point home', cta: 'a call to action', none: 'none: end on the result of the last step' }[t.closing] || 'your choice: a closing message for a use case, none for a short feature tutorial';
+  return `
+
+# This is a tutorial (D-88)
+Kind: ${TUTORIAL_KINDS[t.kind] || 'not given: infer it from the brief'}${field('Area', t.area)}${field('Goal', t.goal)}${field('Starts', t.start)}${field('Ends', t.end)}${field('In place first', t.prerequisites)}${field('Afterwards the viewer understands or can do', t.understand)}${field('Leave out', t.leave_out)}${field('Help docs (read as data)', t.docs)}
+${given.length ? `The steps, in order:\n${given.map((s, i) => `${i + 1}. ${s}`).join('\n')}` : 'The steps are not given: propose them from the brief, the site and the screens, in the order a new user would take them.'}
+Rules: one step moment per step, in this order, each with beat "step"; its headline is the step's caption, numbered and naming the action ("Step 2 · Click Invite"); in a tutorial, captions and narration may name the action as the viewer will do it (click, type, drag, pick), which overrides the general rule against those words, because the viewer will follow along; every step shows the screen, the cursor moving to the target, the click or typing, and a short zoom on what changes. Hold each step long enough to follow: the caption read, the click seen, the result visible. Opening: ${opening}. When there is an opening, it ends on a bridge into the first step: one line, on screen and in the narration, that says what the viewer is about to build ("Let's build an agent that answers") or opens a loop the steps then close; never cut from the problem straight to "Step 1". Closing: ${closing}. An optional moment the brief set to none is left out. Copy is instructional and plain, never salesy; narration, when there is one, is slower than in a launch.
+Motion between steps: ${motion}. At every level the cursor, the click ring and the short zoom on the click target stay: they show what to click.
+The length is a target with a buffer: give each step the time it needs; the video may run a little long rather than rush a step.`;
+}
+
+/** D-91: the outline the user confirmed, for every video type: the directions keep its moments, order and sources, and
+ * rebuild (never perform) a step whose data change was not allowed. Empty before the outline step existed. */
+export function outlineSection(video) {
+  const o = video.intake?.outline;
+  if (!o || o.status !== 'confirmed' || !(o.moments || []).length) return '';
+  const lines = o.moments.map((m, i) => `${i + 1}. [${m.beat}${m.chapter ? ` · ${m.chapter}` : ''}] ${m.name}: ${m.what} (source ${m.source}${m.url ? `, ${m.url}` : ''}${m.data_change ? `; ${m.rebuild ? 'REBUILD from screens, do not perform' : 'performed on the demo account'}: ${m.data_change}` : ''}; about ${m.seconds} s)`);
+  return `
+
+# The outline the user confirmed (D-91)
+Every direction keeps these moments in this order (one direction moment per outline moment; you may merge two short ones into one shot only when both stay visible), their sources, and their lengths as a guide:
+${lines.join('\n')}`;
+}
+
 /** The template's typical length line for the prompt. */
 export function templateLength(template) {
-  return { launch: '20–30 s short, 45–60 s full', 'feature-showcase': '45–90 s', 'feature-focus': '30–60 s', 'product-tour': '1–3 min', explainer: '1–2 min', milestone: '30–90 s', 'kinetic-type': '20–40 s', 'talking-head-recut': 'the footage length', ad: '6–15 s' }[template] || '30 s';
+  return { launch: '20–30 s short, 45–60 s full', 'feature-showcase': '45–90 s', 'feature-focus': '30–60 s', 'product-tour': '1–3 min', explainer: '1–2 min', milestone: '30–90 s', 'kinetic-type': '20–40 s', tutorial: '1–5 min, longer in chapters', 'talking-head-recut': 'the footage length', ad: '6–15 s' }[template] || '30 s';
 }
 
 export { TEMPLATE_SPINES };

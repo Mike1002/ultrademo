@@ -62,7 +62,7 @@ export function renderDashboard(data, { live = false } = {}) {
   const proposedCount = brands.reduce((n, b) => n + b.proposed.reduce((m, p) => m + p.items.length, 0), 0);
 
   const stageDots = (k) => `<span class="sdots" title="${STAGES[k]}">${STAGES.map((s, i) => `<i class="${i < k ? 'done' : i === k ? 'now' : ''}"></i>`).join('')}<b>${STAGES[k]}</b></span>`;
-  const pageFor = (v) => (v.stage >= 3 ? v.live.review : v.stage >= 1 ? (v.live.direction || v.live.intake) : v.live.intake);
+  const pageFor = (v) => (v.stage >= 4 ? v.live.review : v.stage >= 2 ? (v.live.direction || v.live.intake) : v.stage === 1 ? (v.live.outline || v.live.intake) : v.live.intake);
   const resume = (v) => `Continue the video "${v.title}" for ${v.brand} in projects/${v.project}`;
   const videoRows = videos.map((v) => {
     const page = pageFor(v);
@@ -72,8 +72,8 @@ export function renderDashboard(data, { live = false } = {}) {
       v.watch ? `<a class="btn dark" href="${e(play(v.watch))}" target="_blank" rel="noopener">${v.watchVertical ? 'Watch 16:9' : 'Watch'}</a>` : '',
       v.watchVertical ? `<a class="btn dark" href="${e(play(v.watchVertical))}" target="_blank" rel="noopener">Watch 9:16</a>` : '',
       ...(v.cuts || []).map((f) => `<a class="btn" href="${e(play(f))}" target="_blank" rel="noopener">Watch the ${e(path.basename(f).replace(/^cut-(\d+)\.mp4$/, '$1 s'))} cut</a>`),
-      page ? `<a class="btn ${v.watch ? '' : 'dark'}" href="${e(page)}" target="_blank" rel="noopener">${v.stage === 4 ? 'Open Delivery' : 'Open its page'}</a>` : '',
-      v.stage < 4 && !page ? (live ? `<button type="button" class="copy" data-copy="${e(resume(v))}" title="Paste into Claude Code to carry on">Copy a line for Claude</button>` : ask(`continue the video "${v.title}" for ${v.brand} in projects/${v.project}`, 'Continue in Claude Code', v.watch ? '' : 'dark')) : '',
+      page ? `<a class="btn ${v.watch ? '' : 'dark'}" href="${e(page)}" target="_blank" rel="noopener">${v.stage === 5 ? 'Open Delivery' : 'Open its page'}</a>` : '',
+      v.stage < 5 && !page ? (live ? `<button type="button" class="copy" data-copy="${e(resume(v))}" title="Paste into Claude Code to carry on">Copy a line for Claude</button>` : ask(`continue the video "${v.title}" for ${v.brand} in projects/${v.project}`, 'Continue in Claude Code', v.watch ? '' : 'dark')) : '',
       ...[[v.final, v.finalVertical ? 'Download 16:9' : 'Download'], [v.finalVertical, 'Download 9:16']].filter(([f]) => f).map(([f, l]) => `<a class="btn" href="${e(dl(f))}" download>${l}</a>`),
       live ? `<button type="button" class="quiet vremove" data-project="${e(v.project)}" data-title="${e(`${v.brand} · ${v.title}`)}">Remove</button>` : '',
     ].join('');
@@ -146,7 +146,7 @@ ${updateBanner(data.update)}<nav class="tabs" role="tablist"><button class="on" 
   $$('.filters button').forEach(function(b){ b.addEventListener('click', function(){
     $$('.filters button').forEach(function(x){ x.classList.toggle('on', x === b); });
     var f = b.dataset.f;
-    $$('.vrow').forEach(function(r){ var s = Number(r.dataset.stage); r.hidden = f.indexOf('b:') === 0 ? r.dataset.brand !== f.slice(2) : f === 's:open' ? s >= 4 : f === 's:final' ? s < 4 : false; });
+    $$('.vrow').forEach(function(r){ var s = Number(r.dataset.stage); r.hidden = f.indexOf('b:') === 0 ? r.dataset.brand !== f.slice(2) : f === 's:open' ? s >= 5 : f === 's:final' ? s < 5 : false; });
   }); });
   $$('.showall').forEach(function(b){ b.addEventListener('click', function(){ var c = b.closest('.bcard'); c.classList.toggle('open'); b.textContent = c.classList.contains('open') ? 'Show less' : 'Show all'; }); });
   $$('.golearn').forEach(function(b){ b.addEventListener('click', function(){ view('learnings'); var t = document.getElementById('learn-' + b.dataset.brand); if (t) t.scrollIntoView({ behavior: 'smooth' }); }); });

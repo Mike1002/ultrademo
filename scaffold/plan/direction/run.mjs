@@ -26,7 +26,7 @@ import { Ledger, CapReached, DEFAULT_MODEL, DEFAULT_CHEAP_MODEL, DEFAULT_CAP_USD
 import { renderSketch } from './sketch.mjs';
 import { buildFrames, openFonts, fontFaces, ROOT } from './frames.mjs';
 import { startServer, writeJson, readJson, voiceFor, readState, writeState } from './serve.mjs';
-import { BAND_NAMES, LETTERS } from './schema.mjs';
+import { BAND_NAMES, LETTERS, TUTORIAL_PACE, motionLevel } from './schema.mjs';
 import { agentMode, agentFetch, useProjectTasks, exitIfAwaiting } from '../agent.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
@@ -55,6 +55,7 @@ export function parseArgs(argv) {
     else if (a === '--fixtures') args.fixtures = next();
     else if (a === '--record') args.record = next();
     else if (a === '--skip-scout') args.skipScout = true;
+    else if (a === '--again') args.again = true;
     else if (a === '--agent') process.env.ULTRADEMO_MODE = 'agent';
     else if (a === '--no-serve') args.serve = false;
     else if (a === '--max-pages') args.maxPages = Number(next());
@@ -81,7 +82,9 @@ export function musicLibrary() {
 }
 
 /** The pace band for a template from the measured references. */
-export function paceFor(template) {
+export function paceFor(template, video = null) {
+  // D-88/D-90: no measured references for tutorials yet; the pace follows the motion level between scenes
+  if (template === 'tutorial') { const t = TUTORIAL_PACE[motionLevel(video)]; return { shots_per_min: t.shots_per_min, median: t.median, thin: true, n: 0 }; }
   const j = readJson(BANDS, null);
   const t = j?.by_template?.[BAND_NAMES[template]];
   const m = t?.metrics?.scenes_per_min;
@@ -203,7 +206,7 @@ function baseProposals({ video, brand, scout, args }) {
   const fonts = openFonts().map((f) => ({ family: f.family, weights: f.weights, faces: f.faces.map((x) => ({ name: path.basename(x.file), weight: x.weight, style: x.style })) }));
   return {
     generated_at: new Date().toISOString(), models: { brand_read: args.cheapModel, directions: args.model },
-    video, brand, claims, sources, fonts, styles: styleList(), music: musicLibrary(), pace: paceFor(video.template), blueprints: blueprintList(), voice: voiceFor(video),
+    video, brand, claims, sources, fonts, styles: styleList(), music: musicLibrary(), pace: paceFor(video.template, video), blueprints: blueprintList(), voice: voiceFor(video),
     site_fonts: scout.tokens?.fonts || { headings: null, body: null, mono: null },
     scout_notes: scout.notes, scout_pages: scout.pages.map((p) => ({ id: p.id, url: p.url, title: p.title })),
   };
@@ -280,7 +283,12 @@ export async function proposeForStyle(projectDir, choice, opts = {}) {
 export async function runDirection(args, opts = {}) {
   const log = opts.log || ((s) => console.log(s));
   const t0 = Date.now();
-  const prep = await prepareDirection(args, opts);
+  // directions already written (the pages were stopped and are started again): resume them, never reset them; the step
+  // starts over only with --again (resetting here once lost a set of directions the user was about to choose from)
+  const existing = args.projectDir ? readJson(path.join(dirOf(path.resolve(args.projectDir)), 'proposals.json'), null) : null;
+  const resume = Boolean(existing?.directions?.length) && !args.again && !args.style;
+  if (resume) log(`Directions already written (${existing.directions.map((d) => d.name).join(' · ')}): serving them as they are. Use --again to start the direction step over.`);
+  const prep = resume ? { projectDir: path.resolve(args.projectDir), proposals: existing, ledger: ledgerFor(path.resolve(args.projectDir), args.cap) } : await prepareDirection(args, opts);
   let result = prep;
   if (args.style) {
     const r = await proposeForStyle(prep.projectDir, args.style, { model: args.model, cap: args.cap, frames: args.frames, fixtures: args.fixtures, record: args.record, fetchImpl: opts.fetchImpl, log });

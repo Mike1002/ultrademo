@@ -13,7 +13,7 @@
 
 import fs from 'node:fs';
 import http from 'node:http';
-import { spawnSync } from 'node:child_process';
+import { spawn, spawnSync } from 'node:child_process';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { VideoSchema, countWords, TEMPLATES } from '../schema.mjs';
@@ -35,11 +35,12 @@ export const OWN_TRACK = /^assets\/music\/own-[a-z0-9-]{1,60}\.(mp3|wav|m4a|ogg|
 // screens the user gives (HTML mockups of features not live yet, screenshots): only paths the upload makes are kept
 export const SOURCE_FILE = /^assets\/sources\/[a-z0-9-]{1,64}\.(html|png|jpg|webp)$/;
 const SCREEN_FROM = ['live', 'mockups', 'screenshots', 'figma'];
-// D-77: the four video types; each maps to the story spine the later steps know (template)
-export const VIDEO_TYPES = ['launch', 'explainer', 'spotlight', 'ad'];
+// D-77, D-88: the five video types; each maps to the story spine the later steps know (template)
+export const VIDEO_TYPES = ['launch', 'explainer', 'spotlight', 'ad', 'tutorial'];
 export function templateFor(type, scope, length_s) {
   if (type === 'launch') return 'launch';
   if (type === 'ad') return 'ad';
+  if (type === 'tutorial') return 'tutorial';
   if (type === 'spotlight') return scope === 'feature' ? 'feature-focus' : 'feature-showcase';
   if (type === 'explainer') return scope === 'feature' ? 'feature-focus' : length_s && length_s > 120 ? 'product-tour' : 'explainer';
   return null;
@@ -169,7 +170,7 @@ export function buildVideo(brief, opts = {}) {
   };
   if (footage === null) unsure.footage = note('footage');
   const signIn = b.sign_in && typeof b.sign_in === 'object' ? b.sign_in : {};
-  const SIGN_IN_PATHS = ['public', 'own-browser', 'dedicated-profile', 'hosted-live-view', 'token'];
+  const SIGN_IN_PATHS = ['public', 'own-browser', 'dedicated-profile', 'hosted-live-view', 'token', 'demo-account'];
   const website = product_type === 'website';
   // a website-only product has nothing to sign into: an Unsure or missing path defaults to public, with a note
   const signInUnsure = (isUnsure('sign_in') || signIn.path === 'unsure') && !website;
@@ -228,6 +229,20 @@ export function buildVideo(brief, opts = {}) {
     headings: list(b.site.headings).slice(0, 24),
   } : (existing.intake?.site ?? null);
 
+  // D-88/D-89: what a tutorial covers, with its context; D-90: the motion between scenes (tutorial and explainer)
+  const tutIn = b.tutorial && typeof b.tutorial === 'object' ? b.tutorial : null;
+  const one = (v, n = 300) => str(v).replace(/\s+/g, ' ').slice(0, n);
+  const tutorial = video_type === 'tutorial' && tutIn ? Object.fromEntries(Object.entries({
+    kind: ['interface', 'use-case', 'feature'].includes(str(tutIn.kind)) ? str(tutIn.kind) : '',
+    area: one(tutIn.area, 200), goal: one(tutIn.goal), start: one(tutIn.start), end: one(tutIn.end),
+    prerequisites: one(tutIn.prerequisites), understand: one(tutIn.understand),
+    steps: list(tutIn.steps).slice(0, 60).map((s) => s.slice(0, 200)),
+    leave_out: one(tutIn.leave_out), docs: /^https?:\/\//.test(str(tutIn.docs)) ? str(tutIn.docs).slice(0, 500) : '',
+    opening: ['hook', 'message', 'none'].includes(str(tutIn.opening)) ? str(tutIn.opening) : '',
+    closing: ['message', 'cta', 'none'].includes(str(tutIn.closing)) ? str(tutIn.closing) : '',
+  }).filter(([, v]) => (Array.isArray(v) ? v.length : v))) : null;
+  const motion_between = (video_type === 'tutorial' || video_type === 'explainer') ? (['none', 'minimal', 'full'].includes(str(b.motion_between)) ? str(b.motion_between) : 'minimal') : null;
+
   const video = {
     product,
     url: str(b.url),
@@ -261,6 +276,8 @@ export function buildVideo(brief, opts = {}) {
       footage,
       screens,
       ...(video_type ? { video_type, scope, ...(feature ? { feature } : {}) } : {}),
+      ...(tutorial ? { tutorial } : {}),
+      ...(motion_between ? { motion_between } : {}),
       exact,
       effects,
       brand,
@@ -731,6 +748,34 @@ function sendSample(res, pathname, dir = SAMPLES_DIR, prefix = '/voice-samples/'
   fs.createReadStream(file).pipe(res);
 }
 
+/**
+ * D-93: a demo or test account's sign-in lives in the project's own env file (never the page, the plan or the chat).
+ * The page learns only whether each line is filled in. The file is created with the three lines, readable by the user only.
+ */
+export const DEMO_KEYS = ['DEMO_EMAIL', 'DEMO_PASSWORD', 'DEMO_SIGNIN_URL'];
+export const demoEnvPath = (projectDir) => path.join(projectDir, '.env');
+export function demoAccountState(projectDir) {
+  const file = demoEnvPath(projectDir);
+  let text = '';
+  try { text = fs.readFileSync(file, 'utf8'); } catch {}
+  // [ \t]* and not \s*: \s would run past an empty line's end and count the next line as the value
+  const filled = (k) => new RegExp(`^${k}=[ \\t]*\\S`, 'm').test(text);
+  return { path: file, exists: Boolean(text), email: filled('DEMO_EMAIL'), password: filled('DEMO_PASSWORD'), signin_url: filled('DEMO_SIGNIN_URL') };
+}
+export function ensureDemoEnv(projectDir) {
+  const file = demoEnvPath(projectDir);
+  let text = '';
+  try { text = fs.readFileSync(file, 'utf8'); } catch {}
+  const missing = DEMO_KEYS.filter((k) => !new RegExp(`^${k}=`, 'm').test(text));
+  if (missing.length) {
+    const head = text ? (text.endsWith('\n') ? '' : '\n') : '# This video\'s own keys. Never paste them into the chat or the brief.\n';
+    const lines = { DEMO_EMAIL: '# A demo or test account (D-93): the email or username', DEMO_PASSWORD: '# its password', DEMO_SIGNIN_URL: '# the sign-in page, if it is not the product\'s own address (optional)' };
+    fs.writeFileSync(file, text + head + missing.map((k) => `${lines[k]}\n${k}=`).join('\n') + '\n', { mode: 0o600 });
+  }
+  try { fs.chmodSync(file, 0o600); } catch {}
+  return file;
+}
+
 /** A POST from another origin (a web page in the same browser) is refused. */
 function sameOrigin(req) {
   const origin = req.headers.origin;
@@ -774,7 +819,18 @@ export function startServer(opts) {
         if (!plan?.video) return send(res, 404, renderSavedPage({ missing: true, projectDir }));
         return send(res, 200, renderSavedPage({ plan, planPath: path.join(projectDir, 'plan.json'), projectDir, notes: fullPlanNotes(plan), brand: brandState(plan.video) }));
       }
+      // D-93: whether the demo account's lines are filled in (never their values)
+      if (req.method === 'GET' && url.pathname === '/api/demo-account') return sendJson(res, 200, { ok: true, ...demoAccountState(projectDir) });
       if (req.method === 'POST' && !sameOrigin(req)) return sendJson(res, 403, { ok: false, error: 'refused: the request came from another page' });
+      // D-93: make the project's env file with the demo account's lines and open it in the user's text editor
+      if (req.method === 'POST' && url.pathname === '/api/demo-account/open') {
+        const file = ensureDemoEnv(projectDir);
+        if (!opts.noOpen) {
+          const [cmd, args] = process.platform === 'darwin' ? ['open', ['-e', file]] : process.platform === 'win32' ? ['notepad', [file]] : ['xdg-open', [file]];
+          try { spawn(cmd, args, { detached: true, stdio: 'ignore' }).unref(); } catch {}
+        }
+        return sendJson(res, 200, { ok: true, ...demoAccountState(projectDir) });
+      }
       if (req.method === 'POST' && url.pathname === '/api/read-site') {
         const body = JSON.parse((await readBody(req)) || '{}');
         try {

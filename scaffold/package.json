@@ -1,6 +1,6 @@
 {
   "name": "ultrademo-skill",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "private": true,
   "type": "module",
   "description": "Ultrademo: product videos written as code (HTML + GSAP on HyperFrames), made on your machine by your coding agent.",

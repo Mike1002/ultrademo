@@ -70,6 +70,15 @@ export const VIDEO_TYPE_META = [
   { id: 'explainer', name: 'Explainer', desc: 'How it works: the problem, the product, the main screens in order. A full tour is an explainer at 1–3 min.', typical: '45 s–3 min', suggest: { product: 90, feature: 45 } },
   { id: 'spotlight', name: 'Spotlight', desc: 'Hyped like a launch, but built around a few values or features rather than an introduction.', typical: '30–90 s', suggest: { product: 60, feature: 40 } },
   { id: 'ad', name: 'Ad', desc: 'For paid placement: a hook in the first second, one proof, one call to action; works with the sound off.', typical: '6–30 s', suggest: { product: 15, feature: 15 } },
+  // D-88: the fifth type
+  { id: 'tutorial', name: 'Tutorial', desc: 'Step by step: how to use an area of the product, reach a goal or work a feature, with the cursor on every click.', typical: '1–5 min, longer in chapters', suggest: { product: 120, feature: 90 } },
+];
+
+/** D-89: what a tutorial covers, with the context each kind asks for. */
+export const TUTORIAL_KIND_META = [
+  { id: 'interface', name: 'An interface', desc: 'What you can do in one screen or area, e.g. the dashboard.' },
+  { id: 'use-case', name: 'A use case', desc: 'A goal reached end to end, e.g. connect your mailbox, then set up an outbound sequence.' },
+  { id: 'feature', name: 'A feature', desc: 'How one feature works, e.g. campaigns, or connecting Stripe and creating billing products.' },
 ];
 
 export const NARRATION = [
@@ -116,6 +125,7 @@ const SIGN_IN_WORDS = {
   'dedicated-profile': 'a dedicated profile with a visible first sign-in',
   'hosted-live-view': 'the hosted live view (hosted app only)',
   token: 'an auth token or magic link sent by your app',
+  'demo-account': 'a demo or test account, its sign-in in the project\'s env file',
 };
 const FOOTAGE_WORDS = { none: 'none needed; the skill records the product', upload: 'files you will upload', existing: 'videos the product already has', record: 'you will record some first' };
 const PRODUCT_TYPE_WORDS = { 'web-app': 'web app · widescreen', 'mobile-app': 'mobile app · vertical frame in a phone outline', website: 'website only · the public site is captured' };
@@ -244,7 +254,7 @@ code{font:500 12.5px var(--font-mono);background:var(--bg);border:1px solid var(
  *   prefill: an existing `video` block (nulls and `intake` honoured); sample: static preview, no server.
  */
 /** D-79: one progress bar across the pages: Brief → Direction → Production → Review → Delivery. */
-export const STAGES = [['brief', 'Brief'], ['direction', 'Direction'], ['production', 'Production'], ['review', 'Review'], ['delivery', 'Delivery']];
+export const STAGES = [['brief', 'Brief'], ['outline', 'Outline'], ['direction', 'Direction'], ['production', 'Production'], ['review', 'Review'], ['delivery', 'Delivery']];
 export function progressBar(current) {
   const at = STAGES.findIndex(([id]) => id === current);
   return `<ol class="ud-progress" aria-label="Where you are">${STAGES.map(([id, name], i) => `<li class="${i < at ? 'done' : i === at ? 'now' : ''}"${i === at ? ' aria-current="step"' : ''}><span>${i + 1}</span>${e(name)}</li>`).join('')}</ol>`;
@@ -425,6 +435,25 @@ ${sample ? '<div class="notice"><b>Static preview.</b> Sample values, no server:
       <input type="text" id="f-feature" name="feature" placeholder="e.g. Custom dashboards for your clients" ${NOFILL}>
     </div>
   </div>
+  <div class="field" data-field="tutorial" id="tutorial-sub" hidden>
+    <div class="lab"><span class="l">What the tutorial covers</span><span class="hint">the steps are settled on the next page, the outline</span></div>
+    <div class="opts three">${TUTORIAL_KIND_META.map((k) => `<label class="opt"><input type="radio" name="tut_kind" value="${k.id}"><div><b>${e(k.name)}</b><span>${e(k.desc)}</span></div></label>`).join('')}</div>
+    <div class="tutf" data-kinds="interface"><div class="lab"><label for="f-tut-area">Which screen or area</label></div><input type="text" id="f-tut-area" placeholder="e.g. The dashboard" ${NOFILL}></div>
+    <div class="tutf" data-kinds="interface use-case feature"><div class="lab"><label for="f-tut-goal" id="tut-goal-label">The goal</label></div><input type="text" id="f-tut-goal" placeholder="e.g. A support agent that answers from your own content" ${NOFILL}></div>
+    <div class="tutf" data-kinds="use-case"><div class="lab"><label for="f-tut-start">Where it starts</label></div><input type="text" id="f-tut-start" placeholder="e.g. Signed in, an empty workspace" ${NOFILL}></div>
+    <div class="tutf" data-kinds="use-case"><div class="lab"><label for="f-tut-end">The end result</label></div><input type="text" id="f-tut-end" placeholder="e.g. The agent answering a real question" ${NOFILL}></div>
+    <div class="tutf" data-kinds="use-case feature"><div class="lab"><label for="f-tut-pre">What has to be in place first</label><span class="hint">optional</span></div><input type="text" id="f-tut-pre" placeholder="e.g. A connected mailbox" ${NOFILL}></div>
+    <div class="tutf" data-kinds="feature interface"><div class="lab"><label for="f-tut-understand">Afterwards, the viewer can…</label></div><input type="text" id="f-tut-understand" placeholder="e.g. Create a campaign and see who opened it" ${NOFILL}></div>
+    <div class="tutf" data-kinds="interface use-case feature"><div class="lab"><label for="f-tut-steps">The steps, if you know them</label><span class="hint">optional, one per line; else Ultrademo proposes them</span></div><textarea id="f-tut-steps" rows="3" placeholder="Make a knowledge base&#10;Add your content&#10;Create the agent" ${NOFILL}></textarea></div>
+    <div class="tutf" data-kinds="interface use-case feature"><div class="lab"><label for="f-tut-leave">Leave out</label><span class="hint">optional</span></div><input type="text" id="f-tut-leave" placeholder="e.g. Voice and phone numbers" ${NOFILL}></div>
+    <div class="tutf" data-kinds="interface use-case feature"><div class="lab"><label for="f-tut-docs">Your help docs for this</label><span class="hint">optional, a link; read like your site</span></div><input type="url" id="f-tut-docs" placeholder="https://docs.your-product.com/…" ${NOFILL}></div>
+    <div class="tutf" data-kinds="interface use-case feature"><div class="lab"><span class="l">Opening</span></div><div class="opts three">${[['hook', 'A hook', 'why this is worth doing; best for a use case'], ['message', 'An opening message', 'a title card naming what you will be able to do'], ['none', 'None', 'start on the first step']].map(([v, n, d]) => `<label class="opt"><input type="radio" name="tut_opening" value="${v}"><div><b>${n}</b><span>${d}</span></div></label>`).join('')}</div></div>
+    <div class="tutf" data-kinds="interface use-case feature"><div class="lab"><span class="l">Closing</span></div><div class="opts three">${[['message', 'A closing message', 'drives the point home'], ['cta', 'A call to action', 'what to do next'], ['none', 'None', 'end on the result']].map(([v, n, d]) => `<label class="opt"><input type="radio" name="tut_closing" value="${v}"><div><b>${n}</b><span>${d}</span></div></label>`).join('')}</div></div>
+  </div>
+  <div class="field" data-field="motion_between" id="motion-sub" hidden>
+    <div class="lab"><span class="l">Motion between scenes</span><span class="hint">the cursor, the click ring and the zoom on the click stay at every level</span></div>
+    <div class="opts three">${[['none', 'None', 'the scene transitions only; still feels finished'], ['minimal', 'Minimal', 'the camera glides from one step to the next; the cursor carries across'], ['full', 'Full', 'animated title cards and motion graphics between steps or sections']].map(([v, n, d]) => `<label class="opt"><input type="radio" name="motion_between" value="${v}"${v === 'minimal' ? ' checked' : ''}><div><b>${n}${v === 'minimal' ? ' <em class="tag">default</em>' : ''}</b><span>${d}</span></div></label>`).join('')}</div>
+  </div>
   <div class="field" data-field="formats">
     <div class="lab"><span class="l">Format</span><span class="hint">vertical is for Shorts, Reels and TikTok</span></div>
     <div class="opts three">${[['landscape', 'Landscape', '16:9, for YouTube, your site and decks'], ['vertical', 'Vertical', '9:16, for phones'], ['both', 'Both', 'one video, laid out again for 9:16: close to twice the scene-building work']].map(([v, l, d]) => `<label class="opt"><input type="radio" name="formats" value="${v}"><div><b>${l}</b><span>${d}</span></div></label>`).join('')}</div>
@@ -436,7 +465,7 @@ ${sample ? '<div class="notice"><b>Static preview.</b> Sample values, no server:
   <div class="field" data-field="length_s">
     <div class="lab"><label for="f-length_s">Length in seconds</label><span class="unsure"><input type="checkbox" data-unsure="length_s"> Unsure</span></div>
     <div class="opts three lenfit">${[['about', 'About', 'within 10% either way; the scenes keep the lengths that read best'], ['max', 'No more than', 'up to this length, shorter if it reads better'], ['exact', 'Exactly', 'to the second, e.g. for an ad slot']].map(([v, n, d]) => `<label class="opt"><input type="radio" name="length_fit" value="${v}"${v === 'about' ? ' checked' : ''}><div><b>${n}</b><span>${d}</span></div></label>`).join('')}</div>
-    <div class="row" style="margin-top:8px"><input type="number" id="f-length_s" name="length_s" min="3" max="600" step="1" inputmode="numeric" placeholder="30"><span class="small muted" id="length-hint" style="padding-top:10px"></span></div>
+    <div class="row" style="margin-top:8px"><input type="number" id="f-length_s" name="length_s" min="3" step="1" inputmode="numeric" placeholder="30"><span class="small muted" id="length-hint" style="padding-top:10px"></span></div>
   </div>
 </section>
 
@@ -544,12 +573,19 @@ ${sample ? '<div class="notice"><b>Static preview.</b> Sample values, no server:
       <label class="opt"><input type="radio" name="sign_in" value="dedicated-profile"><div><b>A dedicated profile, signed in once by hand</b><span id="profile-note">A real Chrome window opens the first time; you sign in (Google sign-in and two-factor included) and later runs reuse it silently.</span></div></label>
       <label class="opt off"><input type="radio" name="sign_in" value="hosted-live-view" disabled><div><b>Sign in on the hosted live view<span class="tag">hosted app only</span></b><span>A live view of the capture browser where you sign in by hand. Not part of the local skill.</span></div></label>
       <label class="opt"><input type="radio" name="sign_in" value="token"><div><b>An auth token or magic link sent by your app</b><span>An API key, a magic link or a demo account your app provides. It goes into the project's env file, never into this page.</span></div></label>
+      <label class="opt"><input type="radio" name="sign_in" value="demo-account"><div><b>A demo or test account</b><span>Its email and password go in this video's env file, never into this page or the chat; Ultrademo signs in with them.</span></div></label>
       <label class="opt"><input type="radio" name="sign_in" value="unsure"><div><b>Unsure</b><span>The direction step asks once it knows which screens the video needs.</span></div></label>
     </div>
     <div class="sub" id="token-sub" hidden>
       <h3>How your app issues it</h3>
       <input type="text" name="token_note" placeholder="e.g. a magic link from the admin page; a read-only API key" maxlength="500">
       <div class="small muted">Describe it only. The value itself belongs in the project's env file.</div>
+    </div>
+    <div class="sub" id="demo-sub" hidden>
+      <h3>The demo account</h3>
+      <p class="small">Use an account made for demos or testing: the outline asks before anything is created in it. Open the file, fill in the lines after <code>DEMO_EMAIL=</code> and <code>DEMO_PASSWORD=</code> (and <code>DEMO_SIGNIN_URL=</code> if the sign-in page is elsewhere), save it, then check.</p>
+      <div class="row"><button type="button" class="quiet" id="demo-open">Open the file</button><button type="button" class="quiet" id="demo-check">Check</button><span class="small" id="demo-state" aria-live="polite"></span></div>
+      <div class="small muted" id="demo-path"></div>
     </div>
   </div>
 </section>
@@ -662,6 +698,24 @@ window.__SAMPLE__ = ${sample ? 'true' : 'false'};
     if (!lengthTouched) lengthEl.value = s;
   }
   function scopeBranch(){ $('#feature-sub').hidden = radio('scope') !== 'feature'; }
+  // D-88 to D-90: the tutorial block, the motion level (tutorial and explainer), the kind's own fields and suggestions
+  var tutTouched = { opening: false, closing: false };
+  $$('input[name="tut_opening"]').forEach(function(r){ r.addEventListener('change', function(){ tutTouched.opening = true; }); });
+  $$('input[name="tut_closing"]').forEach(function(r){ r.addEventListener('change', function(){ tutTouched.closing = true; }); });
+  function tutorialBranch(){
+    var t = radio('video_type');
+    $('#tutorial-sub').hidden = t !== 'tutorial';
+    $('#motion-sub').hidden = t !== 'tutorial' && t !== 'explainer';
+    var k = radio('tut_kind');
+    $$('#tutorial-sub .tutf').forEach(function(f){ f.hidden = !k || f.getAttribute('data-kinds').split(' ').indexOf(k) < 0; });
+    $('#tut-goal-label').textContent = k === 'interface' ? 'What it is for' : k === 'feature' ? 'The feature' : 'The goal';
+    if (k && !tutTouched.opening) setRadio('tut_opening', k === 'use-case' ? 'hook' : 'message');
+    if (k && !tutTouched.closing) setRadio('tut_closing', k === 'use-case' ? 'message' : 'none');
+  }
+  $$('input[name="tut_kind"]').forEach(function(r){ r.addEventListener('change', tutorialBranch); });
+  $$('input[name="video_type"]').forEach(function(r){ r.addEventListener('change', tutorialBranch); });
+  // D-93: no cap on the length; a long video is built in chapters
+  lengthEl.addEventListener('input', function(){ var n = Number(lengthEl.value); if (n > 300) lengthHint.textContent = 'A long video: the outline groups its moments into chapters, each built and checked on its own.'; });
   $$('input[name="scope"]').forEach(function(r){ r.addEventListener('change', function(){ scopeBranch(); suggestLength(); }); });
   var nameEl = $('#f-project_name');
   nameEl.addEventListener('input', function(){ nameTouched = true; });
@@ -698,7 +752,16 @@ window.__SAMPLE__ = ${sample ? 'true' : 'false'};
 
 
   // ---- sign-in branches
-  function signInBranch(){ $('#token-sub').hidden = radio('sign_in') !== 'token'; }
+  function signInBranch(){ $('#token-sub').hidden = radio('sign_in') !== 'token'; $('#demo-sub').hidden = radio('sign_in') !== 'demo-account'; if (radio('sign_in') === 'demo-account') demoCheck(); }
+  // D-93: the demo account's sign-in is in the env file; the page only learns whether each line is filled in
+  function demoShow(s){
+    if (!s || !s.ok) { $('#demo-state').textContent = 'Could not check the file.'; return; }
+    $('#demo-path').textContent = s.path;
+    $('#demo-state').textContent = s.email && s.password ? '✓ The email and password are in the file.' : s.exists ? 'Not filled in yet: ' + [!s.email && 'email', !s.password && 'password'].filter(Boolean).join(' and ') + '.' : 'No file yet: press Open the file.';
+  }
+  function demoCheck(){ fetch('/api/demo-account').then(function(r){ return r.json(); }).then(demoShow).catch(function(){ demoShow(null); }); }
+  $('#demo-open').addEventListener('click', function(){ fetch('/api/demo-account/open', { method: 'POST' }).then(function(r){ return r.json(); }).then(demoShow).catch(function(){ demoShow(null); }); });
+  $('#demo-check').addEventListener('click', demoCheck);
   $$('input[name="sign_in"]').forEach(function(r){ r.addEventListener('change', signInBranch); });
 
   // ---- narration → voice follow-ups (shown for Narrated and Both only)
@@ -940,6 +1003,8 @@ window.__SAMPLE__ = ${sample ? 'true' : 'false'};
       url: $('#f-url').value.trim(),
       product: tx('product'), viewer: tx('viewer'), claim: tx('claim'), pain_point: tx('pain_point'), proof_moment: tx('proof_moment'), cta: tx('cta'),
       video_type: radio('video_type') || 'unsure', scope: radio('scope') || 'product', feature: $('#f-feature').value.trim(),
+      tutorial: radio('video_type') === 'tutorial' ? { kind: radio('tut_kind') || '', area: $('#f-tut-area').value.trim(), goal: $('#f-tut-goal').value.trim(), start: $('#f-tut-start').value.trim(), end: $('#f-tut-end').value.trim(), prerequisites: $('#f-tut-pre').value.trim(), understand: $('#f-tut-understand').value.trim(), steps: $('#f-tut-steps').value, leave_out: $('#f-tut-leave').value.trim(), docs: $('#f-tut-docs').value.trim(), opening: radio('tut_opening') || '', closing: radio('tut_closing') || '' } : null,
+      motion_between: radio('video_type') === 'tutorial' || radio('video_type') === 'explainer' ? (radio('motion_between') || 'minimal') : '',
       template: radio('video_type') && radio('video_type') !== 'unsure' ? '' : 'unsure',
       exact: { tagline: $('#f-tagline').value.trim(), lines: $('#f-exact_lines').value },
       effects: radio('effects') || 'lively',
@@ -1028,6 +1093,15 @@ window.__SAMPLE__ = ${sample ? 'true' : 'false'};
     setRadio('video_type', itp.video_type || ({ launch: 'launch', ad: 'ad', explainer: 'explainer', 'product-tour': 'explainer', 'feature-focus': 'explainer', 'feature-showcase': 'spotlight' })[v.template] || 'unsure');
     setRadio('scope', itp.scope || (v.template === 'feature-focus' ? 'feature' : 'product'));
     if (itp.feature) $('#f-feature').value = itp.feature;
+    if (itp.tutorial) {
+      var tu = itp.tutorial;
+      setRadio('tut_kind', tu.kind || '');
+      [['area', tu.area], ['goal', tu.goal], ['start', tu.start], ['end', tu.end], ['pre', tu.prerequisites], ['understand', tu.understand], ['leave', tu.leave_out], ['docs', tu.docs]].forEach(function(p){ if (p[1]) $('#f-tut-' + p[0]).value = p[1]; });
+      if (tu.steps && tu.steps.length) $('#f-tut-steps').value = tu.steps.join('\\n');
+      if (tu.opening) { setRadio('tut_opening', tu.opening); tutTouched.opening = true; }
+      if (tu.closing) { setRadio('tut_closing', tu.closing); tutTouched.closing = true; }
+    }
+    if (itp.motion_between) setRadio('motion_between', itp.motion_between);
     if (itp.exact) { $('#f-tagline').value = itp.exact.tagline || ''; $('#f-exact_lines').value = (itp.exact.lines || []).join('\\n'); }
     if (itp.effects) setRadio('effects', itp.effects);
     if (itp.notes) $('#f-notes').value = itp.notes;
@@ -1075,7 +1149,7 @@ window.__SAMPLE__ = ${sample ? 'true' : 'false'};
   if (!radio('footage')) setRadio('footage', 'none');
   if (!radio('formats')) setRadio('formats', 'landscape');
   if (!radio('sign_in')) setRadio('sign_in', 'public');
-  suggestLength(); proposeName(); footageBranch(); signInBranch(); voiceBranch(); ownBranch(); productTypeBranch(); scopeBranch(); updateClaim();
+  suggestLength(); proposeName(); footageBranch(); signInBranch(); voiceBranch(); ownBranch(); productTypeBranch(); scopeBranch(); tutorialBranch(); updateClaim();
   buildAccordion();
 
   // ---- save

@@ -35,6 +35,22 @@ The user picks the thumbnail on the refine page (`plan.direction.thumbnail`: lay
 
 When the brief asks for one (`video.intake.cut`: 15 or 30), make it after the video (and its vertical version). Pick the scenes, in order: the hook first (it must land in the first second), the reveal, for 30 s one or two proofs, and the call to action last. `node plan/production/scene.mjs cut <project> <15|30> <scene>,<scene>,...` sets up `<project>/cut-<n>/`: the plan with the lengths scaled to fit, vertical when the video has a vertical version, no narration (the on-screen words carry it), the source scenes' code and sound cues as the start. Retime each scene's code to its new length (shorter holds, quicker moves; the same words, claims and numbers), then the same loop on that folder (build, look, check, joins) and `whole`: it is mixed with the music and effects and copied to `<project>/out/cut-<n>.mp4`, where the review page lists it.
 
+## Tutorials
+
+A tutorial follows the confirmed outline (`plan.video.intake.outline`): one step scene per step, in its order, with an optional opening and closing. Each step's brief says its number, what happens, whether its data change may be performed, and the motion level.
+
+- **Capture each step's states, not a recording.** For every step: the screen before the click, after it, and any field filled in, as full screenshots at 2× (`deviceScaleFactor: 2`), saved as `assets/steps/<NN>-before.png`, `<NN>-after.png`. Retry one step at a time; loading never goes on screen. Where the screens come from follows the brief: the signed-in product, HTML mockups (open them in the browser and click through their states), Figma, or the user's screenshots.
+  - Signed in with the user's own browser: through the browser extension, in their session.
+  - A demo account: a short Playwright script that signs in with `signIn()` from `plan/outline/signin.mjs` (it reads `<project>/.env` itself; never read, print or type the password yourself), then opens each step's address and captures it.
+  - **Changing data:** perform a step's change only when `mayChange(plan, i)` in `plan/outline/outline.mjs` says so, and only what the outline lists. Otherwise build the after state from the before state and the product's own components. Never delete or send anything.
+- **The step scene.** The full screen in its window; the cursor travels to the target and clicks (a ring) or types (a rebuilt field filling in `renderAt`); the part that changes lifts forward a little (never crop the screen); the after state settles; the caption is the headline, "Step 2 · Click Invite", in the headline band, and stays readable through the scene. Mark the click for the check (`data-click`, `data-click-at`, `data-cursor`): the cursor's tip is on the target at that moment.
+- **Hold to be followed.** Each step gives the caption time to be read, the click time to be seen and the result time to register; the pace targets for tutorials allow longer holds than a launch (they follow the motion level). Never rush a step to meet the length.
+- **Motion between scenes** (the brief says which):
+  - None: the scene transitions only (match, crossfade, zoom-through); the camera does not move; still the cursor, the click ring and the target zoom.
+  - Minimal (default): the camera glides from the last step's target to this one, so start the stage where the previous scene ended; the cursor carries across the cut from its last position (record it in `carry`); the step number counts or slides in.
+  - Full: as Minimal, plus interstitials (a kinetic title card naming the next section, a lifted UI part, a small animated diagram) as their own short scenes from the motion library, in the direction's style.
+- **Chapters** (a video past five minutes): build and check one chapter at a time, in order, then the joins and the whole video; `node plan/production/scene.mjs chapters <project>` cuts each chapter out of the finished video as its own file.
+
 ## The scene file
 
 - A `<style>`, the `<div id="root" data-composition-id="<id>" data-width="1920" data-height="1080" data-duration="<plan duration>">`, and one `<script>`. No `<template>`: the build wraps it and inlines the kit.

@@ -212,7 +212,7 @@ export function applyProposals(video, brand) {
   if (v.intake.look === null || v.intake.look === undefined) { if (p.look) { v.intake.look = { words: p.look, chips: [] }; v.intake.proposed.look = { value: p.look, why: why.look || 'proposed from the site\'s own look' }; } }
   // last-resort defaults so the step can continue; each is marked as proposed
   if (!v.template) set('template', 'launch');
-  if (!v.length_s) set('length_s', { launch: 30, 'feature-showcase': 60, 'feature-focus': 45, 'product-tour': 120, explainer: 90, milestone: 45, 'kinetic-type': 30, 'talking-head-recut': 60, ad: 10 }[v.template] || 30);
+  if (!v.length_s) set('length_s', { launch: 30, 'feature-showcase': 60, 'feature-focus': 45, 'product-tour': 120, explainer: 90, milestone: 45, 'kinetic-type': 30, 'talking-head-recut': 60, ad: 10, tutorial: 90 }[v.template] || 30);
   if (!v.narration) set('narration', v.template === 'launch' || v.template === 'ad' || v.template === 'kinetic-type' ? 'music-only' : 'voice');
   if (!v.copy.register) v.copy.register = 'balanced';
   v.intake.voice = { preference: 'none', source: 'built-in', ...(v.intake.voice || {}) };

@@ -16,16 +16,16 @@ import { z } from 'zod';
 // Vocabularies (knowledge base section 11; decisions D-36, D-45, D-49, D-55)
 // ---------------------------------------------------------------------------
 
-/** The nine templates. */
+/** The ten templates (tutorial: D-88). */
 export const TEMPLATES = /** @type {const} */ ([
   'launch', 'feature-showcase', 'feature-focus', 'product-tour', 'explainer',
-  'milestone', 'kinetic-type', 'talking-head-recut', 'ad',
+  'milestone', 'kinetic-type', 'talking-head-recut', 'ad', 'tutorial',
 ]);
 
-/** Story beats a scene can serve (user word: moment). */
+/** Story beats a scene can serve (user word: moment). `step`: one step of a tutorial (D-88). */
 export const BEATS = /** @type {const} */ ([
   'hook', 'problem', 'reveal', 'proof', 'breadth', 'feature', 'lifecycle',
-  'comparison', 'punchline', 'cta', 'close',
+  'comparison', 'punchline', 'cta', 'close', 'step',
 ]);
 
 /** The thirteen opening hooks (D-36). */

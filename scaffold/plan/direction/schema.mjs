@@ -115,6 +115,12 @@ export const TEMPLATE_SPINES = {
   ad: [
     { beat: 'hook', role: 'hook', cap: 8 }, { beat: 'proof', role: 'key_feature', cap: 6 }, { beat: 'cta', role: 'cta', cap: 6 },
   ],
+  // D-88: an optional opening (a hook or an opening message), one moment per step, an optional closing message or call
+  // to action; `optional` moments are left out when the brief says none (the step caption is "Step 2 · Click Invite")
+  tutorial: [
+    { beat: 'hook', role: 'hook', cap: 11, optional: true }, { beat: 'step', role: 'step', cap: 8, repeat: true },
+    { beat: 'close', role: 'cta', cap: 10, optional: true },
+  ],
 };
 
 /** Pace by energy (D-43's floor for high; softer positions below it). still_time_max is percent of runtime. */
@@ -129,6 +135,21 @@ export const PACE_BY_ENERGY = {
 export const BAND_NAMES = {
   launch: 'Launch', 'feature-showcase': 'Feature showcase', 'feature-focus': 'Feature focus', 'product-tour': 'Product tour',
   explainer: 'Explainer', milestone: 'Milestone / data story', 'kinetic-type': 'Kinetic type', 'talking-head-recut': 'Talking-head recut', ad: 'Ad',
+  tutorial: 'Tutorial',
+};
+
+/** D-88, D-90: tutorials have no measured references yet; their pace is set by the motion level between scenes. A step
+ * holds long enough to follow, so still time is allowed; with no motion between scenes only the transitions move. */
+export const TUTORIAL_PACE = {
+  none: { shots_per_min: [4, 10], median: 6, motion_per_s_min: 0.6, still_time_max: 30, longest_still_s_max: 4 },
+  minimal: { shots_per_min: [5, 12], median: 8, motion_per_s_min: 1.0, still_time_max: 20, longest_still_s_max: 3 },
+  full: { shots_per_min: [6, 14], median: 9, motion_per_s_min: 1.4, still_time_max: 12, longest_still_s_max: 2 },
+};
+export const MOTION_LEVELS = /** @type {const} */ (['none', 'minimal', 'full']);
+/** The motion level for a video: the brief's choice for a tutorial or explainer (D-90), Minimal by default. */
+export const motionLevel = (video) => {
+  const m = video?.intake?.motion_between;
+  return MOTION_LEVELS.includes(m) ? m : 'minimal';
 };
 
 /** Reading time for a line (doctrine TIMING): 0.3 s a word, 1.2 s floor, plus 0.4 s entrance and 0.2 s exit. */
@@ -421,7 +442,8 @@ export function toPlanDirection(d, ctx) {
     const f = ctx.fontsByRole?.[role] || ctx.fonts?.[family];
     return f ? { family, weight: f.weight, file: f.file, sizes: use } : { family, sizes: use };
   };
-  const pace = PACE_BY_ENERGY[d.energy] || PACE_BY_ENERGY.steady;
+  // a tutorial's motion and still time follow its motion level between scenes (D-90), not the direction's energy
+  const pace = ctx.video?.template === 'tutorial' ? TUTORIAL_PACE[motionLevel(ctx.video)] : (PACE_BY_ENERGY[d.energy] || PACE_BY_ENERGY.steady);
   return {
     chosen: ctx.letter,
     name: d.name,
@@ -449,7 +471,7 @@ export function toPlanDirection(d, ctx) {
     sketches: ctx.sketchesPath,
     banned: d.banned,
     ...(['fade-rise', 'scale-pop', 'mark-then-name', 'wipe-bar', 'flash-reveal', 'glint', 'none'].includes(d.logo_motion) ? { logo_motion: d.logo_motion } : {}),
-    ...(d.thumbnail && ['info', 'headline', 'product', 'versus', 'moment'].includes(d.thumbnail.layout) ? { thumbnail: { layout: d.thumbnail.layout, intro: d.thumbnail.intro === true, ...(String(d.thumbnail.title || '').trim() ? { title: String(d.thumbnail.title).trim().slice(0, 140) } : {}), ...(String(d.thumbnail.line || '').trim() ? { line: String(d.thumbnail.line).trim().slice(0, 200) } : {}) } } : {}),
+    ...(d.thumbnail && ['info', 'headline', 'product', 'versus', 'moment'].includes(d.thumbnail.layout) ? { thumbnail: { layout: d.thumbnail.layout, intro: d.thumbnail.intro === true, ...(String(d.thumbnail.title || '').trim() ? { title: String(d.thumbnail.title).trim().slice(0, 140) } : {}), ...(String(d.thumbnail.line || '').trim() ? { line: String(d.thumbnail.line).trim().slice(0, 200) } : {}), ...(/^[a-z0-9][a-z0-9-]{0,79}$/.test(String(d.thumbnail.screen || '')) ? { screen: String(d.thumbnail.screen) } : {}) } } : {}),
     cast: (Array.isArray(d.cast) && d.cast.length ? d.cast : castFromDirection(d, ctx?.video?.product)).map((c) => ({ name: String(c?.name || '').trim(), role: String(c?.role || '').trim() })).filter((c) => c.name && c.role).slice(0, 16),
     dials: d.dials,
     ...(d.video_style ? { video_style: d.video_style } : {}),

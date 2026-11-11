@@ -28,6 +28,8 @@ import { designerPass, kitCss, KIT_FILES } from './kit.mjs';
 import { finishFrame, sceneAssets, scratchHost } from './frames.mjs';
 import { Ledger, DEFAULT_MODEL } from './model.mjs';
 import { agentFetch, useProjectTasks, exitIfAwaiting } from '../agent.mjs';
+import { motionLevel } from '../direction/schema.mjs';
+import { mayChange } from '../outline/outline.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const node = (script, args) => spawnSync(process.execPath, [path.join(HERE, script), ...args], { stdio: 'inherit' }).status ?? 1;
@@ -44,6 +46,37 @@ function loadPlan(projectDir) {
 const bodyFile = (projectDir, id) => path.join(projectDir, 'production', 'scenes', `${id}.html`);
 const frameFile = (projectDir, id) => path.join(projectDir, 'compositions', 'frames', `${id}.html`);
 
+const MOTION_BRIEF = {
+  none: 'Motion between scenes: None (D-90). No camera move, no interstitial; the scene builds and clears with its transition only. The cursor, the click ring and a short zoom on the click target still play.',
+  minimal: 'Motion between scenes: Minimal (D-90). The camera glides from the previous step\'s target to this one (start where the last scene ended, then settle on the target); the cursor carries across the cut from where it last was; the step number animates in. The cursor, the click ring and a short zoom on the click target play.',
+  full: 'Motion between scenes: Full (D-90). As Minimal, and an interstitial (a kinetic title card, a lifted UI part, a small animated diagram) may sit between steps or sections as its own scene, in the direction\'s style. The cursor, the click ring and a short zoom on the click target play.',
+};
+
+/** D-88 to D-91: the tutorial lines of a scene's brief (its step, the click markers, the data change, the motion level);
+ * also the motion level for an explainer that has one. Empty for every other scene. */
+export function tutorialBriefLines(plan, s) {
+  const v = plan.video;
+  const motion = MOTION_BRIEF[motionLevel(v)];
+  if (v.template !== 'tutorial') return v.intake?.motion_between && v.template !== 'launch' ? [`- ${motion}`] : [];
+  const lines = [`- ${motion}`];
+  if (s.beat !== 'step') return lines;
+  const steps = plan.scenes.filter((x) => x.beat === 'step');
+  const n = steps.indexOf(s) + 1;
+  const o = v.intake?.outline;
+  const oSteps = o?.status === 'confirmed' ? o.moments.map((m, i) => ({ m, i })).filter((x) => x.m.beat === 'step') : [];
+  const om = oSteps[n - 1] || null;
+  lines.push(`- Tutorial step ${n} of ${steps.length}${om ? `: ${String(om.m.what).replace(/[.\s]+$/, '')}` : ''}. The headline is the caption and starts "Step ${n} · " with the action ("Step ${n} · Click Invite").`);
+  lines.push('- Show the full screen, the cursor travelling to the target, the click (a ring) or the typing, a short zoom on what changes (lift the part, never crop the screen), and the result. Hold long enough to follow: the caption read, the click seen, the result visible.');
+  lines.push('- Mark every click for the check: data-click="<what is clicked>" and data-click-at="<seconds into this scene>" on the target, data-cursor="1" (with data-decor="1") on the cursor; the cursor\'s tip (the top-left of its box) is on the target at that moment.');
+  if (om?.m.data_change) {
+    lines.push(om.m.rebuild || !mayChange(plan, om.i)
+      ? `- Changes data: ${om.m.data_change}. Not confirmed for the demo account: show the before and after states rebuilt from the screens; never perform it in the product.`
+      : `- Changes data: ${om.m.data_change}. Confirmed on the demo account: the capture may perform exactly this, nothing else.`);
+  }
+  if (om?.m.url) lines.push(`- Its screen: ${om.m.url}${om.m.sign_in ? ' (behind the sign-in)' : ''}.`);
+  return lines;
+}
+
 /** One brief per scene: what the plan asks, the assets with their pixel sizes, its neighbours and joins. */
 function writeBrief(projectDir, plan, i) {
   const s = plan.scenes[i];
@@ -59,6 +92,7 @@ function writeBrief(projectDir, plan, i) {
     `- In from ${prev ? `${prev.id} by a ${s.transition_in}` : 'nothing (the first scene: frame 0 shows the headline)'}; out to ${next ? `${next.id} by a ${next.transition_in}` : 'the end (fade to the ground in the last 0.25 s)'}.`,
     `- Headline "${s.copy.headline}"${s.copy.accent ? ` (accent: "${s.copy.accent}")` : ''}${s.copy.sub ? `; sub "${s.copy.sub}"` : ''}; at most ${s.copy.words_max} words. It must stay readable to ${s.reads.length ? s.reads.map((r) => `${r.to_s} s`).join(', ') : 'the end'} (each read window's end, less 0.1 s).`,
     `- Layout: ${s.layout}`,
+    ...tutorialBriefLines(plan, s),
     '- Content:', ...s.content.map((c) => `  - ${c}`),
     '- Motion:', ...s.motion.map((m) => `  - ${m.from_s}–${m.to_s} s: ${m.what}`),
     `- Numbers allowed on screen: ${s.numbers.length ? s.numbers.map((n) => `"${n.value}" (${n.cite})`).join('; ') : 'none'}. A counter may pass through lower values on its way.`,
@@ -238,10 +272,57 @@ Scenes: ${scenes.map((sc) => `${sc.id} ${sc.duration_s} s`).join(' · ')}
 Next: retime each scene's code to its new length (production/scenes/ holds the source scenes as the start), then build, look, check and joins on that folder, and whole (it goes to ${path.join(projectDir, 'out', `cut-${n}.mp4`)}).`);
 }
 
+/**
+ * D-93: the chapters of a long video, from the confirmed outline. When the scenes match the outline one to one, each
+ * scene takes its moment's chapter; otherwise the step scenes take the outline's steps in order, and a scene that is not
+ * a step joins the chapter of the step after it (an opening), or before it (a closing). Returns [{ name, start_s, end_s, scenes }].
+ */
+export function sceneChapters(plan) {
+  const o = plan.video.intake?.outline;
+  const ms = o?.status === 'confirmed' ? o.moments : [];
+  if (!ms.some((m) => m.chapter)) return [];
+  const scenes = plan.scenes;
+  let names;
+  if (ms.length === scenes.length) names = ms.map((m) => m.chapter);
+  else {
+    const stepCh = ms.filter((m) => m.beat === 'step').map((m) => m.chapter);
+    let k = 0;
+    names = scenes.map((s) => (s.beat === 'step' ? stepCh[k++] ?? null : null));
+    for (let i = 0; i < names.length; i++) if (!names[i]) names[i] = names.slice(i + 1).find(Boolean) || names.slice(0, i).reverse().find(Boolean) || null;
+  }
+  const out = [];
+  scenes.forEach((s, i) => {
+    const name = names[i] || 'Chapter';
+    const last = out[out.length - 1];
+    if (last && last.name === name) { last.end_s = s.start_s + s.duration_s; last.scenes.push(s.id); }
+    else out.push({ name, start_s: s.start_s, end_s: s.start_s + s.duration_s, scenes: [s.id] });
+  });
+  return out;
+}
+
+/** Cut each chapter out of out/video.mp4 into out/chapters/<NN>-<name>.mp4 (re-encoded, so every cut lands on its frame). */
+function chapters(projectDir) {
+  const plan = loadPlan(projectDir);
+  const list = sceneChapters(plan);
+  if (!list.length) { console.log('This video has no chapters (the outline sets them for a video past five minutes).'); return 0; }
+  const video = path.join(projectDir, 'out', 'video.mp4');
+  if (!fs.existsSync(video)) { console.error('Render the whole video first: node plan/production/scene.mjs whole <project>'); return 1; }
+  const dir = path.join(projectDir, 'out', 'chapters');
+  fs.mkdirSync(dir, { recursive: true });
+  const slug = (s) => String(s).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 50) || 'chapter';
+  for (const [i, c] of list.entries()) {
+    const out = path.join(dir, `${String(i + 1).padStart(2, '0')}-${slug(c.name)}.mp4`);
+    const r = spawnSync('ffmpeg', ['-v', 'error', '-y', '-ss', String(c.start_s), '-to', String(c.end_s), '-i', video, '-c:v', 'libx264', '-crf', '18', '-preset', 'medium', '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-b:a', '192k', '-movflags', '+faststart', out], { stdio: 'inherit' });
+    if (r.status !== 0) { console.error(`Could not cut chapter ${i + 1}`); return 1; }
+    console.log(`${String(i + 1).padStart(2, '0')} ${c.name}: ${(c.end_s - c.start_s).toFixed(1)} s → ${out}`);
+  }
+  return 0;
+}
+
 const isMain = process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
 if (isMain) {
   const [cmd, projectArg, arg3, arg4] = process.argv.slice(2);
-  if (!cmd || !projectArg) { console.error('usage: node plan/production/scene.mjs prepare|build|check|joins|whole|status|vertical|cut <project> [...]'); process.exit(2); }
+  if (!cmd || !projectArg) { console.error('usage: node plan/production/scene.mjs prepare|build|check|joins|whole|status|vertical|cut|chapters <project> [...]'); process.exit(2); }
   const projectDir = path.resolve(projectArg);
   (async () => {
     if (cmd === 'prepare') await prepare(projectDir);
@@ -261,6 +342,7 @@ if (isMain) {
     else if (cmd === 'status') status(projectDir);
     else if (cmd === 'vertical') makeVertical(projectDir);
     else if (cmd === 'cut') makeCut(projectDir, arg3, arg4);
+    else if (cmd === 'chapters') process.exitCode = chapters(projectDir);
     else { console.error(`unknown command ${cmd}`); process.exit(2); }
     // the saved dashboard follows production (scenes written, the whole video, the vertical version)
     if (cmd !== 'status') await import('../dashboard/build.mjs').then((m) => m.refreshDashboard(projectDir)).catch(() => {});

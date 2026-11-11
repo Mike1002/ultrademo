@@ -180,6 +180,7 @@ a.rv-btn{text-decoration:none;display:inline-block}
 .rv-learn{margin:16px 0 0;padding:14px 16px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}.rv-learn h3{margin:0 0 2px;font-size:16px}
 .rv-llist{list-style:none;margin:10px 0;padding:0;display:grid;gap:6px}.rv-llist li{display:grid;grid-template-columns:auto 120px minmax(0,1fr);gap:10px;align-items:center}
 .rv-llist .k{font:600 11px var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--text-muted)}.rv-llist input[type=text]{width:100%;font:inherit;font-size:14px;padding:5px 8px;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+.rv-thcard{display:grid;grid-template-columns:minmax(0,420px) minmax(0,1fr);gap:18px;padding:16px;margin-top:16px;align-items:start}.rv-thcard img{width:100%;height:auto;border-radius:8px;border:1px solid var(--line);display:block}.rv-thside h2{margin:0;font:700 18px var(--ud-body)}.rv-thadd{display:flex;gap:8px;margin-top:10px;align-items:flex-end}.rv-thadd textarea{flex:1;min-height:52px;font:inherit;font-size:14px;padding:8px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--text)}@media (max-width:760px){.rv-thcard{grid-template-columns:1fr}}
 .rv-thumbs{display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;margin:14px 0 0}.rv-thumb{display:flex;flex-direction:column;gap:4px;text-decoration:none;color:var(--text-muted);font-size:12px}.rv-thumb img{height:84px;width:auto;border-radius:6px;border:1px solid var(--line);display:block}
 .rv-next{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:14px 0 4px}
 .rv-llist li.off input[type=text]{color:var(--text-muted);text-decoration:line-through}.rv-lacts{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
@@ -280,6 +281,7 @@ a.rv-btn{text-decoration:none;display:inline-block}
    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:12px"><button class="rv-btn mark" id="rv-copyopen" title="Copy the open comments as text">Copy open</button><button class="rv-btn mark" id="rv-copy" title="Copy every comment as text">Copy all</button></div>
   </aside>
  </div>
+ ${thumbs.length ? `<section class="rv-card rv-thcard" aria-label="Thumbnail"><img src="/thumbs/${esc(thumbs.find((x) => /1280x720/.test(x)) || thumbs[0])}" alt="The thumbnail" id="rv-thimg"><div class="rv-thside"><h2>Thumbnail</h2><p class="rv-sub">The picture before the video plays. Ask for a change and it goes to Claude with your other comments.</p><ul class="rv-list" id="rv-thlist"></ul><div class="rv-thadd"><textarea id="rv-thtext" placeholder="e.g. Use the dashboard screen instead of the homepage; a bigger title"></textarea><button class="rv-btn dark" type="button" id="rv-thsave">Add</button></div></div></section>` : ''}
  <details class="rv-details"><summary>Details</summary><div>${tokens && (tokens.read || tokens.written) ? `<span>Made with about ${fmtK(tokens.read)} tokens read and ${fmtK(tokens.written)} written by Claude on your plan (estimated from ${tokens.tasks} tasks and the scene code; /cost in Claude Code shows the exact session use).</span>` : ''}${videoPath ? `<code>${esc(videoPath)}</code>` : ''}<span>Keyboard: <kbd>Space</kbd> play/pause · <kbd>N</kbd> new comment · <kbd>F</kbd> full screen · <kbd>M</kbd> markers · <kbd>[</kbd> <kbd>]</kbd> speed · <kbd>,</kbd> <kbd>.</kbd> one frame · <kbd>Esc</kbd> cancel</span></div></details>` : '<div class="rv-card rv-none">No finished video yet: render one with <code>node plan/production/scene.mjs whole &lt;project&gt;</code>.</div>'}
 </main>
 <script type="application/json" id="rv-data">${json(data)}</script>
@@ -609,10 +611,29 @@ function copyComments(btn, onlyOpen, label){
 }
 $('rv-copy').addEventListener('click', function(){ copyComments($('rv-copy'), false, 'Copy all'); });
 $('rv-copyopen').addEventListener('click', function(){ copyComments($('rv-copyopen'), true, 'Copy open'); });
+// ---- D-92: comments on the thumbnail (saved beside the video's; sent with them)
+(function(){
+  var list = document.getElementById('rv-thlist'); if (!list) return;
+  var notes = [];
+  function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function draw(){
+    list.innerHTML = notes.map(function(n){ var a = (n.thread || []).filter(function(m){ return m.by === 'agent'; }).pop(); return '<li class="rv-note' + (n.status === 'done' ? ' done' : '') + '"><div>' + (n.status === 'done' ? '✓ ' : '') + esc(n.text) + '</div>' + (a ? '<div class="rv-sub">Claude: ' + esc(a.text) + '</div>' : '') + '</li>'; }).join('');
+    window.__thOpen = notes.filter(function(n){ return n.status !== 'done'; }).length;
+    if (window.__updSend) window.__updSend();
+  }
+  function save(){ return fetch('/api/thumbnail-comments', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ comments: notes }) }).then(function(r){ return r.json(); }); }
+  fetch('/api/thumbnail-comments', { cache: 'no-store' }).then(function(r){ return r.json(); }).then(function(j){ notes = j.comments || []; draw(); });
+  document.getElementById('rv-thsave').addEventListener('click', function(){
+    var ta = document.getElementById('rv-thtext'), text = ta.value.trim(); if (!text) return;
+    notes.push({ id: 'th-' + Date.now().toString(36), t: 0, text: text, status: 'open', created: new Date().toISOString() });
+    ta.value = ''; draw(); save();
+  });
+})();
+
 // ---- send the open comments to Claude; follow the fix until a new version of the video is out
 (function(){
   var btn = $('rv-send'), stat = $('rv-sendstat'), sent = null, polling = false;
-  window.__updSend = function(open){ if (sent) return; btn.disabled = !open; btn.textContent = open ? 'Send to Claude to fix (' + open + ')' : 'Nothing open to send'; };
+  window.__updSend = function(open){ if (typeof open === 'number') window.__vOpen = open; if (sent) return; var all = (window.__vOpen || 0) + (window.__thOpen || 0); btn.disabled = !all; btn.textContent = all ? 'Send to Claude to fix (' + all + ')' : 'Nothing open to send'; };
   function hhmm(t){ var d = new Date(t); return ('0' + d.getHours()).slice(-2) + ':' + ('0' + d.getMinutes()).slice(-2); }
   function show(s){
     sent = s; btn.disabled = true; btn.textContent = 'Sent to Claude';
@@ -622,6 +643,7 @@ $('rv-copyopen').addEventListener('click', function(){ copyComments($('rv-copyop
   function poll(){
     fetch('/api/status?v=' + encodeURIComponent(D.video), { cache: 'no-store' }).then(function(r){ return r.json(); }).then(function(j){
       if (!sent) return;
+      if (j.video_mtime < sent.at && sent.thumbnail && j.thumb_mtime > sent.at && !(sent.open - sent.thumbnail)) { stat.innerHTML = '<b>The thumbnail is redrawn.</b> <button class="rv-btn primary" type="button" id="rv-reload">Load it</button>'; $('rv-reload').addEventListener('click', function(){ location.reload(); }); return; }
       if (j.video_mtime > sent.at) { stat.innerHTML = '<b>A new version is ready.</b> <button class="rv-btn primary" type="button" id="rv-reload">Load it</button>'; $('rv-reload').addEventListener('click', function(){ location.reload(); }); return; }
       if (!j.working && Date.now() - sent.at > 5 * 60 * 1000 && !stat.querySelector('.nudge')) {
         var n = el('div', 'nudge'); n.innerHTML = 'Claude has not started yet. Paste this into the Claude chat: <code>the comments are ready to fix</code> <button class="rv-btn" type="button">Copy</button>';

@@ -81,7 +81,10 @@ export function thumbContent({ projectDir, video = {}, direction = {}, beats = [
 }
 
 /** Render layouts × sizes to PNG files in outDir. look: from thumbLook. Returns the files. */
-export async function renderThumbs({ look, content, layouts = LAYOUTS.map((l) => l.id), sizes = [SIZES[0]], outDir, name = (l, s) => `${l}-${s.id}.png` }) {
+/** D-92: a video's own thumbnail changes, as CSS on top of the layout (written by the agent for an "Ask for a change"). */
+export const overrideCss = (projectDir) => { try { return fs.readFileSync(path.join(projectDir, 'thumbnail', 'override.css'), 'utf8').slice(0, 20000); } catch { return ''; } };
+
+export async function renderThumbs({ look, content, layouts = LAYOUTS.map((l) => l.id), sizes = [SIZES[0]], outDir, name = (l, s) => `${l}-${s.id}.png`, extraCss = '' }) {
   const { chromium } = await import('playwright');
   fs.mkdirSync(path.join(outDir, '_html'), { recursive: true });
   const faces = fontFaces(look, FONTS);
@@ -91,7 +94,7 @@ export async function renderThumbs({ look, content, layouts = LAYOUTS.map((l) =>
     const page = await browser.newPage();
     for (const layout of layouts) for (const size of sizes) {
       const html = path.join(outDir, '_html', `${layout}-${size.id}.html`);
-      fs.writeFileSync(html, thumbnailHtml({ layout, size, look, content, faces }));
+      fs.writeFileSync(html, thumbnailHtml({ layout, size, look, content, faces, extraCss }));
       await page.setViewportSize({ width: size.w, height: size.h });
       await page.goto(pathToFileURL(html).href);
       await page.evaluate(() => document.fonts.ready.then(() => true));
@@ -144,7 +147,7 @@ export async function finalThumbnails(projectDir) {
   const vertical = (plan.video.intake?.formats || []).includes('vertical') || fs.existsSync(path.join(projectDir, 'vertical', 'plan.json'));
   const sizes = [...SIZES, ...(vertical ? [TALL] : [])];
   const slug = path.basename(projectDir).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'video';
-  const files = await renderThumbs({ look: lookFor(projectDir, plan.direction), content, layouts: [layout], sizes, outDir, name: (l, s) => `${slug}-thumbnail-${s.w}x${s.h}.png` });
+  const files = await renderThumbs({ look: lookFor(projectDir, plan.direction), content, layouts: [layout], sizes, outDir, name: (l, s) => `${slug}-thumbnail-${s.w}x${s.h}.png`, extraCss: overrideCss(projectDir) });
   fs.rmSync(path.join(outDir, '_html'), { recursive: true, force: true });
   return files;
 }
@@ -159,7 +162,7 @@ export async function introFrame(projectDir) {
   const tmp = path.join(projectDir, 'production', 'thumbnail');
   const scenes = plan.scenes || [];
   const content = thumbContent({ projectDir, video: plan.video, direction: plan.direction, beats: scenes.map((s) => ({ beat: s.beat, copy: s.copy })) });
-  const [file] = await renderThumbs({ look: lookFor(projectDir, plan.direction), content, layouts: [t.layout], sizes: [{ id: 'intro', w, h }], outDir: tmp });
+  const [file] = await renderThumbs({ look: lookFor(projectDir, plan.direction), content, layouts: [t.layout], sizes: [{ id: 'intro', w, h }], outDir: tmp, extraCss: overrideCss(projectDir) });
   fs.mkdirSync(path.join(projectDir, 'assets'), { recursive: true });
   const out = path.join(projectDir, 'assets', 'thumbnail-intro.png');
   fs.copyFileSync(file, out);

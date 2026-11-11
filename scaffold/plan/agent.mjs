@@ -89,7 +89,10 @@ export function writeTask(dir, name, body) {
     ...(schema ? ['', '## Answer schema', '', '```json', JSON.stringify(schema, null, 1), '```'] : []),
     '',
   ].join('\n');
-  fs.writeFileSync(task, doc);
+  // the same request again (a re-run) leaves the file as it was, so an answer written after it still reads as newer
+  let same = false;
+  try { same = fs.readFileSync(task, 'utf8') === doc; } catch {}
+  if (!same) fs.writeFileSync(task, doc);
   return { task, answer, format };
 }
 
@@ -130,6 +133,8 @@ export function agentFetch(dir = process.env.ULTRADEMO_TASKS_DIR) {
     }
     // no bill per call (the agent is the model, on the user's own plan); the tokens are estimated from what it read and
     // wrote: about four characters a token, about 1,600 a picture
+    // the step used this answer: mark it newer than its task, so wait.mjs does not report the task as waiting
+    try { const now = new Date(); fs.utimesSync(answer, now, now); } catch {}
     const usage = estimateUsage(body, text);
     return new Response(JSON.stringify({
       id: `agent-${taskName(name)}`,

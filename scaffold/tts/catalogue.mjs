@@ -17,7 +17,8 @@ export const loadCatalogue = () => JSON.parse(fs.readFileSync(CATALOGUE_FILE, 'u
 export const ENV_FILE = path.join(HERE, '..', '.env');
 export const elevenlabsReady = (env = process.env, file = ENV_FILE) => {
   if (env.ELEVENLABS_API_KEY && String(env.ELEVENLABS_API_KEY).trim()) return true;
-  try { return /^ELEVENLABS_API_KEY=\s*\S+/m.test(fs.readFileSync(file, 'utf8')); } catch { return false; }
+  // [ \t]* and not \s*: \s would run past an empty line's end into the next line and count that as the key
+  try { return /^ELEVENLABS_API_KEY=[ \t]*\S/m.test(fs.readFileSync(file, 'utf8')); } catch { return false; }
 };
 
 // The free voices come in two sets (set up at install, or when a voice from a set is picked on the brief):

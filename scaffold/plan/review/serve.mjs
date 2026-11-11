@@ -27,6 +27,9 @@ const MAX_BODY = 200_000;
 const MAX_NOTES = 500;
 const MAX_TEXT = 2000;
 const VIDEO_NAME = /^[a-z0-9][a-z0-9-]*\.mp4$/;
+// D-92: the thumbnail's comments sit beside the videos' in comments.json and comments.md, under this name
+export const THUMB_KEY = 'thumbnail';
+const thumbsMtime = (projectDir) => { try { const d = path.join(projectDir, 'out', 'thumbnails'); return Math.max(0, ...fs.readdirSync(d).filter((n) => n.endsWith('.png')).map((n) => fs.statSync(path.join(d, n)).mtimeMs)); } catch { return 0; } };
 
 const send = (res, status, body, type = 'text/html; charset=utf-8') => {
   res.writeHead(status, { 'content-type': type, 'cache-control': 'no-store', 'x-content-type-options': 'nosniff', 'referrer-policy': 'no-referrer' });
@@ -133,7 +136,7 @@ function writeNotes(projectDir, video, notes, meta) {
     L.push(`## ${name} (${rec.comments.length} comment${rec.comments.length === 1 ? '' : 's'}, updated ${(rec.updated || '').slice(0, 16).replace('T', ' ')})`, '');
     for (const n of [...rec.comments].sort((a, b) => a.t - b.t)) {
       const where = n.box ? ` · box ${pct(n.box.x)},${pct(n.box.y)} ${pct(n.box.w)}×${pct(n.box.h)}` : n.pin ? ` · pin ${pct(n.pin.x)},${pct(n.pin.y)}` : '';
-      L.push(`- [${n.status === 'done' ? 'x' : ' '}] ${clock(n.t)}${n.scene ? ` · ${n.scene}` : ''}${where}${n.both ? ' · also the other format' : ''} — ${n.text.replace(/\n+/g, ' ')}`);
+      L.push(`- [${n.status === 'done' ? 'x' : ' '}] ${name === THUMB_KEY ? 'the thumbnail (fix it in direction.thumbnail or thumbnail/override.css, then node plan/thumbnail/render.mjs <project>)' : `${clock(n.t)}${n.scene ? ` · ${n.scene}` : ''}`}${where}${n.both ? ' · also the other format' : ''} — ${n.text.replace(/\n+/g, ' ')}`);
       for (const m of n.thread || []) L.push(`  - ${m.by === 'agent' ? 'agent' : 'follow-up'}: ${m.text.replace(/\n+/g, ' ')}`);
     }
     L.push('');
@@ -198,6 +201,7 @@ export function startServer({ projectDir, port = 4330, host = '127.0.0.1', brand
         const stale = Boolean(rec && meta && (rec.video_size !== meta.size || rec.video_mtime !== meta.mtime));
         return sendJson(res, 200, { ok: true, comments: rec?.comments || [], stale });
       }
+      if (req.method === 'GET' && url.pathname === '/api/thumbnail-comments') return sendJson(res, 200, { ok: true, comments: readNotes(projectDir)[THUMB_KEY]?.comments || [] });
       if (req.method === 'POST' && !sameOrigin(req)) return sendJson(res, 403, { ok: false, error: 'refused: the request came from another page' });
       if (req.method === 'GET' && url.pathname === '/api/status') {
         // where a sent batch of comments stands: sent, Claude at work (a scene or the loop log changed), a new version out
@@ -207,16 +211,20 @@ export function startServer({ projectDir, port = 4330, host = '127.0.0.1', brand
         const vfile = VIDEO_NAME.test(name) ? path.join(projectDir, 'out', name) : null;
         let working = false;
         if (sub) { try { working = mt(path.join(projectDir, 'production', 'loop-log.md')) > sub.at || fs.readdirSync(path.join(projectDir, 'production', 'scenes')).some((f) => mt(path.join(projectDir, 'production', 'scenes', f)) > sub.at); } catch {} }
-        return sendJson(res, 200, { ok: true, submitted: sub, working, video_mtime: vfile ? mt(vfile) : 0 });
+        return sendJson(res, 200, { ok: true, submitted: sub, working, video_mtime: vfile ? mt(vfile) : 0, thumb_mtime: thumbsMtime(projectDir) });
       }
       if (req.method === 'POST' && url.pathname === '/api/submit') {
         // the open comments go to Claude: the agent's `wait.mjs … comments` exits on this file
         const body = JSON.parse((await readBody(req)) || '{}');
         const name = String(body.video || '');
         if (!VIDEO_NAME.test(name)) return sendJson(res, 400, { ok: false, error: 'which video?' });
-        const open = (readNotes(projectDir)[name]?.comments || []).filter((n) => n.status !== 'done').length;
+        const all = readNotes(projectDir);
+        const openOf = (k) => (all[k]?.comments || []).filter((n) => n.status !== 'done').length;
+        // D-92: the thumbnail's open comments go with the video's
+        const thumbOpen = openOf(THUMB_KEY);
+        const open = openOf(name) + thumbOpen;
         if (!open) return sendJson(res, 400, { ok: false, error: 'no open comments to send' });
-        const info = { at: Date.now(), video: name, open };
+        const info = { at: Date.now(), video: name, open, thumbnail: thumbOpen };
         fs.mkdirSync(path.join(projectDir, 'review'), { recursive: true });
         fs.writeFileSync(path.join(projectDir, 'review', 'submitted.json'), JSON.stringify(info) + '\n');
         track('comments_sent', { video_type: projectProps(projectDir).video_type, comments: open });
@@ -296,6 +304,15 @@ export function startServer({ projectDir, port = 4330, host = '127.0.0.1', brand
         track('approved', { ...projectProps(projectDir), comments: Object.values(readNotes(projectDir)).reduce((a, v) => a + (v?.comments || []).length, 0), cut: false });
         console.log(`Video approved: ${path.join(projectDir, 'out', 'final', final)}${open ? ` (${open} comment${open === 1 ? '' : 's'} left open)` : ''}. Next: write the review lessons (review/lessons.json) for the Delivery card.`);
         return sendJson(res, 200, { ok: true, ...info });
+      }
+      // D-92: comments on the thumbnail (same shape and merge as a video's; the time is 0)
+      if (req.method === 'POST' && url.pathname === '/api/thumbnail-comments') {
+        if (!/^application\/json/.test(req.headers['content-type'] || '')) return sendJson(res, 415, { ok: false, error: 'JSON only' });
+        const body = JSON.parse((await readBody(req)) || '{}');
+        if (!Array.isArray(body.comments) || body.comments.length > 100) return sendJson(res, 400, { ok: false, error: 'comments must be a list' });
+        const notes = mergeNotes(readNotes(projectDir)[THUMB_KEY]?.comments || [], body.comments.map((n) => cleanNote({ ...n, t: 0 })).map((n) => ({ ...n, scene: 'thumbnail' })));
+        writeNotes(projectDir, THUMB_KEY, notes, { size: 0, mtime: 0 });
+        return sendJson(res, 200, { ok: true, saved: notes.length });
       }
       if (req.method === 'POST' && url.pathname === '/api/comments') {
         if (!/^application\/json/.test(req.headers['content-type'] || '')) return sendJson(res, 415, { ok: false, error: 'JSON only' });

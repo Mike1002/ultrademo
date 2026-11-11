@@ -11,7 +11,7 @@ import { cachedUpdate } from '../updates.mjs';
 import { telemetryOn } from '../telemetry.mjs';
 
 export const PROJECTS_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', '..', 'projects');
-export const STAGES = ['Brief', 'Direction', 'Production', 'Review', 'Delivery'];
+export const STAGES = ['Brief', 'Outline', 'Direction', 'Production', 'Review', 'Delivery'];
 const readJson = (f, fb = null) => { try { return JSON.parse(fs.readFileSync(f, 'utf8')); } catch { return fb; } };
 const mtime = (f) => { try { return fs.statSync(f).mtimeMs; } catch { return 0; } };
 const exists = (f) => fs.existsSync(f);
@@ -30,10 +30,13 @@ function lastActivity(dir) {
   return t;
 }
 
+// stages as STAGES above: 0 Brief, 1 Outline (D-91), 2 Direction, 3 Production, 4 Review, 5 Delivery
 function stageOf(dir, plan) {
-  if (readJson(path.join(dir, 'review', 'approved.json'))) return 4;
-  if (exists(path.join(dir, 'out', 'video.mp4'))) return 3;
-  if (exists(path.join(dir, 'direction', 'confirmed.json')) || plan.direction) return 2;
+  if (readJson(path.join(dir, 'review', 'approved.json'))) return 5;
+  if (exists(path.join(dir, 'out', 'video.mp4'))) return 4;
+  if (exists(path.join(dir, 'direction', 'confirmed.json')) || plan.direction) return 3;
+  // a video from before the outline step (no outline in its brief) goes straight on to the directions
+  if (plan.video?.intake?.outline?.status === 'confirmed' || (plan.video && !plan.video.intake?.outline && exists(path.join(dir, 'direction', 'proposals.json')))) return 2;
   if (plan.video) return 1;
   return 0;
 }
@@ -52,20 +55,26 @@ function stillOf(dir, plan) {
 }
 
 function noteOf(dir, plan, stage) {
-  if (stage === 4) { const a = readJson(path.join(dir, 'review', 'approved.json'), {}); return { text: `Approved ${String(a.at || '').slice(0, 10)} · ${a.final_vertical ? 'landscape and vertical files ready' : 'final file ready'}`, final: a.final ? path.join(dir, 'out', 'final', a.final) : null, finalVertical: a.final_vertical ? path.join(dir, 'out', 'final', a.final_vertical) : null }; }
-  if (stage === 3) {
+  if (stage === 5) { const a = readJson(path.join(dir, 'review', 'approved.json'), {}); return { text: `Approved ${String(a.at || '').slice(0, 10)} · ${a.final_vertical ? 'landscape and vertical files ready' : 'final file ready'}`, final: a.final ? path.join(dir, 'out', 'final', a.final) : null, finalVertical: a.final_vertical ? path.join(dir, 'out', 'final', a.final_vertical) : null }; }
+  if (stage === 4) {
     const notes = readJson(path.join(dir, 'review', 'comments.json'), {});
     const open = Object.values(notes || {}).flatMap((r) => r?.comments || []).filter((c) => c.status !== 'done').length;
     return { text: open ? `${open} comment${open === 1 ? '' : 's'} open` : 'Ready to review' };
   }
-  if (stage === 2) {
+  if (stage === 3) {
     const n = (plan.scenes || []).length, built = (plan.scenes || []).filter((s) => exists(path.join(dir, 'production', 'scenes', `${s.id}.html`))).length;
     return { text: n ? `Building: ${built} of ${n} scenes written` : 'Production starting' };
   }
-  if (stage === 1) {
+  if (stage === 2) {
     const p = readJson(path.join(dir, 'direction', 'proposals.json'));
     const n = (p?.directions || []).length;
     return { text: n ? `Pick a direction: ${n} waiting` : 'Claude is writing the directions' };
+  }
+  if (stage === 1) {
+    const o = plan.video?.intake?.outline;
+    if (!o) return { text: 'Claude is writing the outline' };
+    const changes = (o.moments || []).filter((m) => m.data_change).length;
+    return { text: `Check the outline: ${(o.moments || []).length} moments${changes ? `, ${changes} that change data` : ''}` };
   }
   return { text: 'Brief not saved yet' };
 }
@@ -90,8 +99,8 @@ export function collectDashboard({ projectsDir = PROJECTS_DIR, brandsDir = BRAND
     if (vplan && !approvedBoth) {
       const n = (vplan.scenes || []).length;
       const written = (vplan.scenes || []).filter((s) => exists(path.join(dir, 'vertical', 'production', 'scenes', `${s.id}.html`))).length;
-      if (exists(path.join(dir, 'out', 'video-vertical.mp4'))) { stage = 3; note = { ...note, text: 'Vertical version ready to review beside the landscape one' }; }
-      else { stage = 2; note = { ...note, text: written ? `Building the vertical version: ${written} of ${n} scenes written` : 'Setting up the vertical version' }; }
+      if (exists(path.join(dir, 'out', 'video-vertical.mp4'))) { stage = 4; note = { ...note, text: 'Vertical version ready to review beside the landscape one' }; }
+      else { stage = 3; note = { ...note, text: written ? `Building the vertical version: ${written} of ${n} scenes written` : 'Setting up the vertical version' }; }
     }
     const brand = v.url || v.product ? findBrandFor(v, brandsDir) : null;
     const pages = pagesOf(dir);

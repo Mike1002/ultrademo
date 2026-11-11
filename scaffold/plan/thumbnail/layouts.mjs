@@ -180,7 +180,7 @@ const logoImg = (content, hPx, extra = '') => content.logo ? `<img src="${conten
 
 /** One thumbnail page. content: { product, domain, logo, title, line, meta, hook:{text,accent}, headline:{text,accent},
  * pain, answer:{text,accent}, screen:{src,iw,ih,crop}, frame } (file:// urls). */
-export function thumbnailHtml({ layout, size, look, content, faces = '' }) {
+export function thumbnailHtml({ layout, size, look, content, faces = '', extraCss = '' }) {
   const { w: W, h: H } = size;
   const sq = W / H < 1.3;
   // 9:16 (a Shorts or Reels cover) reads on a phone: larger type than the square
@@ -235,6 +235,6 @@ export function thumbnailHtml({ layout, size, look, content, faces = '' }) {
 
   const bare = layout === 'moment' && (!sq || (H / W > 1.3 && content.frameTall));
   return `<!doctype html><html><head><meta charset="utf-8"><style>${faces}
-html,body{margin:0;padding:0}body{width:${W}px;height:${H}px;overflow:hidden;position:relative;background:${c.ground}}
-h1,h2{text-wrap:balance}</style></head><body>${bare ? '' : atmosphereLayers(look, W, H, u)}${body}</body></html>`;
+html,body{margin:0;padding:0}body{width:${W}px;height:${H}px;overflow:hidden;position:relative;background:${c.ground};font-family:'${look.fonts?.display || 'system-ui'}',system-ui,sans-serif;color:${c.ink}}
+h1,h2{text-wrap:balance}</style>${extraCss ? `<style>/* D-92: this video's own changes */\n${String(extraCss).replace(/<\/style/gi, '')}</style>` : ''}</head><body>${bare ? '' : atmosphereLayers(look, W, H, u)}${body}</body></html>`;
 }
