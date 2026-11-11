@@ -51,7 +51,7 @@ try {
 // 2. packages and browsers
 const QUIET = { HYPERFRAMES_NO_TELEMETRY: '1', DO_NOT_TRACK: '1', HYPERFRAMES_NO_UPDATE_CHECK: '1', HYPERFRAMES_NO_AUTO_INSTALL: '1' };
 const run = (cmd, a) => { const r = spawnSync(cmd, a, { cwd: HERE, stdio: 'inherit', env: { ...process.env, ...QUIET } }); if (r.status !== 0) fail(`${cmd} ${a.join(' ')} failed (see above).`); };
-const pkgsReady = fs.existsSync(path.join(HERE, 'node_modules', 'playwright')) && fs.existsSync(path.join(HERE, 'node_modules', 'hyperframes'));
+const pkgsReady = ['playwright', 'hyperframes', 'sharp'].every((p) => fs.existsSync(path.join(HERE, 'node_modules', p))); // sharp since 0.2.1 (uncursor.mjs)
 const chromiumReady = async () => {
   try { const { chromium } = await import(path.join(HERE, 'node_modules', 'playwright', 'index.mjs')); return fs.existsSync(chromium.executablePath()); } catch { return false; }
 };
