@@ -76,7 +76,8 @@ export function setTelemetry(on) {
 
 /** On unless the user switched it off here, or with ULTRADEMO_TELEMETRY=0 or DO_NOT_TRACK=1 (and never in CI). */
 export function telemetryOn() {
-  if (process.env.DO_NOT_TRACK === '1' || process.env.ULTRADEMO_TELEMETRY === '0' || process.env.CI) return false;
+  const dnt = 'ULTRADEMO_USER_DNT' in process.env ? process.env.ULTRADEMO_USER_DNT : process.env.DO_NOT_TRACK; // ignore the DO_NOT_TRACK the renderer setup adds
+  if (dnt === '1' || process.env.ULTRADEMO_TELEMETRY === '0' || process.env.CI) return false;
   return settings().telemetry !== false;
 }
 
@@ -139,5 +140,5 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
   if (cmd === 'on' || cmd === 'off') { setTelemetry(cmd === 'on'); console.log(`Usage statistics ${cmd}.`); }
   else if (cmd === 'reset') { const r = resetId(); console.log(`New install id made: what was sent before is no longer tied to this install. To have the earlier events deleted, email hello@ultrademo.net with the old id: ${r.old_id}`); }
   else if (cmd === 'show') { try { process.stdout.write(fs.readFileSync(LOG(), 'utf8')); } catch { console.log('Nothing recorded yet.'); } }
-  else console.log(`Usage statistics: ${telemetryOn() ? 'on' : 'off'}${process.env.DO_NOT_TRACK === '1' ? ' (DO_NOT_TRACK is set)' : ''}. Sent to: ${ENDPOINT || 'nowhere yet; events are kept in ' + LOG()}. See them: npm run telemetry -- show. Switch off: npm run telemetry -- off.`);
+  else console.log(`Usage statistics: ${telemetryOn() ? 'on' : 'off'}${(('ULTRADEMO_USER_DNT' in process.env) ? process.env.ULTRADEMO_USER_DNT : process.env.DO_NOT_TRACK) === '1' ? ' (DO_NOT_TRACK is set)' : ''}. Sent to: ${ENDPOINT || 'nowhere yet; events are kept in ' + LOG()}. See them: npm run telemetry -- show. Switch off: npm run telemetry -- off.`);
 }

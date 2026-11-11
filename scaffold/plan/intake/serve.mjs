@@ -24,6 +24,8 @@ import { refreshDashboard } from '../dashboard/build.mjs';
 import { track, projectProps } from '../telemetry.mjs';
 import { BRANDS_DIR, listBrands, findBrandFor, brandFromVideo, brandChanges, saveBrandProfile, brandForBrief } from '../brands.mjs';
 import { renderIntakePage, renderSavedPage, TEMPLATE_META, LABELS, ASSETS_DIR, musicTracks } from './page.mjs';
+import { CAPTION_CHOICES, defaultCaptionsFor } from '../captions/styles.mjs';
+import { previewFonts } from '../captions/captions.mjs';
 import { findVoice, defaultVoice, elevenlabsReady, voiceOptions, SAMPLES_DIR } from '../../tts/catalogue.mjs';
 
 const MAX_BODY = 1_000_000;        // bytes a POST may carry
@@ -241,6 +243,8 @@ export function buildVideo(brief, opts = {}) {
     opening: ['hook', 'message', 'none'].includes(str(tutIn.opening)) ? str(tutIn.opening) : '',
     closing: ['message', 'cta', 'none'].includes(str(tutIn.closing)) ? str(tutIn.closing) : '',
   }).filter(([, v]) => (Array.isArray(v) ? v.length : v))) : null;
+  // D-94: captions in the picture (a style, or none); a music-only video has nothing to caption
+  const caption_style = narration === 'music-only' ? 'none' : (CAPTION_CHOICES.includes(str(b.caption_style)) ? str(b.caption_style) : defaultCaptionsFor(video_type));
   const motion_between = (video_type === 'tutorial' || video_type === 'explainer') ? (['none', 'minimal', 'full'].includes(str(b.motion_between)) ? str(b.motion_between) : 'minimal') : null;
 
   const video = {
@@ -278,6 +282,7 @@ export function buildVideo(brief, opts = {}) {
       ...(video_type ? { video_type, scope, ...(feature ? { feature } : {}) } : {}),
       ...(tutorial ? { tutorial } : {}),
       ...(motion_between ? { motion_between } : {}),
+      caption_style,
       exact,
       effects,
       brand,
@@ -813,6 +818,14 @@ export function startServer(opts) {
       if (req.method === 'GET' && url.pathname.startsWith('/ui/')) return sendUi(res, url.pathname);
       if (req.method === 'GET' && url.pathname.startsWith('/voice-samples/')) return sendSample(res, url.pathname);
       if (req.method === 'GET' && url.pathname.startsWith('/music-samples/')) return sendSample(res, url.pathname, MUSIC_SAMPLES_DIR, '/music-samples/');
+      if (req.method === 'GET' && url.pathname.startsWith('/caption-fonts/')) {
+        // D-94: only the font files the caption styles use, by their exact name
+        const name = decodeURIComponent(url.pathname.slice('/caption-fonts/'.length));
+        const file = previewFonts().files.get(name);
+        if (!file || !/\.woff2$/.test(name)) return send(res, 404, 'not found', 'text/plain; charset=utf-8');
+        res.writeHead(200, { 'content-type': 'font/woff2', 'cache-control': 'max-age=86400', 'x-content-type-options': 'nosniff' });
+        return void fs.createReadStream(file).pipe(res);
+      }
       if (req.method === 'GET' && url.pathname === '/saved') {
         let plan = null;
         try { plan = readPlan(projectDir).plan; } catch { plan = null; }

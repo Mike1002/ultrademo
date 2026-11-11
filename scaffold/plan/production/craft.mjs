@@ -21,6 +21,8 @@ export const BLUEPRINTS_DIR = path.join(ROOT, 'research/motion-craft/2026-10-13-
 export const HYPERFRAMES = 'hyperframes@0.8.145';
 // HyperFrames runs pinned and quiet: no usage telemetry, no update check, no background self-install (it would replace
 // the pinned version). Set here so every renderer call inherits it.
+// the user's own DO_NOT_TRACK, kept before it is set here to quiet the renderer, so Ultrademo's usage statistics follow the user, not this line
+if (!('ULTRADEMO_USER_DNT' in process.env)) process.env.ULTRADEMO_USER_DNT = process.env.DO_NOT_TRACK ?? '';
 for (const k of ['HYPERFRAMES_NO_TELEMETRY', 'DO_NOT_TRACK', 'HYPERFRAMES_NO_UPDATE_CHECK', 'HYPERFRAMES_NO_AUTO_INSTALL']) process.env[k] ??= '1';
 
 

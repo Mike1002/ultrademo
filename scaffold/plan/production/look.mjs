@@ -9,6 +9,7 @@ import path from 'node:path';
 import { createRequire } from 'node:module';
 import { probePage } from './render.mjs';
 import { spawnSync } from 'node:child_process';
+import { CAPTION_BAND, CAPTION_CHOICES } from '../captions/styles.mjs';
 
 const require = createRequire(path.resolve('package.json'));
 const { chromium } = require('playwright');
@@ -44,6 +45,11 @@ for (const t of times) {
   await p.screenshot({ path: file });
   shots.push(file);
 }
+// D-94: with burned-in captions, the caption band stays free of the scene's content (product, text, images): sampled on a
+// grid of points every 0.1 s; whatever is on top at a point, unless it is the ground or decoration, is in the band
+const capStyle = CAPTION_CHOICES.includes(plan.video.intake?.caption_style) ? plan.video.intake.caption_style : 'none';
+const bandFr = capStyle !== 'none' ? CAPTION_BAND[cv.H > cv.W ? 'vertical' : 'landscape'] : null;
+const band = {};
 const boxTimes = [];
 for (let t = 0.05; t < scene.duration_s; t += 0.1) boxTimes.push(Math.round(t * 100) / 100);
 if (wantBoxes) for (const t of boxTimes) {
@@ -60,6 +66,39 @@ if (wantBoxes) for (const t of boxTimes) {
       return out;
     });
   }
+  if (bandFr) band[t] = await p.evaluate(([W, H, f]) => {
+    const y0 = Math.round(H * f[0]) + 2, y1 = Math.round(H * f[1]) - 2;
+    const hits = new Map();
+    // the ground, decoration and the page itself are not content; anything else on top at a point is
+    const quiet = (el) => {
+      if (el.id === 'root' || el.tagName === 'BODY' || el.tagName === 'HTML') return true;
+      for (let e = el; e && e.nodeType === 1 && e.id !== 'root'; e = e.parentElement) {
+        if (e.hasAttribute('data-decor') || /(^|\s)ground(__[\w-]+)?(\s|$)/.test(typeof e.className === 'string' ? e.className : '')) return true;
+      }
+      return false;
+    };
+    // an element shows something at that point: a picture, its own text, a fill, a border or a shadow (an empty wrapper does not)
+    const alpha = (c) => { const m = String(c).match(/rgba?\(([^)]+)\)/); if (!m) return c === 'transparent' ? 0 : 1; const p = m[1].split(/[ ,/]+/).filter(Boolean); return p.length > 3 ? parseFloat(p[3]) : 1; };
+    const shown = (el) => { let o = 1; for (let e = el; e && e.nodeType === 1; e = e.parentElement) { const c = getComputedStyle(e); if (c.visibility === 'hidden' || c.display === 'none') return 0; o *= Number(c.opacity); } return o; };
+    const paints = (el) => {
+      if (shown(el) < 0.05) return false; // faded out, here or in a parent
+      if (/^(IMG|SVG|VIDEO|CANVAS)$/i.test(el.tagName) || el instanceof SVGElement) return true;
+      if ([...el.childNodes].some((n) => n.nodeType === 3 && n.textContent.trim())) return true;
+      const cs = getComputedStyle(el);
+      if (Number(cs.opacity) < 0.05) return false;
+      const r = el.getBoundingClientRect();
+      if (r.width >= W * 0.9 && r.height >= H * 0.9) return false; // a full-frame backdrop is the ground, not content
+      return alpha(cs.backgroundColor) > 0.06 || (cs.backgroundImage && cs.backgroundImage !== 'none') || (cs.boxShadow && cs.boxShadow !== 'none') || ['Top', 'Right', 'Bottom', 'Left'].some((k) => parseFloat(cs[`border${k}Width`]) >= 1 && alpha(cs[`border${k}Color`]) > 0.12);
+    };
+    for (let y = y0; y <= y1; y += Math.max(12, Math.round((y1 - y0) / 8))) for (let x = 24; x < W - 24; x += 40) {
+      const top = document.elementsFromPoint(x, y).find((el) => !quiet(el) && paints(el));
+      if (!top) continue;
+      const host = top.closest('[data-look],[data-product]') || top;
+      const name = host.dataset?.look || (host.dataset?.product ? 'product' : (host.id || host.tagName.toLowerCase()));
+      hits.set(name, (hits.get(name) || 0) + 1);
+    }
+    return [...hits.entries()].map(([id, n]) => ({ id, n }));
+  }, [cv.W, cv.H, bandFr]);
 }
 await browser.close();
 
@@ -86,8 +125,12 @@ if (wantBoxes) {
       if (ix * iy > 0 && !inside(a, c) && !inside(c, a)) note(`overlap:${a.id}|${c.id}`, t, `"${a.id}" and "${c.id}" overlap (${ix}x${iy} px at ${t} s)`);
     }
   }
-  const findings = [...spans.values()].map((r) => `${r.from.toFixed(2)}–${r.to.toFixed(2)} s: ${r.text}`);
-  fs.writeFileSync(path.join(outDir, `${scene.id}-boxes.json`), JSON.stringify({ step_s: 0.1, boxes, findings }, null, 1));
+  // the caption band: content in it for more than two samples running is a finding (a passing glide is let through)
+  const bandSpans = new Map();
+  for (const [ts, hs] of Object.entries(band)) for (const h of hs) { const r = bandSpans.get(h.id) || { from: Number(ts), to: Number(ts), n: 0 }; r.from = Math.min(r.from, Number(ts)); r.to = Math.max(r.to, Number(ts)); r.n++; bandSpans.set(h.id, r); }
+  const bandFindings = [...bandSpans.entries()].filter(([, r]) => r.n > 2).map(([id, r]) => `${r.from.toFixed(2)}–${r.to.toFixed(2)} s: "${id}" is in the caption band (${cv.H > cv.W ? `from ${Math.round(bandFr[0] * 100)}% to ${Math.round(bandFr[1] * 100)}% of the frame's height, above the platform buttons` : `the bottom ${Math.round((1 - bandFr[0]) * 100)}% of the frame`}), where the burned-in captions go`);
+  const findings = [...spans.values()].map((r) => `${r.from.toFixed(2)}–${r.to.toFixed(2)} s: ${r.text}`).concat(bandFindings);
+  fs.writeFileSync(path.join(outDir, `${scene.id}-boxes.json`), JSON.stringify({ step_s: 0.1, boxes, findings, ...(bandFr ? { caption_band: bandFindings } : {}) }, null, 1));
   console.log(findings.length ? findings.join('\n') : `no overlaps or edge crowding among labelled elements (${boxTimes.length} times, every 0.1 s)`);
 }
 console.log(path.join(outDir, `${scene.id}-strip.jpg`));

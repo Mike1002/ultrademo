@@ -16,6 +16,7 @@ https://github.com/user-attachments/assets/b198ca47-1d43-44b1-b622-6d1d4b60afaf
 - **Tutorials** step by step: an area of the product, a use case end to end, or one feature, with the cursor on every click and a numbered caption per step. Motion between steps from none to full, and long videos built in chapters.
 - **Landscape, vertical or both.** The vertical version is laid out again for the tall frame, not cropped.
 - **Short cuts** of 15 or 30 seconds for social posts, and **thumbnails** in every common size; ask for a change to the thumbnail like any other comment.
+- **Captions**: every narrated video comes with an .srt and a .vtt caption file, and you can burn captions into the picture in one of ten styles (from calm subtitles to word-by-word highlights). Example inputs typed into your product show in their own colour.
 - **Narration or music only**, with sound effects on the moments that matter. There are free voices, plus paid voices if you bring your own ElevenLabs key.
 - **A review page**: click a moment in the video, draw a box on the frame, write what to change. Your agent fixes it, marks it done and tells you what changed.
 - **A dashboard** of your videos, your saved brands and what the agent has learned about each brand, so the next video starts closer.

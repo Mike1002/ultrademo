@@ -157,8 +157,11 @@ export function assembleIndex({ plan, projectDir, voices = [], music = null }) {
   if (music?.path) {
     audio.push(`  <audio id="bgm" src="${music.path}" data-start="0" data-duration="${total}" data-track-index="60" data-volume="${music.volume ?? (voices.length ? 0.18 : 0.6)}"${music.usable_from_s ? ` data-media-start="${music.usable_from_s}"` : ''}></audio>`);
   }
-  const html = hostHtml({ clips, duration: total, ground: paletteValue(plan.direction.palette.ground), width, height, fps: plan.video.fps, transitions, audio: audio.join('\n'), scripts });
+  // D-94: burned-in captions, a layer over the whole video (plan/captions/captions.mjs writes it when the brief chose a style)
+  const overlays = fs.existsSync(path.join(projectDir, 'compositions', 'frames', 'captions.html')) ? [{ id: 'captions', track: 40 }] : [];
+  if (overlays.length) setFrameDuration(path.join(projectDir, 'compositions', 'frames', 'captions.html'), total);
+  const html = hostHtml({ clips, duration: total, ground: paletteValue(plan.direction.palette.ground), width, height, fps: plan.video.fps, transitions, audio: audio.join('\n'), scripts, overlays });
   fs.writeFileSync(path.join(projectDir, 'index.html'), html);
   fs.writeFileSync(path.join(projectDir, 'hyperframes.json'), JSON.stringify({ paths: { blocks: 'compositions', components: 'compositions/components', assets: 'assets' }, media: { autoProxy: false } }) + '\n');
-  return { file: path.join(projectDir, 'index.html'), clips, boundaries, overlap, shader, shaderCount, total };
+  return { file: path.join(projectDir, 'index.html'), clips, boundaries, overlap, shader, shaderCount, total, captions: overlays.length > 0 };
 }

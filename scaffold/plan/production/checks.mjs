@@ -18,6 +18,7 @@ import { decodeFrames, meanAbsDiff, changedFraction, contentFraction, STILL_CHAN
 import { countWords } from '../schema.mjs';
 import { BAND_NAMES, TUTORIAL_PACE, motionLevel } from '../direction/schema.mjs';
 import { ROOT } from './craft.mjs';
+import { CAPTION_CHOICES } from '../captions/styles.mjs';
 import { probeVideo, probePage, eventTimes } from './render.mjs';
 import { measureLoudness, MIX_TARGET_LUFS, TRUE_PEAK_DBTP } from './audio.mjs';
 import { sceneComposition, transitionCollisions, pixelComposition } from './composition.mjs';
@@ -374,6 +375,16 @@ export function runChecks({ plan, projectDir, outDir, probes = {}, composition =
       measured.overlays_inside = outside.length === 0;
       add('overlays', outside.length ? 'fail' : 'pass', outside.length ? `text outside the canvas: ${outside.slice(0, 3).join('; ')}${outside.length > 3 ? ` and ${outside.length - 3} more` : ''}` : `every text box stays inside ${canvasOf(plan).label} at every event frame`);
       if (outside.length) hard.push('text outside the canvas');
+      // D-94: with burned-in captions the scene keeps the caption band free (look.mjs samples it at every build)
+      if (CAPTION_CHOICES.includes(plan.video.intake?.caption_style) && plan.video.intake.caption_style !== 'none' && projectDir) {
+        let band = null;
+        try { band = JSON.parse(fs.readFileSync(path.join(projectDir, 'production', 'look', `${s.id}-boxes.json`), 'utf8')).caption_band ?? null; } catch { /* not built with boxes */ }
+        if (band === null) add('captionBand', 'warn', 'the caption band was not measured: build the scene again');
+        else {
+          add('captionBand', band.length ? 'fail' : 'pass', band.length ? band.slice(0, 3).join('; ') : 'the caption band stays free for the burned-in captions');
+          if (band.length) hard.push('content in the caption band');
+        }
+      }
       // numbers
       const seen = new Map();
       // D-74: numbers inside a product part (data-product) are example data in the product's own UI, free to write; they are

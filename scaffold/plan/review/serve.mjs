@@ -291,6 +291,8 @@ export function startServer({ projectDir, port = 4330, host = '127.0.0.1', brand
           if (mux.status !== 0) return sendJson(res, 500, { ok: false, error: `Could not give the vertical video the approved soundtrack: ${(mux.stderr || '').slice(0, 300)}` });
         } else if (finalVertical) fs.copyFileSync(out(V), path.join(projectDir, 'out', 'final', finalVertical));
         fs.copyFileSync(out(main), path.join(projectDir, 'out', 'final', final));
+        // D-94: the caption files go with the final video, under the same name
+        for (const ext of ['srt', 'vtt']) if (fs.existsSync(out(`captions.${ext}`))) fs.copyFileSync(out(`captions.${ext}`), path.join(projectDir, 'out', 'final', final.replace(/\.mp4$/, `.${ext}`)));
         const probe = spawnSync('ffprobe', ['-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', path.join(projectDir, 'out', 'final', final)], { encoding: 'utf8' });
         const cutNames = fs.readdirSync(path.join(projectDir, 'out')).filter((f) => /^cut-\d+\.mp4$/.test(f)).sort();
         const cutFinals = cutNames.map((c) => ({ video: c, final: approveCut(c) }));

@@ -4,6 +4,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { assembleIndex } from './assemble.mjs';
+import { buildCaptions } from '../captions/captions.mjs';
 import { renderProject } from './render.mjs';
 import { mixAudio, musicFor, sceneCues } from './audio.mjs';
 import { spawnSync } from 'node:child_process';
@@ -16,6 +17,11 @@ const scenes = plan.scenes.map((s) => { const n = { ...s, start_s: t }; t = Math
 const full = { ...plan, scenes };
 const music = musicFor(plan.direction, projectDir);
 if (music?.abs && !music.own) { fs.mkdirSync(path.join(projectDir, 'assets', 'music'), { recursive: true }); fs.copyFileSync(music.abs, path.join(projectDir, 'assets', 'music', music.file)); }
+// D-94: word timings, the caption files and (when the brief chose a style) the burned-in captions layer
+try {
+  const cap = await buildCaptions(projectDir, full);
+  console.log(cap.files ? `captions: ${cap.cues} caption(s) (${cap.timing} timings) in out/captions.srt and .vtt${cap.layer ? `; burned in as ${cap.style}` : ''}` : `captions: none (${cap.reason})`);
+} catch (e) { console.log(`captions: not made (${e.message})`); }
 const a = assembleIndex({ plan: full, projectDir, voices: [], music: null });
 console.log(`assembled ${a.clips.length} scenes, ${a.boundaries.length} overlapping transition(s), ${a.total} s`);
 const outDir = path.join(projectDir, 'out');

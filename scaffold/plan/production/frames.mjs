@@ -246,7 +246,7 @@ export function setFrameDuration(file, duration) {
 // The scratch host: one scene mounted alone, for lint, check and the scene render
 // ---------------------------------------------------------------------------
 
-export function hostHtml({ clips, duration, ground, width = 1920, height = 1080, fps = 30, transitions = '', audio = '', scripts = '' }) {
+export function hostHtml({ clips, duration, ground, width = 1920, height = 1080, fps = 30, transitions = '', audio = '', scripts = '', overlays = [] }) {
   return `<!doctype html>
 <html lang="en">
 <head>
@@ -260,12 +260,14 @@ export function hostHtml({ clips, duration, ground, width = 1920, height = 1080,
   #root { position: relative; width: ${width}px; height: ${height}px; overflow: hidden; background: ${ground}; }
   .scene { position: absolute; inset: 0; width: 100%; height: 100%; background-color: ${ground}; will-change: transform, opacity, filter; }
   #ground { position: absolute; inset: 0; background: ${ground}; }
+  .overlay { position: absolute; inset: 0; width: 100%; height: 100%; background: transparent; pointer-events: none; }
 </style>
 </head>
 <body>
 <div id="root" data-composition-id="main" data-start="0" data-duration="${r3(duration)}" data-width="${width}" data-height="${height}" data-fps="${fps}">
   <div id="ground" class="clip" data-start="0" data-duration="${r3(duration)}" data-track-index="0"></div>
 ${clips.map((c) => `  <div id="el-${c.id}" class="scene" data-composition-id="${c.id}" data-composition-src="compositions/frames/${c.id}.html" data-start="${r3(c.start)}" data-duration="${r3(c.duration)}" data-track-index="${c.track}"></div>`).join('\n')}
+${overlays.map((o) => `  <div id="el-${o.id}" class="overlay" data-composition-id="${o.id}" data-composition-src="compositions/frames/${o.id}.html" data-start="0" data-duration="${r3(duration)}" data-track-index="${o.track || 40}"></div>`).join('\n')}
 ${audio}
 </div>
 <script>

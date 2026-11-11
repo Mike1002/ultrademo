@@ -7,6 +7,8 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { voiceOptions, loadCatalogue, findVoice } from '../../tts/catalogue.mjs';
 import { THEME_TOGGLE } from '../ui/theme.mjs';
+import { STYLES as CAPTION_STYLES, ENGINE_JS as CAPTION_ENGINE, styleCss as captionCss, DEFAULT_CAPTIONS } from '../captions/styles.mjs';
+import { previewFontCss, fontFor as captionFontFor } from '../captions/captions.mjs';
 
 const e = (v) => String(v ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const jsonForScript = (obj) => JSON.stringify(obj ?? null).replace(/</g, '\\u003c').replace(/\u2028/g, '\\u2028').replace(/\u2029/g, '\\u2029');
@@ -458,6 +460,27 @@ ${sample ? '<div class="notice"><b>Static preview.</b> Sample values, no server:
     <div class="lab"><span class="l">Format</span><span class="hint">vertical is for Shorts, Reels and TikTok</span></div>
     <div class="opts three">${[['landscape', 'Landscape', '16:9, for YouTube, your site and decks'], ['vertical', 'Vertical', '9:16, for phones'], ['both', 'Both', 'one video, laid out again for 9:16: close to twice the scene-building work']].map(([v, l, d]) => `<label class="opt"><input type="radio" name="formats" value="${v}"><div><b>${l}</b><span>${d}</span></div></label>`).join('')}</div>
   </div>
+  <div class="field" data-field="caption_style" id="captions-field">
+    <div class="lab"><span class="l">Captions</span><span class="hint">every narrated video also comes with a caption file (.srt and .vtt) for YouTube, LinkedIn and X; these are captions in the picture itself</span></div>
+    <style>
+${previewFontCss('/caption-fonts/')}
+${CAPTION_STYLES.map((cs) => captionCss(cs.id, { family: () => captionFontFor(cs), accent: '#45792a' })).join('\n')}
+.capwrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:820px){.capwrap{grid-template-columns:1fr}}
+.capopts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.capopts .opt span{font-size:12.5px}
+.capprev{position:sticky;top:12px}
+.capstage{position:relative;width:100%;aspect-ratio:16/9;border-radius:10px;overflow:hidden;background:linear-gradient(160deg,#eef1ec,#dfe6dc);container-type:size;border:1px solid #dfe2e8}
+.capstage .capwin{position:absolute;left:9%;top:12%;width:82%;height:76%;border-radius:1.6cqh;background:#fff;box-shadow:0 2cqh 5cqh rgba(0,0,0,.12)}
+.capstage .capwin:before{content:"";position:absolute;left:0;top:0;bottom:0;width:22%;background:#3f6f27;border-radius:1.6cqh 0 0 1.6cqh}
+.capstage .capwin:after{content:"";position:absolute;left:28%;top:10%;width:40%;height:6%;border-radius:1cqh;background:#e5e9e2;box-shadow:0 9cqh 0 #eef1ec,0 16cqh 0 #eef1ec,0 23cqh 0 #eef1ec}
+    </style>
+    <div class="capwrap">
+      <div class="capopts">${[['none', 'None', 'no captions in the picture; the caption file still comes with it'], ...CAPTION_STYLES.map((cs) => [cs.id, cs.name, cs.desc])].map(([v, l, d]) => `<label class="opt"><input type="radio" name="caption_style" value="${v}"><div><b>${e(l)}</b><span>${e(d)}</span></div></label>`).join('')}</div>
+      <div class="capprev"><div class="capstage"><div class="capwin"></div><div id="cap-root" class="s-none"><div class="cap"></div></div></div>
+      <div class="small muted" style="margin-top:6px">A sample line. The example input in it, <b>Spring launch</b>, takes the style's highlight colour, as the sample data typed into your product will. The scenes keep the bottom of the frame free for the captions.</div></div>
+    </div>
+  </div>
   <div class="field" data-field="cut">
     <div class="lab"><span class="l">Social cut</span><span class="hint">a short version from the same scenes, after the video</span></div>
     <div class="opts three">${[['', 'None', 'just the video'], ['15', '15 seconds', 'the hook, the reveal and the call to action'], ['30', '30 seconds', 'the hook, a proof or two and the call to action']].map(([v, l, d]) => `<label class="opt"><input type="radio" name="cut" value="${v}"${v === '' ? ' checked' : ''}><div><b>${l}</b><span>${d}. Music and on-screen words, no narration; vertical when the video has a vertical version.</span></div></label>`).join('')}</div>
@@ -726,6 +749,23 @@ window.__SAMPLE__ = ${sample ? 'true' : 'false'};
   }
   if ($('#f-title')) $('#f-title').addEventListener('input', proposeName);
   $$('input[name="video_type"]').forEach(function(r){ r.addEventListener('change', function(){ suggestLength(); proposeName(); }); });
+  // D-94: captions in the picture; a live preview of the chosen style on a sample line, the default per video type
+  ${CAPTION_ENGINE}
+  var CAP_STYLES = ${JSON.stringify(Object.fromEntries(CAPTION_STYLES.map((cs) => [cs.id, { id: cs.id, group: cs.group }])))};
+  var CAP_DEFAULTS = ${JSON.stringify(DEFAULT_CAPTIONS)};
+  var capTouched = false, capGroups = null, capCur = 'none';
+  var CAP_TEXT = "Name it something you'll recognise, like Spring launch, then press Create.".split(' ');
+  var CAP_WORDS = (function(){ var at = 0.4, out = []; CAP_TEXT.forEach(function(w){ var d = 0.12 + w.replace(/[^A-Za-z]/g,'').length * 0.055 + (/[.,]$/.test(w) ? 0.18 : 0); out.push({ text: w, start: at, end: at + d - (/[.,]$/.test(w) ? 0.15 : 0.02), lit: w === 'Spring' || w === 'launch,' }); at += d; }); return out; })();
+  var capRoot = $('#cap-root'), capEl = capRoot ? capRoot.querySelector('.cap') : null;
+  function capSet(id){ capCur = id; if (!capRoot) return; capRoot.className = 's-' + id; capEl.innerHTML = ''; capEl._k = null; capGroups = CAP_STYLES[id] ? window.CAPTIONS.groups(CAP_WORDS, CAP_STYLES[id].group) : null; }
+  function capTick(){ if (capGroups && !$('#captions-field').hidden) window.CAPTIONS.render(CAP_STYLES[capCur], capEl, (performance.now() / 1000) % 7.5, capGroups); requestAnimationFrame(capTick); }
+  $$('input[name="caption_style"]').forEach(function(r){ r.addEventListener('change', function(ev){ if (ev.isTrusted) capTouched = true; capSet(r.value); }); });
+  $$('input[name="video_type"]').forEach(function(r){ r.addEventListener('change', function(){ if (!capTouched) setRadio('caption_style', CAP_DEFAULTS[radio('video_type')] || 'none'); }); });
+  function captionsBranch(){ $('#captions-field').hidden = radio('narration') === 'music-only'; }
+  $$('input[name="narration"]').forEach(function(r){ r.addEventListener('change', captionsBranch); });
+  if (!radio('caption_style')) setRadio('caption_style', 'none');
+  captionsBranch(); requestAnimationFrame(capTick);
+
   $('#f-product').addEventListener('input', proposeName);
 
   // ---- look chips
@@ -1011,6 +1051,7 @@ window.__SAMPLE__ = ${sample ? 'true' : 'false'};
       notes: $('#f-notes').value.trim(),
       length_fit: radio('length_fit') || 'about',
       formats: radio('formats') || '',
+      caption_style: radio('narration') === 'music-only' ? 'none' : (radio('caption_style') || 'none'),
       cut: radio('cut') || '',
       brand: { logo: $('#f-logo').value, colors: { brand: $('#f-col-brand').value, accent: $('#f-col-accent').value, ground: $('#f-col-ground').value, ink: $('#f-col-ink').value }, fonts: { display: $('#f-font-display').value.trim(), body: $('#f-font-body').value.trim() } },
       length_s: isUnsure('length_s') ? null : (lengthEl.value === '' ? null : Number(lengthEl.value)),
@@ -1102,6 +1143,7 @@ window.__SAMPLE__ = ${sample ? 'true' : 'false'};
       if (tu.closing) { setRadio('tut_closing', tu.closing); tutTouched.closing = true; }
     }
     if (itp.motion_between) setRadio('motion_between', itp.motion_between);
+    if (itp.caption_style) { setRadio('caption_style', itp.caption_style); capTouched = true; }
     if (itp.exact) { $('#f-tagline').value = itp.exact.tagline || ''; $('#f-exact_lines').value = (itp.exact.lines || []).join('\\n'); }
     if (itp.effects) setRadio('effects', itp.effects);
     if (itp.notes) $('#f-notes').value = itp.notes;

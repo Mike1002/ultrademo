@@ -923,6 +923,84 @@
      "src": "https://fonts.gstatic.com/s/geistmono/v6/or3nQ6H-1_WfwkMZI_qYFrcdmhHkjko.woff2"
     }
    ]
+  },
+  "DM Sans": {
+   "dir": "_fonts/dm-sans",
+   "css_url": "https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&display=swap",
+   "faces": [
+    {
+     "file": "_fonts/dm-sans/dm-sans-400.woff2",
+     "weight": "400",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/dmsans/v17/rP2Yp2ywxg089UriI5-g4vlH9VoD8Cmcqbu0-K6z9mXg.woff2"
+    },
+    {
+     "file": "_fonts/dm-sans/dm-sans-600.woff2",
+     "weight": "600",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/dmsans/v17/rP2Yp2ywxg089UriI5-g4vlH9VoD8Cmcqbu0-K6z9mXg.woff2"
+    },
+    {
+     "file": "_fonts/dm-sans/dm-sans-700.woff2",
+     "weight": "700",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/dmsans/v17/rP2Yp2ywxg089UriI5-g4vlH9VoD8Cmcqbu0-K6z9mXg.woff2"
+    }
+   ]
+  },
+  "Plus Jakarta Sans": {
+   "dir": "_fonts/plus-jakarta-sans",
+   "css_url": "https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@800&display=swap",
+   "faces": [
+    {
+     "file": "_fonts/plus-jakarta-sans/plus-jakarta-sans-800.woff2",
+     "weight": "800",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/plusjakartasans/v12/LDIbaomQNQcsA88c7O9yZ4KMCoOg4IA6-91aHEjcWuA_KUn9TR_VMq2oRsWk.woff2"
+    }
+   ]
+  },
+  "Montserrat": {
+   "dir": "_fonts/montserrat",
+   "css_url": "https://fonts.googleapis.com/css2?family=Montserrat:wght@800;900&display=swap",
+   "faces": [
+    {
+     "file": "_fonts/montserrat/montserrat-800.woff2",
+     "weight": "800",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/montserrat/v31/JTUSjIg1_i6t8kCHKm459WlhyyTh89Y.woff2"
+    },
+    {
+     "file": "_fonts/montserrat/montserrat-900.woff2",
+     "weight": "900",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/montserrat/v31/JTUSjIg1_i6t8kCHKm459WlhyyTh89Y.woff2"
+    }
+   ]
+  },
+  "Poppins": {
+   "dir": "_fonts/poppins",
+   "css_url": "https://fonts.googleapis.com/css2?family=Poppins:wght@800&display=swap",
+   "faces": [
+    {
+     "file": "_fonts/poppins/poppins-800.woff2",
+     "weight": "800",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/poppins/v24/pxiByp8kv8JHgFVrLDD4Z1xlFd2JQEk.woff2"
+    }
+   ]
+  },
+  "Sora": {
+   "dir": "_fonts/sora",
+   "css_url": "https://fonts.googleapis.com/css2?family=Sora:wght@600&display=swap",
+   "faces": [
+    {
+     "file": "_fonts/sora/sora-600.woff2",
+     "weight": "600",
+     "style": "normal",
+     "src": "https://fonts.gstatic.com/s/sora/v17/xMQOuFFYT72X5wkB_18qmnndmSeMmU-NKQJDA8i1P4w.woff2"
+    }
+   ]
   }
  },
  "failed": {}
