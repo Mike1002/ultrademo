@@ -20,6 +20,25 @@ https://github.com/user-attachments/assets/b198ca47-1d43-44b1-b622-6d1d4b60afaf
 - **A review page**: click a moment in the video, draw a box on the frame, write what to change. Your agent fixes it, marks it done and tells you what changed.
 - **A dashboard** of your videos, your saved brands and what the agent has learned about each brand, so the next video starts closer.
 
+## Video types
+
+**Launch** · typically 20–60 s. A reveal of your product or a new feature: a hook, the reveal, the result in motion and a close. Built to get attention on launch day, often to music alone.
+> `/ultrademo launch video of https://your-product.com`
+
+**Explainer** · typically 45 s–3 min. How your product works: the problem, your product, then its main screens in order. A full tour of the product is an explainer at one to three minutes. Usually narrated.
+> `/ultrademo 90 second explainer of https://your-product.com`
+
+**Spotlight** · typically 30–90 s. The energy of a launch, built around a few values or features instead of an introduction. Good for a features page or a release post.
+> `/ultrademo spotlight on the reporting and the Slack alerts in https://your-product.com`
+
+**Ad** · typically 6–30 s. For paid placement: a hook in the first second, one proof, one call to action. It works with the sound off, and it can come in vertical for social feeds.
+> `/ultrademo 15 second ad for https://your-product.com, vertical`
+
+**Tutorial** · typically 1–5 min, longer in chapters. Step by step, with the cursor on every click and a numbered caption per step. Three kinds: an area of your product (what you can do in the dashboard), a use case from start to finish (connect your mailbox, then set up a sequence) or one feature (how campaigns work). An opening message and a closing message are optional.
+> `/ultrademo tutorial: how to set up a support agent in https://app.your-product.com`
+
+Any type can cover the whole product or one feature, in landscape, vertical or both. Not sure which type? Choose **Unsure** on the brief page and the direction step picks one from your brief and your site.
+
 Every screen in the video comes from your product. Every claim in the headlines and the narration comes from your site, your product or you. Anything it cannot source is listed for you to confirm before it goes in.
 
 ## How it works

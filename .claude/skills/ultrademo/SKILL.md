@@ -1,6 +1,6 @@
 ---
 name: ultrademo
-description: Make a launch, explainer, spotlight or ad video of a web product (the whole product or one feature), as scenes written in code, from its live site or app, HTML mockups, screenshots or Figma. Use whenever the user asks for a product video, demo video, launch video, feature video or walkthrough, or to update one. Sets up its workspace on first use, after asking.
+description: Make a launch, explainer, spotlight, ad or tutorial video of a web product (the whole product, one feature or a step-by-step task), as scenes written in code, from its live site or app, HTML mockups, screenshots or Figma. Use whenever the user asks for a product video, demo video, launch video, feature video, tutorial, how-to video or walkthrough, or to update one. Sets up its workspace on first use, after asking.
 ---
 
 # Ultrademo
